@@ -1,0 +1,417 @@
+@import 'tailwindcss';
+
+/*
+ * pennig – ontwerpsysteem
+ *
+ * Eén bron voor kleur, type, ruimte, hoeken, schaduwen, beweging en interactietoestanden.
+ * Contrast: alle teksttokens halen minimaal WCAG AA (4,5:1) op hun bedoelde achtergrond.
+ * De felle merkkleuren zijn vlakken en accenten; tekst op die vlakken gebruikt een donkere
+ * tint van dezelfde kleur (zoals groen met donkergroen), behalve marineblauw (wit).
+ */
+
+@custom-variant calm (&:where([data-motion='calm'], [data-motion='calm'] *));
+
+@theme {
+  /* Neutralen */
+  --color-canvas: #f2f3f5;
+  --color-surface: #ffffff;
+  --color-sunken: #f7f8fa;
+  --color-line: #e3e5e9;
+  --color-line-strong: #d3d7de;
+  --color-ink: #23262d; /* koppen en hoofdtekst · 15,3:1 op wit */
+  --color-ink-soft: #454a54; /* lopende tekst · 9,1:1 */
+  --color-ink-muted: #5f6570; /* ondersteunend · 5,9:1 op wit, 5,3:1 op canvas */
+  --color-ink-disabled: #8a909b; /* alleen uitgeschakelde bediening */
+  --color-focus: #1a6fe0;
+
+  /* Merkaccenten: vlak · rand-3D · tekst · zacht vlak · lijn · tekst op vlak */
+  --color-green: #58cc02;
+  --color-green-deep: #46a302;
+  --color-green-ink: #2f6b00;
+  --color-green-soft: #ecf9df;
+  --color-green-line: #bfe89a;
+  --color-green-on: #173a00;
+
+  --color-blue: #1cb0f6;
+  --color-blue-deep: #1592cf;
+  --color-blue-ink: #0a6694;
+  --color-blue-soft: #e3f4fd;
+  --color-blue-line: #a9dcf7;
+  --color-blue-on: #052f4a;
+
+  --color-purple: #ce82ff;
+  --color-purple-deep: #a568cc;
+  --color-purple-ink: #6f35a0;
+  --color-purple-soft: #f6ebff;
+  --color-purple-line: #e2c4fb;
+  --color-purple-on: #3b1460;
+
+  --color-orange: #ff9600;
+  --color-orange-deep: #d97f00;
+  --color-orange-ink: #8f4a00;
+  --color-orange-soft: #fff3e0;
+  --color-orange-line: #ffd59c;
+  --color-orange-on: #4a2600;
+
+  --color-yellow: #ffc800;
+  --color-yellow-deep: #dba900;
+  --color-yellow-ink: #7a5c00;
+  --color-yellow-soft: #fff8d6;
+  --color-yellow-line: #ffe580;
+  --color-yellow-on: #3d2e00;
+
+  --color-navy: #2b70c9;
+  --color-navy-deep: #1f5aa5;
+  --color-navy-ink: #1d4f91;
+  --color-navy-soft: #e6eefa;
+  --color-navy-line: #b5cbee;
+  --color-navy-on: #ffffff;
+
+  --color-pink: #ff86d0;
+  --color-pink-deep: #d966ae;
+  --color-pink-ink: #9b2a73;
+  --color-pink-soft: #ffebf6;
+  --color-pink-line: #ffc2e6;
+  --color-pink-on: #4d0f37;
+
+  --color-red: #ff4b4b;
+  --color-red-deep: #e02f2f;
+  --color-red-ink: #b42318;
+  --color-red-soft: #ffecec;
+  --color-red-line: #ffc2c2;
+  --color-red-on: #4a0a0a;
+
+  /* Feedback */
+  --color-success-bg: #dff7c8;
+  --color-success-line: #b4e88a;
+  --color-error-bg: #ffe4e4;
+  --color-error-line: #ffc1c1;
+
+  /* Typografie */
+  --text-label: 0.75rem;
+  --text-label--line-height: 1rem;
+  --text-label--letter-spacing: 0.08em;
+  --text-caption: 0.8125rem;
+  --text-caption--line-height: 1.25rem;
+  --text-small: 0.9375rem;
+  --text-small--line-height: 1.4rem;
+  --text-body: 1.0625rem;
+  --text-body--line-height: 1.65rem;
+  --text-lead: 1.25rem;
+  --text-lead--line-height: 1.85rem;
+  --text-title-sm: 1.25rem;
+  --text-title-sm--line-height: 1.55rem;
+  --text-title: clamp(1.5rem, 1.3rem + 0.8vw, 1.875rem);
+  --text-title--line-height: 1.2;
+  --text-headline: clamp(2.125rem, 1.6rem + 2vw, 3.25rem);
+  --text-headline--line-height: 1.05;
+  --text-example: clamp(1.625rem, 1.35rem + 1.2vw, 2.25rem);
+  --text-example--line-height: 1.5;
+  --text-example-lg: clamp(2.25rem, 1.8rem + 2vw, 3.25rem);
+  --text-example-lg--line-height: 1.2;
+
+  /* Ruimte (aanvullend op de standaardschaal van 0,25rem) */
+  --spacing-gutter: 1.25rem;
+  --spacing-section: 3.5rem;
+  --spacing-tap: 2.75rem; /* minimale aanraakmaat (44px) */
+
+  /* Hoeken */
+  --radius-chip: 0.625rem;
+  --radius-control: 0.875rem;
+  --radius-tile: 1rem;
+  --radius-card: 1.5rem;
+  --radius-sheet: 2rem;
+
+  /* Schaduwen: tastbare "plaat"-schaduwen plus een zachte zweefschaduw voor vellen */
+  --shadow-slab-sm: 0 2px 0 0 var(--color-line-strong);
+  --shadow-slab: 0 4px 0 0 var(--color-line-strong);
+  --shadow-slab-lg: 0 6px 0 0 var(--color-line-strong);
+  --shadow-sheet:
+    0 1px 0 rgb(16 24 40 / 0.04), 0 2px 4px rgb(16 24 40 / 0.04), 0 14px 34px -14px rgb(16 24 40 / 0.16),
+    0 6px 0 0 var(--color-line);
+  --shadow-float: 0 18px 40px -16px rgb(16 24 40 / 0.28), 0 4px 0 0 var(--color-line-strong);
+
+  /* Beweging */
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-soft: cubic-bezier(0.65, 0, 0.35, 1);
+
+  --animate-shake: shake 360ms var(--ease-out-soft) both;
+  --animate-pop: pop 240ms var(--ease-out-expo) both;
+  --animate-shimmer: shimmer 1.4s ease-in-out infinite;
+
+  @keyframes shake {
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+    20%,
+    60% {
+      transform: translateX(-6px);
+    }
+    40%,
+    80% {
+      transform: translateX(6px);
+    }
+  }
+  @keyframes pop {
+    from {
+      transform: scale(0.94);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  @keyframes shimmer {
+    0% {
+      background-position: 100% 0;
+    }
+    100% {
+      background-position: -100% 0;
+    }
+  }
+}
+
+@theme inline {
+  --font-sans: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-bricolage), var(--font-figtree), ui-sans-serif, sans-serif;
+  --font-serif: var(--font-fraunces), Georgia, serif;
+
+  /* Het actieve accent van een gebied (les, laag, domein) via data-accent */
+  --color-accent: var(--accent);
+  --color-accent-deep: var(--accent-deep);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-line: var(--accent-line);
+  --color-accent-on: var(--accent-on);
+}
+
+/* Accentcontexten */
+:root,
+[data-accent='green'] {
+  --accent: var(--color-green);
+  --accent-deep: var(--color-green-deep);
+  --accent-ink: var(--color-green-ink);
+  --accent-soft: var(--color-green-soft);
+  --accent-line: var(--color-green-line);
+  --accent-on: var(--color-green-on);
+}
+[data-accent='blue'] {
+  --accent: var(--color-blue);
+  --accent-deep: var(--color-blue-deep);
+  --accent-ink: var(--color-blue-ink);
+  --accent-soft: var(--color-blue-soft);
+  --accent-line: var(--color-blue-line);
+  --accent-on: var(--color-blue-on);
+}
+[data-accent='purple'] {
+  --accent: var(--color-purple);
+  --accent-deep: var(--color-purple-deep);
+  --accent-ink: var(--color-purple-ink);
+  --accent-soft: var(--color-purple-soft);
+  --accent-line: var(--color-purple-line);
+  --accent-on: var(--color-purple-on);
+}
+[data-accent='orange'] {
+  --accent: var(--color-orange);
+  --accent-deep: var(--color-orange-deep);
+  --accent-ink: var(--color-orange-ink);
+  --accent-soft: var(--color-orange-soft);
+  --accent-line: var(--color-orange-line);
+  --accent-on: var(--color-orange-on);
+}
+[data-accent='yellow'] {
+  --accent: var(--color-yellow);
+  --accent-deep: var(--color-yellow-deep);
+  --accent-ink: var(--color-yellow-ink);
+  --accent-soft: var(--color-yellow-soft);
+  --accent-line: var(--color-yellow-line);
+  --accent-on: var(--color-yellow-on);
+}
+[data-accent='navy'] {
+  --accent: var(--color-navy);
+  --accent-deep: var(--color-navy-deep);
+  --accent-ink: var(--color-navy-ink);
+  --accent-soft: var(--color-navy-soft);
+  --accent-line: var(--color-navy-line);
+  --accent-on: var(--color-navy-on);
+}
+[data-accent='pink'] {
+  --accent: var(--color-pink);
+  --accent-deep: var(--color-pink-deep);
+  --accent-ink: var(--color-pink-ink);
+  --accent-soft: var(--color-pink-soft);
+  --accent-line: var(--color-pink-line);
+  --accent-on: var(--color-pink-on);
+}
+[data-accent='red'] {
+  --accent: var(--color-red);
+  --accent-deep: var(--color-red-deep);
+  --accent-ink: var(--color-red-ink);
+  --accent-soft: var(--color-red-soft);
+  --accent-line: var(--color-red-line);
+  --accent-on: var(--color-red-on);
+}
+
+@layer base {
+  html {
+    background: var(--color-canvas);
+    color: var(--color-ink-soft);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    min-height: 100dvh;
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    color: var(--color-ink);
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  ::selection {
+    background: var(--color-yellow);
+    color: var(--color-ink);
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+  button,
+  [role='button'],
+  [role='radio'],
+  [role='tab'],
+  [role='switch'],
+  label {
+    cursor: pointer;
+  }
+  button:disabled,
+  [data-disabled] {
+    cursor: not-allowed;
+  }
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--color-ink-muted);
+    opacity: 0.85;
+  }
+}
+
+/* Lettertypes */
+@utility font-serif {
+  font-family: var(--font-serif);
+  font-optical-sizing: auto;
+  font-variation-settings:
+    'SOFT' 100,
+    'WONK' 0;
+}
+@utility font-display {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  letter-spacing: -0.02em;
+}
+
+/* Kleine kapitalen voor metadata en labels in bediening (nooit als kopje boven een kop) */
+@utility label-caps {
+  font-family: var(--font-sans);
+  font-size: var(--text-label);
+  line-height: var(--text-label--line-height);
+  letter-spacing: var(--text-label--letter-spacing);
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+/*
+ * Tastbare oppervlakken. `--slab` bepaalt de kleur van de 3D-rand, `--lift` de hoogte.
+ * Indrukken laat de rand verdwijnen en het oppervlak zakken.
+ */
+@utility slab {
+  --slab: var(--color-line-strong);
+  --lift: 4px;
+  box-shadow: 0 var(--lift) 0 0 var(--slab);
+}
+@utility pressable {
+  transition:
+    transform 120ms var(--ease-out-soft),
+    box-shadow 120ms var(--ease-out-soft),
+    background-color 160ms var(--ease-out-soft),
+    border-color 160ms var(--ease-out-soft),
+    color 160ms var(--ease-out-soft);
+  &:where(:not(:disabled, [data-disabled], [aria-disabled='true'])):hover {
+    transform: translateY(-1px);
+    box-shadow: 0 calc(var(--lift, 4px) + 1px) 0 0 var(--slab, var(--color-line-strong));
+  }
+  &:where(:not(:disabled, [data-disabled], [aria-disabled='true'])):active,
+  &:where([data-pressing]) {
+    transform: translateY(var(--lift, 4px));
+    box-shadow: 0 0 0 0 var(--slab, var(--color-line-strong));
+  }
+}
+
+/* Laadtoestand */
+@utility skeleton {
+  background: linear-gradient(90deg, var(--color-line) 0%, #eceef1 40%, var(--color-line) 80%);
+  background-size: 200% 100%;
+  animation: var(--animate-shimmer);
+  border-radius: var(--radius-control);
+}
+
+/* Visueel verborgen, wel voorleesbaar */
+@utility sr-only-focusable {
+  &:not(:focus):not(:focus-within) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+}
+
+/* Taalvoorbeeld binnen lopende tekst: *woord* in de inhoud */
+@utility example-mark {
+  font-family: var(--font-serif);
+  font-variation-settings:
+    'SOFT' 100,
+    'WONK' 0;
+  font-style: normal;
+  color: var(--accent-ink);
+  background: var(--accent-soft);
+  border-radius: 0.4em;
+  padding: 0 0.3em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+/* Rustige beweging: systeemvoorkeur of eigen instelling */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+html[data-motion='calm'] *,
+html[data-motion='calm'] ::before,
+html[data-motion='calm'] ::after {
+  animation-duration: 1ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 1ms !important;
+  scroll-behavior: auto !important;
+}

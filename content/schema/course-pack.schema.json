@@ -1,0 +1,3355 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "number",
+      "const": 1
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$",
+      "description": "Stabiele sleutel; wijzig niet zodra leerlingen voortgang hebben."
+    },
+    "title": {
+      "type": "string",
+      "pattern": "\\S"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "\\S",
+      "description": "Inhoudsversie; verhoog bij inhoudelijke wijzigingen."
+    },
+    "domains": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]*$",
+            "description": "Stabiele sleutel; wijzig niet zodra leerlingen voortgang hebben."
+          },
+          "name": {
+            "type": "string",
+            "pattern": "\\S"
+          },
+          "q": {
+            "type": "string",
+            "pattern": "\\S",
+            "description": "De vraag die het vakgebied stelt, bv. \"Hoe klinkt het?\"."
+          },
+          "accent": {
+            "type": "string",
+            "enum": [
+              "green",
+              "teal",
+              "orange",
+              "yellow",
+              "blue",
+              "purple",
+              "navy",
+              "pink",
+              "red",
+              "rose",
+              "slate"
+            ],
+            "description": "Semantische accentkleur; de app vertaalt die naar ontwerptokens."
+          },
+          "persp": {
+            "description": "Een van de vier perspectieven die op elk niveau gelden.",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "q",
+          "accent"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "layers": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]*$",
+            "description": "Stabiele sleutel; wijzig niet zodra leerlingen voortgang hebben."
+          },
+          "name": {
+            "type": "string",
+            "pattern": "\\S"
+          },
+          "icon": {
+            "type": "string",
+            "pattern": "\\S"
+          },
+          "made": {
+            "type": "string",
+            "pattern": "\\S",
+            "description": "Waaruit dit niveau bestaat, bv. \"letters rond één klinker\"."
+          },
+          "learn": {
+            "type": "string",
+            "pattern": "\\S",
+            "description": "Wat je op dit niveau leert."
+          },
+          "fields": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9-]*$",
+              "description": "Stabiele sleutel; wijzig niet zodra leerlingen voortgang hebben."
+            },
+            "description": "Vakgebieden die op dit niveau aan bod komen."
+          },
+          "example": {
+            "type": "string",
+            "pattern": "\\S",
+            "description": "Een kort voorbeeld van dit niveau."
+          },
+          "accent": {
+            "type": "string",
+            "enum": [
+              "green",
+              "teal",
+              "orange",
+              "yellow",
+              "blue",
+              "purple",
+              "navy",
+              "pink",
+              "red",
+              "rose",
+              "slate"
+            ],
+            "description": "Semantische accentkleur; de app vertaalt die naar ontwerptokens."
+          },
+          "growth": {
+            "type": "object",
+            "properties": {
+              "segments": {
+                "minItems": 1,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "t": {
+                      "type": "string",
+                      "pattern": "\\S"
+                    },
+                    "tag": {
+                      "description": "Label onder het stuk.",
+                      "type": "string"
+                    },
+                    "hi": {
+                      "description": "Nieuw op deze laag (uitgelicht).",
+                      "type": "boolean"
+                    },
+                    "gap": {
+                      "description": "Scheidingsteken in plaats van een stuk.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "t"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "tip": {
+                "type": "string",
+                "pattern": "\\S"
+              }
+            },
+            "required": [
+              "segments",
+              "tip"
+            ],
+            "additionalProperties": false,
+            "description": "Het voorbeeld dat door de niveaus groeit, zoals het op dit niveau wordt ontleed."
+          },
+          "lessons": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9][a-z0-9-]*$",
+                  "description": "Stabiele sleutel; wijzig niet zodra leerlingen voortgang hebben."
+                },
+                "title": {
+                  "type": "string",
+                  "pattern": "\\S"
+                },
+                "skill": {
+                  "type": "string",
+                  "enum": [
+                    "Spelling",
+                    "Woorden",
+                    "Zinsbouw",
+                    "Complex",
+                    "Alinea"
+                  ]
+                },
+                "icon": {
+                  "type": "string",
+                  "pattern": "\\S",
+                  "description": "Kort teken op de lestegel, bv. \"dt\" of \"¶\"."
+                },
+                "domain": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9][a-z0-9-]*$",
+                  "description": "Hoofdvakgebied: verwijst naar een domein-id van de cursus."
+                },
+                "also": {
+                  "description": "Andere vakgebieden die in de les meespelen.",
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^[a-z0-9][a-z0-9-]*$",
+                    "description": "Stabiele sleutel; wijzig niet zodra leerlingen voortgang hebben."
+                  }
+                },
+                "steps": {
+                  "minItems": 1,
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "const": "explain"
+                          },
+                          "id": {
+                            "description": "Optionele stabiele sleutel van de stap. Zonder id wordt de positie plus een inhoudsvingerafdruk gebruikt.",
+                            "type": "string",
+                            "pattern": "^[a-z0-9][a-z0-9-]*$"
+                          },
+                          "title": {
+                            "type": "string",
+                            "pattern": "\\S"
+                          },
+                          "panels": {
+                            "minItems": 1,
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "text": {
+                                  "type": "string",
+                                  "pattern": "\\S",
+                                  "description": "Tekst waarin *woord* een taalvoorbeeld markeert."
+                                },
+                                "rule": {
+                                  "description": "Regelkaart: de kern in één zin.",
+                                  "type": "string",
+                                  "pattern": "\\S"
+                                },
+                                "deep": {
+                                  "description": "Uitklapbare verdieping.",
+                                  "type": "object",
+                                  "properties": {
+                                    "q": {
+                                      "type": "string",
+                                      "pattern": "\\S"
+                                    },
+                                    "a": {
+                                      "type": "string",
+                                      "pattern": "\\S",
+                                      "description": "Tekst waarin *woord* een taalvoorbeeld markeert."
+                                    }
+                                  },
+                                  "required": [
+                                    "q",
+                                    "a"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                "show": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object",
+                                    "properties": {
+                                      "wrong": {
+                                        "description": "Foute vorm (doorgestreept getoond).",
+                                        "type": "string"
+                                      },
+                                      "right": {
+                                        "type": "string",
+                                        "pattern": "\\S",
+                                        "description": "Juiste vorm."
+                                      }
+                                    },
+                                    "required": [
+                                      "right"
+                                    ],
+                                    "additionalProperties": false
+                                  }
+                                },
+                                "lab": {
+                                  "type": "object",
+                                  "properties": {
+                                    "label": {
+                                      "type": "string",
+                                      "pattern": "\\S",
+                                      "description": "Opdrachtzin boven de knoppen, bv. \"Tik een woord\"."
+                                    },
+                                    "chips": {
+                                      "minItems": 1,
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object",
+                                        "properties": {
+                                          "k": {
+                                            "type": "string",
+                                            "pattern": "\\S",
+                                            "description": "Knoptekst"
+                                          },
+                                          "out": {
+                                            "type": "string",
+                                            "pattern": "\\S",
+                                            "description": "Resultaat"
+                                          },
+                                          "note": {
+                                            "type": "string",
+                                            "pattern": "\\S",
+                                            "description": "Toelichting"
+                                          }
+                                        },
+                                        "required": [
+                                          "k",
+                                          "out",
+                                          "note"
+                                        ],
+                                        "additionalProperties": false
+                                      }
+                                    }
+                                  },
+                                  "required": [
+                                    "label",
+                                    "chips"
+                                  ],
+                                  "additionalProperties": false,
+                                  "description": "Klikexperiment: kies een knop en zie het resultaat veranderen."
+                                },
+                                "quiz": {
+                                  "type": "object",
+                                  "properties": {
+                                    "q": {
+                                      "type": "string",
+                                      "pattern": "\\S"
+                                    },
+                                    "options": {
+                                      "minItems": 2,
+                                      "type": "array",
+                                      "items": {
+                                        "type": "string",
+                                        "pattern": "\\S"
+                                      }
+                                    },
+                                    "answer": {
+                                      "type": "string",
+                                      "pattern": "\\S"
+                                    },
+                                    "why": {
+                                      "type": "string",
+                                      "pattern": "\\S"
+                                    }
+                                  },
+                                  "required": [
+                                    "q",
+                                    "options",
+                                    "answer",
+                                    "why"
+                                  ],
+                                  "additionalProperties": false,
+                                  "description": "Snelle check binnen de uitleg. De app toont deze als losse meerkeuzevraag direct na de uitleg."
+                                },
+                                "split": {
+                                  "type": "object",
+                                  "properties": {
+                                    "word": {
+                                      "type": "string",
+                                      "pattern": "\\S"
+                                    },
+                                    "answer": {
+                                      "type": "string",
+                                      "pattern": "\\S",
+                                      "description": "Woord met koppeltekens op de knippunten, bv. \"bo-men\"."
+                                    },
+                                    "note": {
+                                      "type": "string",
+                                      "pattern": "\\S"
+                                    }
+                                  },
+                                  "required": [
+                                    "word",
+                                    "answer",
+                                    "note"
+                                  ],
+                                  "additionalProperties": false,
+                                  "description": "Knip een woord in lettergrepen."
+                                },
+                                "mark": {
+                                  "type": "object",
+                                  "properties": {
+                                    "q": {
+                                      "type": "string",
+                                      "pattern": "\\S"
+                                    },
+                                    "sentence": {
+                                      "type": "string",
+                                      "pattern": "\\S"
+                                    },
+                                    "targets": {
+                                      "minItems": 1,
+                                      "type": "array",
+                                      "items": {
+                                        "type": "integer",
+                                        "minimum": 0,
+                                        "maximum": 9007199254740991
+                                      },
+                                      "description": "Indexen van de doelwoorden; woorden worden op spaties geteld, vanaf 0."
+                                    },
+                                    "note": {
+                                      "type": "string",
+                                      "pattern": "\\S"
+                                    }
+                                  },
+                                  "required": [
+                                    "q",
+                                    "sentence",
+                                    "targets",
+                                    "note"
+                                  ],
+                                  "additionalProperties": false,
+                                  "description": "Tik alle doelwoorden in een zin aan."
+                                },
+                                "build": {
+                                  "type": "object",
+                                  "properties": {
+                                    "before": {
+                                      "type": "string"
+                                    },
+                                    "stem": {
+                                      "type": "string",
+                                      "pattern": "\\S"
+                                    },
+                                    "endings": {
+                                      "minItems": 2,
+                                      "type": "array",
+                                      "items": {
+                                        "type": "string"
+                                      },
+                                      "description": "Keuzes; een lege string betekent \"niets erachter\"."
+                                    },
+                                    "answer": {
+                                      "type": "string"
+                                    },
+                                    "note": {
+                                      "type": "string",
+                                      "pattern": "\\S"
+                                    }
+                                  },
+                                  "required": [
+                                    "stem",
+                                    "endings",
+                                    "answer",
+                                    "note"
+                                  ],
+                                  "additionalProperties": false,
+                                  "description": "Plak de juiste uitgang achter een stam."
+                                },
+                                "alpha": {
+                                  "type": "object",
+                                  "properties": {
+                                    "q": {
+                                      "type": "string",
+                                      "pattern": "\\S"
+                                    },
+                                    "targets": {
+                                      "minItems": 1,
+                                      "type": "array",
+                                      "items": {
+                                        "type": "string",
+                                        "pattern": "^[a-z]$"
+                                      }
+                                    },
+                                    "note": {
+                                      "type": "string",
+                                      "pattern": "\\S"
+                                    }
+                                  },
+                                  "required": [
+                                    "q",
+                                    "targets",
+                                    "note"
+                                  ],
+                                  "additionalProperties": false,
+                                  "description": "Tik de doelletters in het alfabet aan."
+                                },
+                                "wheel": {
+                                  "type": "object",
+                                  "properties": {
+                                    "start": {
+                                      "type": "string"
+                                    },
+                                    "end": {
+                                      "type": "string"
+                                    },
+                                    "options": {
+                                      "minItems": 2,
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object",
+                                        "properties": {
+                                          "v": {
+                                            "type": "string",
+                                            "pattern": "\\S"
+                                          },
+                                          "mean": {
+                                            "description": "Betekenis; leeg = geen bestaand woord.",
+                                            "type": "string"
+                                          }
+                                        },
+                                        "required": [
+                                          "v"
+                                        ],
+                                        "additionalProperties": false
+                                      }
+                                    },
+                                    "need": {
+                                      "type": "integer",
+                                      "exclusiveMinimum": 0,
+                                      "maximum": 9007199254740991,
+                                      "description": "Aantal bestaande woorden dat gevonden moet worden."
+                                    },
+                                    "note": {
+                                      "type": "string",
+                                      "pattern": "\\S"
+                                    }
+                                  },
+                                  "required": [
+                                    "start",
+                                    "end",
+                                    "options",
+                                    "need",
+                                    "note"
+                                  ],
+                                  "additionalProperties": false,
+                                  "description": "Klinkerwiel: wissel de middelste letter en ontdek welke woorden bestaan."
+                                },
+                                "blend": {
+                                  "type": "object",
+                                  "properties": {
+                                    "letters": {
+                                      "minItems": 2,
+                                      "type": "array",
+                                      "items": {
+                                        "type": "string",
+                                        "minLength": 1
+                                      }
+                                    },
+                                    "pairs": {
+                                      "minItems": 1,
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object",
+                                        "properties": {
+                                          "s": {
+                                            "type": "string",
+                                            "pattern": "\\S"
+                                          },
+                                          "ex": {
+                                            "type": "string",
+                                            "pattern": "\\S"
+                                          }
+                                        },
+                                        "required": [
+                                          "s",
+                                          "ex"
+                                        ],
+                                        "additionalProperties": false
+                                      }
+                                    },
+                                    "note": {
+                                      "type": "string",
+                                      "pattern": "\\S"
+                                    }
+                                  },
+                                  "required": [
+                                    "letters",
+                                    "pairs",
+                                    "note"
+                                  ],
+                                  "additionalProperties": false,
+                                  "description": "Combineer twee letters tot één klank."
+                                },
+                                "swap": {
+                                  "type": "object",
+                                  "properties": {
+                                    "goal": {
+                                      "type": "string",
+                                      "pattern": "\\S"
+                                    },
+                                    "blocks": {
+                                      "minItems": 2,
+                                      "type": "array",
+                                      "items": {
+                                        "type": "string",
+                                        "pattern": "\\S"
+                                      },
+                                      "description": "Blokken in de beginvolgorde."
+                                    },
+                                    "accept": {
+                                      "minItems": 1,
+                                      "type": "array",
+                                      "items": {
+                                        "type": "string",
+                                        "pattern": "\\S"
+                                      },
+                                      "description": "Goede volgordes: de blokken gescheiden door één spatie."
+                                    },
+                                    "note": {
+                                      "type": "string",
+                                      "pattern": "\\S"
+                                    }
+                                  },
+                                  "required": [
+                                    "goal",
+                                    "blocks",
+                                    "accept",
+                                    "note"
+                                  ],
+                                  "additionalProperties": false,
+                                  "description": "Wissel blokken tot de zin klopt."
+                                }
+                              },
+                              "required": [
+                                "text"
+                              ],
+                              "additionalProperties": false
+                            }
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "title",
+                          "panels"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "const": "learn"
+                          },
+                          "id": {
+                            "description": "Optionele stabiele sleutel van de stap. Zonder id wordt de positie plus een inhoudsvingerafdruk gebruikt.",
+                            "type": "string",
+                            "pattern": "^[a-z0-9][a-z0-9-]*$"
+                          },
+                          "title": {
+                            "type": "string",
+                            "pattern": "\\S"
+                          },
+                          "body": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Tekst waarin *woord* een taalvoorbeeld markeert."
+                          },
+                          "example": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "wrong": {
+                                  "description": "Foute vorm (doorgestreept getoond).",
+                                  "type": "string"
+                                },
+                                "right": {
+                                  "type": "string",
+                                  "pattern": "\\S",
+                                  "description": "Juiste vorm."
+                                }
+                              },
+                              "required": [
+                                "right"
+                              ],
+                              "additionalProperties": false
+                            }
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "title",
+                          "body",
+                          "example"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "const": "choice"
+                          },
+                          "id": {
+                            "description": "Optionele stabiele sleutel van de stap. Zonder id wordt de positie plus een inhoudsvingerafdruk gebruikt.",
+                            "type": "string",
+                            "pattern": "^[a-z0-9][a-z0-9-]*$"
+                          },
+                          "prompt": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Opdracht boven de oefening."
+                          },
+                          "before": {
+                            "type": "string",
+                            "description": "Zinsdeel vóór het gat (mag leeg)."
+                          },
+                          "after": {
+                            "type": "string",
+                            "description": "Zinsdeel na het gat (mag leeg)."
+                          },
+                          "options": {
+                            "minItems": 2,
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "pattern": "\\S"
+                            }
+                          },
+                          "answer": {
+                            "type": "string",
+                            "pattern": "\\S"
+                          },
+                          "why": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Uitleg die na het controleren zichtbaar blijft."
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "prompt",
+                          "before",
+                          "after",
+                          "options",
+                          "answer",
+                          "why"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "const": "combine"
+                          },
+                          "id": {
+                            "description": "Optionele stabiele sleutel van de stap. Zonder id wordt de positie plus een inhoudsvingerafdruk gebruikt.",
+                            "type": "string",
+                            "pattern": "^[a-z0-9][a-z0-9-]*$"
+                          },
+                          "prompt": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Opdracht boven de oefening."
+                          },
+                          "a": {
+                            "type": "string",
+                            "pattern": "\\S"
+                          },
+                          "b": {
+                            "type": "string",
+                            "pattern": "\\S"
+                          },
+                          "options": {
+                            "minItems": 2,
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "pattern": "\\S"
+                            }
+                          },
+                          "answer": {
+                            "type": "string",
+                            "pattern": "\\S"
+                          },
+                          "why": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Uitleg die na het controleren zichtbaar blijft."
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "prompt",
+                          "a",
+                          "b",
+                          "options",
+                          "answer",
+                          "why"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "const": "type"
+                          },
+                          "id": {
+                            "description": "Optionele stabiele sleutel van de stap. Zonder id wordt de positie plus een inhoudsvingerafdruk gebruikt.",
+                            "type": "string",
+                            "pattern": "^[a-z0-9][a-z0-9-]*$"
+                          },
+                          "prompt": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Opdracht boven de oefening."
+                          },
+                          "before": {
+                            "type": "string"
+                          },
+                          "after": {
+                            "type": "string"
+                          },
+                          "hint": {
+                            "type": "string",
+                            "description": "Plaatshouder in het invulveld."
+                          },
+                          "answer": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Juiste invulling; hoofdletters tellen niet mee."
+                          },
+                          "why": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Uitleg die na het controleren zichtbaar blijft."
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "prompt",
+                          "before",
+                          "after",
+                          "hint",
+                          "answer",
+                          "why"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "const": "order"
+                          },
+                          "id": {
+                            "description": "Optionele stabiele sleutel van de stap. Zonder id wordt de positie plus een inhoudsvingerafdruk gebruikt.",
+                            "type": "string",
+                            "pattern": "^[a-z0-9][a-z0-9-]*$"
+                          },
+                          "prompt": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Opdracht boven de oefening."
+                          },
+                          "tiles": {
+                            "minItems": 2,
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "pattern": "\\S"
+                            }
+                          },
+                          "answer": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "De tegels in de goede volgorde, gescheiden door één spatie."
+                          },
+                          "why": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Uitleg die na het controleren zichtbaar blijft."
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "prompt",
+                          "tiles",
+                          "answer",
+                          "why"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "const": "paragraph"
+                          },
+                          "id": {
+                            "description": "Optionele stabiele sleutel van de stap. Zonder id wordt de positie plus een inhoudsvingerafdruk gebruikt.",
+                            "type": "string",
+                            "pattern": "^[a-z0-9][a-z0-9-]*$"
+                          },
+                          "prompt": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Opdracht boven de oefening."
+                          },
+                          "parts": {
+                            "minItems": 2,
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "role": {
+                                  "type": "string",
+                                  "pattern": "\\S"
+                                },
+                                "text": {
+                                  "type": "string",
+                                  "pattern": "\\S"
+                                }
+                              },
+                              "required": [
+                                "role",
+                                "text"
+                              ],
+                              "additionalProperties": false
+                            },
+                            "description": "Zinnen in de juiste volgorde; de app schudt ze."
+                          },
+                          "why": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Uitleg die na het controleren zichtbaar blijft."
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "prompt",
+                          "parts",
+                          "why"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "const": "sort"
+                          },
+                          "id": {
+                            "description": "Optionele stabiele sleutel van de stap. Zonder id wordt de positie plus een inhoudsvingerafdruk gebruikt.",
+                            "type": "string",
+                            "pattern": "^[a-z0-9][a-z0-9-]*$"
+                          },
+                          "prompt": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Opdracht boven de oefening."
+                          },
+                          "buckets": {
+                            "minItems": 2,
+                            "maxItems": 4,
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "pattern": "\\S"
+                            }
+                          },
+                          "items": {
+                            "minItems": 2,
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "t": {
+                                  "type": "string",
+                                  "pattern": "\\S"
+                                },
+                                "b": {
+                                  "type": "integer",
+                                  "minimum": 0,
+                                  "maximum": 9007199254740991,
+                                  "description": "Index van de juiste categorie."
+                                }
+                              },
+                              "required": [
+                                "t",
+                                "b"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "why": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Uitleg die na het controleren zichtbaar blijft."
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "prompt",
+                          "buckets",
+                          "items",
+                          "why"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "const": "fix"
+                          },
+                          "id": {
+                            "description": "Optionele stabiele sleutel van de stap. Zonder id wordt de positie plus een inhoudsvingerafdruk gebruikt.",
+                            "type": "string",
+                            "pattern": "^[a-z0-9][a-z0-9-]*$"
+                          },
+                          "prompt": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Opdracht boven de oefening."
+                          },
+                          "sentence": {
+                            "type": "string",
+                            "pattern": "\\S"
+                          },
+                          "wrong": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 9007199254740991,
+                            "description": "Index van het foute woord (op spaties geteld, vanaf 0)."
+                          },
+                          "answer": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Verbetering van dat woord; hoofdletters en leestekens tellen niet mee."
+                          },
+                          "why": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Uitleg die na het controleren zichtbaar blijft."
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "prompt",
+                          "sentence",
+                          "wrong",
+                          "answer",
+                          "why"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "const": "rewrite"
+                          },
+                          "id": {
+                            "description": "Optionele stabiele sleutel van de stap. Zonder id wordt de positie plus een inhoudsvingerafdruk gebruikt.",
+                            "type": "string",
+                            "pattern": "^[a-z0-9][a-z0-9-]*$"
+                          },
+                          "prompt": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Opdracht boven de oefening."
+                          },
+                          "source": {
+                            "type": "string",
+                            "pattern": "\\S"
+                          },
+                          "accept": {
+                            "minItems": 1,
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "pattern": "\\S"
+                            },
+                            "description": "Alle goede antwoorden."
+                          },
+                          "why": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Uitleg die na het controleren zichtbaar blijft."
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "prompt",
+                          "source",
+                          "accept",
+                          "why"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "const": "write"
+                          },
+                          "id": {
+                            "description": "Optionele stabiele sleutel van de stap. Zonder id wordt de positie plus een inhoudsvingerafdruk gebruikt.",
+                            "type": "string",
+                            "pattern": "^[a-z0-9][a-z0-9-]*$"
+                          },
+                          "prompt": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Opdracht boven de oefening."
+                          },
+                          "minWords": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 9007199254740991
+                          },
+                          "must": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "label": {
+                                  "type": "string",
+                                  "pattern": "\\S",
+                                  "description": "Zichtbare taakeis, bv. \"Een voorbeeld (bijvoorbeeld, zoals…)\"."
+                                },
+                                "test": {
+                                  "anyOf": [
+                                    {
+                                      "type": "object",
+                                      "properties": {
+                                        "anyWord": {
+                                          "minItems": 1,
+                                          "type": "array",
+                                          "items": {
+                                            "type": "string",
+                                            "pattern": "\\S"
+                                          },
+                                          "description": "Minstens één van deze hele woorden (hoofdletterongevoelig)."
+                                        }
+                                      },
+                                      "required": [
+                                        "anyWord"
+                                      ],
+                                      "additionalProperties": false
+                                    },
+                                    {
+                                      "type": "object",
+                                      "properties": {
+                                        "pattern": {
+                                          "type": "string",
+                                          "pattern": "\\S",
+                                          "description": "Reguliere expressie (JavaScript-syntaxis)."
+                                        },
+                                        "flags": {
+                                          "type": "string",
+                                          "pattern": "^[imsu]*$"
+                                        }
+                                      },
+                                      "required": [
+                                        "pattern"
+                                      ],
+                                      "additionalProperties": false
+                                    }
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "label",
+                                "test"
+                              ],
+                              "additionalProperties": false
+                            },
+                            "description": "Taakeisen die de leerling tijdens het schrijven ziet afvinken."
+                          },
+                          "why": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Uitleg die na het controleren zichtbaar blijft."
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "prompt",
+                          "minWords",
+                          "must",
+                          "why"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "const": "swipe"
+                          },
+                          "id": {
+                            "type": "string",
+                            "pattern": "^[a-z0-9][a-z0-9-]*$"
+                          },
+                          "prompt": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Opdracht boven de oefening."
+                          },
+                          "intro": {
+                            "description": "Toelichting onder de opdracht.",
+                            "type": "string"
+                          },
+                          "cards": {
+                            "minItems": 2,
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "t": {
+                                  "type": "string",
+                                  "pattern": "\\S"
+                                },
+                                "ok": {
+                                  "type": "boolean"
+                                },
+                                "fix": {
+                                  "description": "Bij ok=false: de verbetering, bv. \"houd → houdt\".",
+                                  "type": "string"
+                                },
+                                "why": {
+                                  "type": "string",
+                                  "pattern": "\\S"
+                                }
+                              },
+                              "required": [
+                                "t",
+                                "ok",
+                                "why"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "done": {
+                            "type": "object",
+                            "properties": {
+                              "title": {
+                                "type": "string",
+                                "pattern": "\\S"
+                              },
+                              "text": {
+                                "type": "string",
+                                "pattern": "\\S"
+                              },
+                              "note": {
+                                "description": "Slotopmerking in de oefening zelf.",
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "title",
+                              "text"
+                            ],
+                            "additionalProperties": false,
+                            "description": "Afsluitende feedback zodra de oefening klaar is."
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "prompt",
+                          "cards"
+                        ],
+                        "additionalProperties": false,
+                        "description": "Swipe-kaarten: beoordeel elke zin als goed of fout."
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "const": "morph"
+                          },
+                          "id": {
+                            "type": "string",
+                            "pattern": "^[a-z0-9][a-z0-9-]*$"
+                          },
+                          "prompt": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Opdracht boven de oefening."
+                          },
+                          "intro": {
+                            "description": "Toelichting onder de opdracht.",
+                            "type": "string"
+                          },
+                          "stem": {
+                            "type": "string",
+                            "pattern": "\\S"
+                          },
+                          "slots": {
+                            "minItems": 1,
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "string",
+                                  "pattern": "^[a-z0-9-]+$"
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "pattern": "\\S"
+                                },
+                                "side": {
+                                  "type": "string",
+                                  "enum": [
+                                    "before",
+                                    "after"
+                                  ]
+                                },
+                                "parts": {
+                                  "minItems": 1,
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string",
+                                    "pattern": "\\S"
+                                  }
+                                }
+                              },
+                              "required": [
+                                "id",
+                                "label",
+                                "side",
+                                "parts"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "words": {
+                            "minItems": 1,
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "combo": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "description": "Per slot het gekozen stukje, of \"\" voor niets."
+                                },
+                                "w": {
+                                  "type": "string",
+                                  "pattern": "\\S"
+                                },
+                                "cls": {
+                                  "description": "Woordsoort, bv. \"zn\".",
+                                  "type": "string"
+                                },
+                                "mean": {
+                                  "type": "string",
+                                  "pattern": "\\S"
+                                }
+                              },
+                              "required": [
+                                "combo",
+                                "w",
+                                "mean"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "forms": {
+                            "description": "Weergave van stam + eerste achtervoegsel, bv. { \"er\": \"lezer\" }.",
+                            "type": "object",
+                            "propertyNames": {
+                              "type": "string"
+                            },
+                            "additionalProperties": {
+                              "type": "string",
+                              "pattern": "\\S"
+                            }
+                          },
+                          "hints": {
+                            "description": "Uitleg als een niet-bestaand woord dit stukje bevat.",
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "part": {
+                                  "type": "string",
+                                  "pattern": "\\S"
+                                },
+                                "note": {
+                                  "type": "string",
+                                  "pattern": "\\S"
+                                }
+                              },
+                              "required": [
+                                "part",
+                                "note"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "goal": {
+                            "type": "integer",
+                            "exclusiveMinimum": 0,
+                            "maximum": 9007199254740991
+                          },
+                          "done": {
+                            "type": "object",
+                            "properties": {
+                              "title": {
+                                "type": "string",
+                                "pattern": "\\S"
+                              },
+                              "text": {
+                                "type": "string",
+                                "pattern": "\\S"
+                              },
+                              "note": {
+                                "description": "Slotopmerking in de oefening zelf.",
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "title",
+                              "text"
+                            ],
+                            "additionalProperties": false,
+                            "description": "Afsluitende feedback zodra de oefening klaar is."
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "prompt",
+                          "stem",
+                          "slots",
+                          "words",
+                          "goal"
+                        ],
+                        "additionalProperties": false,
+                        "description": "Woordbouwer: plak stukjes aan een stam en ontdek welke woorden bestaan."
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "const": "timeline"
+                          },
+                          "id": {
+                            "type": "string",
+                            "pattern": "^[a-z0-9][a-z0-9-]*$"
+                          },
+                          "prompt": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Opdracht boven de oefening."
+                          },
+                          "intro": {
+                            "description": "Toelichting onder de opdracht.",
+                            "type": "string"
+                          },
+                          "stops": {
+                            "minItems": 2,
+                            "maxItems": 6,
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "label": {
+                                  "type": "string",
+                                  "pattern": "\\S"
+                                },
+                                "sub": {
+                                  "type": "string"
+                                },
+                                "tense": {
+                                  "type": "string",
+                                  "pattern": "\\S"
+                                }
+                              },
+                              "required": [
+                                "label",
+                                "tense"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "verbs": {
+                            "minItems": 1,
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "t": {
+                                  "type": "string",
+                                  "pattern": "\\S"
+                                },
+                                "cells": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object",
+                                    "properties": {
+                                      "segs": {
+                                        "minItems": 1,
+                                        "type": "array",
+                                        "items": {
+                                          "type": "object",
+                                          "properties": {
+                                            "t": {
+                                              "type": "string"
+                                            },
+                                            "hi": {
+                                              "description": "Uitgelicht stuk.",
+                                              "type": "boolean"
+                                            }
+                                          },
+                                          "required": [
+                                            "t"
+                                          ],
+                                          "additionalProperties": false
+                                        }
+                                      },
+                                      "rule": {
+                                        "type": "string",
+                                        "pattern": "\\S"
+                                      },
+                                      "note": {
+                                        "type": "string",
+                                        "pattern": "\\S"
+                                      }
+                                    },
+                                    "required": [
+                                      "segs",
+                                      "rule",
+                                      "note"
+                                    ],
+                                    "additionalProperties": false
+                                  }
+                                }
+                              },
+                              "required": [
+                                "t",
+                                "cells"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "done": {
+                            "type": "object",
+                            "properties": {
+                              "title": {
+                                "type": "string",
+                                "pattern": "\\S"
+                              },
+                              "text": {
+                                "type": "string",
+                                "pattern": "\\S"
+                              },
+                              "note": {
+                                "description": "Slotopmerking in de oefening zelf.",
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "title",
+                              "text"
+                            ],
+                            "additionalProperties": false,
+                            "description": "Afsluitende feedback zodra de oefening klaar is."
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "prompt",
+                          "stops",
+                          "verbs"
+                        ],
+                        "additionalProperties": false,
+                        "description": "Tijdschuif: schuif een werkwoord door de tijd."
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "const": "speed"
+                          },
+                          "id": {
+                            "type": "string",
+                            "pattern": "^[a-z0-9][a-z0-9-]*$"
+                          },
+                          "prompt": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Opdracht boven de oefening."
+                          },
+                          "intro": {
+                            "description": "Toelichting onder de opdracht.",
+                            "type": "string"
+                          },
+                          "seconds": {
+                            "type": "integer",
+                            "minimum": 10,
+                            "maximum": 60,
+                            "description": "Duur van de ronde."
+                          },
+                          "items": {
+                            "minItems": 4,
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "a": {
+                                  "type": "string",
+                                  "pattern": "\\S"
+                                },
+                                "b": {
+                                  "type": "string",
+                                  "pattern": "\\S"
+                                },
+                                "joined": {
+                                  "type": "boolean"
+                                },
+                                "tip": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "a",
+                                "b",
+                                "joined"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "done": {
+                            "type": "object",
+                            "properties": {
+                              "title": {
+                                "type": "string",
+                                "pattern": "\\S"
+                              },
+                              "text": {
+                                "type": "string",
+                                "pattern": "\\S"
+                              },
+                              "note": {
+                                "description": "Slotopmerking in de oefening zelf.",
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "title",
+                              "text"
+                            ],
+                            "additionalProperties": false,
+                            "description": "Afsluitende feedback zodra de oefening klaar is."
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "prompt",
+                          "seconds",
+                          "items"
+                        ],
+                        "additionalProperties": false,
+                        "description": "Snelrondje: aan elkaar of los, tegen de klok (de klok kan uit)."
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "const": "train"
+                          },
+                          "id": {
+                            "type": "string",
+                            "pattern": "^[a-z0-9][a-z0-9-]*$"
+                          },
+                          "prompt": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Opdracht boven de oefening."
+                          },
+                          "intro": {
+                            "description": "Toelichting onder de opdracht.",
+                            "type": "string"
+                          },
+                          "blocks": {
+                            "minItems": 3,
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "string",
+                                  "pattern": "^[A-Za-z0-9]+$"
+                                },
+                                "t": {
+                                  "type": "string",
+                                  "pattern": "\\S"
+                                },
+                                "role": {
+                                  "type": "string",
+                                  "pattern": "\\S"
+                                }
+                              },
+                              "required": [
+                                "id",
+                                "t",
+                                "role"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "verb": {
+                            "type": "string",
+                            "description": "Id van het blok met de persoonsvorm."
+                          },
+                          "fronts": {
+                            "minItems": 2,
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "block": {
+                                  "type": "string"
+                                },
+                                "order": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string"
+                                  }
+                                },
+                                "sentence": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "block",
+                                "order"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "done": {
+                            "type": "object",
+                            "properties": {
+                              "title": {
+                                "type": "string",
+                                "pattern": "\\S"
+                              },
+                              "text": {
+                                "type": "string",
+                                "pattern": "\\S"
+                              },
+                              "note": {
+                                "description": "Slotopmerking in de oefening zelf.",
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "title",
+                              "text"
+                            ],
+                            "additionalProperties": false,
+                            "description": "Afsluitende feedback zodra de oefening klaar is."
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "prompt",
+                          "blocks",
+                          "verb",
+                          "fronts"
+                        ],
+                        "additionalProperties": false,
+                        "description": "Zinstrein: kies wat vooraan staat; de persoonsvorm blijft op plek 2."
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "const": "highlight"
+                          },
+                          "id": {
+                            "type": "string",
+                            "pattern": "^[a-z0-9][a-z0-9-]*$"
+                          },
+                          "prompt": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Opdracht boven de oefening."
+                          },
+                          "intro": {
+                            "description": "Toelichting onder de opdracht.",
+                            "type": "string"
+                          },
+                          "pens": {
+                            "minItems": 2,
+                            "maxItems": 5,
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "string",
+                                  "pattern": "^[a-z0-9-]+$"
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "pattern": "\\S"
+                                },
+                                "tag": {
+                                  "type": "string",
+                                  "pattern": "\\S"
+                                },
+                                "ask": {
+                                  "type": "string",
+                                  "pattern": "\\S"
+                                },
+                                "accent": {
+                                  "type": "string",
+                                  "enum": [
+                                    "green",
+                                    "teal",
+                                    "orange",
+                                    "yellow",
+                                    "blue",
+                                    "purple",
+                                    "navy",
+                                    "pink",
+                                    "red",
+                                    "rose",
+                                    "slate"
+                                  ],
+                                  "description": "Semantische accentkleur; de app vertaalt die naar ontwerptokens."
+                                }
+                              },
+                              "required": [
+                                "id",
+                                "label",
+                                "tag",
+                                "ask",
+                                "accent"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "words": {
+                            "minItems": 2,
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "t": {
+                                  "type": "string",
+                                  "pattern": "\\S"
+                                },
+                                "role": {
+                                  "description": "Pen-id; leeg = hoeft niet gekleurd.",
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "t"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "done": {
+                            "type": "object",
+                            "properties": {
+                              "title": {
+                                "type": "string",
+                                "pattern": "\\S"
+                              },
+                              "text": {
+                                "type": "string",
+                                "pattern": "\\S"
+                              },
+                              "note": {
+                                "description": "Slotopmerking in de oefening zelf.",
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "title",
+                              "text"
+                            ],
+                            "additionalProperties": false,
+                            "description": "Afsluitende feedback zodra de oefening klaar is."
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "prompt",
+                          "pens",
+                          "words"
+                        ],
+                        "additionalProperties": false,
+                        "description": "Markeerstiften: kleur elk woord met de stift van zijn zinsdeel."
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "const": "conjunction"
+                          },
+                          "id": {
+                            "type": "string",
+                            "pattern": "^[a-z0-9][a-z0-9-]*$"
+                          },
+                          "prompt": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Opdracht boven de oefening."
+                          },
+                          "intro": {
+                            "description": "Toelichting onder de opdracht.",
+                            "type": "string"
+                          },
+                          "clause": {
+                            "type": "object",
+                            "properties": {
+                              "subject": {
+                                "type": "string",
+                                "pattern": "\\S"
+                              },
+                              "verb": {
+                                "type": "string",
+                                "pattern": "\\S"
+                              },
+                              "rest": {
+                                "type": "string",
+                                "pattern": "\\S"
+                              }
+                            },
+                            "required": [
+                              "subject",
+                              "verb",
+                              "rest"
+                            ],
+                            "additionalProperties": false,
+                            "description": "De bijzin of hoofdzin na het voegwoord, bv. het · regent · hard."
+                          },
+                          "items": {
+                            "minItems": 2,
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "conj": {
+                                  "type": "string",
+                                  "pattern": "\\S"
+                                },
+                                "type": {
+                                  "type": "string",
+                                  "enum": [
+                                    "neven",
+                                    "onder"
+                                  ]
+                                },
+                                "main": {
+                                  "type": "string",
+                                  "pattern": "\\S"
+                                },
+                                "why": {
+                                  "type": "string",
+                                  "pattern": "\\S"
+                                }
+                              },
+                              "required": [
+                                "conj",
+                                "type",
+                                "main",
+                                "why"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "done": {
+                            "type": "object",
+                            "properties": {
+                              "title": {
+                                "type": "string",
+                                "pattern": "\\S"
+                              },
+                              "text": {
+                                "type": "string",
+                                "pattern": "\\S"
+                              },
+                              "note": {
+                                "description": "Slotopmerking in de oefening zelf.",
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "title",
+                              "text"
+                            ],
+                            "additionalProperties": false,
+                            "description": "Afsluitende feedback zodra de oefening klaar is."
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "prompt",
+                          "clause",
+                          "items"
+                        ],
+                        "additionalProperties": false,
+                        "description": "Voegwoord-duw: landt de persoonsvorm op plek 2 of achteraan?"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "const": "clamp"
+                          },
+                          "id": {
+                            "type": "string",
+                            "pattern": "^[a-z0-9][a-z0-9-]*$"
+                          },
+                          "prompt": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Opdracht boven de oefening."
+                          },
+                          "intro": {
+                            "description": "Toelichting onder de opdracht.",
+                            "type": "string"
+                          },
+                          "subject": {
+                            "type": "string",
+                            "pattern": "\\S"
+                          },
+                          "finite": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Persoonsvorm, het begin van de tang."
+                          },
+                          "participle": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Laatste werkwoord, het eind van de tang."
+                          },
+                          "middle": {
+                            "minItems": 1,
+                            "type": "array",
+                            "items": {
+                              "anyOf": [
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "part": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "part"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "text": {
+                                      "type": "string",
+                                      "pattern": "\\S"
+                                    }
+                                  },
+                                  "required": [
+                                    "text"
+                                  ],
+                                  "additionalProperties": false
+                                }
+                              ]
+                            },
+                            "description": "Volgorde binnen de tang: verplaatsbare delen (part) en vaste woorden (text)."
+                          },
+                          "parts": {
+                            "minItems": 1,
+                            "maxItems": 6,
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "string",
+                                  "pattern": "^[a-z0-9-]+$"
+                                },
+                                "t": {
+                                  "type": "string",
+                                  "pattern": "\\S"
+                                },
+                                "front": {
+                                  "type": "boolean",
+                                  "description": "Mag vooraan."
+                                },
+                                "after": {
+                                  "type": "boolean",
+                                  "description": "Mag achter het laatste werkwoord."
+                                },
+                                "note": {
+                                  "description": "Uitleg als het deel achteraan wordt gezet.",
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "id",
+                                "t",
+                                "front",
+                                "after"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "goal": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 9007199254740991
+                          },
+                          "done": {
+                            "type": "object",
+                            "properties": {
+                              "title": {
+                                "type": "string",
+                                "pattern": "\\S"
+                              },
+                              "text": {
+                                "type": "string",
+                                "pattern": "\\S"
+                              },
+                              "note": {
+                                "description": "Slotopmerking in de oefening zelf.",
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "title",
+                              "text"
+                            ],
+                            "additionalProperties": false,
+                            "description": "Afsluitende feedback zodra de oefening klaar is."
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "prompt",
+                          "subject",
+                          "finite",
+                          "participle",
+                          "middle",
+                          "parts",
+                          "goal"
+                        ],
+                        "additionalProperties": false,
+                        "description": "Zinstang: verplaats zinsdelen tot er weinig woorden tussen de werkwoorden staan."
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "const": "refs"
+                          },
+                          "id": {
+                            "type": "string",
+                            "pattern": "^[a-z0-9][a-z0-9-]*$"
+                          },
+                          "prompt": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Opdracht boven de oefening."
+                          },
+                          "intro": {
+                            "description": "Toelichting onder de opdracht.",
+                            "type": "string"
+                          },
+                          "text": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "De tekst; woorden worden op spaties geteld, vanaf 0."
+                          },
+                          "candidates": {
+                            "minItems": 2,
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "string",
+                                  "pattern": "^[a-z0-9-]+$"
+                                },
+                                "from": {
+                                  "type": "integer",
+                                  "minimum": 0,
+                                  "maximum": 9007199254740991
+                                },
+                                "to": {
+                                  "type": "integer",
+                                  "minimum": 0,
+                                  "maximum": 9007199254740991
+                                }
+                              },
+                              "required": [
+                                "id",
+                                "from",
+                                "to"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "refs": {
+                            "minItems": 1,
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "at": {
+                                  "type": "integer",
+                                  "minimum": 0,
+                                  "maximum": 9007199254740991,
+                                  "description": "Index van het verwijswoord."
+                                },
+                                "to": {
+                                  "type": "string"
+                                },
+                                "ask": {
+                                  "type": "string",
+                                  "pattern": "\\S"
+                                }
+                              },
+                              "required": [
+                                "at",
+                                "to",
+                                "ask"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "done": {
+                            "type": "object",
+                            "properties": {
+                              "title": {
+                                "type": "string",
+                                "pattern": "\\S"
+                              },
+                              "text": {
+                                "type": "string",
+                                "pattern": "\\S"
+                              },
+                              "note": {
+                                "description": "Slotopmerking in de oefening zelf.",
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "title",
+                              "text"
+                            ],
+                            "additionalProperties": false,
+                            "description": "Afsluitende feedback zodra de oefening klaar is."
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "prompt",
+                          "text",
+                          "candidates",
+                          "refs"
+                        ],
+                        "additionalProperties": false,
+                        "description": "Verwijsdraad: koppel elk verwijswoord aan het woord waarnaar het verwijst."
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "const": "ladder"
+                          },
+                          "id": {
+                            "type": "string",
+                            "pattern": "^[a-z0-9][a-z0-9-]*$"
+                          },
+                          "prompt": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Opdracht boven de oefening."
+                          },
+                          "intro": {
+                            "description": "Toelichting onder de opdracht.",
+                            "type": "string"
+                          },
+                          "sentence": {
+                            "type": "object",
+                            "properties": {
+                              "before": {
+                                "type": "string"
+                              },
+                              "after": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "before",
+                              "after"
+                            ],
+                            "additionalProperties": false,
+                            "description": "Zin waarin het gekozen woord wordt ingevuld."
+                          },
+                          "steps": {
+                            "minItems": 3,
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "t": {
+                                  "type": "string",
+                                  "pattern": "\\S"
+                                },
+                                "days": {
+                                  "type": "integer",
+                                  "minimum": 0,
+                                  "maximum": 7
+                                }
+                              },
+                              "required": [
+                                "t"
+                              ],
+                              "additionalProperties": false
+                            },
+                            "description": "Van zwak naar sterk."
+                          },
+                          "tray": {
+                            "description": "Volgorde van de woordkaartjes; standaard geschud.",
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "pattern": "\\S"
+                            }
+                          },
+                          "low": {
+                            "type": "string"
+                          },
+                          "high": {
+                            "type": "string"
+                          },
+                          "startHint": {
+                            "type": "string"
+                          },
+                          "done": {
+                            "type": "object",
+                            "properties": {
+                              "title": {
+                                "type": "string",
+                                "pattern": "\\S"
+                              },
+                              "text": {
+                                "type": "string",
+                                "pattern": "\\S"
+                              },
+                              "note": {
+                                "description": "Slotopmerking in de oefening zelf.",
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "title",
+                              "text"
+                            ],
+                            "additionalProperties": false,
+                            "description": "Afsluitende feedback zodra de oefening klaar is."
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "prompt",
+                          "sentence",
+                          "steps"
+                        ],
+                        "additionalProperties": false,
+                        "description": "Betekenisladder: zet woorden van zwak naar sterk."
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "const": "ambiguity"
+                          },
+                          "id": {
+                            "type": "string",
+                            "pattern": "^[a-z0-9][a-z0-9-]*$"
+                          },
+                          "prompt": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Opdracht boven de oefening."
+                          },
+                          "intro": {
+                            "description": "Toelichting onder de opdracht.",
+                            "type": "string"
+                          },
+                          "sentence": {
+                            "type": "string",
+                            "pattern": "\\S"
+                          },
+                          "meanings": {
+                            "minItems": 2,
+                            "maxItems": 3,
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "string",
+                                  "pattern": "^[A-Za-z0-9]+$"
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "pattern": "\\S"
+                                },
+                                "highlight": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string",
+                                    "pattern": "\\S"
+                                  },
+                                  "description": "Woordgroepen die bij deze betekenis bij elkaar horen."
+                                },
+                                "right": {
+                                  "type": "string",
+                                  "pattern": "\\S",
+                                  "description": "Feedback als de passende zin is gevonden."
+                                },
+                                "image": {
+                                  "type": "object",
+                                  "properties": {
+                                    "src": {
+                                      "type": "string",
+                                      "pattern": "\\S",
+                                      "description": "Pad naar een afbeelding in /public."
+                                    },
+                                    "alt": {
+                                      "type": "string",
+                                      "pattern": "\\S"
+                                    }
+                                  },
+                                  "required": [
+                                    "src",
+                                    "alt"
+                                  ],
+                                  "additionalProperties": false
+                                }
+                              },
+                              "required": [
+                                "id",
+                                "label",
+                                "highlight",
+                                "right"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "options": {
+                            "minItems": 2,
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "t": {
+                                  "type": "string",
+                                  "pattern": "\\S"
+                                },
+                                "fits": {
+                                  "type": [
+                                    "string",
+                                    "null"
+                                  ]
+                                },
+                                "note": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "t",
+                                "fits"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "done": {
+                            "type": "object",
+                            "properties": {
+                              "title": {
+                                "type": "string",
+                                "pattern": "\\S"
+                              },
+                              "text": {
+                                "type": "string",
+                                "pattern": "\\S"
+                              },
+                              "note": {
+                                "description": "Slotopmerking in de oefening zelf.",
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "title",
+                              "text"
+                            ],
+                            "additionalProperties": false,
+                            "description": "Afsluitende feedback zodra de oefening klaar is."
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "prompt",
+                          "sentence",
+                          "meanings",
+                          "options"
+                        ],
+                        "additionalProperties": false,
+                        "description": "Twee betekenissen: kies per betekenis de zin die alleen dát kan betekenen."
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "const": "chat"
+                          },
+                          "id": {
+                            "type": "string",
+                            "pattern": "^[a-z0-9][a-z0-9-]*$"
+                          },
+                          "prompt": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Opdracht boven de oefening."
+                          },
+                          "intro": {
+                            "description": "Toelichting onder de opdracht.",
+                            "type": "string"
+                          },
+                          "contact": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string",
+                                "pattern": "\\S"
+                              },
+                              "initials": {
+                                "type": "string",
+                                "maxLength": 3
+                              }
+                            },
+                            "required": [
+                              "name"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "rounds": {
+                            "minItems": 1,
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "say": {
+                                  "type": "string",
+                                  "pattern": "\\S"
+                                },
+                                "options": {
+                                  "minItems": 2,
+                                  "maxItems": 3,
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string",
+                                    "pattern": "\\S"
+                                  }
+                                },
+                                "right": {
+                                  "type": "integer",
+                                  "minimum": 0,
+                                  "maximum": 9007199254740991
+                                },
+                                "fix": {
+                                  "type": "string",
+                                  "pattern": "\\S"
+                                },
+                                "why": {
+                                  "type": "string",
+                                  "pattern": "\\S"
+                                }
+                              },
+                              "required": [
+                                "say",
+                                "options",
+                                "right",
+                                "fix",
+                                "why"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "bye": {
+                            "type": "string",
+                            "pattern": "\\S"
+                          },
+                          "done": {
+                            "type": "object",
+                            "properties": {
+                              "title": {
+                                "type": "string",
+                                "pattern": "\\S"
+                              },
+                              "text": {
+                                "type": "string",
+                                "pattern": "\\S"
+                              },
+                              "note": {
+                                "description": "Slotopmerking in de oefening zelf.",
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "title",
+                              "text"
+                            ],
+                            "additionalProperties": false,
+                            "description": "Afsluitende feedback zodra de oefening klaar is."
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "prompt",
+                          "contact",
+                          "rounds",
+                          "bye"
+                        ],
+                        "additionalProperties": false,
+                        "description": "Chat-scenario: kies telkens de juiste vorm in je antwoord."
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "const": "tone"
+                          },
+                          "id": {
+                            "type": "string",
+                            "pattern": "^[a-z0-9][a-z0-9-]*$"
+                          },
+                          "prompt": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Opdracht boven de oefening."
+                          },
+                          "intro": {
+                            "description": "Toelichting onder de opdracht.",
+                            "type": "string"
+                          },
+                          "contact": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string",
+                                "pattern": "\\S"
+                              },
+                              "initials": {
+                                "type": "string",
+                                "maxLength": 3
+                              }
+                            },
+                            "required": [
+                              "name"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "levels": {
+                            "minItems": 3,
+                            "maxItems": 7,
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "name": {
+                                  "type": "string",
+                                  "pattern": "\\S"
+                                },
+                                "segs": {
+                                  "minItems": 1,
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object",
+                                    "properties": {
+                                      "t": {
+                                        "type": "string"
+                                      },
+                                      "hi": {
+                                        "description": "Uitgelicht stuk.",
+                                        "type": "boolean"
+                                      }
+                                    },
+                                    "required": [
+                                      "t"
+                                    ],
+                                    "additionalProperties": false
+                                  }
+                                },
+                                "reply": {
+                                  "type": "string",
+                                  "pattern": "\\S"
+                                },
+                                "verdict": {
+                                  "type": "string",
+                                  "pattern": "\\S"
+                                },
+                                "ok": {
+                                  "type": "boolean"
+                                }
+                              },
+                              "required": [
+                                "name",
+                                "segs",
+                                "reply",
+                                "verdict",
+                                "ok"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "start": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 9007199254740991
+                          },
+                          "done": {
+                            "type": "object",
+                            "properties": {
+                              "title": {
+                                "type": "string",
+                                "pattern": "\\S"
+                              },
+                              "text": {
+                                "type": "string",
+                                "pattern": "\\S"
+                              },
+                              "note": {
+                                "description": "Slotopmerking in de oefening zelf.",
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "title",
+                              "text"
+                            ],
+                            "additionalProperties": false,
+                            "description": "Afsluitende feedback zodra de oefening klaar is."
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "prompt",
+                          "contact",
+                          "levels"
+                        ],
+                        "additionalProperties": false,
+                        "description": "Toonregelaar: schuif het bericht naar de toon die past bij de lezer."
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "const": "intent"
+                          },
+                          "id": {
+                            "type": "string",
+                            "pattern": "^[a-z0-9][a-z0-9-]*$"
+                          },
+                          "prompt": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Opdracht boven de oefening."
+                          },
+                          "intro": {
+                            "description": "Toelichting onder de opdracht.",
+                            "type": "string"
+                          },
+                          "speaker": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string",
+                                "pattern": "\\S"
+                              },
+                              "initials": {
+                                "type": "string",
+                                "maxLength": 3
+                              }
+                            },
+                            "required": [
+                              "name"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "rounds": {
+                            "minItems": 1,
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "says": {
+                                  "type": "string",
+                                  "pattern": "\\S"
+                                },
+                                "means": {
+                                  "type": "string",
+                                  "pattern": "\\S"
+                                },
+                                "replies": {
+                                  "minItems": 2,
+                                  "maxItems": 3,
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string",
+                                    "pattern": "\\S"
+                                  }
+                                },
+                                "right": {
+                                  "type": "integer",
+                                  "minimum": 0,
+                                  "maximum": 9007199254740991
+                                },
+                                "literal": {
+                                  "type": "string",
+                                  "pattern": "\\S"
+                                },
+                                "why": {
+                                  "type": "string",
+                                  "pattern": "\\S"
+                                }
+                              },
+                              "required": [
+                                "says",
+                                "means",
+                                "replies",
+                                "right",
+                                "literal",
+                                "why"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "done": {
+                            "type": "object",
+                            "properties": {
+                              "title": {
+                                "type": "string",
+                                "pattern": "\\S"
+                              },
+                              "text": {
+                                "type": "string",
+                                "pattern": "\\S"
+                              },
+                              "note": {
+                                "description": "Slotopmerking in de oefening zelf.",
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "title",
+                              "text"
+                            ],
+                            "additionalProperties": false,
+                            "description": "Afsluitende feedback zodra de oefening klaar is."
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "prompt",
+                          "speaker",
+                          "rounds"
+                        ],
+                        "additionalProperties": false,
+                        "description": "Zegt en bedoelt: kies het antwoord dat doet wat de spreker bedoelt."
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "const": "scale"
+                          },
+                          "id": {
+                            "type": "string",
+                            "pattern": "^[a-z0-9][a-z0-9-]*$"
+                          },
+                          "prompt": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Opdracht boven de oefening."
+                          },
+                          "intro": {
+                            "description": "Toelichting onder de opdracht.",
+                            "type": "string"
+                          },
+                          "args": {
+                            "minItems": 3,
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "string",
+                                  "pattern": "^[a-z0-9-]+$"
+                                },
+                                "t": {
+                                  "type": "string",
+                                  "pattern": "\\S"
+                                },
+                                "type": {
+                                  "type": "string",
+                                  "pattern": "\\S"
+                                },
+                                "w": {
+                                  "type": "integer",
+                                  "minimum": 0,
+                                  "maximum": 3
+                                },
+                                "why": {
+                                  "type": "string",
+                                  "pattern": "\\S"
+                                }
+                              },
+                              "required": [
+                                "id",
+                                "t",
+                                "type",
+                                "w",
+                                "why"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "max": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 4
+                          },
+                          "doubt": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 9007199254740991,
+                            "description": "De twijfel van de lezer; de argumenten moeten samen zwaarder wegen."
+                          },
+                          "done": {
+                            "type": "object",
+                            "properties": {
+                              "title": {
+                                "type": "string",
+                                "pattern": "\\S"
+                              },
+                              "text": {
+                                "type": "string",
+                                "pattern": "\\S"
+                              },
+                              "note": {
+                                "description": "Slotopmerking in de oefening zelf.",
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "title",
+                              "text"
+                            ],
+                            "additionalProperties": false,
+                            "description": "Afsluitende feedback zodra de oefening klaar is."
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "prompt",
+                          "args",
+                          "max",
+                          "doubt"
+                        ],
+                        "additionalProperties": false,
+                        "description": "Weegschaal: leg argumenten op de schaal tot ze zwaarder wegen dan de twijfel."
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "const": "stack"
+                          },
+                          "id": {
+                            "type": "string",
+                            "pattern": "^[a-z0-9][a-z0-9-]*$"
+                          },
+                          "prompt": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Opdracht boven de oefening."
+                          },
+                          "intro": {
+                            "description": "Toelichting onder de opdracht.",
+                            "type": "string"
+                          },
+                          "layers": {
+                            "minItems": 2,
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "role": {
+                                  "type": "string",
+                                  "pattern": "\\S"
+                                },
+                                "ask": {
+                                  "type": "string",
+                                  "pattern": "\\S"
+                                },
+                                "question": {
+                                  "type": "string",
+                                  "pattern": "\\S"
+                                },
+                                "hint": {
+                                  "type": "string",
+                                  "pattern": "\\S"
+                                },
+                                "text": {
+                                  "type": "string",
+                                  "pattern": "\\S"
+                                }
+                              },
+                              "required": [
+                                "role",
+                                "ask",
+                                "question",
+                                "hint",
+                                "text"
+                              ],
+                              "additionalProperties": false
+                            },
+                            "description": "Van boven naar beneden."
+                          },
+                          "done": {
+                            "type": "object",
+                            "properties": {
+                              "title": {
+                                "type": "string",
+                                "pattern": "\\S"
+                              },
+                              "text": {
+                                "type": "string",
+                                "pattern": "\\S"
+                              },
+                              "note": {
+                                "description": "Slotopmerking in de oefening zelf.",
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "title",
+                              "text"
+                            ],
+                            "additionalProperties": false,
+                            "description": "Afsluitende feedback zodra de oefening klaar is."
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "prompt",
+                          "layers"
+                        ],
+                        "additionalProperties": false,
+                        "description": "Alinea-stapel: bouw de alinea laag voor laag op."
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "const": "proofread"
+                          },
+                          "id": {
+                            "type": "string",
+                            "pattern": "^[a-z0-9][a-z0-9-]*$"
+                          },
+                          "prompt": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Opdracht boven de oefening."
+                          },
+                          "intro": {
+                            "description": "Toelichting onder de opdracht.",
+                            "type": "string"
+                          },
+                          "header": {
+                            "type": "object",
+                            "properties": {
+                              "to": {
+                                "type": "string"
+                              },
+                              "subject": {
+                                "type": "string"
+                              }
+                            },
+                            "additionalProperties": false
+                          },
+                          "tokens": {
+                            "minItems": 3,
+                            "type": "array",
+                            "items": {
+                              "anyOf": [
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "t": {
+                                      "type": "string",
+                                      "pattern": "\\S"
+                                    },
+                                    "fix": {
+                                      "type": "string",
+                                      "pattern": "\\S"
+                                    },
+                                    "why": {
+                                      "type": "string",
+                                      "pattern": "\\S"
+                                    }
+                                  },
+                                  "required": [
+                                    "t",
+                                    "fix",
+                                    "why"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "t": {
+                                      "type": "string",
+                                      "pattern": "\\S"
+                                    }
+                                  },
+                                  "required": [
+                                    "t"
+                                  ],
+                                  "additionalProperties": false
+                                }
+                              ]
+                            }
+                          },
+                          "done": {
+                            "type": "object",
+                            "properties": {
+                              "title": {
+                                "type": "string",
+                                "pattern": "\\S"
+                              },
+                              "text": {
+                                "type": "string",
+                                "pattern": "\\S"
+                              },
+                              "note": {
+                                "description": "Slotopmerking in de oefening zelf.",
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "title",
+                              "text"
+                            ],
+                            "additionalProperties": false,
+                            "description": "Afsluitende feedback zodra de oefening klaar is."
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "prompt",
+                          "tokens"
+                        ],
+                        "additionalProperties": false,
+                        "description": "Eindredactie: vind alle fouten in de tekst."
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "const": "bet"
+                          },
+                          "id": {
+                            "type": "string",
+                            "pattern": "^[a-z0-9][a-z0-9-]*$"
+                          },
+                          "prompt": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Opdracht boven de oefening."
+                          },
+                          "intro": {
+                            "description": "Toelichting onder de opdracht.",
+                            "type": "string"
+                          },
+                          "options": {
+                            "minItems": 2,
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "pattern": "\\S"
+                            }
+                          },
+                          "answer": {
+                            "type": "string",
+                            "pattern": "\\S"
+                          },
+                          "why": {
+                            "type": "string",
+                            "pattern": "\\S"
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "prompt",
+                          "options",
+                          "answer",
+                          "why"
+                        ],
+                        "additionalProperties": false,
+                        "description": "Durf je? Kies een antwoord en zet in hoe zeker je bent; dat stuurt de herhaling."
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "const": "dictation"
+                          },
+                          "id": {
+                            "type": "string",
+                            "pattern": "^[a-z0-9][a-z0-9-]*$"
+                          },
+                          "prompt": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Opdracht boven de oefening."
+                          },
+                          "intro": {
+                            "description": "Toelichting onder de opdracht.",
+                            "type": "string"
+                          },
+                          "sentence": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "De zin die wordt voorgelezen; hoofdletters en leestekens tellen mee."
+                          },
+                          "right": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Uitleg bij een goed antwoord."
+                          },
+                          "wrong": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Uitleg bij een fout antwoord."
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "prompt",
+                          "sentence",
+                          "right",
+                          "wrong"
+                        ],
+                        "additionalProperties": false,
+                        "description": "Dictee: luister en typ precies wat je hoort."
+                      }
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "id",
+                "title",
+                "skill",
+                "icon",
+                "domain",
+                "steps"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "icon",
+          "made",
+          "learn",
+          "fields",
+          "example",
+          "accent",
+          "lessons"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "id",
+    "title",
+    "version",
+    "domains",
+    "layers"
+  ],
+  "additionalProperties": false
+}
