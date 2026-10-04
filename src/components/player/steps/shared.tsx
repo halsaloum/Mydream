@@ -1,10 +1,12 @@
 'use client';
 
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowRight, Check, Info, Sparkles, X } from 'lucide-react';
+import { AnimatePresence, motion } from 'motion/react';
 import type { ReactNode } from 'react';
 import type { Example, StepKind, StepOf } from '@/content/schema';
 import type { ResponseOf } from '@/engine/responses';
 import { cn } from '@/lib/cn';
+import { transition, useCalmMotion } from '@/lib/motion';
 import { RichText } from '@/components/ui/rich-text';
 
 export type StepProps<K extends StepKind> = {
@@ -35,6 +37,86 @@ export function Stage({ children, className }: { children: ReactNode; className?
   return (
     <div className={cn('rounded-card border-2 border-line bg-sunken px-5 py-6 shadow-[inset_0_2px_0_rgb(16_24_40/0.03)] sm:px-7', className)}>
       {children}
+    </div>
+  );
+}
+
+/** Opdracht plus optionele korte inleiding (nieuwe oefenvormen hebben `prompt` en `intro`). */
+export function StepIntro({ prompt, intro, className }: { prompt: string; intro?: string | undefined; className?: string }) {
+  return (
+    <div className={className}>
+      <StepHeading>{prompt}</StepHeading>
+      {intro && (
+        <p className="mt-2 max-w-[60ch] text-body text-ink-soft">
+          <RichText text={intro} />
+        </p>
+      )}
+    </div>
+  );
+}
+
+export type FeedbackTone = 'right' | 'wrong' | 'info';
+
+const TONE: Record<FeedbackTone, { box: string; icon: ReactNode; label: string }> = {
+  right: {
+    box: 'border-green-line bg-green-soft text-green-ink',
+    icon: <Check aria-hidden className="size-4" strokeWidth={3.25} />,
+    label: 'Goed: ',
+  },
+  wrong: {
+    box: 'border-red-line bg-red-soft text-red-ink',
+    icon: <X aria-hidden className="size-4" strokeWidth={3.25} />,
+    label: 'Nog niet: ',
+  },
+  info: {
+    box: 'border-line bg-sunken text-ink-soft',
+    icon: <Info aria-hidden className="size-4" strokeWidth={2.75} />,
+    label: '',
+  },
+};
+
+/**
+ * Korte feedback binnen een oefening (per kaartje, per poging). Blijft staan tot de volgende
+ * handeling, wordt voorgelezen, en houdt zijn hoogte vast zodat de knoppen eronder niet springen.
+ * Geef een veranderende `id` mee om dezelfde tekst opnieuw te laten opkomen.
+ */
+export function InlineFeedback({
+  tone,
+  id,
+  children,
+  reserve = true,
+  className,
+}: {
+  tone: FeedbackTone;
+  id?: string | number;
+  children: ReactNode;
+  /** Reserveer ruimte voor één regel, ook als er (nog) niets staat. */
+  reserve?: boolean;
+  className?: string;
+}) {
+  const calm = useCalmMotion();
+  const style = TONE[tone];
+  const empty = children === null || children === undefined || children === false || children === '';
+  return (
+    <div aria-live="polite" className={cn(reserve && 'min-h-12', className)}>
+      <AnimatePresence mode="wait" initial={false}>
+        {!empty && (
+          <motion.p
+            key={`${tone}:${id ?? ''}`}
+            initial={calm ? { opacity: 0 } : { opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, transition: transition.fast }}
+            transition={transition.base}
+            className={cn('flex items-start gap-2.5 rounded-control border-2 px-3.5 py-2.5 text-small font-semibold', style.box)}
+          >
+            <span className="mt-0.5 grid size-5 shrink-0 place-items-center">{style.icon}</span>
+            <span className="min-w-0">
+              {style.label && <span className="sr-only">{style.label}</span>}
+              {children}
+            </span>
+          </motion.p>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

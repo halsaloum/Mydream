@@ -3,7 +3,7 @@
 import { ArrowRight } from 'lucide-react';
 import type { Route } from 'next';
 import Link from 'next/link';
-import { lessonOverview } from '@/content/catalog';
+import { exerciseCountLabel } from '@/content/catalog';
 import { DomainGlyph, LayerGlyph } from '@/components/brand/glyphs';
 import { Pim } from '@/components/brand/pim';
 import { ButtonLink } from '@/components/ui/button';
@@ -35,7 +35,6 @@ export function ContinueCard({ target, firstTime }: { target: ContinueTarget; fi
   }
 
   const { entry } = target;
-  const overview = lessonOverview(entry.lesson);
   const resume = target.kind === 'resume' ? target.session : null;
   const status = resume
     ? `Je was bij stap ${Math.min(resume.pos + 1, resume.queue.length)} van ${resume.queue.length}. Je antwoorden staan klaar.`
@@ -60,13 +59,13 @@ export function ContinueCard({ target, firstTime }: { target: ContinueTarget; fi
             <p className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-small font-semibold text-ink-muted">
               <span className="inline-flex items-center gap-1.5">
                 <LayerGlyph id={entry.layer.id} className="size-4" />
-                Laag {entry.layerIndex + 1} · {entry.layer.name}
+                Niveau {entry.layerIndex + 1} · {entry.layer.name}
               </span>
               <span className="inline-flex items-center gap-1.5 text-accent-ink">
                 <DomainGlyph id={entry.domain.id} className="size-4" />
                 {entry.domain.name}
               </span>
-              <span>{overview.exerciseCount} oefeningen</span>
+              <span>{exerciseCountLabel(entry.lesson)}</span>
             </p>
             <p className="mt-3 text-body text-ink-soft">{status}</p>
           </div>

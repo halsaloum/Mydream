@@ -4,6 +4,7 @@ import type { ReactNode } from 'react';
 /** Tekeningen per bouwlaag en per domein, overgenomen uit de oorspronkelijke app. Onbekende id's krijgen een neutraal icoon. */
 const LAYER_PATHS: Record<string, ReactNode> = {
   letter: <path d="M7 19 12 5l5 14M9 14h6" />,
+  klank: <path d="M4 10v4M8 7v10M12 4v16M16 8v8M20 11v2" />,
   greep: (
     <>
       <rect x="3" y="8" width="8" height="8" rx="2" />
@@ -43,6 +44,24 @@ const LAYER_PATHS: Record<string, ReactNode> = {
 };
 
 const DOMAIN_PATHS: Record<string, ReactNode> = {
+  orth: (
+    <>
+      <path d="M4 17 8.5 5 13 17M5.8 13h5.4" />
+      <path d="m14.5 15 2.5 2.5L21.5 12" />
+    </>
+  ),
+  fon: (
+    <>
+      <path d="M4 9.5h3.5L12 6v12l-4.5-3.5H4z" />
+      <path d="M15.5 9a4 4 0 0 1 0 6M18.5 6.5a7.5 7.5 0 0 1 0 11" />
+    </>
+  ),
+  tekst: (
+    <>
+      <path d="M7 3h7l4 4v14H7z" />
+      <path d="M14 3v4h4M10 12h5M10 16h5" />
+    </>
+  ),
   morf: (
     <>
       <rect x="3" y="8" width="8" height="8" rx="2" />

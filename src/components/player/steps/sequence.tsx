@@ -1,6 +1,6 @@
 'use client';
 
-import { ArrowDown, ArrowUp, GripVertical, X } from 'lucide-react';
+import { ArrowDown, ArrowUp, GripVertical } from 'lucide-react';
 import { LayoutGroup, motion } from 'motion/react';
 import { useLayoutEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react';
 import { shuffledIndices } from '@/engine/hash';
@@ -197,16 +197,16 @@ export function SequenceBuilder({ items, placed, onChange, locked, verdicts, not
 }
 
 function Line({ children, block, label, disabled, empty, emptyText }: { children: React.ReactNode; block: boolean; label: string; disabled: boolean; empty: boolean; emptyText: string }) {
-  const zone = useDropZone('zone-line', { label, kind: 'zone', index: -1 }, disabled);
+  const { setNodeRef: zoneRef, isOver: zoneOver } = useDropZone('zone-line', { label, kind: 'zone', index: -1 }, disabled);
   return (
     <div
-      ref={zone.setNodeRef}
+      ref={zoneRef}
       role="list"
       aria-label={label}
       className={cn(
         'relative min-h-[5.75rem] rounded-card border-2 border-dashed p-3 transition-colors duration-200',
         block ? 'flex flex-col gap-2.5' : 'flex flex-wrap content-start items-start gap-2.5',
-        zone.isOver ? 'border-accent bg-accent-soft' : 'border-line-strong bg-sunken',
+        zoneOver ? 'border-accent bg-accent-soft' : 'border-line-strong bg-sunken',
       )}
     >
       {empty && <p className="pointer-events-none absolute inset-0 grid place-items-center px-6 text-center text-small font-semibold text-ink-muted">{emptyText}</p>}
@@ -216,9 +216,9 @@ function Line({ children, block, label, disabled, empty, emptyText }: { children
 }
 
 function Pool({ children, block, disabled }: { children: React.ReactNode; block: boolean; disabled: boolean }) {
-  const zone = useDropZone('zone-pool', { label: 'de kaartjes', kind: 'zone', index: -1 }, disabled);
+  const { setNodeRef: zoneRef } = useDropZone('zone-pool', { label: 'de kaartjes', kind: 'zone', index: -1 }, disabled);
   return (
-    <div ref={zone.setNodeRef} role="group" aria-label="Kaartjes om te leggen" className={cn('mt-6', block ? 'flex flex-col gap-2.5' : 'flex flex-wrap gap-2.5')}>
+    <div ref={zoneRef} role="group" aria-label="Kaartjes om te leggen" className={cn('mt-6', block ? 'flex flex-col gap-2.5' : 'flex flex-wrap gap-2.5')}>
       {children}
     </div>
   );
@@ -241,8 +241,8 @@ type LineItemProps = {
 };
 
 function LineItem({ index, position, count, text, block, locked, layoutId, note, stateFor, register, onActivate, onShift, onKeyDown }: LineItemProps) {
-  const drag = useDragTarget(`line-${index}`, { label: text, kind: 'line', index }, locked);
-  const state = stateFor(drag.isDragging, drag.isOver);
+  const { setNodeRef: dragRef, listeners: dragListeners, describedBy: dragDescribedBy, isDragging, isOver } = useDragTarget(`line-${index}`, { label: text, kind: 'line', index }, locked);
+  const state = stateFor(isDragging, isOver);
   const label = `${text}. Plek ${position + 1} van ${count}. Activeer om terug te leggen.`;
 
   if (!block) {
@@ -250,11 +250,11 @@ function LineItem({ index, position, count, text, block, locked, layoutId, note,
       <div role="listitem">
         <Tile
           ref={(node) => {
-            drag.setNodeRef(node);
+            dragRef(node);
             register(node);
           }}
-          {...drag.listeners}
-          aria-describedby={drag.describedBy}
+          {...dragListeners}
+          aria-describedby={dragDescribedBy}
           aria-label={label}
           layoutId={layoutId}
           layout
@@ -272,8 +272,8 @@ function LineItem({ index, position, count, text, block, locked, layoutId, note,
   return (
     <motion.div
       role="listitem"
-      ref={drag.setNodeRef}
-      {...drag.listeners}
+      ref={dragRef}
+      {...dragListeners}
       layout="position"
       layoutId={layoutId}
       transition={spring.layout}
@@ -284,7 +284,7 @@ function LineItem({ index, position, count, text, block, locked, layoutId, note,
       </span>
       <Tile
         ref={register}
-        aria-describedby={drag.describedBy}
+        aria-describedby={dragDescribedBy}
         aria-label={label}
         size="block"
         state={state}
@@ -338,19 +338,19 @@ type PoolItemProps = {
 };
 
 function PoolItem({ index, text, block, locked, layoutId, register, onActivate }: PoolItemProps) {
-  const drag = useDragTarget(`pool-${index}`, { label: text, kind: 'pool', index }, locked);
+  const { setNodeRef: dragRef, listeners: dragListeners, describedBy: dragDescribedBy, isDragging } = useDragTarget(`pool-${index}`, { label: text, kind: 'pool', index }, locked);
   return (
     <Tile
       ref={(node) => {
-        drag.setNodeRef(node);
+        dragRef(node);
         register(node);
       }}
-      {...drag.listeners}
-      aria-describedby={drag.describedBy}
+      {...dragListeners}
+      aria-describedby={dragDescribedBy}
       aria-label={`${text}. Activeer om te leggen.`}
       layoutId={layoutId}
       size={block ? 'block' : 'md'}
-      state={drag.isDragging ? 'dragging' : locked ? 'muted' : 'idle'}
+      state={isDragging ? 'dragging' : locked ? 'muted' : 'idle'}
       disabled={locked}
       onClick={onActivate}
     >

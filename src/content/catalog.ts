@@ -128,3 +128,10 @@ export function lessonOverview(lesson: Lesson): LessonOverview {
   }
   return { explainTitles, exerciseKinds: [...kinds], exerciseCount };
 }
+
+/** "3 oefeningen", "1 oefening", of "Uitleg en experimenten" voor een les zonder beoordeelde opdrachten. */
+export function exerciseCountLabel(lesson: Lesson): string {
+  const { exerciseCount } = lessonOverview(lesson);
+  if (exerciseCount === 0) return 'Uitleg en experimenten';
+  return exerciseCount === 1 ? '1 oefening' : `${exerciseCount} oefeningen`;
+}

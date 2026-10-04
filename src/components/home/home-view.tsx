@@ -66,7 +66,7 @@ export function HomeView() {
             Van letter <em className="text-ink-muted">tot alinea</em>
           </h1>
           <p className="mt-4 max-w-md text-lead text-ink-soft">
-            {totalLessons} lessen in {course.layers.length} bouwlagen. Elke laag is gebouwd uit de laag eronder.
+            {totalLessons} lessen in {course.layers.length} niveaus. Elk niveau bouwt voort op het niveau eronder.
           </p>
           {profile.goalMinutes && <TodayGoal goal={profile.goalMinutes} activeMs={today?.activeMs ?? 0} streak={streakDays(progress.activity)} />}
         </div>

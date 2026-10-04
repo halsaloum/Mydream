@@ -4,7 +4,7 @@ import { ArrowLeft } from 'lucide-react';
 import type { Route } from 'next';
 import { useRouter } from 'next/navigation';
 import { AnimatePresence, motion } from 'motion/react';
-import { useEffect, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { PimSays } from '@/components/brand/pim';
 import { Button } from '@/components/ui/button';
 import { PageSkeleton } from '@/components/ui/empty-state';
@@ -58,8 +58,9 @@ export function OnboardingStep({ slug }: { slug: OnboardingSlug }) {
   const index = ONBOARDING_STEPS.indexOf(slug);
   const step = STEPS[slug];
   const value = step.read(profile);
-  const direction = useRef(index >= lastIndex ? 1 : -1);
-  direction.current = index >= lastIndex ? 1 : -1;
+  const [nav, setNav] = useState(() => ({ index, direction: index >= lastIndex ? 1 : -1 }));
+  if (nav.index !== index) setNav({ index, direction: index > nav.index ? 1 : -1 });
+  const direction = nav.direction;
   const headingId = `welkom-${slug}`;
 
   useEffect(() => {
@@ -131,13 +132,13 @@ export function OnboardingStep({ slug }: { slug: OnboardingSlug }) {
       </header>
 
       <main className="mx-auto w-full max-w-2xl flex-1 overflow-x-clip px-gutter pt-10 pb-12">
-        <AnimatePresence mode="wait" initial={false} custom={direction.current}>
+        <AnimatePresence mode="wait" initial={false} custom={direction}>
           <motion.div
             key={slug}
-            custom={direction.current}
-            initial={{ opacity: 0, x: 28 * direction.current }}
+            custom={direction}
+            initial={{ opacity: 0, x: 28 * direction }}
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 * direction.current, transition: transition.fast }}
+            exit={{ opacity: 0, x: -20 * direction, transition: transition.fast }}
             transition={transition.slow}
           >
             <PimSays mood={value ? 'happy' : 'idle'} reactKey={slug}>

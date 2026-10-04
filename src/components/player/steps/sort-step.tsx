@@ -166,15 +166,15 @@ export function SortStep({ step, response, onChange, locked, stepKey }: StepProp
 }
 
 function PoolZone({ children, disabled, empty }: { children: React.ReactNode; disabled: boolean; empty: boolean }) {
-  const zone = useDropZone('pool', { label: 'de stapel', kind: 'zone', index: -1 }, disabled);
+  const { setNodeRef: zoneRef, isOver: zoneOver } = useDropZone('pool', { label: 'de stapel', kind: 'zone', index: -1 }, disabled);
   return (
     <div
-      ref={zone.setNodeRef}
+      ref={zoneRef}
       role="group"
       aria-label="Nog te sorteren"
       className={cn(
         'mt-6 flex min-h-[4.25rem] flex-wrap items-start gap-2.5 rounded-card p-1 transition-colors',
-        zone.isOver && 'bg-sunken',
+        zoneOver && 'bg-sunken',
       )}
     >
       {empty && <p className="self-center px-2 text-small font-semibold text-ink-muted">Alles ligt in een bak. Tik een kaartje om het terug te leggen.</p>}
@@ -195,15 +195,15 @@ type BucketProps = {
 };
 
 function Bucket({ bucket, name, accent, locked, canReceive, register, onReceive, children }: BucketProps) {
-  const zone = useDropZone(`bucket-${bucket}`, { label: `bak ${name}`, kind: 'bucket', index: bucket }, locked);
+  const { setNodeRef: zoneRef, isOver: zoneOver } = useDropZone(`bucket-${bucket}`, { label: `bak ${name}`, kind: 'bucket', index: bucket }, locked);
   return (
     <section
-      ref={zone.setNodeRef}
+      ref={zoneRef}
       data-accent={accent}
       aria-label={`Bak ${bucket + 1}: ${name}`}
       className={cn(
         'flex min-h-44 flex-col rounded-card border-2 p-3 transition-colors duration-200 sm:p-4',
-        zone.isOver ? 'border-accent bg-accent-soft' : 'border-dashed border-accent-line bg-accent-soft/40',
+        zoneOver ? 'border-accent bg-accent-soft' : 'border-dashed border-accent-line bg-accent-soft/40',
       )}
     >
       <button
@@ -243,19 +243,19 @@ type SortItemProps = {
 };
 
 function SortItem({ item, text, layoutId, state, locked, register, pressed, onActivate, onKeyDown, hint, placedIn }: SortItemProps) {
-  const drag = useDragTarget(`item-${item}`, { label: text, kind: 'item', index: item }, locked);
+  const { setNodeRef: dragRef, listeners: dragListeners, describedBy: dragDescribedBy, isDragging } = useDragTarget(`item-${item}`, { label: text, kind: 'item', index: item }, locked);
   return (
     <Tile
       ref={(node) => {
-        drag.setNodeRef(node);
+        dragRef(node);
         register(node);
       }}
-      {...drag.listeners}
-      aria-describedby={drag.describedBy}
+      {...dragListeners}
+      aria-describedby={dragDescribedBy}
       aria-pressed={placedIn ? undefined : pressed}
       aria-label={placedIn ? `${text}, in bak ${placedIn}. Activeer om terug te leggen.` : `${text}. Kies een bak.`}
       layoutId={layoutId}
-      state={state(drag.isDragging)}
+      state={state(isDragging)}
       disabled={locked}
       onClick={onActivate}
       onKeyDown={onKeyDown}

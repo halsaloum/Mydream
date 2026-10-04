@@ -5,6 +5,7 @@ import { Tooltip } from '@base-ui/react/tooltip';
 import { MotionConfig } from 'motion/react';
 import { useEffect, type ReactNode } from 'react';
 import { Toaster } from '@/components/ui/toaster';
+import { markBooted } from '@/lib/boot';
 import { toastManager, notify } from '@/lib/toast';
 import { transition } from '@/lib/motion';
 import { useHydrated, useStoreHydration } from '@/state/hydration';
@@ -15,6 +16,10 @@ export function Providers({ children }: { children: ReactNode }) {
   useStoreHydration();
   const hydrated = useHydrated();
   const motion = useSettings((state) => state.motion);
+
+  useEffect(() => {
+    markBooted();
+  }, []);
 
   useEffect(() => {
     if (!hydrated) return;

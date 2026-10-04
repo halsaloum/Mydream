@@ -3,7 +3,7 @@
 import { ArrowRight, Check } from 'lucide-react';
 import type { Route } from 'next';
 import Link from 'next/link';
-import { lessonOverview, type LessonEntry } from '@/content/catalog';
+import { exerciseCountLabel, type LessonEntry } from '@/content/catalog';
 import type { SessionState } from '@/engine/session';
 import { cn } from '@/lib/cn';
 import type { ProgressData } from '@/state/progress';
@@ -14,7 +14,7 @@ export function lessonStatusText(entry: LessonEntry, progress: ProgressData, ses
   const record = progress.lessons[entry.lesson.id];
   if (record) return `Afgerond · ${record.bestAccuracy}% in één keer goed`;
   if (isNext) return 'Volgende les';
-  return `${lessonOverview(entry.lesson).exerciseCount} oefeningen`;
+  return exerciseCountLabel(entry.lesson);
 }
 
 type LessonRowProps = {
@@ -22,10 +22,12 @@ type LessonRowProps = {
   progress: ProgressData;
   sessions: Record<string, SessionState>;
   isNext: boolean;
+  /** Toon de andere vakgebieden die meespelen. */
+  showAlso?: boolean;
 };
 
 /** Een les als regel in een lijst: icoon, titel, status. Leidt direct naar de les. */
-export function LessonRow({ entry, progress, sessions, isNext }: LessonRowProps) {
+export function LessonRow({ entry, progress, sessions, isNext, showAlso = true }: LessonRowProps) {
   const done = Boolean(progress.lessons[entry.lesson.id]);
   return (
     <Link
@@ -51,6 +53,21 @@ export function LessonRow({ entry, progress, sessions, isNext }: LessonRowProps)
         <span className={cn('block text-caption font-semibold', isNext ? 'text-accent-ink' : 'text-ink-muted')}>
           {lessonStatusText(entry, progress, sessions, isNext)}
         </span>
+        {showAlso && entry.also.length > 0 && (
+          <span className="mt-1.5 flex flex-wrap gap-1">
+            {entry.also.map((domain) => (
+              <span
+                key={domain.id}
+                data-accent={domain.accent}
+                className="inline-flex items-center rounded-full border border-accent-line bg-accent-soft px-2 py-px text-[0.75rem] leading-[1.15rem] font-bold text-accent-ink"
+              >
+                <span aria-hidden>+&nbsp;</span>
+                <span className="sr-only">Ook: </span>
+                {domain.name}
+              </span>
+            ))}
+          </span>
+        )}
       </span>
       <ArrowRight
         aria-hidden

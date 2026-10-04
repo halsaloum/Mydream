@@ -5,6 +5,7 @@ import { Dialog } from '@base-ui/react/dialog';
 import { X } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import type { ReactNode, RefObject } from 'react';
+import type { Accent } from '@/content/accent';
 import { cn } from '@/lib/cn';
 import { transition, useCalmMotion } from '@/lib/motion';
 import { Button } from './button';
@@ -12,7 +13,7 @@ import { Button } from './button';
 const backdrop = 'fixed inset-0 z-50 bg-[rgb(23_27_34/0.45)]';
 const viewport = 'fixed inset-0 z-50 flex items-end justify-center sm:items-center sm:p-6';
 const popup =
-  'relative flex max-h-[min(88dvh,46rem)] w-full flex-col overflow-hidden rounded-t-sheet border-2 border-b-0 border-line bg-surface shadow-float outline-none sm:max-w-xl sm:rounded-sheet sm:border-b-2';
+  'relative flex max-h-[min(88dvh,46rem)] w-full flex-col overflow-hidden rounded-t-sheet border-2 border-line bg-surface shadow-float outline-none max-sm:border-b-0 sm:max-w-xl sm:rounded-sheet';
 
 function usePopupMotion() {
   const calm = useCalmMotion();
@@ -36,6 +37,8 @@ type SheetProps = {
   handle?: Dialog.Handle<unknown>;
   triggerId?: string | null;
   finalFocus?: RefObject<HTMLElement | null>;
+  /** Accentkleur binnen het venster (het venster staat buiten de pagina-context). */
+  accent?: Accent;
   className?: string;
 };
 
@@ -44,7 +47,7 @@ type SheetProps = {
  * Base UI regelt focusvangst, Escape, buitenklik en de terugkeer van focus naar de opener;
  * Motion animeert in- en uitgaan (inclusief opacity, zodat Base UI het einde herkent).
  */
-export function Sheet({ open, onOpenChange, title, description, children, footer, handle, triggerId, finalFocus, className }: SheetProps) {
+export function Sheet({ open, onOpenChange, title, description, children, footer, handle, triggerId, finalFocus, accent, className }: SheetProps) {
   const motionProps = usePopupMotion();
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange} handle={handle} triggerId={triggerId}>
@@ -53,7 +56,7 @@ export function Sheet({ open, onOpenChange, title, description, children, footer
           <Dialog.Portal keepMounted>
             <Dialog.Backdrop className={backdrop} render={<motion.div {...fade} />} />
             <Dialog.Viewport className={viewport}>
-              <Dialog.Popup className={cn(popup, className)} finalFocus={finalFocus} render={<motion.div {...motionProps} />}>
+              <Dialog.Popup data-accent={accent} className={cn(popup, className)} finalFocus={finalFocus} render={<motion.div {...motionProps} />}>
                 <div className="flex items-start gap-4 border-b-2 border-line px-6 pt-6 pb-4">
                   <div className="min-w-0 flex-1">
                     <Dialog.Title className="font-display text-title font-extrabold">{title}</Dialog.Title>

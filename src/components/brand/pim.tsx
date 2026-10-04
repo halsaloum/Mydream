@@ -99,8 +99,11 @@ export function PimSays({ mood = 'idle', children, size = 'md', className, react
         initial={calm ? false : { opacity: 0, y: 6, scale: 0.98 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={transition.base}
-        className="relative mb-3 rounded-tile border-2 border-line bg-surface px-4 py-3 text-body font-semibold text-ink shadow-slab-sm before:absolute before:bottom-3 before:-left-[7px] before:size-3 before:rotate-45 before:border-b-2 before:border-l-2 before:border-line before:bg-surface"
+        className="relative mb-3 rounded-tile border-2 border-line bg-surface px-4 py-3 text-body font-semibold text-ink shadow-slab-sm"
       >
+        <svg aria-hidden viewBox="0 0 10 16" className="absolute bottom-3 -left-[9px] h-4 w-2.5 overflow-visible">
+          <path d="M10 0 1.5 8 10 16" fill="var(--color-surface)" stroke="var(--color-line)" strokeWidth="2" strokeLinejoin="round" />
+        </svg>
         {children}
       </motion.div>
     </div>

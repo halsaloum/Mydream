@@ -81,6 +81,27 @@
   --color-red-line: #ffc2c2;
   --color-red-on: #4a0a0a;
 
+  --color-teal: #00c2a8;
+  --color-teal-deep: #00a08b;
+  --color-teal-ink: #006b5e;
+  --color-teal-soft: #e0f8f4;
+  --color-teal-line: #9fe5da;
+  --color-teal-on: #003d35;
+
+  --color-rose: #e8577e;
+  --color-rose-deep: #c73e64;
+  --color-rose-ink: #a3264c;
+  --color-rose-soft: #fdecf1;
+  --color-rose-line: #f6bccc;
+  --color-rose-on: #3d0a1b;
+
+  --color-slate: #5b6b82;
+  --color-slate-deep: #47566b;
+  --color-slate-ink: #3f4b5c;
+  --color-slate-soft: #eef1f5;
+  --color-slate-line: #cfd6e0;
+  --color-slate-on: #ffffff;
+
   /* Feedback */
   --color-success-bg: #dff7c8;
   --color-success-line: #b4e88a;
@@ -253,6 +274,31 @@
   --accent-soft: var(--color-red-soft);
   --accent-line: var(--color-red-line);
   --accent-on: var(--color-red-on);
+}
+
+[data-accent='teal'] {
+  --accent: var(--color-teal);
+  --accent-deep: var(--color-teal-deep);
+  --accent-ink: var(--color-teal-ink);
+  --accent-soft: var(--color-teal-soft);
+  --accent-line: var(--color-teal-line);
+  --accent-on: var(--color-teal-on);
+}
+[data-accent='rose'] {
+  --accent: var(--color-rose);
+  --accent-deep: var(--color-rose-deep);
+  --accent-ink: var(--color-rose-ink);
+  --accent-soft: var(--color-rose-soft);
+  --accent-line: var(--color-rose-line);
+  --accent-on: var(--color-rose-on);
+}
+[data-accent='slate'] {
+  --accent: var(--color-slate);
+  --accent-deep: var(--color-slate-deep);
+  --accent-ink: var(--color-slate-ink);
+  --accent-soft: var(--color-slate-soft);
+  --accent-line: var(--color-slate-line);
+  --accent-on: var(--color-slate-on);
 }
 
 @layer base {
