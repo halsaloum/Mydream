@@ -875,6 +875,112 @@
                                   ],
                                   "additionalProperties": false,
                                   "description": "OT-tableau: zet de eisen in een rangorde waarbij de juiste kandidaat wint."
+                                },
+                                "sonority": {
+                                  "type": "object",
+                                  "properties": {
+                                    "q": {
+                                      "description": "Opdracht boven de berg; standaard \"Knip de berg in lettergrepen\".",
+                                      "type": "string",
+                                      "pattern": "\\S"
+                                    },
+                                    "segs": {
+                                      "minItems": 2,
+                                      "maxItems": 10,
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object",
+                                        "properties": {
+                                          "t": {
+                                            "type": "string",
+                                            "pattern": "\\S",
+                                            "description": "De klank, bv. \"p\" of \"aː\"."
+                                          },
+                                          "s": {
+                                            "type": "integer",
+                                            "minimum": 1,
+                                            "maximum": 6,
+                                            "description": "Sonoriteit: 1 plofklank … 6 klinker."
+                                          }
+                                        },
+                                        "required": [
+                                          "t",
+                                          "s"
+                                        ],
+                                        "additionalProperties": false
+                                      }
+                                    },
+                                    "cuts": {
+                                      "minItems": 1,
+                                      "type": "array",
+                                      "items": {
+                                        "type": "integer",
+                                        "exclusiveMinimum": 0,
+                                        "maximum": 9007199254740991
+                                      },
+                                      "description": "Knippunten: na hoeveel klanken een lettergreep eindigt, oplopend."
+                                    },
+                                    "note": {
+                                      "type": "string",
+                                      "pattern": "\\S"
+                                    }
+                                  },
+                                  "required": [
+                                    "segs",
+                                    "cuts",
+                                    "note"
+                                  ],
+                                  "additionalProperties": false,
+                                  "description": "Sonoriteitsberg: de klanken van een woord als staven; knip de berg in lettergrepen."
+                                },
+                                "tree": {
+                                  "type": "object",
+                                  "properties": {
+                                    "q": {
+                                      "description": "Opdracht boven de boom; standaard \"Hang elke klank in de boom\".",
+                                      "type": "string",
+                                      "pattern": "\\S"
+                                    },
+                                    "segs": {
+                                      "minItems": 2,
+                                      "maxItems": 8,
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object",
+                                        "properties": {
+                                          "t": {
+                                            "type": "string",
+                                            "pattern": "\\S"
+                                          },
+                                          "role": {
+                                            "type": "string",
+                                            "enum": [
+                                              "onset",
+                                              "kern",
+                                              "coda",
+                                              "appendix"
+                                            ]
+                                          }
+                                        },
+                                        "required": [
+                                          "t",
+                                          "role"
+                                        ],
+                                        "additionalProperties": false
+                                      },
+                                      "description": "De klanken van één lettergreep, met hun plek."
+                                    },
+                                    "note": {
+                                      "type": "string",
+                                      "pattern": "\\S"
+                                    }
+                                  },
+                                  "required": [
+                                    "segs",
+                                    "note"
+                                  ],
+                                  "additionalProperties": false,
+                                  "description": "Lettergreepboom: kies een tak (onset, kern, coda) en hang de klanken eraan."
                                 }
                               },
                               "required": [

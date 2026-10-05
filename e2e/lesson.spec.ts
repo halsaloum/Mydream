@@ -81,3 +81,31 @@ test('OT-tableau: met het toetsenbord twee eisen wisselen tot de goede kandidaat
   await expect(primary).toHaveText(/Volgende deel/);
   await expect(primary).toBeEnabled();
 });
+
+test('de lettergreep: de nieuwe lessen staan per stap, bachelor en master', async ({ page }) => {
+  await page.goto('/');
+  await page.getByRole('tab', { name: /^Niveau 3: De lettergreep/ }).click();
+  for (const stage of ['Bachelor', 'Master']) {
+    await expect(page.getByRole('heading', { name: new RegExp(`${stage}$`) }).first()).toBeVisible();
+  }
+  await expect(page.getByRole('link', { name: /ONSET tegen NOCODA/ })).toBeVisible();
+});
+
+test('lettergreepboom: elke klank aan zijn tak hangen opent het volgende deel', async ({ page }) => {
+  await page.goto('/les/g5');
+  await expect(page.getByRole('heading', { name: 'De bouwtekening van een lettergreep' })).toBeVisible();
+  const primary = page.getByRole('contentinfo').getByRole('button').last();
+  await expect(primary).toBeDisabled();
+
+  await page.getByRole('button', { name: 'p', exact: true }).click();
+  await page.getByRole('button', { name: 'l', exact: true }).click();
+  await page.getByRole('button', { name: 'Kern' }).click();
+  await page.getByRole('button', { name: 'a', exact: true }).click();
+  await page.getByRole('button', { name: 'Coda' }).click();
+  await page.getByRole('button', { name: 'n', exact: true }).click();
+  await page.getByRole('button', { name: 't', exact: true }).click();
+
+  await expect(page.getByRole('status').filter({ hasText: 'pl is de onset' })).toBeVisible();
+  await expect(primary).toHaveText(/Volgende deel/);
+  await expect(primary).toBeEnabled();
+});

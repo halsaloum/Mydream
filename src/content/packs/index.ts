@@ -1,4 +1,6 @@
 import type { CoursePackInput, LessonInput } from '../schema';
+import { GREEP_LESSONS } from './greep';
+import { GREEP_MASTER_LESSONS } from './greep-master';
 import { KLANK_LESSONS } from './klank';
 import { KLANK_MASTER_LESSONS } from './klank-master';
 import { LETTER_LESSONS } from './letter';
@@ -10,6 +12,7 @@ import { LETTER_LESSONS } from './letter';
 export const EXTRA_LESSONS: Readonly<Record<string, readonly LessonInput[]>> = {
   letter: LETTER_LESSONS,
   klank: [...KLANK_LESSONS, ...KLANK_MASTER_LESSONS],
+  greep: [...GREEP_LESSONS, ...GREEP_MASTER_LESSONS],
 };
 
 /** Voegt de extra lessen toe aan hun niveau. Een onbekend niveau is een fout in de inhoud. */
