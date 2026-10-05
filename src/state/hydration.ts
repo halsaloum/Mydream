@@ -5,7 +5,7 @@ import { create } from 'zustand';
 import { useProgress } from './progress';
 import { useSessions } from './sessions';
 import { useSettings } from './settings';
-import { STORAGE_PREFIX } from './storage';
+import { checkStorage, requestPersistentStorage, STORAGE_PREFIX } from './storage';
 
 /**
  * De stores worden pas na het eerste renderen uit localStorage geladen (`skipHydration`).
@@ -17,6 +17,7 @@ const useHydration = create<{ hydrated: boolean }>(() => ({ hydrated: false }));
 const stores = [useSettings, useProgress, useSessions] as const;
 
 async function rehydrateAll() {
+  if (checkStorage()) requestPersistentStorage();
   // Voortgang eerst: sessies die afronden schrijven naar voortgang.
   await useSettings.persist.rehydrate();
   await useProgress.persist.rehydrate();

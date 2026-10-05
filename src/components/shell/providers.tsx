@@ -29,11 +29,18 @@ export function Providers({ children }: { children: ReactNode }) {
 
   useEffect(
     () =>
-      storageNotices.subscribe(() =>
-        notify(
-          'Opgeslagen gegevens hersteld',
-          'Een deel van je opgeslagen gegevens was beschadigd en is teruggezet. Er staat een reservekopie in je browser.',
-        ),
+      storageNotices.subscribe((notice) =>
+        notice.kind === 'blocked'
+          ? notify(
+              'Je voortgang wordt niet bewaard',
+              'Deze browser laat pennig niets opslaan, bijvoorbeeld in een privévenster of als site-gegevens geblokkeerd zijn. Na verversen ben je dan alles kwijt. Open pennig in een gewoon venster.',
+              undefined,
+              0,
+            )
+          : notify(
+              'Opgeslagen gegevens hersteld',
+              'Een deel van je opgeslagen gegevens was beschadigd en is teruggezet. Er staat een reservekopie in je browser.',
+            ),
       ),
     [],
   );

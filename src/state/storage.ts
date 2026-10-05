@@ -35,7 +35,8 @@ export function safeRemove(key: string) {
   }
 }
 
-type Notice = { key: string; at: number };
+/** `damaged`: opgeslagen gegevens waren onleesbaar en zijn teruggezet. `blocked`: de browser bewaart niets. */
+type Notice = { key: string; at: number; kind: 'damaged' | 'blocked' };
 const listeners = new Set<(notice: Notice) => void>();
 const pending: Notice[] = [];
 
@@ -53,6 +54,33 @@ export const storageNotices = {
     listeners.forEach((listener) => listener(notice));
   },
 };
+
+let blockedReported = false;
+
+/** Meld één keer per bezoek dat opslaan mislukt, zodat voortgang niet stilletjes verloren gaat. */
+function reportBlocked(key: string) {
+  if (blockedReported) return;
+  blockedReported = true;
+  storageNotices.emit({ key, at: Date.now(), kind: 'blocked' });
+}
+
+/** Werkt opslaan echt? Een privévenster of geblokkeerde site-gegevens laten setItem mislukken. */
+export function checkStorage(): boolean {
+  const probe = `${STORAGE_PREFIX}test`;
+  const ok = safeSet(probe, '1') && safeGet(probe) === '1';
+  safeRemove(probe);
+  if (!ok) reportBlocked(probe);
+  return ok;
+}
+
+/** Vraag de browser de opgeslagen gegevens niet zelf op te ruimen (bijv. bij weinig ruimte). */
+export function requestPersistentStorage() {
+  try {
+    void navigator.storage?.persist?.().catch(() => undefined);
+  } catch {
+    // Niet ondersteund: localStorage werkt dan gewoon zoals altijd.
+  }
+}
 
 export function validatedStorage<S>(schema: z.ZodType<S, unknown>): PersistStorage<S> {
   return {
@@ -72,11 +100,11 @@ export function validatedStorage<S>(schema: z.ZodType<S, unknown>): PersistStora
         // Valt door naar herstel.
       }
       safeSet(`${name}:reserve`, raw);
-      storageNotices.emit({ key: name, at: Date.now() });
+      storageNotices.emit({ key: name, at: Date.now(), kind: 'damaged' });
       return null;
     },
     setItem(name, value) {
-      safeSet(name, JSON.stringify(value));
+      if (!safeSet(name, JSON.stringify(value))) reportBlocked(name);
     },
     removeItem(name) {
       safeRemove(name);

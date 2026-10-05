@@ -22,12 +22,44 @@ function isUsable(id: string, session: SessionState): boolean {
   return plan !== undefined && plan.map((item) => item.key).join('|') === session.plan.join('|');
 }
 
+/**
+ * Is een les veranderd (nieuwe versie van de app) terwijl je er middenin zat, dan begin je niet
+ * opnieuw: stappen die je al gedaan hebt en nog bestaan worden overgeslagen, en je gaat verder bij
+ * de eerste stap die nog open staat. Herhalingen van foute stappen vervallen.
+ */
+export function carryOver(id: string, session: SessionState): SessionState | undefined {
+  const plan = planFor(id);
+  if (session.mode !== 'lesson' || session.phase === 'done' || !plan?.length) return undefined;
+  const finished = new Set(session.queue.slice(0, session.pos));
+  const current = session.queue[session.pos];
+  if (session.phase === 'feedback' && current) finished.add(current);
+  const keys = plan.map((item) => item.key);
+  const pos = keys.findIndex((key) => !finished.has(key));
+  if (pos <= 0) return undefined;
+  const keep = <T,>(record: Record<string, T>) => Object.fromEntries(Object.entries(record).filter(([key]) => keys.includes(key)));
+  return {
+    ...session,
+    plan: keys,
+    queue: keys,
+    pos,
+    phase: 'answering',
+    lastCorrect: null,
+    responses: {},
+    firstTry: keep(session.firstTry),
+    flags: keep(session.flags),
+    finishedAt: null,
+    committed: false,
+  };
+}
+
 const SessionsDataSchema = z.object({
   byId: z.record(z.string(), z.unknown()).transform((record) => {
     const out: Record<string, SessionState> = {};
     for (const [id, raw] of Object.entries(record)) {
       const parsed = SessionSchema.safeParse(raw);
-      if (parsed.success && isUsable(id, parsed.data)) out[id] = parsed.data;
+      if (!parsed.success) continue;
+      const session = isUsable(id, parsed.data) ? parsed.data : carryOver(id, parsed.data);
+      if (session) out[id] = session;
     }
     return out;
   }),

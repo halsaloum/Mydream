@@ -173,3 +173,30 @@ test('paradigma: elk leeg vakje goed invullen opent het volgende deel', async ({
   await expect(primary).toHaveText(/Volgende deel/);
   await expect(primary).toBeEnabled();
 });
+
+test('een afgeronde les blijft na verversen afgerond', async ({ page }) => {
+  await page.goto('/les/l4');
+  await page.getByRole('radio', { name: 'rustig' }).click();
+  await page.keyboard.press('Enter');
+  await page.keyboard.press('1');
+  await page.keyboard.press('Enter');
+  await page.keyboard.press('Enter');
+  await expect(page.getByRole('heading', { name: 'Wat je nu weet' })).toBeVisible();
+
+  await page.goto('/voortgang');
+  await page.reload();
+  await expect(page.getByText('HOOFDLETTERS!!! en toon')).toBeVisible();
+  await page.goto('/');
+  await page.reload();
+  await expect(page.getByText(/Afgerond · 100%/)).toBeVisible();
+});
+
+test('waarschuwt als de browser niets wil opslaan', async ({ page }) => {
+  await page.addInitScript(() => {
+    Storage.prototype.setItem = () => {
+      throw new DOMException('Opslag geblokkeerd', 'SecurityError');
+    };
+  });
+  await page.goto('/voortgang');
+  await expect(page.getByText('Je voortgang wordt niet bewaard')).toBeVisible();
+});
