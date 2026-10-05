@@ -221,6 +221,27 @@ const BracketSchema = z
   })
   .describe('Woordboom: plak steeds twee buren aan elkaar tot het hele woord staat, in de volgorde van de boom.');
 
+const ParadigmCellSchema = z.union([
+  Text.describe('Een vorm die al gegeven is.'),
+  z.object({
+    fill: Text.describe('De vorm die de leerling moet kiezen.'),
+    hint: Text.optional().describe('Tip als er een verkeerde vorm in dit vakje wordt gezet.'),
+  }),
+]);
+
+const ParadigmSchema = z
+  .object({
+    q: Text.optional().describe('Opdracht boven de tabel; standaard "Vul het paradigma in".'),
+    cols: z.array(Text).min(1).max(5).describe('Kolomkoppen, bv. "verleden tijd" en "voltooid deelwoord".'),
+    rows: z
+      .array(z.object({ label: Text.describe('Rijkop, bv. het hele werkwoord.'), cells: z.array(ParadigmCellSchema).min(1) }))
+      .min(1)
+      .max(8),
+    extra: z.array(Text).optional().describe('Vormen die nergens passen; ze staan tussen de keuzes als valkuil.'),
+    note: Text,
+  })
+  .describe('Paradigma: een tabel met lege vakjes. Kies een vakje en zet de goede vorm erin.');
+
 export const PanelSchema = z
   .object({
     text: Rich,
@@ -242,6 +263,7 @@ export const PanelSchema = z
     sonority: SonoritySchema.optional(),
     tree: TreeSchema.optional(),
     bracket: BracketSchema.optional(),
+    paradigm: ParadigmSchema.optional(),
   })
   .superRefine((panel, ctx) => {
     if (panel.lab && !unique(panel.lab.chips.map((chip) => chip.k))) issue(ctx, ['lab', 'chips'], 'Knopteksten moeten uniek zijn');
@@ -338,6 +360,20 @@ export const PanelSchema = z
           if (expected.includes(trap.w)) issue(ctx, ['bracket', 'traps', i, 'w'], `"${trap.w}" is juist een goede stap`);
         });
       }
+    }
+    if (panel.paradigm) {
+      const { cols, rows, extra } = panel.paradigm;
+      if (!unique(cols)) issue(ctx, ['paradigm', 'cols'], 'Kolomkoppen moeten uniek zijn');
+      if (!unique(rows.map((row) => row.label))) issue(ctx, ['paradigm', 'rows'], 'Rijkoppen moeten uniek zijn');
+      rows.forEach((row, i) => {
+        if (row.cells.length !== cols.length) issue(ctx, ['paradigm', 'rows', i, 'cells'], `Verwacht ${cols.length} vakjes`);
+      });
+      const answers = rows.flatMap((row) => row.cells.flatMap((cell) => (typeof cell === 'string' ? [] : [cell.fill])));
+      if (answers.length === 0) issue(ctx, ['paradigm', 'rows'], 'Er is geen vakje om in te vullen');
+      if (extra && !unique(extra)) issue(ctx, ['paradigm', 'extra'], 'Valkuilen staan dubbel');
+      extra?.forEach((form, i) => {
+        if (answers.includes(form)) issue(ctx, ['paradigm', 'extra', i], `"${form}" is juist een goed antwoord`);
+      });
     }
     if (panel.tableau) {
       const { constraints, candidates, winner } = panel.tableau;
