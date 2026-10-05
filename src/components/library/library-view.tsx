@@ -208,14 +208,14 @@ export function LibraryView() {
                 data-accent={layer.accent}
               >
                 <h2 id={`groep-${layer.id}`} className="mb-4 flex items-center gap-3 font-display text-title-sm font-extrabold">
-                  <span className="grid size-9 place-items-center rounded-control bg-accent text-accent-on shadow-[inset_0_-3px_0_rgb(0_0_0/0.14)]">
+                  <span className="grid size-9 place-items-center rounded-control bg-accent icon-tile">
                     <LayerGlyph id={layer.id} className="size-[1.1rem]" />
                   </span>
                   <span>
                     Niveau {index + 1} <span className="text-ink-muted">·</span> {layer.name}
                   </span>
                 </h2>
-                <ul className="grid gap-3 md:grid-cols-2">
+                <ul className="stagger grid gap-3 md:grid-cols-2">
                   {entries.map((entry) => (
                     <li key={entry.lesson.id}>
                       <LessonRow entry={entry} progress={progress} sessions={sessions} isNext={entry.lesson.id === nextId} />

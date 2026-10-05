@@ -56,7 +56,7 @@ export function ProgressView() {
     <div className="flex flex-col gap-8">
       <PageHeader title="Voortgang" description="Alles hier komt uit je eigen oefenen in deze browser." action={action} className="mb-0" />
 
-      <dl className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+      <dl className="stagger grid grid-cols-2 gap-3 lg:grid-cols-4">
         <Stat icon={<CalendarDays aria-hidden className="size-4" strokeWidth={2.5} />} label="Lessen af">
           {total.done}
           <span className="text-body font-bold text-ink-muted"> / {totalLessons}</span>
@@ -107,7 +107,7 @@ export function ProgressView() {
               if (done.total === 0) return null;
               return (
                 <li key={domain.id} data-accent={domain.accent} className="grid grid-cols-[2.25rem_minmax(0,1fr)] items-center gap-3">
-                  <span className="grid size-9 place-items-center rounded-control bg-accent text-accent-on">
+                  <span className="grid size-9 place-items-center rounded-control bg-accent icon-tile">
                     <DomainGlyph id={domain.id} className="size-[1.1rem]" />
                   </span>
                   <div className="min-w-0">

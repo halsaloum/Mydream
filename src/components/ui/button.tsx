@@ -11,12 +11,14 @@ export type ButtonSize = 'sm' | 'md' | 'lg';
 
 const VARIANTS: Record<ButtonVariant, string> = {
   primary:
-    'slab pressable border-green bg-green text-green-on [--slab:var(--color-green-deep)] hover:bg-[#61d40c] hover:border-[#61d40c]',
-  accent: 'slab pressable border-accent bg-accent text-accent-on [--slab:var(--accent-deep)] hover:brightness-[1.04]',
+    'slab pressable gloss border-green bg-green text-green-on [--slab:var(--color-green-deep)] [--glow:color-mix(in_oklab,var(--color-green-deep)_60%,transparent)] hover:bg-[#61d40c] hover:border-[#61d40c]',
+  accent:
+    'slab pressable gloss border-accent bg-accent text-accent-on [--slab:var(--accent-deep)] [--glow:color-mix(in_oklab,var(--accent-deep)_60%,transparent)] hover:brightness-[1.05]',
   secondary:
     'slab pressable border-line bg-surface text-ink [--slab:var(--color-line-strong)] hover:border-line-strong hover:bg-white',
-  ghost: 'border-transparent bg-transparent text-ink-soft hover:bg-ink/[0.06] hover:text-ink active:bg-ink/[0.1]',
-  danger: 'slab pressable border-red bg-red text-red-on [--slab:var(--color-red-deep)] hover:brightness-[1.04]',
+  ghost: 'border-transparent bg-transparent text-ink-soft transition-colors hover:bg-ink/[0.06] hover:text-ink active:bg-ink/[0.1]',
+  danger:
+    'slab pressable gloss border-red bg-red text-red-on [--slab:var(--color-red-deep)] [--glow:color-mix(in_oklab,var(--color-red-deep)_60%,transparent)] hover:brightness-[1.05]',
 };
 
 const SIZES: Record<ButtonSize, string> = {
@@ -26,7 +28,7 @@ const SIZES: Record<ButtonSize, string> = {
 };
 
 const DISABLED =
-  'data-[disabled]:border-line data-[disabled]:bg-line data-[disabled]:text-ink-disabled data-[disabled]:[--slab:transparent] data-[disabled]:hover:brightness-100';
+  'data-[disabled]:border-line data-[disabled]:bg-line data-[disabled]:bg-none data-[disabled]:text-ink-disabled data-[disabled]:[--slab:transparent] data-[disabled]:[--glow:transparent] data-[disabled]:hover:brightness-100';
 
 export function buttonClass({
   variant = 'primary',
@@ -90,7 +92,7 @@ export function IconButton({ label, icon, showLabelFrom, variant = 'ghost', clas
       <Tooltip.Trigger render={button} />
       <Tooltip.Portal>
         <Tooltip.Positioner sideOffset={8} className="z-[70]">
-          <Tooltip.Popup className="origin-[var(--transform-origin)] rounded-chip bg-ink px-2.5 py-1.5 text-caption font-semibold text-white shadow-float transition-[opacity,scale] duration-150 data-[ending-style]:scale-95 data-[ending-style]:opacity-0 data-[starting-style]:scale-95 data-[starting-style]:opacity-0">
+          <Tooltip.Popup className="origin-[var(--transform-origin)] rounded-chip bg-ink px-2.5 py-1.5 text-caption font-semibold text-white shadow-float transition-[opacity,scale] duration-200 ease-[var(--ease-spring)] data-[ending-style]:scale-95 data-[ending-style]:opacity-0 data-[starting-style]:scale-95 data-[starting-style]:opacity-0">
             {label}
           </Tooltip.Popup>
         </Tooltip.Positioner>

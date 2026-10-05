@@ -48,7 +48,7 @@ function GrowingExample({ layer, index, total }: { layer: Layer; index: number; 
                   <span
                     className={cn(
                       'rounded-control px-2 font-serif text-example-lg text-ink',
-                      segment.hi && 'bg-accent text-accent-on shadow-[inset_0_-4px_0_rgb(0_0_0/0.12)]',
+                      segment.hi && 'icon-tile bg-accent text-accent-on',
                     )}
                   >
                     {segment.t}
@@ -212,9 +212,9 @@ export function LayerMachine({ selected, onSelect, progress, sessions, nextId }:
                 )}
                 <span
                   className={cn(
-                    'relative grid size-8 place-items-center rounded-control border-2 transition-[transform,background-color,border-color,color] duration-200 sm:size-10',
+                    'relative grid size-8 place-items-center rounded-control border-2 transition-[transform,background-color,border-color,color,box-shadow] duration-300 ease-[var(--ease-spring)] sm:size-10',
                     active
-                      ? '-translate-y-1 border-accent bg-accent text-accent-on shadow-[0_3px_0_var(--accent-deep)]'
+                      ? 'icon-tile -translate-y-1.5 scale-110 border-accent bg-accent text-accent-on shadow-[inset_0_1.5px_0_rgb(255_255_255/0.45),0_3px_0_var(--accent-deep),0_10px_18px_-8px_var(--accent-deep)]'
                       : reached
                         ? 'border-accent-line bg-surface text-accent-ink shadow-[0_3px_0_var(--accent-line)] group-hover:-translate-y-0.5'
                         : 'border-line bg-surface text-ink-muted shadow-slab-sm group-hover:-translate-y-0.5 group-hover:text-ink',
@@ -226,8 +226,8 @@ export function LayerMachine({ selected, onSelect, progress, sessions, nextId }:
                   aria-hidden
                   style={{ height: 14 + index * 5.5 }}
                   className={cn(
-                    'relative w-full overflow-hidden rounded-md transition-colors duration-300',
-                    reached ? 'bg-accent shadow-[inset_0_-4px_0_rgb(0_0_0/0.14)]' : 'bg-line shadow-[inset_0_-4px_0_var(--color-line-strong)] group-hover:bg-line-strong/70',
+                    'relative w-full overflow-hidden rounded-md transition-[background-color,height] duration-500 ease-[var(--ease-out-expo)]',
+                    reached ? 'bg-accent bg-linear-to-b from-white/25 to-transparent shadow-[inset_0_-4px_0_rgb(0_0_0/0.14)]' : 'bg-line shadow-[inset_0_-4px_0_var(--color-line-strong)] group-hover:bg-line-strong/70',
                   )}
                 >
                   {done.done > 0 && (
@@ -286,7 +286,7 @@ function LayerDetail({
     <>
       <section data-accent={layer.accent} aria-labelledby={`niveau-${layer.id}`} className="rounded-card border-2 border-line bg-surface p-6 shadow-slab sm:p-7">
         <div className="flex items-start gap-4">
-          <span className="grid size-11 shrink-0 place-items-center rounded-control bg-accent text-accent-on shadow-[inset_0_-3px_0_rgb(0_0_0/0.14)]">
+          <span className="grid size-11 shrink-0 place-items-center rounded-control bg-accent icon-tile">
             <LayerGlyph id={layer.id} className="size-5" />
           </span>
           <div className="min-w-0">
@@ -309,7 +309,7 @@ function LayerDetail({
         </div>
       </section>
 
-      <div className={cn('grid gap-4', domains.length > 1 && 'md:grid-cols-2')}>
+      <div className={cn('stagger grid gap-4', domains.length > 1 && 'md:grid-cols-2')}>
         {domains.map((domain) => {
           const inDomain = entries.filter((entry) => entry.domain.id === domain.id);
           const completion = layerCompletion(layer, progress, domain.id);
@@ -334,7 +334,7 @@ function LayerDetail({
                         {STAGE_LABELS[run.stage]}
                       </h4>
                     )}
-                    <ul className="space-y-2.5">
+                    <ul className="stagger space-y-2.5">
                       {run.entries.map((entry) => (
                         <li key={entry.lesson.id}>
                           <LessonRow entry={entry} progress={progress} sessions={sessions} isNext={entry.lesson.id === nextId} showStage={false} />

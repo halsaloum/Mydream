@@ -16,7 +16,7 @@ import { Button, type ButtonVariant } from '@/components/ui/button';
 import { ProgressBar } from '@/components/ui/progress';
 import { celebrate, originOf } from '@/lib/confetti';
 import { cn } from '@/lib/cn';
-import { scrollToTop, transition, useCalmMotion } from '@/lib/motion';
+import { scrollToTop, spring, transition, useCalmMotion } from '@/lib/motion';
 import { play } from '@/lib/sound';
 import { gotoPanel } from './explain/explain-step';
 import { FinishScreen, type FinishAction } from './finish-screen';
@@ -243,10 +243,10 @@ export function LessonPlayer({ controller, meta }: { controller: PlayerControlle
           <motion.article
             key={pos}
             data-step-pos={pos}
-            initial={calm ? { opacity: 0 } : { opacity: 0, x: 28 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={calm ? { opacity: 0, transition: { duration: 0.1 } } : { opacity: 0, x: -20, transition: transition.fast }}
-            transition={transition.slow}
+            initial={calm ? { opacity: 0 } : { opacity: 0, x: 36, scale: 0.98, rotate: 0.6 }}
+            animate={{ opacity: 1, x: 0, scale: 1, rotate: 0 }}
+            exit={calm ? { opacity: 0, transition: { duration: 0.1 } } : { opacity: 0, x: -28, scale: 0.98, rotate: -0.6, transition: transition.fast }}
+            transition={calm ? transition.slow : spring.card}
             className="rounded-sheet border-2 border-line bg-surface px-5 pt-7 pb-9 shadow-sheet sm:px-10 sm:pt-10 sm:pb-11"
           >
             {pos === 0 && meta.tag && <LayerTag {...meta.tag} />}
@@ -271,10 +271,10 @@ export function LessonPlayer({ controller, meta }: { controller: PlayerControlle
 
       <footer
         className={cn(
-          'sticky bottom-0 z-30 border-t-2 transition-colors duration-200',
-          !locked && 'border-line bg-surface/95 backdrop-blur-md',
-          locked && session.lastCorrect && 'border-success-line bg-success-bg',
-          wrongNow && 'border-error-line bg-error-bg',
+          'sticky bottom-0 z-30 border-t-2 shadow-[0_-12px_32px_-22px_rgb(60_40_10/0.35)] transition-colors duration-300',
+          !locked && 'border-line bg-surface/85 backdrop-blur-xl backdrop-saturate-150',
+          locked && session.lastCorrect && 'border-success-line bg-success-bg bg-linear-to-b from-white/50 to-transparent',
+          wrongNow && 'border-error-line bg-error-bg bg-linear-to-b from-white/50 to-transparent',
         )}
       >
         <div className="mx-auto flex w-full max-w-3xl flex-col gap-3.5 px-gutter pt-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:min-h-[6.75rem] sm:flex-row sm:items-center sm:gap-6 sm:py-5">
@@ -319,7 +319,7 @@ export function LessonPlayer({ controller, meta }: { controller: PlayerControlle
 
 function PlayerHeader({ meta, progress, counter, rules }: { meta: PlayerMeta; progress: number; counter: string | null; rules?: (event: MouseEvent<HTMLElement>) => void }) {
   return (
-    <header className="sticky top-0 z-30 border-b-2 border-line/70 bg-canvas/90 backdrop-blur-md supports-[backdrop-filter]:bg-canvas/75">
+    <header className="sticky top-0 z-30 border-b border-line/80 bg-canvas/85 shadow-[0_8px_24px_-20px_rgb(60_40_10/0.35)] backdrop-blur-xl backdrop-saturate-150 supports-[backdrop-filter]:bg-canvas/70">
       <div className="mx-auto flex w-full max-w-3xl items-center gap-3 px-3 py-3 sm:gap-4 sm:px-gutter">
         <Link
           href={meta.exit.href}
@@ -387,16 +387,16 @@ function Feedback({ step, response, correct, pos }: { step: Step; response: Resp
   return (
     <motion.div
       key={`feedback-${pos}`}
-      initial={calm ? { opacity: 0 } : { opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={transition.base}
+      initial={calm ? { opacity: 0 } : { opacity: 0, y: 16, scale: 0.97 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={calm ? transition.base : spring.pop}
       className="flex items-start gap-3.5"
     >
-      <span className="relative mt-0.5 grid size-14 shrink-0 place-items-center rounded-full bg-surface shadow-[0_3px_0_rgb(16_24_40/0.08)]">
+      <span className="relative mt-0.5 grid size-14 shrink-0 place-items-center rounded-full bg-surface shadow-[0_3px_0_rgb(60_40_10/0.08),0_10px_20px_-10px_rgb(60_40_10/0.35)]">
         <Pim mood={correct ? 'happy' : 'sad'} size="xs" reactKey={pos} />
         <span
           className={cn(
-            'absolute -right-1 -bottom-1 grid size-6 place-items-center rounded-full border-2 border-surface',
+            'absolute -right-1 -bottom-1 grid size-6 animate-bounce-in place-items-center rounded-full border-2 border-surface [animation-delay:120ms]',
             correct ? 'bg-green text-green-on' : 'bg-red text-white',
           )}
         >

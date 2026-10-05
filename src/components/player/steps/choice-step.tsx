@@ -92,7 +92,7 @@ export function ChoiceStep(props: ChoiceProps) {
         value={value ?? ''}
         onValueChange={(next) => select(String(next))}
         readOnly={locked}
-        className={cn('mt-8 grid gap-3', columns)}
+        className={cn('stagger mt-8 grid gap-3', columns)}
       >
         {step.options.map((option, i) => {
           const isAnswer = option === step.answer;
@@ -104,8 +104,8 @@ export function ChoiceStep(props: ChoiceProps) {
               value={option}
               className={cn(
                 'group slab pressable flex min-h-16 items-center gap-3.5 rounded-tile border-2 px-4 py-3.5 text-left [--lift:4px]',
-                !feedback && 'border-line bg-surface hover:border-line-strong data-[checked]:border-accent data-[checked]:bg-accent-soft data-[checked]:[--slab:var(--accent)]',
-                feedback === 'right' && 'border-green bg-green-soft [--slab:var(--color-green)]',
+                !feedback && 'border-line bg-surface hover:border-accent-line data-[checked]:border-accent data-[checked]:bg-accent-soft data-[checked]:[--slab:var(--accent)]',
+                feedback === 'right' && 'animate-pulse-pop border-green bg-green-soft [--slab:var(--color-green)] [--glow:color-mix(in_oklab,var(--color-green)_55%,transparent)]',
                 feedback === 'wrong' && 'border-red bg-red-soft [--slab:var(--color-red)]',
                 feedback === 'other' && 'border-line bg-surface opacity-60 shadow-none',
                 locked && 'pointer-events-none',
@@ -113,7 +113,7 @@ export function ChoiceStep(props: ChoiceProps) {
             >
               <span
                 className={cn(
-                  'grid size-7 shrink-0 place-items-center rounded-chip border-2 text-[0.75rem] font-extrabold transition-colors',
+                  'grid size-7 shrink-0 place-items-center rounded-chip border-2 text-[0.75rem] font-extrabold transition-[background-color,border-color,color,transform] duration-300 ease-[var(--ease-spring)] group-data-[checked]:scale-110',
                   !feedback && 'border-line-strong text-ink-muted group-data-[checked]:border-accent-ink group-data-[checked]:bg-accent-ink group-data-[checked]:text-white',
                   feedback === 'right' && 'border-green-ink bg-green-ink text-white',
                   feedback === 'wrong' && 'border-red-ink bg-red-ink text-white',

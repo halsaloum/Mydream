@@ -59,7 +59,7 @@ export function HomeView() {
   const today = progress.activity[dayKey()];
 
   return (
-    <div className="flex flex-col gap-section">
+    <div className="stagger flex flex-col gap-section">
       <div className="grid items-end gap-8 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
         <div>
           <h1 className="font-serif text-[clamp(2.5rem,1.9rem+2.6vw,4rem)] leading-[1.02] font-medium tracking-[-0.02em] text-ink">

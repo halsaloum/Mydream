@@ -9,10 +9,10 @@ import { spring } from '@/lib/motion';
 export type TileState = 'idle' | 'held' | 'correct' | 'wrong' | 'ghost' | 'dragging' | 'target' | 'muted';
 
 const FACE: Record<TileState, string> = {
-  idle: 'border-line bg-surface text-ink [--slab:var(--color-line-strong)] group-hover:border-line-strong',
-  held: 'border-accent bg-accent-soft text-ink [--slab:var(--accent)] -translate-y-1',
-  correct: 'border-green bg-green-soft text-green-ink [--slab:var(--color-green)]',
-  wrong: 'border-red bg-red-soft text-red-ink [--slab:var(--color-red)]',
+  idle: 'border-line bg-surface text-ink [--slab:var(--color-line-strong)] group-hover:border-accent-line',
+  held: 'border-accent bg-accent-soft text-ink [--slab:var(--accent)] [--glow:color-mix(in_oklab,var(--accent-deep)_50%,transparent)] -translate-y-1',
+  correct: 'animate-pulse-pop border-green bg-green-soft text-green-ink [--slab:var(--color-green)] [--glow:color-mix(in_oklab,var(--color-green)_50%,transparent)]',
+  wrong: 'border-red bg-red-soft text-red-ink [--slab:var(--color-red)] [--glow:color-mix(in_oklab,var(--color-red)_45%,transparent)]',
   ghost: 'border-dashed border-line-strong bg-transparent text-transparent shadow-none',
   dragging: 'border-dashed border-line-strong bg-sunken text-ink-muted shadow-none',
   target: 'border-accent bg-accent-soft text-ink [--slab:var(--accent)]',
@@ -55,7 +55,7 @@ export function Tile({ children, state = 'idle', layoutId, layout, size = 'md', 
     >
       <span
         className={cn(
-          'slab flex items-center gap-3 rounded-tile border-2 transition-[transform,box-shadow,background-color,border-color,color] duration-150 ease-[var(--ease-out-soft)] [--lift:3px]',
+          'slab flex items-center gap-3 rounded-tile border-2 transition-[transform,box-shadow,background-color,border-color,color] duration-200 ease-[var(--ease-spring)] [--lift:3px]',
           size === 'md' && 'min-h-12 px-4 py-2 font-serif text-[1.375rem] leading-tight',
           size === 'lg' && 'min-h-14 px-5 py-2.5 font-serif text-[1.625rem] leading-tight',
           size === 'block' && 'min-h-14 w-full px-4 py-3 font-serif text-[1.1875rem] leading-snug',

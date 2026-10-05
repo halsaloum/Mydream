@@ -109,7 +109,7 @@ export function ReviewView() {
                     <p className="mt-5 mb-3 text-small font-bold text-ink-muted">Daarna</p>
                   )}
                   <div className="flex items-start gap-4 rounded-card border-2 border-line bg-surface p-4 shadow-slab-sm sm:p-5">
-                    <span className="grid size-10 shrink-0 place-items-center rounded-control bg-accent text-accent-on shadow-[inset_0_-3px_0_rgb(0_0_0/0.14)]">
+                    <span className="grid size-10 shrink-0 place-items-center rounded-control bg-accent icon-tile">
                       {entry ? <DomainGlyph id={entry.domain.id} className="size-5" /> : null}
                     </span>
                     <div className="min-w-0 flex-1">
