@@ -1,0 +1,773 @@
+import type { LessonInput } from '../schema';
+
+/**
+ * Bachelorlessen voor het niveau "De lettergreep": bewijs voor de lettergreep, de opbouw
+ * (onset, kern, coda), grenzen en fonotaxis, de volle rijm en de appendix, hiaat en
+ * glottisslag, schwa-epenthese, verkleinwoord en meervoud, en lettergreepschriften.
+ * Ze bouwen voort op de lessen over sonoriteit en ambisyllabiciteit in "Klank en letter"
+ * en beginnen meteen op bachelorniveau. De masterlessen staan in `greep-master.ts`.
+ *
+ * Sonoriteit in de berg: 1 plofklank, 2 wrijfklank, 3 neusklank, 4 l of r, 5 glijklank, 6 klinker.
+ */
+export const GREEP_LESSONS: LessonInput[] = [
+  {
+    id: 'g4',
+    stage: 'bachelor',
+    domain: 'fon',
+    title: 'Bestaat de lettergreep eigenlijk?',
+    skill: 'Spelling',
+    icon: 'σ?',
+    steps: [
+      {
+        kind: 'explain',
+        id: 'uitleg',
+        title: 'Bewijs voor iets onzichtbaars',
+        panels: [
+          {
+            text: 'Een raadsel om mee te beginnen: niemand heeft ooit een lettergreep *gezien*. In het geluid van *water* zit geen pauze tussen *wa* en *ter*. Toch klapt elk kind van vier het moeiteloos. In 1974 testten Liberman en collega’s dat: 46 procent van de vierjarigen kon woorden in lettergrepen tikken. Woorden in losse klanken tikken? *Niemand*.',
+            split: { word: 'olifant', answer: 'o-li-fant', note: 'Drie klappen. Je hoeft niet te weten wat een klinker is om dit te kunnen.' },
+            deep: {
+              q: 'En bij oudere kinderen?',
+              a: 'Bij de vijfjarigen tikte 48 procent lettergrepen en 17 procent klanken. Bij de zesjarigen, na een jaar leesles, was het 90 tegen 70 procent. Losse klanken leer je pas echt *horen* door het alfabet. De lettergreep was er al (Liberman, Shankweiler, Fischer en Carter 1974).',
+            },
+          },
+          {
+            text: 'Tweede bewijs: taalspelletjes. In een veelgespeelde versie van de *P-taal* zet je na elke klinker een *p* en dezelfde klinker nog eens: *hal-lo* wordt *ha-pa-llo-po*. Wie dat vloeiend speelt, rekent in lettergrepen, zonder ooit een regel te hebben geleerd.',
+            lab: {
+              label: 'Tik een woord',
+              chips: [
+                { k: 'kaas', out: 'kaa-paas', note: 'Eén lettergreep, één keer p.' },
+                { k: 'water', out: 'wa-pa-te-per', note: 'Twee lettergrepen, twee keer p.' },
+                { k: 'olifant', out: 'o-po-li-pi-fa-pant', note: 'Drie lettergrepen, drie keer p. Het spel volgt de lettergrepen, niet de letters.' },
+              ],
+            },
+          },
+          {
+            text: 'Nog twee bewijzen. Een Nederlandse haiku telt lettergrepen: vijf, zeven, vijf. En als je je verspreekt, ruilen klanken bijna altijd van gelijke plek: een begin met een begin, zoals *mork en ves* voor *vork en mes*. Je brein plant spraak dus in lettergrepen, ook al hoor je ze niet als losse stukken.',
+            rule: 'De lettergreep zit niet in het geluid, maar in de planning van je brein.',
+            quiz: {
+              q: 'Wat bewijst de P-taal?',
+              options: ['Sprekers delen woorden vanzelf in lettergrepen in', 'Elke letter is een klank', 'Kinderen leren eerst klanken, dan lettergrepen'],
+              answer: 'Sprekers delen woorden vanzelf in lettergrepen in',
+              why: 'Het spel plakt iets achter elke lettergreep. Dat lukt alleen als je de grenzen al voelt.',
+            },
+            deep: {
+              q: 'Zijn versprekingen echt zo netjes?',
+              a: 'Ja, dat is een van de stevigste patronen uit het onderzoek naar versprekingen. Een beginklank ruilt met een beginklank, een kern met een kern; een begin dat met een eind ruilt, is zeldzaam. Sieb Nooteboom verzamelde in 1969 al Nederlandse versprekingen, Stefanie Shattuck-Hufnagel (1979) deed het voor het Engels.',
+            },
+          },
+        ],
+      },
+      {
+        kind: 'type',
+        id: 'p-taal',
+        prompt: 'Zeg ‘lopen’ in de P-taal.',
+        before: '',
+        after: '',
+        hint: 'lo-pen',
+        answer: 'lopopepen',
+        why: 'lo-pen wordt lo-po + pe-pen. Twee lettergrepen, twee keer p.',
+      },
+      {
+        kind: 'sort',
+        id: 'tellen',
+        prompt: 'Hoeveel lettergrepen?',
+        buckets: ['twee', 'drie', 'vier'],
+        items: [
+          { t: 'banaan', b: 0 },
+          { t: 'vriendschap', b: 0 },
+          { t: 'paraplu', b: 1 },
+          { t: 'ziekenhuis', b: 1 },
+          { t: 'televisie', b: 2 },
+          { t: 'chocolade', b: 2 },
+        ],
+        why: 'Tel de klinkerkernen: elke lettergreep heeft er één. ba-naan, vriend-schap; pa-ra-plu, zie-ken-huis; te-le-vi-sie, cho-co-la-de.',
+      },
+      {
+        kind: 'swipe',
+        id: 'bewijs',
+        prompt: 'Klopt deze zin?',
+        intro: 'Veeg naar rechts als de zin klopt, naar links als hij niet klopt.',
+        cards: [
+          { t: 'Tussen twee lettergrepen hoor je een korte pauze.', ok: false, fix: 'Er zit geen pauze tussen lettergrepen', why: 'Spraak is één doorlopende stroom. De grens zit in je hoofd.' },
+          { t: 'Vierjarigen tikken makkelijker lettergrepen dan losse klanken.', ok: true, why: '46 procent tegen 0 procent in het onderzoek van Liberman en collega’s.' },
+          { t: 'Een Nederlandse haiku telt woorden: vijf, zeven, vijf.', ok: false, fix: 'Een Nederlandse haiku telt lettergrepen', why: 'Vijf, zeven, vijf lettergrepen. (Het Japans telt nog iets anders: moras. Dat komt in de master.)' },
+          { t: 'In een verspreking ruilt een beginklank meestal met een beginklank.', ok: true, why: 'Klanken houden hun plek in de lettergreep, ook als ze ontsporen.' },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'g5',
+    stage: 'bachelor',
+    domain: 'fon',
+    title: 'Onset, kern en coda',
+    skill: 'Spelling',
+    icon: 'O·K·C',
+    steps: [
+      {
+        kind: 'explain',
+        id: 'uitleg',
+        title: 'De bouwtekening van een lettergreep',
+        panels: [
+          {
+            text: 'Een lettergreep is geen rijtje kralen, maar een boompje. Bovenaan staat σ, *sigma*, het symbool voor lettergreep. Die splitst in een *onset* (het begin) en een *rijm*. De rijm splitst weer in de *kern* (de klinker) en de *coda* (wat erna komt). Alleen de kern is verplicht: *ei* is een complete lettergreep.',
+            tree: {
+              q: 'Hang de klanken van ‘plant’ in de boom',
+              segs: [
+                { t: 'p', role: 'onset' },
+                { t: 'l', role: 'onset' },
+                { t: 'a', role: 'kern' },
+                { t: 'n', role: 'coda' },
+                { t: 't', role: 'coda' },
+              ],
+              note: 'pl is de onset, a de kern, nt de coda. Kern en coda samen: de rijm ant.',
+            },
+          },
+          {
+            text: 'Waarom een aparte rijm? Omdat rijm in een gedicht precies dat stuk is: *maan* rijmt op *baan* omdat kern en coda gelijk zijn; de onset mag verschillen. *Alliteratie* doet het omgekeerde: gelijke onsets, zoals in *met man en macht*. Dichters knippen al eeuwen op de grens tussen onset en rijm.',
+            lab: {
+              label: 'Tik een stijlfiguur',
+              chips: [
+                { k: 'rijm', out: 'maan · baan · traan', note: 'Zelfde rijm (aan), andere onset.' },
+                { k: 'alliteratie', out: 'met man en macht', note: 'Zelfde onset (m), andere rijm.' },
+                { k: 'assonantie', out: 'kat · lag', note: 'Alleen de kern is gelijk. Een halfrijm.' },
+              ],
+            },
+            quiz: {
+              q: 'Welk woord rijmt op ‘trein’?',
+              options: ['klein', 'trap', 'tram'],
+              answer: 'klein',
+              why: 'ein = ein. Rijm is kern plus coda; de onset (tr, kl) telt niet mee.',
+            },
+          },
+          {
+            text: 'Nog een bewijs: *mengwoorden*. *Brunch* is *breakfast* plus *lunch*: de onset van het ene woord, de rijm van het andere. *Smog* is *smoke* plus *fog*, *Brexit* is *Britain* plus *exit*. Mengwoorden worden bijna altijd op de grens onset-rijm gelast, niet midden in een rijm.',
+            rule: 'Lettergreep = onset + rijm. Rijm = kern + coda. Alleen de kern is verplicht.',
+            deep: {
+              q: 'Is die boom de enige mogelijkheid?',
+              a: 'Nee. Het *onset-rijmmodel* (onder anderen Selkirk 1982) ziet de rijm als eenheid. Het *moramodel* (Hyman 1985, Hayes 1989) telt alleen gewichtseenheden en hangt de onset direct aan de lettergreep. Experimenten van Rebecca Treiman lieten zien dat mensen woorden makkelijker op de grens onset-rijm knippen dan ergens anders. Het moramodel komt terug in de master.',
+            },
+          },
+        ],
+      },
+      {
+        kind: 'highlight',
+        id: 'struik',
+        prompt: 'Kleur de klanken van ‘struik’',
+        intro: 'Kies een stift en tik de klanken aan.',
+        pens: [
+          { id: 'onset', label: 'onset', tag: 'begin', ask: 'Komt deze klank vóór de klinker?', accent: 'blue' },
+          { id: 'kern', label: 'kern', tag: 'klinker', ask: 'Is dit het hart van de lettergreep?', accent: 'purple' },
+          { id: 'coda', label: 'coda', tag: 'eind', ask: 'Komt deze klank na de klinker?', accent: 'orange' },
+        ],
+        words: [
+          { t: 's', role: 'onset' },
+          { t: 't', role: 'onset' },
+          { t: 'r', role: 'onset' },
+          { t: 'ui', role: 'kern' },
+          { t: 'k', role: 'coda' },
+        ],
+        done: { title: 'Een volle onset', text: 'str is een onset van drie klanken, het maximum in het Nederlands. ui is de kern, k de coda.' },
+      },
+      {
+        kind: 'sort',
+        id: 'rijm-alliteratie',
+        prompt: 'Rijm of alliteratie?',
+        buckets: ['rijm', 'alliteratie'],
+        items: [
+          { t: 'kip · rip', b: 0 },
+          { t: 'kip · kap', b: 1 },
+          { t: 'blauw · flauw', b: 0 },
+          { t: 'stoer · sterk', b: 1 },
+          { t: 'zon · ton', b: 0 },
+          { t: 'groen · grijs', b: 1 },
+        ],
+        why: 'Rijm: gelijke rijm (ip, auw, on). Alliteratie: gelijke onset (k, st, gr).',
+      },
+      {
+        kind: 'choice',
+        id: 'rijm-van',
+        prompt: 'Wat is de rijm van ‘vlecht’?',
+        before: '',
+        after: '',
+        options: ['echt', 'vl', 'e', 'cht'],
+        answer: 'echt',
+        why: 'Rijm = kern + coda: e + cht. vl is de onset.',
+      },
+      {
+        kind: 'swipe',
+        id: 'boom',
+        prompt: 'Klopt deze zin?',
+        intro: 'Veeg naar rechts als de zin klopt.',
+        cards: [
+          { t: 'Elke lettergreep heeft een onset.', ok: false, fix: 'Niet elke lettergreep heeft een onset', why: 'ei, oog en uit beginnen met de kern. Alleen de kern is verplicht.' },
+          { t: 'Maan en baan rijmen omdat hun rijm gelijk is.', ok: true, why: 'Kern aa, coda n: allebei aan.' },
+          { t: 'De coda staat vóór de kern.', ok: false, fix: 'De coda staat na de kern', why: 'Onset, kern, coda: in die volgorde.' },
+          { t: 'In brunch komt de onset uit breakfast.', ok: true, why: 'br uit breakfast, unch uit lunch.' },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'g6',
+    stage: 'bachelor',
+    domain: 'fon',
+    also: ['orth'],
+    title: 'Waar valt de grens?',
+    skill: 'Spelling',
+    icon: 'ze|bra',
+    steps: [
+      {
+        kind: 'explain',
+        id: 'uitleg',
+        title: 'Drie wetten voor de grens',
+        panels: [
+          {
+            text: 'Lettergrepen vechten om medeklinkers. Drie wetten beslissen wie wint. Wet één: geef zoveel mogelijk medeklinkers aan de *volgende* lettergreep, het *Maximale-Onsetprincipe*. In *zebra* gaan b én r naar de tweede lettergreep: *ze-bra*. Kijk naar de berg: elke lettergreep heeft één top.',
+            sonority: {
+              segs: [
+                { t: 'z', s: 2 },
+                { t: 'e', s: 6 },
+                { t: 'b', s: 1 },
+                { t: 'r', s: 4 },
+                { t: 'a', s: 6 },
+              ],
+              cuts: [2],
+              note: 'br klimt netjes omhoog naar de a: een prima onset.',
+            },
+          },
+          {
+            text: 'Wet twee: een onset moet een *toegestaan woordbegin* zijn. *br* mag (*brood*), *nd* niet: geen Nederlands woord begint met *nd*. Dus *pinda* wordt *pin-da*, niet *pi-nda*. En *tl* stijgt wel in sonoriteit, maar het Nederlands verbiedt het aan het begin: daarom *At-las*.',
+            sonority: {
+              segs: [
+                { t: 'p', s: 1 },
+                { t: 'i', s: 6 },
+                { t: 'n', s: 3 },
+                { t: 'd', s: 1 },
+                { t: 'a', s: 6 },
+              ],
+              cuts: [3],
+              note: 'De n daalt van de i af: hij hoort bij de eerste top. nd kan geen woord beginnen.',
+            },
+          },
+          {
+            text: 'Wet drie: een *korte* klinker moet in een *gesloten* lettergreep staan, met een coda. Kijk naar *ekster*. Wet één wil zoveel mogelijk naar rechts, maar *kst* is geen woordbegin. *st* wel (*stoel*), en de korte e krijgt de k als coda. Zie je de s? Hij is hoger dan de t ernaast: de bekende rebel aan de rand van een onset.',
+            sonority: {
+              segs: [
+                { t: 'e', s: 6 },
+                { t: 'k', s: 1 },
+                { t: 's', s: 2 },
+                { t: 't', s: 1 },
+                { t: 'ə', s: 6 },
+                { t: 'r', s: 4 },
+              ],
+              cuts: [2],
+              note: 'ek-stər: de korte e houdt de k, st begint de tweede lettergreep.',
+            },
+            rule: 'Zoveel mogelijk naar rechts, maar alleen als het een woordbegin is, en een korte klinker houdt een coda.',
+            deep: {
+              q: 'Botsen de wetten weleens?',
+              a: 'Ja, en dan wordt het interessant. In *bommen* wil de korte o de m als coda, maar de tweede lettergreep wil ook een onset. De oplossing, de *ambisyllabische* m, ken je uit Klank en letter. Optimaliteitstheorie maakt zulke botsingen expliciet: welke wet wint, hangt af van de rangorde. Daarover gaat de master.',
+            },
+          },
+        ],
+      },
+      {
+        kind: 'sort',
+        id: 'woordbegin',
+        prompt: 'Mag een Nederlands woord hiermee beginnen?',
+        buckets: ['mag', 'mag niet'],
+        items: [
+          { t: 'kn', b: 0 },
+          { t: 'tl', b: 1 },
+          { t: 'dw', b: 0 },
+          { t: 'rk', b: 1 },
+          { t: 'zw', b: 0 },
+          { t: 'nd', b: 1 },
+          { t: 'vl', b: 0 },
+          { t: 'dl', b: 1 },
+        ],
+        why: 'knie, dwerg, zwaan, vlag: toegestaan. tl, dl, rk en nd beginnen geen enkel Nederlands woord.',
+      },
+      {
+        kind: 'choice',
+        id: 'monster',
+        prompt: 'Hoe deel je ‘monster’ in lettergrepen?',
+        before: '',
+        after: '',
+        options: ['mon-ster', 'mons-ter', 'mo-nster'],
+        answer: 'mon-ster',
+        why: 'st mag een woord beginnen (stoel), dus maximaal naar rechts: mon-ster. nst kan geen woordbegin zijn.',
+      },
+      {
+        kind: 'choice',
+        id: 'akte',
+        prompt: 'En ‘akte’?',
+        before: '',
+        after: '',
+        options: ['ak-te', 'a-kte'],
+        answer: 'ak-te',
+        why: 'kt is geen woordbegin, en de korte a heeft een coda nodig.',
+      },
+      {
+        kind: 'bet',
+        id: 'kadral',
+        prompt: 'Een verzonnen woord: ‘kadral’. Waar valt de grens?',
+        intro: 'Een woord dat je nooit hoorde, dus je moet rekenen met de wetten.',
+        options: ['ka-dral', 'kad-ral', 'kadr-al'],
+        answer: 'ka-dral',
+        why: 'dr mag een woord beginnen (droom) en de a in een open lettergreep is lang. Dus ka-dral.',
+      },
+    ],
+  },
+  {
+    id: 'g7',
+    stage: 'bachelor',
+    domain: 'fon',
+    title: 'Hoe vol mag een rijm?',
+    skill: 'Spelling',
+    icon: '3',
+    steps: [
+      {
+        kind: 'explain',
+        id: 'uitleg',
+        title: 'Het plafond van drie plekken',
+        panels: [
+          {
+            text: 'Tijd om te rekenen. Geef een korte klinker *één plek*, een lange klinker of tweeklank *twee plekken*, en elke medeklinker *één plek*. Tel dan de rijm. *kaap*: aa + p = 3. *kamp*: a + m + p = 3. En *kaamp*? aa + m + p = 4. Kijk: *kaamp*, *boomp* en *pijlk* bestaan niet. Het Nederlands heeft een plafond: een rijm van hoogstens *drie plekken*.',
+            lab: {
+              label: 'Tik een woord',
+              chips: [
+                { k: 'kaap', out: 'aa + p = 3', note: 'Past onder het plafond.' },
+                { k: 'kamp', out: 'a + m + p = 3', note: 'Past ook.' },
+                { k: 'kaamp', out: 'aa + m + p = 4', note: 'Te vol. Zo’n woord bestaat niet.' },
+              ],
+            },
+          },
+          {
+            text: 'Maar wacht: *herfst*, *oogst*, *maand*. Die tellen meer dan drie! Kijk wat er overblijft: altijd *t*, *d* of *s*. Klanken die je met je tongpunt maakt, *coronalen*. Fonologen hangen ze buiten de rijm, in een *appendix*: een aanhangsel aan de rand van de lettergreep.',
+            tree: {
+              q: 'Hang ‘herfst’ in de boom',
+              segs: [
+                { t: 'h', role: 'onset' },
+                { t: 'e', role: 'kern' },
+                { t: 'r', role: 'coda' },
+                { t: 'f', role: 'coda' },
+                { t: 's', role: 'appendix' },
+                { t: 't', role: 'appendix' },
+              ],
+              note: 'De rijm is e + r + f: drie plekken. De st hangt erbuiten, in de appendix.',
+            },
+          },
+          {
+            text: 'De appendix is precies de plek waar uitgangen landen. *Kookt*: oo + k = 3, en de *t* van de vervoeging hangt in de appendix. *Ergst*: e + r + ch = 3, en de *st* van de overtreffende trap past er nog bij. Zo werken klank en woordbouw samen: de uitgangen die het Nederlands achter woorden plakt, zijn juist de klanken die altijd nog passen.',
+            rule: 'Een rijm heeft hoogstens drie plekken. Wat erna komt is coronaal (t, d, s) en hangt in de appendix.',
+            deep: {
+              q: 'Wie bedacht dat plafond?',
+              a: 'De rijm van drie plekken is uitgewerkt door Mieke Trommelen (*The Syllable in Dutch*, 1984) en Harry van der Hulst (1984). Er zijn randgevallen, zoals *doorn* en *hoorn*, waar een *n* volgt op lange klinker plus *r*. Maar ook dat is een klank van de tongpunt: de rand van de lettergreep blijft coronaal.',
+            },
+          },
+        ],
+      },
+      {
+        kind: 'swipe',
+        id: 'kan-het',
+        prompt: 'Kan dit een Nederlands woord zijn?',
+        intro: 'Allemaal verzonnen. Tel de plekken van de rijm.',
+        cards: [
+          { t: 'kaamp kan een Nederlands woord zijn.', ok: false, fix: 'kaamp kan het niet zijn', why: 'aa + m + p = 4, en de p is geen coronaal.' },
+          { t: 'flaant kan een Nederlands woord zijn.', ok: true, why: 'aa + n = 3. De t gaat in de appendix.' },
+          { t: 'stoelk kan een Nederlands woord zijn.', ok: false, fix: 'stoelk kan het niet zijn', why: 'oe + l + k = 4, en k is niet coronaal.' },
+          { t: 'gerfst kan een Nederlands woord zijn.', ok: true, why: 'Net als herfst: e + r + f, plus st in de appendix.' },
+          { t: 'buulp kan een Nederlands woord zijn.', ok: false, fix: 'buulp kan het niet zijn', why: 'uu + l + p = 4.' },
+        ],
+      },
+      {
+        kind: 'sort',
+        id: 'plekken',
+        prompt: 'Hoeveel plekken heeft de rijm?',
+        buckets: ['twee', 'drie'],
+        items: [
+          { t: 'kat', b: 0 },
+          { t: 'zee', b: 0 },
+          { t: 'kaas', b: 1 },
+          { t: 'melk', b: 1 },
+          { t: 'tuin', b: 1 },
+          { t: 'bus', b: 0 },
+        ],
+        why: 'kat: a + t. zee: ee. bus: u + s. kaas: aa + s. melk: e + l + k. tuin: ui + n.',
+      },
+      {
+        kind: 'choice',
+        id: 'oogst',
+        prompt: 'Wat hangt in de appendix van ‘oogst’?',
+        before: '',
+        after: '',
+        options: ['st', 'gst', 'oo', 'g'],
+        answer: 'st',
+        why: 'oo + g (een ch-klank) = 3 plekken. De st blijft over, en die is coronaal.',
+      },
+      {
+        kind: 'bet',
+        id: 'kaamp',
+        prompt: 'Waarom bestaat ‘kamp’ wel en ‘kaamp’ niet?',
+        options: ['kaamp heeft een rijm van vier plekken', 'kaamp heeft geen onset', 'kaamp heeft de klemtoon verkeerd'],
+        answer: 'kaamp heeft een rijm van vier plekken',
+        why: 'aa telt dubbel. Met m en p erbij zit je boven het plafond, en p mag niet in de appendix.',
+      },
+    ],
+  },
+  {
+    id: 'g8',
+    stage: 'bachelor',
+    domain: 'fon',
+    also: ['orth'],
+    title: 'De lettergreep wil een begin',
+    skill: 'Spelling',
+    icon: 'ʔ',
+    steps: [
+      {
+        kind: 'explain',
+        id: 'uitleg',
+        title: 'Hiaat, glijklank en glottisslag',
+        panels: [
+          {
+            text: 'Lettergrepen hebben een voorkeur: ze beginnen graag met een medeklinker. Botsen twee klinkers, een *hiaat*, dan schuift je mond er stiekem iets tussen. Je zegt *zeeën* als [zeː.jən], met een j. En *boa* als [boː.wa], met een w.',
+            lab: {
+              label: 'Tik een woord',
+              chips: [
+                { k: 'zeeën', out: '[zeː.jən]', note: 'Na een voorklinker als ee glijdt er een j tussen.' },
+                { k: 'boa', out: '[boː.wa]', note: 'Na een achterklinker als oo komt er een w tussen.' },
+                { k: 'chaos', out: '[xaː.ʔɔs]', note: 'Na een a past j noch w. Dan komt er een glottisslag: het knakje in je keel.' },
+              ],
+            },
+          },
+          {
+            text: 'Die glottisslag [ʔ] hoor je ook in *beamen*: [bə.ʔaː.mən]. De spelling markeert precies deze plekken. Het *trema* (*zeeën*, *ruïne*) en het koppelteken (*na-apen*, *zee-egel*) staan waar een nieuwe lettergreep zonder onset begint.',
+            rule: 'Een lettergreep zonder onset na een klinker krijgt een j, w of ʔ. Trema en koppelteken markeren die plek.',
+            quiz: {
+              q: 'Wat hoor je in het midden van ‘piano’?',
+              options: ['een j: [pi.jaː.no]', 'een w: [pi.waː.no]', 'niets: [pi.aː.no]'],
+              answer: 'een j: [pi.jaː.no]',
+              why: 'Na de voorklinker i glijdt er een j tussen.',
+            },
+          },
+          {
+            text: 'Het gaat zelfs over woordgrenzen heen. Zeg snel *heb ik*: je zegt [hɛ.bɪk], met een *b*! Los klinkt *heb* als [hɛp], want aan het eind van een lettergreep wordt een b een p. Maar hier springt de b naar *ik*, dat geen onset had. Daar is hij geen eindklank meer, dus blijft hij stemhebbend.',
+            split: { q: 'Knip zoals je het snel zegt', word: 'hebik', answer: 'he-bik', note: 'De b springt naar ik. Daarom hoor je b, geen p.' },
+            deep: {
+              q: 'Gebeurt dat bij elk woord?',
+              a: 'Vooral bij kleine, onbeklemtoonde woordjes als *ik*, *er* en *het*: *heb er* klinkt als [hɛ.bər]. Booij (1995) noemt ze *clitica*: woordjes die tegen een buurwoord aan leunen. Voor een vol woord als *Anna* zeg je in zorgvuldige spraak eerder [hɛp.ʔɑ.naː], met een glottisslag. Daar blijft de grens dus staan.',
+            },
+          },
+        ],
+      },
+      {
+        kind: 'sort',
+        id: 'tussenklank',
+        prompt: 'Welke klank schuift ertussen?',
+        buckets: ['j', 'w', 'ʔ'],
+        items: [
+          { t: 'zeeën', b: 0 },
+          { t: 'piano', b: 0 },
+          { t: 'boa', b: 1 },
+          { t: 'kanoën', b: 1 },
+          { t: 'chaos', b: 2 },
+          { t: 'beamen', b: 2 },
+        ],
+        why: 'Na ee en i: j. Na oo: w. Na a en na de schwa van be-: een glottisslag.',
+      },
+      {
+        kind: 'choice',
+        id: 'heb-ik',
+        prompt: 'Waarom klinkt de b in ‘heb ik’ niet als p?',
+        before: '',
+        after: '',
+        options: ['De b staat in de onset van de lettergreep bik', 'ik maakt elke klank ervoor stemhebbend', 'In vragen is alles stemhebbend'],
+        answer: 'De b staat in de onset van de lettergreep bik',
+        why: 'Eindklankverscherping geldt aan het eind van een lettergreep. In de onset blijft de b een b.',
+      },
+      {
+        kind: 'fix',
+        id: 'trema',
+        prompt: 'Tik het fout gespelde woord en verbeter het.',
+        sentence: 'We hebben twee nieuwe ideeen voor de zee-egel.',
+        wrong: 4,
+        answer: 'ideeën',
+        why: 'idee-en: een nieuwe lettergreep zonder onset. Het trema markeert die grens.',
+      },
+    ],
+  },
+  {
+    id: 'g9',
+    stage: 'bachelor',
+    domain: 'fon',
+    title: 'Melluk: de schwa als reddingsboei',
+    skill: 'Spelling',
+    icon: 'ə',
+    steps: [
+      {
+        kind: 'explain',
+        id: 'uitleg',
+        title: 'Schwa-epenthese',
+        panels: [
+          {
+            text: 'Zeg eens heel gewoon *melk*. Grote kans dat je [mɛlək] zegt, met een stiekeme schwa. *Film* wordt [fɪləm], *arm* wordt [ɑrəm]. Niemand schrijft het, bijna iedereen zegt het weleens. Het heet *schwa-epenthese*: een klinker erbij.',
+            lab: {
+              label: 'Tik een woord',
+              chips: [
+                { k: 'melk', out: '[mɛlək]', note: 'l + k: een schwa ertussen.' },
+                { k: 'film', out: '[fɪləm]', note: 'l + m: een schwa ertussen.' },
+                { k: 'hals', out: '[hɑls]', note: 'l + s: geen schwa. De s maak je met je tongpunt.' },
+              ],
+            },
+          },
+          {
+            text: 'Wanneer gebeurt het? Na een *l* of *r*, vóór een medeklinker die je *niet* met je tongpunt maakt: *k, p, f, m, ch*. Dus *melk*, *hulp*, *wolf*, *erg*, *arm*. Bij *hals*, *hart* en *wals* niet: s en t zijn coronaal. Eén uitzondering valt op: ook *rn* doet mee, zoals in *hoorn* [hoːrən].',
+            rule: 'Na l of r, vóór een niet-coronale medeklinker, kan een schwa verschijnen: melk, film, arm.',
+            quiz: {
+              q: 'In welk woord kan een extra schwa komen?',
+              options: ['hulp', 'hals', 'hart'],
+              answer: 'hulp',
+              why: 'l + p: de p is niet coronaal. In hals en hart volgt een tongpuntklank.',
+            },
+          },
+          {
+            text: 'En de lettergreep? Vergelijk *melk* met *melken*. In *melken* staat de k in de onset van de volgende lettergreep. Dan is de extra schwa veel zeldzamer, en in de standaardtaal ongewoon. De regel voelt zich thuis in de *coda*: daar breekt hij een zware eindgroep open.',
+            split: { word: 'melken', answer: 'mel-ken', note: 'l en k zitten in verschillende lettergrepen. Een schwa ertussen is hier zeldzaam.' },
+            deep: {
+              q: 'Is dat niet gewoon slordig?',
+              a: 'Nee, het is variatie met een systeem. Onderzoek aan het Max Planck Instituut in Nijmegen liet zien dat de schwa sterk wisselt: per dialect, per spreker, zelfs per keer dat iemand hetzelfde woord zegt. Spreektempo en formaliteit verklaren het niet. Wat vastligt, is de *plek*: na l of r, vóór een niet-coronale medeklinker.',
+            },
+          },
+        ],
+      },
+      {
+        kind: 'sort',
+        id: 'schwa-of-niet',
+        prompt: 'Kan hier een extra schwa komen?',
+        buckets: ['ja', 'nee'],
+        items: [
+          { t: 'melk', b: 0 },
+          { t: 'wolf', b: 0 },
+          { t: 'arm', b: 0 },
+          { t: 'kerk', b: 0 },
+          { t: 'hals', b: 1 },
+          { t: 'hart', b: 1 },
+          { t: 'wals', b: 1 },
+          { t: 'barst', b: 1 },
+        ],
+        why: 'melk, wolf, arm, kerk: l of r + k, f of m. hals, hart, wals, barst: l of r + s of t, en die zijn coronaal.',
+      },
+      {
+        kind: 'choice',
+        id: 'coronaal',
+        prompt: 'Wat hebben s, t en d gemeen, zodat ze geen schwa uitlokken?',
+        before: '',
+        after: '',
+        options: ['Je maakt ze met je tongpunt: ze zijn coronaal', 'Ze zijn stemloos', 'Het zijn klinkers'],
+        answer: 'Je maakt ze met je tongpunt: ze zijn coronaal',
+        why: 'De d is stemhebbend, dus het gaat niet om de stem. Het gaat om de plaats: de tongpunt.',
+      },
+      {
+        kind: 'bet',
+        id: 'holp',
+        prompt: 'Verzonnen woord: ‘holp’. Hoe kan een Nederlander het uitspreken?',
+        options: ['zowel [hɔlp] als [hɔləp]', 'alleen [hɔləp]', 'alleen [hɔlp]'],
+        answer: 'zowel [hɔlp] als [hɔləp]',
+        why: 'l + p in de coda: de schwa kan, maar hoeft niet. Epenthese is optioneel.',
+      },
+    ],
+  },
+  {
+    id: 'g10',
+    stage: 'bachelor',
+    domain: 'morf',
+    also: ['fon'],
+    title: 'Balletje of baltje?',
+    skill: 'Woorden',
+    icon: '-etje',
+    steps: [
+      {
+        kind: 'explain',
+        id: 'uitleg',
+        title: 'Woordbouw die lettergrepen telt',
+        panels: [
+          {
+            text: 'Waarom *balletje* maar *stoeltje*? Beide eindigen op een l. Het verschil zit in de lettergreep ervoor: *bal* heeft een korte klinker en de klemtoon, *stoel* een lange klank. Het verkleinwoord rekent dus met de *rijm* van de laatste lettergreep, niet met de laatste letter.',
+            lab: {
+              label: 'Tik een woord',
+              chips: [
+                { k: 'bal', out: 'balletje', note: 'Korte klinker + l, met klemtoon: -etje.' },
+                { k: 'stoel', out: 'stoeltje', note: 'Lange klank + l: -tje.' },
+                { k: 'boom', out: 'boompje', note: 'Lange klank + m: -pje.' },
+                { k: 'boek', out: 'boekje', note: 'Na een plof- of wrijfklank: -je.' },
+              ],
+            },
+          },
+          {
+            text: 'Ook de klemtoon telt mee. *Ring* wordt *ringetje*, maar *koning* wordt *koninkje*. De *ning* van *koning* is onbeklemtoond. Zelfde rijm, andere plek in het ritme, andere uitgang.',
+            build: { before: 'Een kleine koning is een…', stem: 'konin', endings: ['gje', 'gtje', 'getje', 'kje'], answer: 'kje', note: 'koninkje: een onbeklemtoonde -ing krijgt -kje.' },
+            rule: '-etje: korte klinker + l, r, m, n of ng, met klemtoon. -pje: lange klank + m. -tje: klinker, of lange klank + l, r, n. -je: na plof- en wrijfklanken.',
+            deep: {
+              q: 'Waarom is dit belangrijk voor taalkundigen?',
+              a: 'Het verkleinwoord is een klassiek bewijsstuk voor de lettergreep. Mieke Trommelen schreef er een heel proefschrift over: *The Syllable in Dutch, with special reference to diminutive formation* (1984). De kern: welke uitgang je kiest, hangt af van de rijm en de klemtoon van de laatste lettergreep. Dat kun je niet uit letters afleiden, alleen uit lettergreepstructuur.',
+            },
+          },
+          {
+            text: 'Ook het meervoud luistert naar ritme. Na een beklemtoonde laatste lettergreep: *-en* (*boe-ken*, *ka-non-nen*). Na een onbeklemtoonde lettergreep met schwa: *-s* (*ta-fels*, *be-zems*). Zo eindigt het meervoud bijna altijd op een sterke plus een zwakke lettergreep: *BOE-ken*, *TA-fels*. Met *-en* kreeg je *ta-fe-len*: twee zwakke lettergrepen achter elkaar.',
+            quiz: {
+              q: 'Wat is het meervoud van ‘lepel’?',
+              options: ['lepels', 'lepelen'],
+              answer: 'lepels',
+              why: 'le-pel eindigt onbeklemtoond met een schwa, dus -s. Zo eindigt het op sterk-zwak: LE-pels.',
+            },
+            deep: {
+              q: 'Is dat een harde regel?',
+              a: 'Nee, een sterke neiging. *Leraar* wordt *leraren* en *vijand* wordt *vijanden*, ook al valt de klemtoon vooraan. Taalkundigen als Geert Booij beschrijven het daarom als een ritmische voorkeur: het meervoud eindigt het liefst op een *trochee*, sterk-zwak.',
+            },
+          },
+        ],
+      },
+      {
+        kind: 'sort',
+        id: 'verkleinwoord',
+        prompt: 'Welk verkleinwoord?',
+        buckets: ['-etje', '-pje', '-tje', '-je'],
+        items: [
+          { t: 'kam', b: 0 },
+          { t: 'zon', b: 0 },
+          { t: 'raam', b: 1 },
+          { t: 'bezem', b: 1 },
+          { t: 'deur', b: 2 },
+          { t: 'trein', b: 2 },
+          { t: 'kast', b: 3 },
+          { t: 'hoed', b: 3 },
+        ],
+        why: 'kammetje, zonnetje; raampje, bezempje; deurtje, treintje; kastje, hoedje.',
+      },
+      {
+        kind: 'type',
+        id: 'ster',
+        prompt: 'Typ het verkleinwoord.',
+        before: 'Een kleine ster is een',
+        after: '.',
+        hint: 'ster',
+        answer: 'sterretje',
+        why: 'ster: korte e + r, met klemtoon. Dus -etje, met een verdubbelde r: ster-re-tje.',
+      },
+      {
+        kind: 'sort',
+        id: 'meervoud',
+        prompt: 'Meervoud op -en of op -s?',
+        buckets: ['-en', '-s'],
+        items: [
+          { t: 'boek', b: 0 },
+          { t: 'gordijn', b: 0 },
+          { t: 'kanon (wapen)', b: 0 },
+          { t: 'tafel', b: 1 },
+          { t: 'bezem', b: 1 },
+          { t: 'wortel', b: 1 },
+        ],
+        why: 'Beklemtoonde laatste lettergreep: -en (boeken, gordijnen, kanonnen). Onbeklemtoond met schwa: -s (tafels, bezems, wortels).',
+      },
+      {
+        kind: 'bet',
+        id: 'plom',
+        prompt: 'Een ‘plom’ is een verzonnen diertje. Hoe noem je een kleine plom?',
+        intro: 'Een woord dat niemand kent: dan zie je of de regel echt in je hoofd zit.',
+        options: ['plommetje', 'plompje', 'plomtje'],
+        answer: 'plommetje',
+        why: 'Korte o + m in een beklemtoonde lettergreep: -etje, net als kammetje.',
+      },
+    ],
+  },
+  {
+    id: 'g11',
+    stage: 'bachelor',
+    domain: 'orth',
+    also: ['fon'],
+    title: 'Schrijven in lettergrepen',
+    skill: 'Spelling',
+    icon: 'か',
+    steps: [
+      {
+        kind: 'explain',
+        id: 'uitleg',
+        title: 'Syllabaria en blokjesschrift',
+        panels: [
+          {
+            text: 'Het alfabet is maar één manier om te schrijven. Veel schriften hebben een teken per *lettergreep*: een *syllabarium*. Het Japans gebruikt *kana*: か is *ka*, き is *ki*, す is *su*. Eén teken, een hele lettergreep.',
+            lab: {
+              label: 'Tik een woord',
+              chips: [
+                { k: 'すし', out: 'su · shi', note: 'Twee tekens, twee lettergrepen.' },
+                { k: 'さくら', out: 'sa · ku · ra', note: 'Drie tekens: kersenbloesem.' },
+                { k: 'かき', out: 'ka · ki', note: 'Twee tekens: de kakivrucht.' },
+              ],
+            },
+          },
+          {
+            text: 'In 1821 voltooide Sequoyah, die zelf nooit had leren lezen, een syllabarium voor het Cherokee: zo’n 85 tekens. Binnen een paar jaar konden duizenden Cherokee lezen. Voor het Nederlands zou dat nooit werken: het Japans heeft een paar honderd verschillende lettergrepen, het Nederlands *duizenden* (Levelt en Wheeldon 1994). Met *str*, *mpst* en *herfst* erbij heb je een woordenboek aan tekens nodig.',
+            rule: 'Een syllabarium past bij een taal met weinig en eenvoudige lettergrepen. Het Nederlands heeft er te veel.',
+            quiz: {
+              q: 'Waarom schrijft het Nederlands met een alfabet en niet met een syllabarium?',
+              options: ['Het heeft duizenden verschillende lettergrepen', 'Het heeft geen lettergrepen', 'Nederlandse lettergrepen hebben geen klinker'],
+              answer: 'Het heeft duizenden verschillende lettergrepen',
+              why: 'Met een alfabet bouw je elke lettergreep uit zo’n dertig letters.',
+            },
+          },
+          {
+            text: 'Het Koreaanse *hangeul* (1446) is een slimme tussenvorm. Het heeft letters, maar stapelt ze per lettergreep in een blokje: 한 = ㅎ (h) + ㅏ (a) + ㄴ (n). Onset linksboven, kern ernaast, coda eronder. Het schrift tekent dus de lettergreepboom!',
+            lab: {
+              label: 'Tik een blokje',
+              chips: [
+                { k: '한', out: 'ㅎ + ㅏ + ㄴ = han', note: 'Onset h, kern a, coda n.' },
+                { k: '글', out: 'ㄱ + ㅡ + ㄹ = geul', note: 'Onset g, kern eu, coda l.' },
+                { k: '아', out: 'ㅇ + ㅏ = a', note: 'Geen onset? Dan staat er een stille ㅇ als plaatshouder.' },
+              ],
+            },
+            deep: {
+              q: 'Zijn er nog meer?',
+              a: 'Het oudste geschreven Grieks, *Lineair B* (rond 1400 voor Christus), was ook een syllabarium. Het Grieks had veel medeklinkergroepen, dus schrijvers lieten codaklanken vaak gewoon weg. Michael Ventris ontcijferde het schrift in 1952. Ook het Devanagari van het Hindi werkt per lettergreep: een medeklinker heeft er standaard een a achter zich.',
+            },
+          },
+        ],
+      },
+      {
+        kind: 'sort',
+        id: 'schriften',
+        prompt: 'Wat voor schrift is dit?',
+        buckets: ['alfabet', 'syllabarium', 'letters in lettergreepblokjes'],
+        items: [
+          { t: 'Nederlands', b: 0 },
+          { t: 'Russisch (cyrillisch)', b: 0 },
+          { t: 'Japanse kana', b: 1 },
+          { t: 'Cherokee', b: 1 },
+          { t: 'Lineair B', b: 1 },
+          { t: 'Koreaans hangeul', b: 2 },
+        ],
+        why: 'Nederlands en Russisch: een teken per klank. Kana, Cherokee en Lineair B: een teken per lettergreep. Hangeul: letters, gestapeld per lettergreep.',
+      },
+      {
+        kind: 'choice',
+        id: 'hangeul',
+        prompt: 'Welk deel van de lettergreep staat in hangeul onderaan het blokje?',
+        before: '',
+        after: '',
+        options: ['de coda', 'de onset', 'de kern'],
+        answer: 'de coda',
+        why: 'Onset linksboven, kern ernaast of eronder, coda helemaal onderaan.',
+      },
+      {
+        kind: 'bet',
+        id: 'sakura',
+        prompt: 'Hoeveel kana heb je nodig voor ‘sakura’?',
+        options: ['3', '6', '2'],
+        answer: '3',
+        why: 'sa-ku-ra: drie lettergrepen, drie tekens: さくら.',
+      },
+    ],
+  },
+];

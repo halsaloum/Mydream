@@ -171,6 +171,32 @@ const TableauSchema = z
   })
   .describe('OT-tableau: zet de eisen in een rangorde waarbij de juiste kandidaat wint.');
 
+/** Sonoriteitsschaal, van laag naar hoog: de hoogte van een klank in de lettergreepberg (1–6). */
+export const SONORITY = ['plofklank', 'wrijfklank', 'neusklank', 'l of r', 'glijklank', 'klinker'] as const;
+
+const SonoritySchema = z
+  .object({
+    q: Text.optional().describe('Opdracht boven de berg; standaard "Knip de berg in lettergrepen".'),
+    segs: z
+      .array(z.object({ t: Text.describe('De klank, bv. "p" of "aː".'), s: z.int().min(1).max(6).describe('Sonoriteit: 1 plofklank … 6 klinker.') }))
+      .min(2)
+      .max(10),
+    cuts: z.array(z.int().positive()).min(1).describe('Knippunten: na hoeveel klanken een lettergreep eindigt, oplopend.'),
+    note: Text,
+  })
+  .describe('Sonoriteitsberg: de klanken van een woord als staven; knip de berg in lettergrepen.');
+
+/** De plekken in een lettergreep, in volgorde. De appendix hangt buiten de rijm, aan de rand. */
+export const SYLLABLE_ROLES = ['onset', 'kern', 'coda', 'appendix'] as const;
+
+const TreeSchema = z
+  .object({
+    q: Text.optional().describe('Opdracht boven de boom; standaard "Hang elke klank in de boom".'),
+    segs: z.array(z.object({ t: Text, role: z.enum(SYLLABLE_ROLES) })).min(2).max(8).describe('De klanken van één lettergreep, met hun plek.'),
+    note: Text,
+  })
+  .describe('Lettergreepboom: kies een tak (onset, kern, coda) en hang de klanken eraan.');
+
 export const PanelSchema = z
   .object({
     text: Rich,
@@ -189,6 +215,8 @@ export const PanelSchema = z
     vowels: VowelsSchema.optional(),
     grid: GridSchema.optional(),
     tableau: TableauSchema.optional(),
+    sonority: SonoritySchema.optional(),
+    tree: TreeSchema.optional(),
   })
   .superRefine((panel, ctx) => {
     if (panel.lab && !unique(panel.lab.chips.map((chip) => chip.k))) issue(ctx, ['lab', 'chips'], 'Knopteksten moeten uniek zijn');
@@ -250,6 +278,20 @@ export const PanelSchema = z
       if (!unique(targets)) issue(ctx, ['grid', 'targets'], 'Tekens staan dubbel');
       targets.forEach((target, i) => {
         if (!cells.some((cell) => cell.t === target)) issue(ctx, ['grid', 'targets', i], `"${target}" staat niet in de tabel`);
+      });
+    }
+    if (panel.sonority) {
+      const { segs, cuts } = panel.sonority;
+      cuts.forEach((cut, i) => {
+        if (cut >= segs.length) issue(ctx, ['sonority', 'cuts', i], `Knippunt ${cut} valt buiten het woord (${segs.length} klanken)`);
+        if (i > 0 && cut <= (cuts[i - 1] ?? 0)) issue(ctx, ['sonority', 'cuts', i], 'Knippunten moeten oplopen');
+      });
+    }
+    if (panel.tree) {
+      const roles = panel.tree.segs.map((seg) => SYLLABLE_ROLES.indexOf(seg.role));
+      if (!roles.includes(1)) issue(ctx, ['tree', 'segs'], 'Een lettergreep heeft een kern');
+      roles.forEach((role, i) => {
+        if (i > 0 && role < (roles[i - 1] ?? 0)) issue(ctx, ['tree', 'segs', i, 'role'], 'Volgorde is onset, kern, coda, appendix');
       });
     }
     if (panel.tableau) {

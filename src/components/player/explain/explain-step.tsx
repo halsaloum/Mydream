@@ -14,6 +14,7 @@ import { Disclosure } from '@/components/ui/disclosure';
 import { RichText } from '@/components/ui/rich-text';
 import { Examples, RuleCard, StepHeading, type StepProps } from '../steps/shared';
 import { GridWidget, TableauWidget, VowelsWidget } from './sound-widgets';
+import { SonorityWidget, TreeWidget } from './syllable-widgets';
 import { AlphaWidget, BlendWidget, BuildWidget, LabWidget, MarkWidget, SplitWidget, SwapWidget, WheelWidget } from './widgets';
 
 /** Naar een ander uitlegdeel (de voettekst gebruikt dit ook voor "Volgende deel"). */
@@ -169,6 +170,10 @@ function PanelBody({
             return panel.grid && <GridWidget key={widget} data={panel.grid} {...props} />;
           case 'tableau':
             return panel.tableau && <TableauWidget key={widget} data={panel.tableau} {...props} />;
+          case 'sonority':
+            return panel.sonority && <SonorityWidget key={widget} data={panel.sonority} {...props} />;
+          case 'tree':
+            return panel.tree && <TreeWidget key={widget} data={panel.tree} {...props} />;
         }
       })}
     </div>
