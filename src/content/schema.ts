@@ -29,16 +29,12 @@ export const SKILLS = ['Spelling', 'Woorden', 'Zinsbouw', 'Complex', 'Alinea'] a
 export const STAGES = ['basis', 'bachelor', 'master'] as const;
 
 const Text = z.string().regex(/\S/, 'Mag niet leeg zijn');
-const Rich = Text.refine(hasBalancedEmphasis, 'Markeringen met * moeten in paren voorkomen').describe(
-  'Tekst waarin *woord* een taalvoorbeeld markeert.',
-);
+const Rich = Text.refine(hasBalancedEmphasis, 'Markeringen met * moeten in paren voorkomen').describe('Tekst waarin *woord* een taalvoorbeeld markeert.');
 const Id = z
   .string()
   .regex(/^[a-z0-9][a-z0-9-]*$/, 'Gebruik kleine letters, cijfers en koppeltekens')
   .describe('Stabiele sleutel; wijzig niet zodra leerlingen voortgang hebben.');
-const StepId = Id.optional().describe(
-  'Optionele stabiele sleutel van de stap. Zonder id wordt de positie plus een inhoudsvingerafdruk gebruikt.',
-);
+const StepId = Id.optional().describe('Optionele stabiele sleutel van de stap. Zonder id wordt de positie plus een inhoudsvingerafdruk gebruikt.');
 
 export const SkillSchema = z.enum(SKILLS);
 
@@ -56,9 +52,7 @@ export const ExampleSchema = z.object({
 const LabSchema = z
   .object({
     label: Text.describe('Opdrachtzin boven de knoppen, bv. "Tik een woord".'),
-    chips: z
-      .array(z.object({ k: Text.describe('Knoptekst'), out: Text.describe('Resultaat'), note: Text.describe('Toelichting') }))
-      .min(1),
+    chips: z.array(z.object({ k: Text.describe('Knoptekst'), out: Text.describe('Resultaat'), note: Text.describe('Toelichting') })).min(1),
   })
   .describe('Klikexperiment: kies een knop en zie het resultaat veranderen.');
 
@@ -94,9 +88,7 @@ const BuildSchema = z
   })
   .describe('Plak de juiste uitgang achter een stam.');
 
-const AlphaSchema = z
-  .object({ q: Text, targets: z.array(z.string().regex(/^[a-z]$/)).min(1), note: Text })
-  .describe('Tik de doelletters in het alfabet aan.');
+const AlphaSchema = z.object({ q: Text, targets: z.array(z.string().regex(/^[a-z]$/)).min(1), note: Text }).describe('Tik de doelletters in het alfabet aan.');
 
 const WheelSchema = z
   .object({
@@ -193,7 +185,11 @@ export const SYLLABLE_ROLES = ['onset', 'kern', 'coda', 'appendix'] as const;
 const TreeSchema = z
   .object({
     q: Text.optional().describe('Opdracht boven de boom; standaard "Hang elke klank in de boom".'),
-    segs: z.array(z.object({ t: Text, role: z.enum(SYLLABLE_ROLES) })).min(2).max(8).describe('De klanken van één lettergreep, met hun plek.'),
+    segs: z
+      .array(z.object({ t: Text, role: z.enum(SYLLABLE_ROLES) }))
+      .min(2)
+      .max(8)
+      .describe('De klanken van één lettergreep, met hun plek.'),
     note: Text,
   })
   .describe('Lettergreepboom: kies een tak (onset, kern, coda) en hang de klanken eraan.');
@@ -202,10 +198,11 @@ const BracketSchema = z
   .object({
     q: Text.optional().describe('Opdracht boven de woordboom; standaard "Bouw het woord van binnen naar buiten".'),
     tree: Text.describe('De boom in haakjes, bv. "[[on [eet baar]] heid]": elk paar haakjes bevat precies twee stukken.'),
+    words: z.boolean().optional().describe('De bladeren zijn hele woorden, bv. "[het [rode boek]]": knopen heten dan "rode boek", met spaties.'),
     nodes: z
       .array(
         z.object({
-          w: Text.describe('De woorddelen van deze knoop aan elkaar, bv. "eetbaar".'),
+          w: Text.describe('De woorddelen van deze knoop aan elkaar, bv. "eetbaar" (bij words: met spaties, "rode boek").'),
           form: Text.optional().describe('Hoe het stuk geschreven wordt als dat anders is, bv. "balletje".'),
           cat: Text.describe('Woordsoort of soort stuk, bv. "bn".'),
           note: Text.describe('Wat er bij deze stap gebeurt.'),
@@ -220,6 +217,33 @@ const BracketSchema = z
     note: Text,
   })
   .describe('Woordboom: plak steeds twee buren aan elkaar tot het hele woord staat, in de volgorde van de boom.');
+
+const PhraseSpan = z
+  .tuple([z.int().nonnegative(), z.int().nonnegative()])
+  .describe('Eerste en laatste woord van de groep (indexen op spaties, vanaf 0, beide inclusief).');
+
+const PhraseSchema = z
+  .object({
+    q: Text.optional().describe('Opdracht boven de zin; standaard "Vind de woordgroepen".'),
+    sentence: Text,
+    groups: z
+      .array(
+        z.object({
+          span: PhraseSpan,
+          cat: Text.describe('Soort groep, bv. "naamwoordgroep".'),
+          head: z.int().nonnegative().describe('Index van de kern; ligt binnen de groep.'),
+          note: Text.describe('Uitleg zodra de groep gevonden is.'),
+        }),
+      )
+      .min(1)
+      .describe('De groepen die gevonden moeten worden.'),
+    traps: z
+      .array(z.object({ span: PhraseSpan, note: Text.describe('Waarom dit stuk geen groep is.') }))
+      .optional()
+      .describe('Verleidelijke stukken die geen woordgroep zijn.'),
+    note: Text,
+  })
+  .describe('Groepenjager: tik het eerste en het laatste woord van een woordgroep; vind alle gevraagde groepen.');
 
 const ParadigmCellSchema = z.union([
   Text.describe('Een vorm die al gegeven is.'),
@@ -264,6 +288,7 @@ export const PanelSchema = z
     tree: TreeSchema.optional(),
     bracket: BracketSchema.optional(),
     paradigm: ParadigmSchema.optional(),
+    phrase: PhraseSchema.optional(),
   })
   .superRefine((panel, ctx) => {
     if (panel.lab && !unique(panel.lab.chips.map((chip) => chip.k))) issue(ctx, ['lab', 'chips'], 'Knopteksten moeten uniek zijn');
@@ -346,7 +371,7 @@ export const PanelSchema = z
       const tree = parseBracket(source);
       if (!tree) issue(ctx, ['bracket', 'tree'], 'Geen geldige boom: elk paar haakjes bevat precies twee stukken');
       else {
-        const expected = tree.nodes.map((node) => spanText(tree, node));
+        const expected = tree.nodes.map((node) => spanText(tree, node, panel.bracket?.words));
         if (!unique(expected)) issue(ctx, ['bracket', 'tree'], 'Twee knopen hebben dezelfde letters');
         const given = nodes.map((node) => node.w);
         if (!unique(given)) issue(ctx, ['bracket', 'nodes'], 'Knopen staan dubbel');
@@ -375,6 +400,24 @@ export const PanelSchema = z
         if (answers.includes(form)) issue(ctx, ['paradigm', 'extra', i], `"${form}" is juist een goed antwoord`);
       });
     }
+    if (panel.phrase) {
+      const { sentence, groups, traps } = panel.phrase;
+      const count = tokenize(sentence).length;
+      const key = ([from, to]: readonly [number, number]) => `${from}-${to}`;
+      const checkSpan = (span: readonly [number, number], path: (string | number)[]) => {
+        if (span[0] > span[1]) issue(ctx, path, 'Het eerste woord staat na het laatste');
+        if (span[1] >= count) issue(ctx, path, `Index ${span[1]} valt buiten de zin (${count} woorden)`);
+      };
+      groups.forEach((group, i) => {
+        checkSpan(group.span, ['phrase', 'groups', i, 'span']);
+        if (group.head < group.span[0] || group.head > group.span[1]) issue(ctx, ['phrase', 'groups', i, 'head'], 'De kern ligt buiten de groep');
+      });
+      if (!unique(groups.map((group) => key(group.span)))) issue(ctx, ['phrase', 'groups'], 'Groepen staan dubbel');
+      traps?.forEach((trap, i) => {
+        checkSpan(trap.span, ['phrase', 'traps', i, 'span']);
+        if (groups.some((group) => key(group.span) === key(trap.span))) issue(ctx, ['phrase', 'traps', i, 'span'], 'Dit stuk is juist een groep');
+      });
+    }
     if (panel.tableau) {
       const { constraints, candidates, winner } = panel.tableau;
       const marks = candidates.map((candidate) => candidate.marks);
@@ -386,7 +429,14 @@ export const PanelSchema = z
       if (winner >= candidates.length) issue(ctx, ['tableau', 'winner'], 'Deze kandidaat bestaat niet');
       else if (candidates.every((candidate) => candidate.marks.length === constraints.length)) {
         if (!canWin(marks, winner)) issue(ctx, ['tableau', 'winner'], 'Bij geen enkele rangorde wint deze kandidaat');
-        else if (winsAlone(marks, constraints.map((_, i) => i), winner)) issue(ctx, ['tableau', 'constraints'], 'De beginvolgorde is al de oplossing');
+        else if (
+          winsAlone(
+            marks,
+            constraints.map((_, i) => i),
+            winner,
+          )
+        )
+          issue(ctx, ['tableau', 'constraints'], 'De beginvolgorde is al de oplossing');
       }
     }
   });
@@ -397,7 +447,10 @@ const TextTestSchema = z
     z.object({ anyWord: z.array(Text).min(1).describe('Minstens één van deze hele woorden (hoofdletterongevoelig).') }),
     z.object({
       pattern: Text.describe('Reguliere expressie (JavaScript-syntaxis). Vanggroepen worden als gevonden woord getoond.'),
-      flags: z.string().regex(/^[imsu]*$/, 'Alleen de vlaggen i, m, s en u').optional(),
+      flags: z
+        .string()
+        .regex(/^[imsu]*$/, 'Alleen de vlaggen i, m, s en u')
+        .optional(),
     }),
   ])
   .superRefine((test, ctx) => {
@@ -471,7 +524,10 @@ const ParagraphStep = z.object({
   kind: z.literal('paragraph'),
   id: StepId,
   prompt,
-  parts: z.array(z.object({ role: Text, text: Text })).min(2).describe('Zinnen in de juiste volgorde; de app schudt ze.'),
+  parts: z
+    .array(z.object({ role: Text, text: Text }))
+    .min(2)
+    .describe('Zinnen in de juiste volgorde; de app schudt ze.'),
   why,
 });
 const SortStep = z.object({

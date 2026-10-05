@@ -25,11 +25,11 @@ const EXTRA_IDS = new Set(Object.values(EXTRA_LESSONS).flatMap((lessons) => less
 const legacyEntries = lessonEntries.filter((entry) => !EXTRA_IDS.has(entry.lesson.id));
 
 describe('bestaande lesinhoud', () => {
-  it('voldoet aan het contract: 9 niveaus, 29 + 80 lessen, 7 vakgebieden waarvan 4 perspectieven', () => {
+  it('voldoet aan het contract: 9 niveaus, 29 + 96 lessen, 7 vakgebieden waarvan 4 perspectieven', () => {
     expect(course.layers).toHaveLength(9);
     expect(legacyEntries).toHaveLength(29);
-    expect(EXTRA_IDS.size).toBe(80);
-    expect(lessonEntries).toHaveLength(109);
+    expect(EXTRA_IDS.size).toBe(96);
+    expect(lessonEntries).toHaveLength(125);
     expect(course.domains.map((domain) => domain.id)).toEqual(['orth', 'fon', 'morf', 'syn', 'sem', 'prag', 'tekst']);
     expect(course.domains.filter((domain) => domain.persp).map((domain) => domain.id)).toEqual(['morf', 'syn', 'sem', 'prag']);
     expect(course.layers.every((layer) => layer.growth && layer.learn && layer.example && layer.fields.length > 0)).toBe(true);
@@ -94,8 +94,10 @@ describe('nieuwe lessen (packs)', () => {
       .flatMap((layer) => layer.lessons)
       .flatMap((lesson) => lesson.steps)
       .flatMap((step) => (step.kind === 'explain' ? step.panels : []))
-      .flatMap((panel) => (['vowels', 'grid', 'tableau', 'sonority', 'tree', 'bracket', 'paradigm'] as const).filter((widget) => panel[widget] !== undefined));
-    expect(new Set(widgets)).toEqual(new Set(['vowels', 'grid', 'tableau', 'sonority', 'tree', 'bracket', 'paradigm']));
+      .flatMap((panel) =>
+        (['vowels', 'grid', 'tableau', 'sonority', 'tree', 'bracket', 'paradigm', 'phrase'] as const).filter((widget) => panel[widget] !== undefined),
+      );
+    expect(new Set(widgets)).toEqual(new Set(['vowels', 'grid', 'tableau', 'sonority', 'tree', 'bracket', 'paradigm', 'phrase']));
   });
 
   it('weigert lessen voor een onbekend niveau', () => {
@@ -194,19 +196,44 @@ describe('contractvalidatie weigert onjuiste inhoud', () => {
         note: 'n',
       },
     });
-    const bounded = PanelSchema.safeParse(tableau(1, [[0, 1], [1, 1]]));
+    const bounded = PanelSchema.safeParse(
+      tableau(1, [
+        [0, 1],
+        [1, 1],
+      ]),
+    );
     expect(bounded.success).toBe(false);
     if (!bounded.success) expect(z.prettifyError(bounded.error)).toMatch(/Bij geen enkele rangorde/);
-    const solved = PanelSchema.safeParse(tableau(0, [[0, 1], [1, 0]]));
+    const solved = PanelSchema.safeParse(
+      tableau(0, [
+        [0, 1],
+        [1, 0],
+      ]),
+    );
     expect(solved.success).toBe(false);
     if (!solved.success) expect(z.prettifyError(solved.error)).toMatch(/al de oplossing/);
-    expect(PanelSchema.safeParse(tableau(1, [[0, 1], [1, 0]])).success).toBe(true);
+    expect(
+      PanelSchema.safeParse(
+        tableau(1, [
+          [0, 1],
+          [1, 0],
+        ]),
+      ).success,
+    ).toBe(true);
   });
 
   it('sonoriteitsberg: knippunten buiten het woord of niet oplopend', () => {
     const berg = (cuts: number[]) => ({
       text: 'Knip.',
-      sonority: { segs: [{ t: 'a', s: 6 }, { t: 'p', s: 1 }, { t: 'a', s: 6 }], cuts, note: 'n' },
+      sonority: {
+        segs: [
+          { t: 'a', s: 6 },
+          { t: 'p', s: 1 },
+          { t: 'a', s: 6 },
+        ],
+        cuts,
+        note: 'n',
+      },
     });
     const outside = PanelSchema.safeParse(berg([3]));
     expect(outside.success).toBe(false);
@@ -246,6 +273,56 @@ describe('contractvalidatie weigert onjuiste inhoud', () => {
     check(boom('[on [lees baar]]', ['leesbaar', 'onleesbaar', 'baar']), /"baar" is geen knoop/);
     check(boom('[on [lees baar]]', ['leesbaar', 'onleesbaar'], ['leesbaar']), /juist een goede stap/);
     expect(PanelSchema.safeParse(boom('[on [lees baar]]', ['leesbaar', 'onleesbaar'], ['onlees'])).success).toBe(true);
+  });
+
+  it('woordboom van hele woorden: knopen heten naar hun woorden met spaties', () => {
+    const boom = (nodes: string[]) => ({
+      text: 'Bouw.',
+      bracket: { words: true, tree: '[het [rode boek]]', nodes: nodes.map((w) => ({ w, cat: 'NP', note: 'n' })), note: 'n' },
+    });
+    expect(PanelSchema.safeParse(boom(['rode boek', 'het rode boek'])).success).toBe(true);
+    const glued = PanelSchema.safeParse(boom(['rodeboek', 'hetrodeboek']));
+    expect(glued.success).toBe(false);
+    if (!glued.success) expect(z.prettifyError(glued.error)).toMatch(/Knoop "rode boek" heeft geen uitleg/);
+  });
+
+  it('groepenjager: groep buiten de zin, kern buiten de groep, dubbele groep, een val die juist een groep is', () => {
+    const jacht = (groups: { span: [number, number]; head: number }[], traps: [number, number][] = []) => ({
+      text: 'Zoek.',
+      phrase: {
+        sentence: 'Mijn buurman zwaait naar de bakker.',
+        groups: groups.map((group) => ({ ...group, cat: 'naamwoordgroep', note: 'n' })),
+        traps: traps.map((span) => ({ span, note: 'n' })),
+        note: 'n',
+      },
+    });
+    const check = (panel: unknown, message: RegExp) => {
+      const result = PanelSchema.safeParse(panel);
+      expect(result.success).toBe(false);
+      if (!result.success) expect(z.prettifyError(result.error)).toMatch(message);
+    };
+    check(jacht([{ span: [4, 6], head: 5 }]), /valt buiten de zin/);
+    check(jacht([{ span: [3, 1], head: 2 }]), /eerste woord staat na het laatste/);
+    check(jacht([{ span: [0, 1], head: 2 }]), /kern ligt buiten de groep/);
+    check(
+      jacht([
+        { span: [0, 1], head: 1 },
+        { span: [0, 1], head: 0 },
+      ]),
+      /Groepen staan dubbel/,
+    );
+    check(jacht([{ span: [0, 1], head: 1 }], [[0, 1]]), /juist een groep/);
+    expect(
+      PanelSchema.safeParse(
+        jacht(
+          [
+            { span: [0, 1], head: 1 },
+            { span: [4, 5], head: 5 },
+          ],
+          [[1, 2]],
+        ),
+      ).success,
+    ).toBe(true);
   });
 
   it('paradigma: verkeerd aantal vakjes, niets in te vullen, een valkuil die juist goed is', () => {

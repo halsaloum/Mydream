@@ -995,6 +995,10 @@
                                       "pattern": "\\S",
                                       "description": "De boom in haakjes, bv. \"[[on [eet baar]] heid]\": elk paar haakjes bevat precies twee stukken."
                                     },
+                                    "words": {
+                                      "description": "De bladeren zijn hele woorden, bv. \"[het [rode boek]]\": knopen heten dan \"rode boek\", met spaties.",
+                                      "type": "boolean"
+                                    },
                                     "nodes": {
                                       "minItems": 1,
                                       "type": "array",
@@ -1004,7 +1008,7 @@
                                           "w": {
                                             "type": "string",
                                             "pattern": "\\S",
-                                            "description": "De woorddelen van deze knoop aan elkaar, bv. \"eetbaar\"."
+                                            "description": "De woorddelen van deze knoop aan elkaar, bv. \"eetbaar\" (bij words: met spaties, \"rode boek\")."
                                           },
                                           "form": {
                                             "description": "Hoe het stuk geschreven wordt als dat anders is, bv. \"balletje\".",
@@ -1158,6 +1162,121 @@
                                   ],
                                   "additionalProperties": false,
                                   "description": "Paradigma: een tabel met lege vakjes. Kies een vakje en zet de goede vorm erin."
+                                },
+                                "phrase": {
+                                  "type": "object",
+                                  "properties": {
+                                    "q": {
+                                      "description": "Opdracht boven de zin; standaard \"Vind de woordgroepen\".",
+                                      "type": "string",
+                                      "pattern": "\\S"
+                                    },
+                                    "sentence": {
+                                      "type": "string",
+                                      "pattern": "\\S"
+                                    },
+                                    "groups": {
+                                      "minItems": 1,
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object",
+                                        "properties": {
+                                          "span": {
+                                            "type": "array",
+                                            "prefixItems": [
+                                              {
+                                                "type": "integer",
+                                                "minimum": 0,
+                                                "maximum": 9007199254740991
+                                              },
+                                              {
+                                                "type": "integer",
+                                                "minimum": 0,
+                                                "maximum": 9007199254740991
+                                              }
+                                            ],
+                                            "items": false,
+                                            "minItems": 2,
+                                            "maxItems": 2,
+                                            "description": "Eerste en laatste woord van de groep (indexen op spaties, vanaf 0, beide inclusief)."
+                                          },
+                                          "cat": {
+                                            "type": "string",
+                                            "pattern": "\\S",
+                                            "description": "Soort groep, bv. \"naamwoordgroep\"."
+                                          },
+                                          "head": {
+                                            "type": "integer",
+                                            "minimum": 0,
+                                            "maximum": 9007199254740991,
+                                            "description": "Index van de kern; ligt binnen de groep."
+                                          },
+                                          "note": {
+                                            "type": "string",
+                                            "pattern": "\\S",
+                                            "description": "Uitleg zodra de groep gevonden is."
+                                          }
+                                        },
+                                        "required": [
+                                          "span",
+                                          "cat",
+                                          "head",
+                                          "note"
+                                        ],
+                                        "additionalProperties": false
+                                      },
+                                      "description": "De groepen die gevonden moeten worden."
+                                    },
+                                    "traps": {
+                                      "description": "Verleidelijke stukken die geen woordgroep zijn.",
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object",
+                                        "properties": {
+                                          "span": {
+                                            "type": "array",
+                                            "prefixItems": [
+                                              {
+                                                "type": "integer",
+                                                "minimum": 0,
+                                                "maximum": 9007199254740991
+                                              },
+                                              {
+                                                "type": "integer",
+                                                "minimum": 0,
+                                                "maximum": 9007199254740991
+                                              }
+                                            ],
+                                            "items": false,
+                                            "minItems": 2,
+                                            "maxItems": 2,
+                                            "description": "Eerste en laatste woord van de groep (indexen op spaties, vanaf 0, beide inclusief)."
+                                          },
+                                          "note": {
+                                            "type": "string",
+                                            "pattern": "\\S",
+                                            "description": "Waarom dit stuk geen groep is."
+                                          }
+                                        },
+                                        "required": [
+                                          "span",
+                                          "note"
+                                        ],
+                                        "additionalProperties": false
+                                      }
+                                    },
+                                    "note": {
+                                      "type": "string",
+                                      "pattern": "\\S"
+                                    }
+                                  },
+                                  "required": [
+                                    "sentence",
+                                    "groups",
+                                    "note"
+                                  ],
+                                  "additionalProperties": false,
+                                  "description": "Groepenjager: tik het eerste en het laatste woord van een woordgroep; vind alle gevraagde groepen."
                                 }
                               },
                               "required": [

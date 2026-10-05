@@ -16,7 +16,23 @@ export type PlanStep = {
   source: { stepIndex: number; panelIndex?: number };
 };
 
-export const PANEL_WIDGETS = ['split', 'mark', 'build', 'swap', 'alpha', 'wheel', 'blend', 'vowels', 'grid', 'tableau', 'sonority', 'tree', 'bracket', 'paradigm'] as const;
+export const PANEL_WIDGETS = [
+  'split',
+  'mark',
+  'build',
+  'swap',
+  'alpha',
+  'wheel',
+  'blend',
+  'vowels',
+  'grid',
+  'tableau',
+  'sonority',
+  'tree',
+  'bracket',
+  'paradigm',
+  'phrase',
+] as const;
 export type PanelWidget = (typeof PANEL_WIDGETS)[number];
 
 export function panelWidgets(panel: Panel): PanelWidget[] {
