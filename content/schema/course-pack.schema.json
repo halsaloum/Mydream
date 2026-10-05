@@ -1457,7 +1457,25 @@
                                                   "visser",
                                                   "boot",
                                                   "vissersboot",
-                                                  "ster"
+                                                  "ster",
+                                                  "mus",
+                                                  "roodborst",
+                                                  "pinguin",
+                                                  "struisvogel",
+                                                  "kip",
+                                                  "vleermuis",
+                                                  "muis",
+                                                  "computermuis",
+                                                  "zitbank",
+                                                  "geldbank",
+                                                  "hangslot",
+                                                  "kasteel",
+                                                  "glas",
+                                                  "ei",
+                                                  "mes",
+                                                  "huis",
+                                                  "munten",
+                                                  "vis"
                                                 ],
                                                 "description": "Een 3D-voorwerp uit `src/content/things.ts` (gemaakt met Meshy)."
                                               },
@@ -1479,7 +1497,25 @@
                                                   "visser",
                                                   "boot",
                                                   "vissersboot",
-                                                  "ster"
+                                                  "ster",
+                                                  "mus",
+                                                  "roodborst",
+                                                  "pinguin",
+                                                  "struisvogel",
+                                                  "kip",
+                                                  "vleermuis",
+                                                  "muis",
+                                                  "computermuis",
+                                                  "zitbank",
+                                                  "geldbank",
+                                                  "hangslot",
+                                                  "kasteel",
+                                                  "glas",
+                                                  "ei",
+                                                  "mes",
+                                                  "huis",
+                                                  "munten",
+                                                  "vis"
                                                 ],
                                                 "description": "Een 3D-voorwerp uit `src/content/things.ts` (gemaakt met Meshy)."
                                               }
@@ -1507,7 +1543,25 @@
                                               "visser",
                                               "boot",
                                               "vissersboot",
-                                              "ster"
+                                              "ster",
+                                              "mus",
+                                              "roodborst",
+                                              "pinguin",
+                                              "struisvogel",
+                                              "kip",
+                                              "vleermuis",
+                                              "muis",
+                                              "computermuis",
+                                              "zitbank",
+                                              "geldbank",
+                                              "hangslot",
+                                              "kasteel",
+                                              "glas",
+                                              "ei",
+                                              "mes",
+                                              "huis",
+                                              "munten",
+                                              "vis"
                                             ],
                                             "description": "Het voorwerp dat de samenstelling is."
                                           },
@@ -1558,6 +1612,460 @@
                                   ],
                                   "additionalProperties": false,
                                   "description": "Samenstellingen in 3D: kies twee voorwerpen in de goede volgorde, kies de spelling, en zie ze samensmelten."
+                                },
+                                "bins": {
+                                  "type": "object",
+                                  "properties": {
+                                    "q": {
+                                      "description": "Opdracht boven de tafel; standaard \"Zet elk voorwerp in de goede bak\".",
+                                      "type": "string",
+                                      "pattern": "\\S"
+                                    },
+                                    "bins": {
+                                      "minItems": 2,
+                                      "maxItems": 4,
+                                      "type": "array",
+                                      "items": {
+                                        "type": "string",
+                                        "pattern": "\\S"
+                                      },
+                                      "description": "Namen van de bakken, bv. \"de\" en \"het\". Bij rings: van het midden naar buiten."
+                                    },
+                                    "rings": {
+                                      "description": "De bakken zijn ringen om één midden: het midden is de kern, buiten de rand (prototypen).",
+                                      "type": "boolean"
+                                    },
+                                    "items": {
+                                      "minItems": 3,
+                                      "maxItems": 8,
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object",
+                                        "properties": {
+                                          "thing": {
+                                            "type": "string",
+                                            "enum": [
+                                              "pim",
+                                              "boek",
+                                              "kast",
+                                              "boekenkast",
+                                              "pan",
+                                              "koek",
+                                              "pannenkoek",
+                                              "zon",
+                                              "bloem",
+                                              "zonnebloem",
+                                              "pot",
+                                              "bloempot",
+                                              "visser",
+                                              "boot",
+                                              "vissersboot",
+                                              "ster",
+                                              "mus",
+                                              "roodborst",
+                                              "pinguin",
+                                              "struisvogel",
+                                              "kip",
+                                              "vleermuis",
+                                              "muis",
+                                              "computermuis",
+                                              "zitbank",
+                                              "geldbank",
+                                              "hangslot",
+                                              "kasteel",
+                                              "glas",
+                                              "ei",
+                                              "mes",
+                                              "huis",
+                                              "munten",
+                                              "vis"
+                                            ],
+                                            "description": "Een 3D-voorwerp uit `src/content/things.ts` (gemaakt met Meshy)."
+                                          },
+                                          "bin": {
+                                            "type": "integer",
+                                            "minimum": 0,
+                                            "maximum": 9007199254740991,
+                                            "description": "Index van de goede bak."
+                                          },
+                                          "note": {
+                                            "type": "string",
+                                            "pattern": "\\S",
+                                            "description": "Uitleg zodra het voorwerp in de goede bak staat."
+                                          },
+                                          "hint": {
+                                            "description": "Tip bij een verkeerde bak.",
+                                            "type": "string",
+                                            "pattern": "\\S"
+                                          }
+                                        },
+                                        "required": [
+                                          "thing",
+                                          "bin",
+                                          "note"
+                                        ],
+                                        "additionalProperties": false
+                                      }
+                                    },
+                                    "note": {
+                                      "type": "string",
+                                      "pattern": "\\S"
+                                    }
+                                  },
+                                  "required": [
+                                    "bins",
+                                    "items",
+                                    "note"
+                                  ],
+                                  "additionalProperties": false,
+                                  "description": "Sorteertafel in 3D: kies een voorwerp en zet het in de goede bak of ring."
+                                },
+                                "morph": {
+                                  "type": "object",
+                                  "properties": {
+                                    "q": {
+                                      "description": "Opdracht boven de machine; standaard \"Kies de goede vorm\".",
+                                      "type": "string",
+                                      "pattern": "\\S"
+                                    },
+                                    "rounds": {
+                                      "minItems": 1,
+                                      "maxItems": 6,
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object",
+                                        "properties": {
+                                          "thing": {
+                                            "type": "string",
+                                            "enum": [
+                                              "pim",
+                                              "boek",
+                                              "kast",
+                                              "boekenkast",
+                                              "pan",
+                                              "koek",
+                                              "pannenkoek",
+                                              "zon",
+                                              "bloem",
+                                              "zonnebloem",
+                                              "pot",
+                                              "bloempot",
+                                              "visser",
+                                              "boot",
+                                              "vissersboot",
+                                              "ster",
+                                              "mus",
+                                              "roodborst",
+                                              "pinguin",
+                                              "struisvogel",
+                                              "kip",
+                                              "vleermuis",
+                                              "muis",
+                                              "computermuis",
+                                              "zitbank",
+                                              "geldbank",
+                                              "hangslot",
+                                              "kasteel",
+                                              "glas",
+                                              "ei",
+                                              "mes",
+                                              "huis",
+                                              "munten",
+                                              "vis"
+                                            ],
+                                            "description": "Een 3D-voorwerp uit `src/content/things.ts` (gemaakt met Meshy)."
+                                          },
+                                          "from": {
+                                            "type": "string",
+                                            "pattern": "\\S",
+                                            "description": "Waar je mee begint, bv. \"de kast\"."
+                                          },
+                                          "ask": {
+                                            "type": "string",
+                                            "pattern": "\\S",
+                                            "description": "Wat je moet maken, bv. \"één kleine kast\"."
+                                          },
+                                          "effect": {
+                                            "type": "string",
+                                            "enum": [
+                                              "klein",
+                                              "veel",
+                                              "klein-veel",
+                                              "kleur"
+                                            ],
+                                            "description": "Wat het voorwerp doet bij het goede antwoord: krimpen, vermenigvuldigen, allebei, of verven."
+                                          },
+                                          "paint": {
+                                            "description": "De kleur bij effect \"kleur\".",
+                                            "type": "string",
+                                            "enum": [
+                                              "rood",
+                                              "groen",
+                                              "blauw",
+                                              "geel",
+                                              "oranje",
+                                              "roze",
+                                              "paars",
+                                              "goud",
+                                              "wit",
+                                              "zwart"
+                                            ]
+                                          },
+                                          "options": {
+                                            "minItems": 2,
+                                            "maxItems": 4,
+                                            "type": "array",
+                                            "items": {
+                                              "type": "string",
+                                              "pattern": "\\S"
+                                            }
+                                          },
+                                          "answer": {
+                                            "type": "string",
+                                            "pattern": "\\S"
+                                          },
+                                          "note": {
+                                            "type": "string",
+                                            "pattern": "\\S",
+                                            "description": "Waarom deze vorm."
+                                          }
+                                        },
+                                        "required": [
+                                          "thing",
+                                          "from",
+                                          "ask",
+                                          "effect",
+                                          "options",
+                                          "answer",
+                                          "note"
+                                        ],
+                                        "additionalProperties": false
+                                      }
+                                    },
+                                    "note": {
+                                      "type": "string",
+                                      "pattern": "\\S"
+                                    }
+                                  },
+                                  "required": [
+                                    "rounds",
+                                    "note"
+                                  ],
+                                  "additionalProperties": false,
+                                  "description": "Vormmachine in 3D: kies de goede vorm van het woord, en het voorwerp doet wat het morfeem betekent."
+                                },
+                                "cast": {
+                                  "type": "object",
+                                  "properties": {
+                                    "q": {
+                                      "description": "Opdracht boven het toneel; standaard \"Tik aan wat de zin vraagt\".",
+                                      "type": "string",
+                                      "pattern": "\\S"
+                                    },
+                                    "rounds": {
+                                      "minItems": 1,
+                                      "maxItems": 6,
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object",
+                                        "properties": {
+                                          "text": {
+                                            "type": "string",
+                                            "pattern": "\\S",
+                                            "description": "De zin of het woord waar het om gaat."
+                                          },
+                                          "ask": {
+                                            "type": "string",
+                                            "pattern": "\\S",
+                                            "description": "Wat je moet aantikken, bv. \"Tik alle argumenten van zetten\"."
+                                          },
+                                          "cast": {
+                                            "minItems": 2,
+                                            "maxItems": 6,
+                                            "type": "array",
+                                            "items": {
+                                              "type": "string",
+                                              "enum": [
+                                                "pim",
+                                                "boek",
+                                                "kast",
+                                                "boekenkast",
+                                                "pan",
+                                                "koek",
+                                                "pannenkoek",
+                                                "zon",
+                                                "bloem",
+                                                "zonnebloem",
+                                                "pot",
+                                                "bloempot",
+                                                "visser",
+                                                "boot",
+                                                "vissersboot",
+                                                "ster",
+                                                "mus",
+                                                "roodborst",
+                                                "pinguin",
+                                                "struisvogel",
+                                                "kip",
+                                                "vleermuis",
+                                                "muis",
+                                                "computermuis",
+                                                "zitbank",
+                                                "geldbank",
+                                                "hangslot",
+                                                "kasteel",
+                                                "glas",
+                                                "ei",
+                                                "mes",
+                                                "huis",
+                                                "munten",
+                                                "vis"
+                                              ],
+                                              "description": "Een 3D-voorwerp uit `src/content/things.ts` (gemaakt met Meshy)."
+                                            },
+                                            "description": "De voorwerpen in de kring."
+                                          },
+                                          "answer": {
+                                            "maxItems": 4,
+                                            "type": "array",
+                                            "items": {
+                                              "type": "string",
+                                              "enum": [
+                                                "pim",
+                                                "boek",
+                                                "kast",
+                                                "boekenkast",
+                                                "pan",
+                                                "koek",
+                                                "pannenkoek",
+                                                "zon",
+                                                "bloem",
+                                                "zonnebloem",
+                                                "pot",
+                                                "bloempot",
+                                                "visser",
+                                                "boot",
+                                                "vissersboot",
+                                                "ster",
+                                                "mus",
+                                                "roodborst",
+                                                "pinguin",
+                                                "struisvogel",
+                                                "kip",
+                                                "vleermuis",
+                                                "muis",
+                                                "computermuis",
+                                                "zitbank",
+                                                "geldbank",
+                                                "hangslot",
+                                                "kasteel",
+                                                "glas",
+                                                "ei",
+                                                "mes",
+                                                "huis",
+                                                "munten",
+                                                "vis"
+                                              ],
+                                              "description": "Een 3D-voorwerp uit `src/content/things.ts` (gemaakt met Meshy)."
+                                            },
+                                            "description": "Wat aangetikt moet worden; leeg = niets (dan is er een knop \"Niets\")."
+                                          },
+                                          "focus": {
+                                            "description": "Wat na het goede antwoord naar voren draait; standaard het eerste antwoord.",
+                                            "type": "string",
+                                            "enum": [
+                                              "pim",
+                                              "boek",
+                                              "kast",
+                                              "boekenkast",
+                                              "pan",
+                                              "koek",
+                                              "pannenkoek",
+                                              "zon",
+                                              "bloem",
+                                              "zonnebloem",
+                                              "pot",
+                                              "bloempot",
+                                              "visser",
+                                              "boot",
+                                              "vissersboot",
+                                              "ster",
+                                              "mus",
+                                              "roodborst",
+                                              "pinguin",
+                                              "struisvogel",
+                                              "kip",
+                                              "vleermuis",
+                                              "muis",
+                                              "computermuis",
+                                              "zitbank",
+                                              "geldbank",
+                                              "hangslot",
+                                              "kasteel",
+                                              "glas",
+                                              "ei",
+                                              "mes",
+                                              "huis",
+                                              "munten",
+                                              "vis"
+                                            ]
+                                          },
+                                          "then": {
+                                            "description": "Een vervolgvraag zodra het tikken goed is.",
+                                            "type": "object",
+                                            "properties": {
+                                              "q": {
+                                                "type": "string",
+                                                "pattern": "\\S"
+                                              },
+                                              "options": {
+                                                "minItems": 2,
+                                                "maxItems": 4,
+                                                "type": "array",
+                                                "items": {
+                                                  "type": "string",
+                                                  "pattern": "\\S"
+                                                }
+                                              },
+                                              "answer": {
+                                                "type": "string",
+                                                "pattern": "\\S"
+                                              }
+                                            },
+                                            "required": [
+                                              "q",
+                                              "options",
+                                              "answer"
+                                            ],
+                                            "additionalProperties": false
+                                          },
+                                          "note": {
+                                            "type": "string",
+                                            "pattern": "\\S",
+                                            "description": "Uitleg na het goede antwoord."
+                                          }
+                                        },
+                                        "required": [
+                                          "text",
+                                          "ask",
+                                          "cast",
+                                          "answer",
+                                          "note"
+                                        ],
+                                        "additionalProperties": false
+                                      }
+                                    },
+                                    "note": {
+                                      "type": "string",
+                                      "pattern": "\\S"
+                                    }
+                                  },
+                                  "required": [
+                                    "rounds",
+                                    "note"
+                                  ],
+                                  "additionalProperties": false,
+                                  "description": "Toneel in 3D: voorwerpen in een kring die je kunt draaien; tik aan wat de opdracht vraagt."
                                 }
                               },
                               "required": [
