@@ -20,7 +20,15 @@ import { ICON, SHAKE, useSolve, type WidgetProps } from './widgets';
  * werken met de afbeelding en de knoppen onder het model.
  */
 
-type ModelViewerElement = HTMLElement & { cameraTarget: string; fieldOfView: string; cameraOrbit: string; autoRotate: boolean };
+type ModelViewerElement = HTMLElement & {
+  cameraTarget: string;
+  fieldOfView: string;
+  cameraOrbit: string;
+  autoRotate: boolean;
+  /** Hoe ver het model op de draaitafel is gedraaid (auto-rotate draait het model, niet de camera). */
+  readonly turntableRotation: number;
+  getCameraOrbit(): { theta: number; phi: number };
+};
 
 declare module 'react' {
   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -52,7 +60,29 @@ function useViewer(): Load {
   return state;
 }
 
-const metres = ([x, y, z]: readonly [number, number, number]) => `${x}m ${y}m ${z}m`;
+type Vector = readonly [number, number, number];
+
+const metres = ([x, y, z]: Vector) => `${x}m ${y}m ${z}m`;
+
+/** Kijkt de camera nu op de voorkant van dit stukje van het model (zijn richting `normal`)? */
+const seen = (node: ModelViewerElement, [x, y, z]: Vector) => {
+  const { theta, phi } = node.getCameraOrbit();
+  const azimuth = theta - node.turntableRotation;
+  return x * Math.sin(phi) * Math.sin(azimuth) + y * Math.cos(phi) + z * Math.sin(phi) * Math.cos(azimuth) > 0.15;
+};
+
+/** Camerastand die vanuit `azimuth` (rondom het model) en `phi` (van boven) kijkt, via de kortste draai. */
+const orbit = (node: ModelViewerElement, azimuth: number, phi: number) => {
+  const { theta } = node.getCameraOrbit();
+  const turn = azimuth + node.turntableRotation - theta;
+  return `${theta + Math.atan2(Math.sin(turn), Math.cos(turn))}rad ${phi}rad auto`;
+};
+
+/** Recht voor een stukje van het model, niet te steil van boven of onder. */
+const facing = (node: ModelViewerElement, [x, y, z]: Vector) =>
+  orbit(node, Math.atan2(x, z), Math.min(Math.max(Math.acos(Math.min(Math.max(y, -1), 1)), Math.PI / 4), (5 * Math.PI) / 9));
+
+const radians = (degrees: number) => (degrees * Math.PI) / 180;
 
 /** Draai het model en schrijf de onderdelen op. */
 export function ModelWidget({ data, solved, onSolved }: WidgetProps<'model'>) {
@@ -60,6 +90,7 @@ export function ModelWidget({ data, solved, onSolved }: WidgetProps<'model'>) {
   const model = MODELS[data.model];
   const viewer = useViewer();
   const element = useRef<ModelViewerElement>(null);
+  const answerBox = useRef<HTMLDivElement>(null);
   const [shown, setShown] = useState(false);
   const [broken, setBroken] = useState(false);
   const [touched, setTouched] = useState(false);
@@ -97,6 +128,9 @@ export function ModelWidget({ data, solved, onSolved }: WidgetProps<'model'>) {
     if (!node || !shown) return;
     node.cameraTarget = item ? metres(item.at) : 'auto auto auto';
     node.fieldOfView = item ? '16deg' : 'auto';
+    // Het hele model zie je weer van de beginkant; zit een onderdeel aan de andere kant, draai dan rond tot je het ziet.
+    if (!item) node.cameraOrbit = orbit(node, radians(model.view[0]), radians(model.view[1]));
+    else if (item.normal && !seen(node, item.normal)) node.cameraOrbit = facing(node, item.normal);
   };
 
   const choose = (item: Part) => {
@@ -106,6 +140,8 @@ export function ModelWidget({ data, solved, onSolved }: WidgetProps<'model'>) {
     setTyped('');
     setWrong(null);
     focus(item);
+    // Het antwoordvak staat onder het model; zorg dat het boven de knoppenbalk te zien is.
+    requestAnimationFrame(() => answerBox.current?.scrollIntoView({ block: 'nearest', behavior: calm ? 'auto' : 'smooth' }));
   };
 
   const check = () => {
@@ -121,8 +157,11 @@ export function ModelWidget({ data, solved, onSolved }: WidgetProps<'model'>) {
     const next = [...done, part.id];
     setDone(next);
     setWrong(null);
-    if (data.parts.every((item) => next.includes(item.id))) solve();
-    else play('select');
+    if (data.parts.every((item) => next.includes(item.id))) {
+      // Alles goed: zoom uit, zodat je de hele fiets met alle woorden ziet.
+      focus(null);
+      solve();
+    } else play('select');
   };
 
   const failed = viewer === 'failed' || broken;
@@ -146,7 +185,7 @@ export function ModelWidget({ data, solved, onSolved }: WidgetProps<'model'>) {
               src={model.src}
               poster={model.poster}
               alt={model.alt}
-              camera-orbit={model.orbit}
+              camera-orbit={`${model.view[0]}deg ${model.view[1]}deg auto`}
               camera-controls=""
               touch-action="pan-y"
               interaction-prompt="none"
@@ -171,11 +210,12 @@ export function ModelWidget({ data, solved, onSolved }: WidgetProps<'model'>) {
                     slot={`hotspot-${item.id}`}
                     data-position={metres(item.at)}
                     data-normal={item.normal ? metres(item.normal) : undefined}
+                    data-visibility-attribute="visible"
                     aria-label={`Onderdeel ${number(item)}${ok ? `: ${item.answer}` : ''}`}
                     aria-pressed={active}
                     onClick={() => choose(item)}
                     className={cn(
-                      'slab grid h-8 min-w-8 place-items-center rounded-full border-2 px-1.5 text-small leading-none font-bold whitespace-nowrap opacity-55 transition-[opacity,background-color,border-color,color] duration-200 [--lift:2px] outline-none focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-focus data-[visible]:opacity-100',
+                      'slab grid h-8 min-w-8 place-items-center rounded-full border-2 px-1.5 text-small leading-none font-bold whitespace-nowrap opacity-40 transition-[opacity,background-color,border-color,color] duration-200 [--lift:2px] outline-none focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-focus data-[visible]:opacity-100',
                       ok ? 'border-green bg-green text-green-on [--slab:var(--color-green-deep)]' : 'border-accent bg-surface text-accent-ink [--slab:var(--accent)]',
                       active && !ok && 'bg-accent text-accent-on opacity-100',
                       active && 'opacity-100',
@@ -240,7 +280,7 @@ export function ModelWidget({ data, solved, onSolved }: WidgetProps<'model'>) {
           )}
         </Controls>
 
-        <div aria-live="polite" className="mt-4 min-h-[6.5rem]">
+        <div ref={answerBox} aria-live="polite" className="mt-4 min-h-[6.5rem] scroll-mb-32">
           <AnimatePresence mode="wait" initial={false}>
             {part ? (
               <motion.div

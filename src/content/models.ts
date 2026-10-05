@@ -6,10 +6,10 @@
 export const MODELS = {
   fiets: {
     src: '/models/fiets.glb',
-    poster: '/models/fiets.png',
-    alt: 'Een zwarte Nederlandse omafiets met stuur, bel, zadel, bagagedrager, trappers, ketting en twee wielen.',
-    /** Beginstand van de camera: schuin van voren, iets van boven. */
-    orbit: '35deg 75deg auto',
+    poster: '/models/fiets.webp',
+    alt: 'Een mintgroene speelgoedfiets met een zilveren bel, een geel koplampje, een bruin zadel, een bagagedrager, crèmekleurige spatborden, een kettingkast, trappers, een standaard en twee dikke banden.',
+    /** Beginstand van de camera in graden (rondom, van boven): schuin van voren, aan de kant van de ketting. */
+    view: [-145, 72],
   },
 } as const;
 

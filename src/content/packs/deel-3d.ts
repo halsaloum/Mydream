@@ -5,24 +5,28 @@ import type { LessonInput } from '../schema';
  * en schrijf het woord. Daarna bouw je met die onderdelen samenstellingen: het hoofd rechts
  * bepaalt *de* of *het*, en de tussenklank volgt het meervoud of het gehoor (zie d7 en d10).
  *
- * De plekken van de stippen (`AT`) zijn in meters gemeten op `public/models/fiets.glb`. Komt er
- * een nieuw model, meet ze dan opnieuw (zie `scripts/meshy.mjs`).
+ * De plekken van de stippen (`AT`) zijn in meters gemeten op `public/models/fiets.glb`, met de richting
+ * waarin dat stukje van het model kijkt. Komt er een nieuw model, meet ze dan opnieuw (zie
+ * `scripts/meshy.mjs`).
  */
 type Point = [number, number, number];
 
+/** Per onderdeel: de plek op het model en de richting waarin dat stukje kijkt. */
 const AT = {
-  stuur: [0, 0, 0],
-  bel: [0, 0, 0],
-  zadel: [0, 0, 0],
-  trapper: [0, 0, 0],
-  ketting: [0, 0, 0],
-  bagagedrager: [0, 0, 0],
-  spatbord: [0, 0, 0],
-  lamp: [0, 0, 0],
-  band: [0, 0, 0],
-  naaf: [0, 0, 0],
-  standaard: [0, 0, 0],
-} satisfies Record<string, Point>;
+  stuur: { at: [-0.305, 0.526, 0.22], normal: [0.653, 0.01, -0.757] },
+  bel: { at: [-0.26, 0.646, -0.306], normal: [-0.477, 0.198, -0.856] },
+  zadel: { at: [0.317, 0.362, -0.083], normal: [-0.227, 0.802, -0.552] },
+  zadelpen: { at: [0.262, 0.183, -0.038], normal: [-0.167, 0.135, -0.977] },
+  trapper: { at: [0.072, -0.47, -0.239], normal: [-0.141, 0.99, -0.019] },
+  ketting: { at: [0.268, -0.392, -0.109], normal: [0.002, 0.002, -1] },
+  kettingwiel: { at: [0.055, -0.309, -0.108], normal: [-0.048, 0.032, -0.998] },
+  bagagedrager: { at: [0.741, 0.111, 0.067], normal: [-0.992, 0.124, 0] },
+  spatbord: { at: [-0.641, 0.052, -0.047], normal: [-0.067, 0.766, -0.639] },
+  lamp: { at: [-0.573, 0.305, -0.053], normal: [-0.802, 0.333, -0.495] },
+  band: { at: [-0.899, -0.257, -0.055], normal: [-0.283, 0.066, -0.957] },
+  naaf: { at: [0.559, -0.3, -0.125], normal: [-0.378, 0.294, -0.878] },
+  standaard: { at: [0.09, -0.626, 0.07], normal: [0.313, -0.525, -0.791] },
+} satisfies Record<string, { at: Point; normal: Point }>;
 
 export const DEEL_3D_LESSONS: LessonInput[] = [
   {
@@ -45,14 +49,14 @@ export const DEEL_3D_LESSONS: LessonInput[] = [
               q: 'Tik een stip en schrijf het onderdeel op, met de of het',
               model: 'fiets',
               parts: [
-                { id: 'stuur', at: AT.stuur, ask: 'Hiermee stuur je. Hoe heet dit?', answer: 'het stuur', traps: [{ w: 'de stuur', note: 'Het stuur, net als het roer van een boot.' }], note: 'Het stuur. Een het-woord, net als het roer van een boot.' },
-                { id: 'bel', at: AT.bel, ask: 'Tring tring! Hoe heet dit?', answer: 'de bel', traps: [{ w: 'het bel', note: 'Het is de bel, net als de deurbel.' }], note: 'De bel. Een fiets zonder bel is in Nederland niet toegestaan.' },
-                { id: 'zadel', at: AT.zadel, ask: 'Hier zit je op. Hoe heet dit?', answer: 'het zadel', also: ['de zadel'], note: 'Het zadel (de zadel mag ook, maar het zadel is gewoner).' },
-                { id: 'trapper', at: AT.trapper, ask: 'Hier zet je je voet op. Hoe heet dit?', answer: 'de trapper', also: ['het pedaal', 'de pedaal'], note: 'De trapper, of het pedaal. Twee woorden voor één ding.' },
-                { id: 'ketting', at: AT.ketting, ask: 'Die brengt je trapkracht naar het achterwiel. Hoe heet dit?', answer: 'de ketting', note: 'De ketting. Bij een omafiets zit hij veilig in een kast.' },
-                { id: 'bagagedrager', at: AT.bagagedrager, ask: 'Hier zet je je tas of een vriend op. Hoe heet dit?', answer: 'de bagagedrager', traps: [{ w: 'de bagagerek', note: 'Bijna: op een fiets heet het de bagagedrager.' }], note: 'De bagagedrager: bagage + drager. Iets dat bagage draagt.' },
-                { id: 'spatbord', at: AT.spatbord, ask: 'Dit houdt de modder van je broek. Hoe heet dit?', answer: 'het spatbord', traps: [{ w: 'de spatbord', note: 'Het hoofd is bord, en het is het bord. Dus het spatbord.' }], note: 'Het spatbord: spat + bord. Het bord geeft het lidwoord.' },
-                { id: 'lamp', at: AT.lamp, ask: 'Die schijnt vooruit in het donker. Hoe heet dit?', answer: 'de koplamp', also: ['de lamp', 'het voorlicht', 'de voorlamp'], note: 'De koplamp, of het voorlicht. Let op: de lamp, maar het licht.' },
+                { id: 'stuur', ...AT.stuur, ask: 'Hiermee stuur je. Hoe heet dit?', answer: 'het stuur', traps: [{ w: 'de stuur', note: 'Het stuur, net als het roer van een boot.' }], note: 'Het stuur. Een het-woord, net als het roer van een boot.' },
+                { id: 'bel', ...AT.bel, ask: 'Tring tring! Hoe heet dit?', answer: 'de bel', traps: [{ w: 'het bel', note: 'Het is de bel, net als de deurbel.' }], note: 'De bel. Een fiets zonder bel is in Nederland niet toegestaan.' },
+                { id: 'zadel', ...AT.zadel, ask: 'Hier zit je op. Hoe heet dit?', answer: 'het zadel', also: ['de zadel'], note: 'Het zadel (de zadel mag ook, maar het zadel is gewoner).' },
+                { id: 'trapper', ...AT.trapper, ask: 'Hier zet je je voet op. Hoe heet dit?', answer: 'de trapper', also: ['het pedaal', 'de pedaal'], note: 'De trapper, of het pedaal. Twee woorden voor één ding.' },
+                { id: 'ketting', ...AT.ketting, ask: 'Onder deze kap loopt iets dat je trapkracht naar het achterwiel brengt. Hoe heet dat?', answer: 'de ketting', note: 'De ketting. Bij een omafiets zit hij veilig in een kast, zodat je broek schoon blijft.' },
+                { id: 'bagagedrager', ...AT.bagagedrager, ask: 'Hier zet je je tas of een vriend op. Hoe heet dit?', answer: 'de bagagedrager', traps: [{ w: 'de bagagerek', note: 'Bijna: op een fiets heet het de bagagedrager.' }], note: 'De bagagedrager: bagage + drager. Iets dat bagage draagt.' },
+                { id: 'spatbord', ...AT.spatbord, ask: 'Dit houdt de modder van je broek. Hoe heet dit?', answer: 'het spatbord', traps: [{ w: 'de spatbord', note: 'Het hoofd is bord, en het is het bord. Dus het spatbord.' }], note: 'Het spatbord: spat + bord. Het bord geeft het lidwoord.' },
+                { id: 'lamp', ...AT.lamp, ask: 'Die schijnt vooruit in het donker. Hoe heet dit?', answer: 'de koplamp', also: ['de lamp', 'het voorlicht', 'de voorlamp'], note: 'De koplamp, of het voorlicht. Let op: de lamp, maar het licht.' },
               ],
               note: 'Acht onderdelen, acht keer de of het. Bij spatbord zag je al iets: het laatste deel beslist.',
             },
@@ -68,11 +72,11 @@ export const DEEL_3D_LESSONS: LessonInput[] = [
               q: 'Maak de samenstelling, met de of het',
               model: 'fiets',
               parts: [
-                { id: 'bel', at: AT.bel, ask: 'fiets + bel =', answer: 'de fietsbel', traps: [{ w: 'het fietsbel', note: 'Het hoofd is bel, en het is de bel.' }], note: 'De fietsbel: bel is het hoofd.' },
-                { id: 'zadel', at: AT.zadel, ask: 'fiets + zadel =', answer: 'het fietszadel', also: ['de fietszadel'], traps: [{ w: 'fiets zadel', note: 'Samenstellingen schrijf je aan elkaar.' }], note: 'Het fietszadel: zadel is het hoofd, dus het.' },
-                { id: 'ketting', at: AT.ketting, ask: 'Het tandwiel waar de ketting omheen loopt: ketting + wiel =', answer: 'het kettingwiel', traps: [{ w: 'de kettingwiel', note: 'De ketting staat links. Rechts staat het wiel: dat is het hoofd, dus het kettingwiel.' }], note: 'Het kettingwiel. De ketting is een de-woord, maar hij is hier geen baas.' },
-                { id: 'zadel-pen', at: AT.zadel, ask: 'De buis onder het zadel: zadel + pen =', answer: 'de zadelpen', traps: [{ w: 'het zadelpen', note: 'Het zadel staat links, maar het hoofd is pen: de pen.' }], note: 'De zadelpen. Het zadel, maar de zadelpen: het hoofd wisselt het lidwoord.' },
-                { id: 'lamp', at: AT.lamp, ask: 'fiets + licht =', answer: 'het fietslicht', traps: [{ w: 'de fietslicht', note: 'Het hoofd is licht, en het is het licht.' }], note: 'Het fietslicht. Vergelijk: de fietslamp.' },
+                { id: 'bel', ...AT.bel, ask: 'fiets + bel =', answer: 'de fietsbel', traps: [{ w: 'het fietsbel', note: 'Het hoofd is bel, en het is de bel.' }], note: 'De fietsbel: bel is het hoofd.' },
+                { id: 'zadel', ...AT.zadel, ask: 'fiets + zadel =', answer: 'het fietszadel', also: ['de fietszadel'], traps: [{ w: 'fiets zadel', note: 'Samenstellingen schrijf je aan elkaar.' }], note: 'Het fietszadel: zadel is het hoofd, dus het.' },
+                { id: 'ketting', ...AT.kettingwiel, ask: 'Achter de kap, bij de trappers, zit het tandwiel waar de ketting omheen loopt: ketting + wiel =', answer: 'het kettingwiel', traps: [{ w: 'de kettingwiel', note: 'De ketting staat links. Rechts staat het wiel: dat is het hoofd, dus het kettingwiel.' }], note: 'Het kettingwiel. De ketting is een de-woord, maar hij is hier geen baas.' },
+                { id: 'zadel-pen', ...AT.zadelpen, ask: 'De stang onder het zadel: zadel + pen =', answer: 'de zadelpen', traps: [{ w: 'het zadelpen', note: 'Het zadel staat links, maar het hoofd is pen: de pen.' }], note: 'De zadelpen. Het zadel, maar de zadelpen: het hoofd wisselt het lidwoord.' },
+                { id: 'lamp', ...AT.lamp, ask: 'fiets + licht =', answer: 'het fietslicht', traps: [{ w: 'de fietslicht', note: 'Het hoofd is licht, en het is het licht.' }], note: 'Het fietslicht. Vergelijk: de fietslamp.' },
               ],
               note: 'Elke keer won het rechterdeel: het bepaalt het lidwoord, de woordsoort en het meervoud (fietsbellen, kettingwielen).',
             },
@@ -88,10 +92,10 @@ export const DEEL_3D_LESSONS: LessonInput[] = [
               q: 'Schrijf de samenstelling, zonder lidwoord',
               model: 'fiets',
               parts: [
-                { id: 'band', at: AT.band, ask: 'Een pomp voor de banden: band + pomp =', answer: 'bandenpomp', hint: 'Wat is het meervoud van band?', traps: [{ w: 'bandpomp', note: 'Band heeft het meervoud banden, op -en. Dan schrijf je -en- ertussen.' }, { w: 'bandepomp', note: 'Band heeft een meervoud: banden. Dus met n.' }], note: 'Bandenpomp: band → banden, dus -en-. Ook als je één band oppompt.' },
-                { id: 'standaard', at: AT.standaard, ask: 'Niet op de standaard, maar in een rek voor veel fietsen: fiets + rek =', answer: 'fietsenrek', traps: [{ w: 'fietserek', note: 'Fiets heeft het meervoud fietsen: dan -en-, met n.' }], hint: 'Wat is het meervoud van fiets?', note: 'Fietsenrek, net als fietsenmaker en fietsenstalling.' },
-                { id: 'naaf', at: AT.naaf, ask: 'In de achternaaf zit de versnelling. De kabel daarvoor: versnelling + kabel =', answer: 'versnellingskabel', hint: 'Welk achtervoegsel heeft versnelling? Wat trekt dat aan?', traps: [{ w: 'versnellingkabel', note: 'Versnelling eindigt op het achtervoegsel -ing, en -ing trekt een s: versnellingskabel.' }], note: 'Versnellingskabel: -ing trekt een s, je hoort hem ook.' },
-                { id: 'ketting', at: AT.ketting, ask: 'De dichte kast om de ketting: ketting + kast =', answer: 'kettingkast', traps: [{ w: 'kettingskast', note: 'Ketting eindigt wel op -ing, maar dat is geen achtervoegsel: er is geen werkwoord ketten. De familie heeft geen s: kettingslot, kettingreactie.' }], note: 'Kettingkast. De -ing van ketting is geen achtervoegsel, dus geen s.' },
+                { id: 'band', ...AT.band, ask: 'Een pomp voor de banden: band + pomp =', answer: 'bandenpomp', hint: 'Wat is het meervoud van band?', traps: [{ w: 'bandpomp', note: 'Band heeft het meervoud banden, op -en. Dan schrijf je -en- ertussen.' }, { w: 'bandepomp', note: 'Band heeft een meervoud: banden. Dus met n.' }], note: 'Bandenpomp: band → banden, dus -en-. Ook als je één band oppompt.' },
+                { id: 'standaard', ...AT.standaard, ask: 'Niet op de standaard, maar in een rek voor veel fietsen: fiets + rek =', answer: 'fietsenrek', traps: [{ w: 'fietserek', note: 'Fiets heeft het meervoud fietsen: dan -en-, met n.' }], hint: 'Wat is het meervoud van fiets?', note: 'Fietsenrek, net als fietsenmaker en fietsenstalling.' },
+                { id: 'naaf', ...AT.naaf, ask: 'In de achternaaf zit de versnelling. De kabel daarvoor: versnelling + kabel =', answer: 'versnellingskabel', hint: 'Welk achtervoegsel heeft versnelling? Wat trekt dat aan?', traps: [{ w: 'versnellingkabel', note: 'Versnelling eindigt op het achtervoegsel -ing, en -ing trekt een s: versnellingskabel.' }], note: 'Versnellingskabel: -ing trekt een s, je hoort hem ook.' },
+                { id: 'ketting', ...AT.ketting, ask: 'De dichte kast om de ketting: ketting + kast =', answer: 'kettingkast', traps: [{ w: 'kettingskast', note: 'Ketting eindigt wel op -ing, maar dat is geen achtervoegsel: er is geen werkwoord ketten. De familie heeft geen s: kettingslot, kettingreactie.' }], note: 'Kettingkast. De -ing van ketting is geen achtervoegsel, dus geen s.' },
               ],
               note: 'banden + pomp, fietsen + rek, versnelling + s + kabel, ketting + kast. De tussenklank volgt het meervoud, het achtervoegsel of de familie, niet de vorm alleen.',
             },

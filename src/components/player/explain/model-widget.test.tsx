@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useState } from 'react';
 import { describe, expect, it, vi } from 'vitest';
@@ -19,13 +19,13 @@ const FIETS: WidgetProps<'model'>['data'] = {
   note: 'Alles goed.',
 };
 
-function show() {
+function show(data = FIETS) {
   const onSolved = vi.fn();
   function Harness() {
     const [solved, setSolved] = useState(false);
     return (
       <ModelWidget
-        data={FIETS}
+        data={data}
         solved={solved}
         onSolved={() => {
           onSolved();
@@ -64,5 +64,32 @@ describe('3D-model', () => {
     await user.click(screen.getByRole('button', { name: 'Controleer' }));
     expect(onSolved).toHaveBeenCalledOnce();
     expect(screen.getByRole('status')).toHaveTextContent('Alles goed.');
+  });
+
+  it('draait naar een onderdeel aan de andere kant, en zoomt alleen in op een onderdeel dat je al ziet', async () => {
+    const user = userEvent.setup();
+    show({
+      ...FIETS,
+      parts: [
+        { ...FIETS.parts[0]!, normal: [0, 0, 1] },
+        { ...FIETS.parts[1]!, normal: [0, 0, -1] },
+      ],
+    });
+    await waitFor(() => expect(document.querySelector('model-viewer')).not.toBeNull());
+    // Zoals model-viewer: de camera kijkt van voren (+z), het model staat op de draaitafel een kwartslag gedraaid.
+    const viewer = document.querySelector('model-viewer') as HTMLElement & { cameraOrbit?: string; cameraTarget?: string };
+    Object.assign(viewer, { turntableRotation: Math.PI / 2, getCameraOrbit: () => ({ theta: Math.PI / 2, phi: Math.PI / 2 }) });
+    act(() => {
+      viewer.dispatchEvent(new Event('load'));
+    });
+
+    await user.click(screen.getAllByRole('button', { name: 'Onderdeel 1' }).at(-1)!);
+    expect(viewer.cameraTarget).toBe('0m 1m 0.4m');
+    expect(viewer.cameraOrbit).toBeUndefined();
+
+    await user.click(screen.getAllByRole('button', { name: 'Onderdeel 2' }).at(-1)!);
+    const [theta, phi] = viewer.cameraOrbit!.split(' ').map((value) => Number.parseFloat(value));
+    expect(Math.abs(theta! - Math.PI / 2)).toBeCloseTo(Math.PI);
+    expect(phi).toBeCloseTo(Math.PI / 2);
   });
 });

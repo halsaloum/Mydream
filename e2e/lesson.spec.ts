@@ -109,9 +109,9 @@ test('lettergreepboom: elke klank aan zijn tak hangen opent het volgende deel', 
 
   await page.getByRole('button', { name: 'p', exact: true }).click();
   await page.getByRole('button', { name: 'l', exact: true }).click();
-  await page.getByRole('button', { name: 'Kern' }).click();
+  await page.getByRole('button', { name: 'Kern', exact: true }).click();
   await page.getByRole('button', { name: 'a', exact: true }).click();
-  await page.getByRole('button', { name: 'Coda' }).click();
+  await page.getByRole('button', { name: 'Coda', exact: true }).click();
   await page.getByRole('button', { name: 'n', exact: true }).click();
   await page.getByRole('button', { name: 't', exact: true }).click();
 
@@ -172,6 +172,20 @@ test('paradigma: elk leeg vakje goed invullen opent het volgende deel', async ({
   await expect(page.getByRole('status').filter({ hasText: 'Zeven reeksen' })).toBeVisible();
   await expect(primary).toHaveText(/Volgende deel/);
   await expect(primary).toBeEnabled();
+});
+
+test('fiets in 3D: een onderdeel kiezen en het woord met het goede lidwoord typen', async ({ page }) => {
+  await page.goto('/les/d20');
+  await expect(page.getByRole('heading', { name: 'Een fiets vol woorden' })).toBeVisible();
+  await page.getByRole('group', { name: 'Kies een onderdeel' }).getByRole('button', { name: 'Onderdeel 2' }).click();
+
+  const veld = page.getByLabel(/Tring tring/);
+  await veld.fill('het bel');
+  await veld.press('Enter');
+  await expect(page.getByText('Het is de bel, net als de deurbel.')).toBeVisible();
+  await veld.fill('de bel');
+  await veld.press('Enter');
+  await expect(page.getByRole('status').filter({ hasText: '1 van 8 onderdelen goed, nog 7' })).toBeVisible();
 });
 
 test('een afgeronde les blijft na verversen afgerond', async ({ page }) => {
