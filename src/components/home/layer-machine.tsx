@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { course, getDomain, lessonEntries, type LessonEntry } from '@/content/catalog';
 import type { Domain, Layer, Stage } from '@/content/schema';
 import { DomainGlyph, LayerGlyph } from '@/components/brand/glyphs';
+import { LayerTower } from './layer-tower';
 import { LessonRow } from '@/components/lesson/lesson-row';
 import { STAGE_ACCENTS, STAGE_LABELS } from '@/components/lesson/stage-badge';
 import { IconButton } from '@/components/ui/button';
@@ -190,8 +191,11 @@ export function LayerMachine({ selected, onSelect, progress, sessions, nextId }:
           </div>
         </div>
 
-        <div className="px-6 pt-6 sm:px-8" aria-live={playing ? 'off' : 'polite'}>
-          <GrowingExample key={layer.id} layer={layer} index={selected} total={layers.length} />
+        <div className="grid gap-2 px-6 pt-6 sm:px-8 md:grid-cols-[minmax(0,1fr)_15rem] md:items-center">
+          <div aria-live={playing ? 'off' : 'polite'}>
+            <GrowingExample key={layer.id} layer={layer} index={selected} total={layers.length} />
+          </div>
+          <LayerTower layers={layers} selected={selected} progress={progress} onSelect={go} className="-my-10 scale-[0.8] md:-mt-8 md:mb-0 md:scale-100" />
         </div>
 
         <Tabs.List aria-label="Niveaus, van letter tot alinea" className="mt-2 flex items-end gap-1 px-4 sm:gap-2 sm:px-8">

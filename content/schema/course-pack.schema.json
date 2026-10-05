@@ -701,6 +701,99 @@
                                   "additionalProperties": false,
                                   "description": "Klinkerkaart: de klinkers op hun plek in de mond. Tik, luister en zoek de gevraagde klinkers."
                                 },
+                                "space": {
+                                  "type": "object",
+                                  "properties": {
+                                    "q": {
+                                      "type": "string",
+                                      "pattern": "\\S",
+                                      "description": "Opdracht, bv. \"Tik de klasse [+rond, −achter]\"."
+                                    },
+                                    "targets": {
+                                      "minItems": 1,
+                                      "type": "array",
+                                      "items": {
+                                        "type": "string",
+                                        "enum": [
+                                          "i",
+                                          "y",
+                                          "u",
+                                          "ɪ",
+                                          "ʏ",
+                                          "eː",
+                                          "øː",
+                                          "oː",
+                                          "ə",
+                                          "ɛ",
+                                          "ɔ",
+                                          "aː",
+                                          "ɑ",
+                                          "ɛi",
+                                          "œy",
+                                          "ʌu"
+                                        ]
+                                      },
+                                      "description": "De klinkers (IPA) die gevonden moeten worden; geen tweeklanken."
+                                    },
+                                    "note": {
+                                      "type": "string",
+                                      "pattern": "\\S"
+                                    }
+                                  },
+                                  "required": [
+                                    "q",
+                                    "targets",
+                                    "note"
+                                  ],
+                                  "additionalProperties": false,
+                                  "description": "Klinkerruimte in 3D: hoogte, voor-achter en ronding als drie assen. Draai de ruimte en tik de gevraagde klinkers."
+                                },
+                                "flip": {
+                                  "type": "object",
+                                  "properties": {
+                                    "q": {
+                                      "type": "string",
+                                      "pattern": "\\S",
+                                      "description": "Opdracht, bv. \"Maak van de b de drie andere letters\"."
+                                    },
+                                    "start": {
+                                      "type": "string",
+                                      "enum": [
+                                        "b",
+                                        "d",
+                                        "p",
+                                        "q"
+                                      ],
+                                      "description": "De letter op de tegel bij het begin."
+                                    },
+                                    "targets": {
+                                      "minItems": 1,
+                                      "type": "array",
+                                      "items": {
+                                        "type": "string",
+                                        "enum": [
+                                          "b",
+                                          "d",
+                                          "p",
+                                          "q"
+                                        ]
+                                      },
+                                      "description": "De letters die je door draaien moet maken."
+                                    },
+                                    "note": {
+                                      "type": "string",
+                                      "pattern": "\\S"
+                                    }
+                                  },
+                                  "required": [
+                                    "q",
+                                    "start",
+                                    "targets",
+                                    "note"
+                                  ],
+                                  "additionalProperties": false,
+                                  "description": "Draaitegel in 3D: spiegel, kantel of draai een letter en ontdek welke letter je dan ziet."
+                                },
                                 "grid": {
                                   "type": "object",
                                   "properties": {

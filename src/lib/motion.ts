@@ -28,6 +28,10 @@ export const spring = {
   card: { type: 'spring', stiffness: 320, damping: 30, mass: 0.9 },
   /** Feedback en beloningen die opspringen. */
   pop: { type: 'spring', stiffness: 520, damping: 26, mass: 0.7 },
+  /** Iets in 3D ronddraaien: volgt de vinger soepel en komt zacht tot stilstand. */
+  orbit: { stiffness: 170, damping: 26, mass: 0.9 },
+  /** Een tegel die een halve slag maakt: zwaar genoeg om echt te voelen, met een klein naveren. */
+  flip: { type: 'spring', stiffness: 150, damping: 17, mass: 1 },
 } satisfies Record<string, Transition>;
 
 /** Rustige beweging: eigen instelling óf de systeemvoorkeur. Ook voor confetti, tellers en scrollen. */

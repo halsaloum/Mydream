@@ -533,6 +533,19 @@ export const LETTER_MASTER_LESSONS: LessonInput[] = [
               a: 'Het reageert op letters, ongeacht lettertype of hoofdletter: *LEZEN*, *lezen* en *LeZeN* activeren het op dezelfde manier. Die *abstracte letteridentiteit* is precies het grafeembegrip uit de les over allografen, maar dan in je hersenen. Bij mensen die nooit leerden lezen, is het gebied minder gespecialiseerd voor letters.',
             },
           },
+          {
+            text: 'Probeer het zelf. Hieronder staat een *b* op een glazen tegel. Je kunt hem spiegelen om de staande as, kantelen om de liggende as, of in het vlak een halve slag draaien, zoals een wiel. Voor je oude zien blijft het één voorwerp in vier standen. Voor een lezer zijn het vier grafemen met vier verschillende klanken: *b*, *d*, *p*, en de *q* uit leenwoorden als *quiz*, die je als *k* uitspreekt.',
+            flip: {
+              q: 'Maak van de b de drie andere letters',
+              start: 'b',
+              targets: ['d', 'p', 'q'],
+              note: 'Spiegelen geeft d, kantelen p, en een halve slag in het vlak q. Een kind dat b en d verwart, maakt dus geen slordige fout: het past de oude regel toe dat links of rechts niet uitmaakt.',
+            },
+            deep: {
+              q: 'Waarom is een gespiegelde b in een schreefletter geen echte d?',
+              a: 'Kies *Met schreef* en zet *Echte letter erover* aan. In veel schreefletters wijst het schreefje boven aan de stok van zowel *b* als *d* naar links, en de dikke en dunne lijnen volgen de schuine stand van een brede pen. Spiegel je de *b*, dan wijst het schreefje naar rechts en ligt het dikke deel verkeerd. Letterontwerpers tekenen *b* en *d* dus als twee eigen vormen. In een simpele schreefloze letter is het verschil veel kleiner, en precies daar lijken de twee het meest op elkaar.',
+            },
+          },
         ],
       },
       {

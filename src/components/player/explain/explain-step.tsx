@@ -14,6 +14,7 @@ import { Disclosure } from '@/components/ui/disclosure';
 import { RichText } from '@/components/ui/rich-text';
 import { Examples, RuleCard, StepHeading, type StepProps } from '../steps/shared';
 import { GridWidget, TableauWidget, VowelsWidget } from './sound-widgets';
+import { FlipWidget, VowelSpaceWidget } from './space-widgets';
 import { SonorityWidget, TreeWidget } from './syllable-widgets';
 import { ParadigmWidget } from './paradigm-widget';
 import { PhraseWidget } from './phrase-widget';
@@ -169,6 +170,10 @@ function PanelBody({
             return panel.blend && <BlendWidget key={widget} data={panel.blend} {...props} />;
           case 'vowels':
             return panel.vowels && <VowelsWidget key={widget} data={panel.vowels} {...props} />;
+          case 'space':
+            return panel.space && <VowelSpaceWidget key={widget} data={panel.space} {...props} />;
+          case 'flip':
+            return panel.flip && <FlipWidget key={widget} data={panel.flip} {...props} />;
           case 'grid':
             return panel.grid && <GridWidget key={widget} data={panel.grid} {...props} />;
           case 'tableau':
