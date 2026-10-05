@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { AccentSchema } from './accent';
 import { EXTRA_STEP_SCHEMAS } from './kinds';
 import { ARGUMENT_STEP_SCHEMAS } from './kinds-argument';
+import { parseBracket, spanText } from './bracket';
 import { canWin, winsAlone } from './tableau';
 import { hasBalancedEmphasis, isPermutationJoin, tokenize } from './text';
 import { DIPHTHONGS, VOWELS } from './vowels';
@@ -197,6 +198,29 @@ const TreeSchema = z
   })
   .describe('Lettergreepboom: kies een tak (onset, kern, coda) en hang de klanken eraan.');
 
+const BracketSchema = z
+  .object({
+    q: Text.optional().describe('Opdracht boven de woordboom; standaard "Bouw het woord van binnen naar buiten".'),
+    tree: Text.describe('De boom in haakjes, bv. "[[on [eet baar]] heid]": elk paar haakjes bevat precies twee stukken.'),
+    nodes: z
+      .array(
+        z.object({
+          w: Text.describe('De woorddelen van deze knoop aan elkaar, bv. "eetbaar".'),
+          form: Text.optional().describe('Hoe het stuk geschreven wordt als dat anders is, bv. "balletje".'),
+          cat: Text.describe('Woordsoort of soort stuk, bv. "bn".'),
+          note: Text.describe('Wat er bij deze stap gebeurt.'),
+        }),
+      )
+      .min(1)
+      .describe('Eén regel per samengestelde knoop van de boom.'),
+    traps: z
+      .array(z.object({ w: Text.describe('Een verkeerde plakstap, bv. "oneet".'), note: Text.describe('Waarom die niet kan.') }))
+      .optional()
+      .describe('Uitleg bij verleidelijke verkeerde stappen.'),
+    note: Text,
+  })
+  .describe('Woordboom: plak steeds twee buren aan elkaar tot het hele woord staat, in de volgorde van de boom.');
+
 export const PanelSchema = z
   .object({
     text: Rich,
@@ -217,6 +241,7 @@ export const PanelSchema = z
     tableau: TableauSchema.optional(),
     sonority: SonoritySchema.optional(),
     tree: TreeSchema.optional(),
+    bracket: BracketSchema.optional(),
   })
   .superRefine((panel, ctx) => {
     if (panel.lab && !unique(panel.lab.chips.map((chip) => chip.k))) issue(ctx, ['lab', 'chips'], 'Knopteksten moeten uniek zijn');
@@ -293,6 +318,26 @@ export const PanelSchema = z
       roles.forEach((role, i) => {
         if (i > 0 && role < (roles[i - 1] ?? 0)) issue(ctx, ['tree', 'segs', i, 'role'], 'Volgorde is onset, kern, coda, appendix');
       });
+    }
+    if (panel.bracket) {
+      const { tree: source, nodes, traps } = panel.bracket;
+      const tree = parseBracket(source);
+      if (!tree) issue(ctx, ['bracket', 'tree'], 'Geen geldige boom: elk paar haakjes bevat precies twee stukken');
+      else {
+        const expected = tree.nodes.map((node) => spanText(tree, node));
+        if (!unique(expected)) issue(ctx, ['bracket', 'tree'], 'Twee knopen hebben dezelfde letters');
+        const given = nodes.map((node) => node.w);
+        if (!unique(given)) issue(ctx, ['bracket', 'nodes'], 'Knopen staan dubbel');
+        expected.forEach((w) => {
+          if (!given.includes(w)) issue(ctx, ['bracket', 'nodes'], `Knoop "${w}" heeft geen uitleg`);
+        });
+        given.forEach((w, i) => {
+          if (!expected.includes(w)) issue(ctx, ['bracket', 'nodes', i, 'w'], `"${w}" is geen knoop van de boom`);
+        });
+        traps?.forEach((trap, i) => {
+          if (expected.includes(trap.w)) issue(ctx, ['bracket', 'traps', i, 'w'], `"${trap.w}" is juist een goede stap`);
+        });
+      }
     }
     if (panel.tableau) {
       const { constraints, candidates, winner } = panel.tableau;
