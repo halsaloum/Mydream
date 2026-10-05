@@ -985,6 +985,51 @@
                                           "ex": {
                                             "description": "Voorbeeldwoord, bv. \"pak\".",
                                             "type": "string"
+                                          },
+                                          "pair": {
+                                            "description": "Minimaal paar om het verschil te horen, bv. pak /p/ en bak /b/.",
+                                            "type": "array",
+                                            "prefixItems": [
+                                              {
+                                                "type": "object",
+                                                "properties": {
+                                                  "word": {
+                                                    "type": "string",
+                                                    "pattern": "\\S"
+                                                  },
+                                                  "sound": {
+                                                    "type": "string",
+                                                    "pattern": "\\S"
+                                                  }
+                                                },
+                                                "required": [
+                                                  "word",
+                                                  "sound"
+                                                ],
+                                                "additionalProperties": false
+                                              },
+                                              {
+                                                "type": "object",
+                                                "properties": {
+                                                  "word": {
+                                                    "type": "string",
+                                                    "pattern": "\\S"
+                                                  },
+                                                  "sound": {
+                                                    "type": "string",
+                                                    "pattern": "\\S"
+                                                  }
+                                                },
+                                                "required": [
+                                                  "word",
+                                                  "sound"
+                                                ],
+                                                "additionalProperties": false
+                                              }
+                                            ],
+                                            "items": false,
+                                            "minItems": 2,
+                                            "maxItems": 2
                                           }
                                         },
                                         "required": [

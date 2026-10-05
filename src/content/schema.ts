@@ -176,6 +176,8 @@ const ModelSchema = z
   })
   .describe('3D-model (gemaakt met Meshy): draai het model, tik een stip op een onderdeel en typ het woord.');
 
+const SoundPairWord = z.object({ word: Text, sound: Text });
+
 const GridSchema = z
   .object({
     q: Text.describe('Opdracht, bv. "Tik alle stemhebbende medeklinkers".'),
@@ -188,6 +190,10 @@ const GridSchema = z
           row: z.int().nonnegative(),
           col: z.int().nonnegative(),
           ex: z.string().optional().describe('Voorbeeldwoord, bv. "pak".'),
+          pair: z
+            .tuple([SoundPairWord, SoundPairWord])
+            .optional()
+            .describe('Minimaal paar om het verschil te horen, bv. pak /p/ en bak /b/.'),
         }),
       )
       .min(2),

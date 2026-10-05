@@ -1,14 +1,14 @@
 'use client';
 
-import { Grid3x3, MoveHorizontal, Scale, Shapes, Volume2 } from 'lucide-react';
+import { Grid3x3, MoveHorizontal, Repeat, Scale, Shapes, Volume2 } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useEffect, useId, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { evaluateTableau } from '@/content/tableau';
-import { DIPHTHONGS, VOWEL_INFO, VOWELS, type Vowel } from '@/content/vowels';
+import { DIPHTHONGS, VOWEL_INFO, VOWELS, type SoundPair, type Vowel } from '@/content/vowels';
 import { cn } from '@/lib/cn';
 import { transition, useCalmMotion } from '@/lib/motion';
 import { play } from '@/lib/sound';
-import { speak, useCanSpeak } from '@/lib/speech';
+import { speak, speakAll, useCanSpeak } from '@/lib/speech';
 import { Button } from '@/components/ui/button';
 import { TaskBox } from '../steps/shared';
 import { ICON, SHAKE, useFlash, useSolve, type WidgetProps } from './widgets';
@@ -19,7 +19,7 @@ import { ICON, SHAKE, useFlash, useSolve, type WidgetProps } from './widgets';
  * bewaard, en alles werkt met aanraken, muis en toetsenbord.
  */
 
-/** Luisterknop voor een voorbeeldwoord; alleen als de browser kan voorlezen. */
+/** Luisterknop voor een voorbeeldwoord; alleen als de browser Nederlands kan voorlezen. */
 function ListenButton({ word }: { word: string }) {
   const canSpeak = useCanSpeak();
   if (!canSpeak) return null;
@@ -31,8 +31,40 @@ function ListenButton({ word }: { word: string }) {
   );
 }
 
+/**
+ * Hoor het verschil: twee woorden die maar in één klank verschillen. Tik een woord om het te
+ * horen, of "Vergelijk" voor A – B – A, langzaam en met een pauze, zoals in een uitspraakles.
+ */
+function PairRow({ pair }: { pair: SoundPair }) {
+  const canSpeak = useCanSpeak();
+  if (!canSpeak) return null;
+  const [a, b] = pair;
+  const chip =
+    'inline-flex min-h-9 items-center gap-1.5 rounded-full border-2 border-line bg-surface px-3 text-small font-bold text-ink shadow-slab-sm transition-colors duration-150 outline-none hover:border-accent focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-focus';
+  return (
+    <div role="group" aria-label="Hoor het verschil" className="flex w-full flex-wrap items-center gap-2 border-t-2 border-line pt-3">
+      <span className="text-caption font-extrabold text-ink-muted">Hoor het verschil</span>
+      {[a, b].map((item) => (
+        <button key={item.word} type="button" className={chip} onClick={() => speak(item.word, { slower: 0.9 })} aria-label={`Luister naar ${item.word}, met /${item.sound}/`}>
+          <span lang="nl">{item.word}</span>
+          <span className="font-serif font-normal text-accent-ink">/{item.sound}/</span>
+        </button>
+      ))}
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={() => speakAll([a.word, b.word, a.word], { gap: 650, slower: 0.85 })}
+        aria-label={`Vergelijk ${a.word}, ${b.word}, ${a.word}`}
+      >
+        <Repeat aria-hidden className="size-4" strokeWidth={2.75} />
+        Vergelijk
+      </Button>
+    </div>
+  );
+}
+
 /** Wat er over een aangetikte klank te zeggen valt, onder de kaart of tabel. */
-export function SoundCard({ symbol, word, lines }: { symbol: string; word: string | undefined; lines: string[] }) {
+export function SoundCard({ symbol, word, lines, pair }: { symbol: string; word: string | undefined; lines: string[]; pair?: SoundPair }) {
   const calm = useCalmMotion();
   return (
     <motion.div
@@ -59,6 +91,7 @@ export function SoundCard({ symbol, word, lines }: { symbol: string; word: strin
         ))}
       </span>
       {word && <ListenButton word={word} />}
+      {pair && <PairRow pair={pair} />}
     </motion.div>
   );
 }
@@ -264,7 +297,7 @@ export function VowelsWidget({ data, solved, onSolved }: WidgetProps<'vowels'>) 
         <div aria-live="polite" className="mt-4 min-h-[5.5rem]">
           <AnimatePresence mode="wait" initial={false}>
             {current && info ? (
-              <SoundCard key={current} symbol={current} word={info.word} lines={[info.traits, `Meestal geschreven als ${info.spelling}`]} />
+              <SoundCard key={current} symbol={current} word={info.word} pair={info.pair} lines={[info.traits, `Meestal geschreven als ${info.spelling}`]} />
             ) : (
               <p className="text-small font-semibold text-ink-muted">Tik een klinker om te zien hoe je hem maakt.</p>
             )}
@@ -385,7 +418,7 @@ export function GridWidget({ data, solved, onSolved }: WidgetProps<'grid'>) {
         <div aria-live="polite" className="mt-4 min-h-[5.5rem]">
           <AnimatePresence mode="wait" initial={false}>
             {cell ? (
-              <SoundCard key={cell.t} symbol={cell.t} word={cell.ex} lines={[`${data.rows[cell.row] ?? ''} · ${data.cols[cell.col] ?? ''}`]} />
+              <SoundCard key={cell.t} symbol={cell.t} word={cell.ex} pair={cell.pair} lines={[`${data.rows[cell.row] ?? ''} · ${data.cols[cell.col] ?? ''}`]} />
             ) : (
               <p className="text-small font-semibold text-ink-muted">Tik een klank om te zien waar hij in de tabel staat.</p>
             )}

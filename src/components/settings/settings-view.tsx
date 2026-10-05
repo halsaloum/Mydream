@@ -10,6 +10,7 @@ import { PageHeader } from '@/components/shell/app-shell';
 import { Button } from '@/components/ui/button';
 import { Range, ToggleRow } from '@/components/ui/controls';
 import { ConfirmDialog } from '@/components/ui/dialog';
+import { VoiceSettings } from './voice-settings';
 import { PageSkeleton } from '@/components/ui/empty-state';
 import { cn } from '@/lib/cn';
 import { play } from '@/lib/sound';
@@ -78,6 +79,10 @@ export function SettingsView() {
               Testtoon
             </Button>
           </div>
+        </Section>
+
+        <Section title="Nederlandse stem" description="pennig leest woorden, klanken en dictees voor met een stem van je apparaat. Hoe natuurlijker de stem, hoe beter je de klanken leert.">
+          <VoiceSettings />
         </Section>
 
         <Section title="Beweging en effecten">

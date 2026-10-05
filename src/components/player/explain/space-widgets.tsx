@@ -327,7 +327,7 @@ export function VowelSpaceWidget({ data, solved, onSolved }: WidgetProps<'space'
         <div aria-live="polite" className="mt-4 min-h-[5.5rem]">
           <AnimatePresence mode="wait" initial={false}>
             {current && info ? (
-              <SoundCard key={current} symbol={current} word={info.word} lines={[info.traits, ROUND.has(current) ? 'Ligt in het vlak van de ronde lippen' : 'Ligt in het vlak van de platte lippen']} />
+              <SoundCard key={current} symbol={current} word={info.word} pair={info.pair} lines={[info.traits, ROUND.has(current) ? 'Ligt in het vlak van de ronde lippen' : 'Ligt in het vlak van de platte lippen']} />
             ) : (
               <p className="text-small font-semibold text-ink-muted">Draai de ruimte en tik een klinker om te zien hoe je hem maakt.</p>
             )}
