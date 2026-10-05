@@ -3,6 +3,7 @@ import { DEEL_LESSONS } from './deel';
 import { DEEL_MASTER_LESSONS } from './deel-master';
 import { GREEP_LESSONS } from './greep';
 import { GREEP_MASTER_LESSONS } from './greep-master';
+import { GREEP_EXTRA_LESSONS } from './greep-extra';
 import { KLANK_LESSONS } from './klank';
 import { KLANK_MASTER_LESSONS } from './klank-master';
 import { LETTER_LESSONS } from './letter';
@@ -16,7 +17,7 @@ import { WOORD_MASTER_LESSONS } from './woord-master';
 export const EXTRA_LESSONS: Readonly<Record<string, readonly LessonInput[]>> = {
   letter: LETTER_LESSONS,
   klank: [...KLANK_LESSONS, ...KLANK_MASTER_LESSONS],
-  greep: [...GREEP_LESSONS, ...GREEP_MASTER_LESSONS],
+  greep: [...GREEP_LESSONS, ...GREEP_EXTRA_LESSONS, ...GREEP_MASTER_LESSONS],
   deel: [...DEEL_LESSONS, ...DEEL_MASTER_LESSONS],
   woord: [...WOORD_LESSONS, ...WOORD_MASTER_LESSONS],
 };
