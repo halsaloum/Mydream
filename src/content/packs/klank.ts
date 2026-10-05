@@ -688,6 +688,19 @@ export const KLANK_LESSONS: LessonInput[] = [
             },
           },
           {
+            text: 'Kijk nog eens naar die drie vragen. Een plat vlak heeft maar twee richtingen, dus de kaart beantwoordt er maar twee: hoogte en voor-achter. De derde, de lippen, wordt weggemoffeld. Daarom staat *uu* op de kaart een stukje rechts van *ie*, terwijl je tong voor beide bijna op dezelfde plek staat. Alleen je lippen verschillen. Hieronder staat de kaart als ruimte: vooraan de platte lippen, achteraan de ronde.',
+            rule: 'De klinkerkaart is een ruimte met drie assen: hoogte, voor-achter en ronding.',
+            space: {
+              q: 'Draai de ruimte: welke twee ronde klinkers verstoppen zich van voren precies achter een platte?',
+              targets: ['y', 'øː'],
+              note: 'uu staat achter ie en eu achter ee: dezelfde tong, andere lippen. Op de platte kaart moeten ze daarom opzij.',
+            },
+            deep: {
+              q: 'Waarom heeft *oe* geen platte partner?',
+              a: 'Achter in de mond zijn bijna alle Nederlandse klinkers rond: *oe*, *oo* en *o*. Alleen de korte *a* [ɑ] is achter en plat. Dat is geen toeval. Achterklinkers en ronde lippen versterken elkaar: allebei verlagen ze de tweede formant, F2, en maken de klank donkerder. Daarom zijn ronde achterklinkers in de talen van de wereld heel gewoon, en ronde voorklinkers als *uu* en *eu* zeldzaam.',
+            },
+          },
+          {
             text: 'Ian Maddieson (1984) vergeleek de klanksystemen van ruim driehonderd talen. Het vaakst vond hij vijf klinkers: *i*, *e*, *a*, *o*, *u*, zoals in het Spaans en het Japans. Ronde voorklinkers als *uu* en *eu* zijn wereldwijd zeldzaam. Het Nederlands, met dertien klinkers en drie tweeklanken, is een klinkerrijke taal, net als het Duits, het Frans en het Zweeds.',
             vowels: {
               q: 'Tik de vijf klinkers die het dichtst bij het Spaanse systeem liggen',

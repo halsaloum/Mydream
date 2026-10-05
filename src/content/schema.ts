@@ -6,6 +6,7 @@ import { parseBracket, spanText } from './bracket';
 import { canWin, winsAlone } from './tableau';
 import { hasBalancedEmphasis, isPermutationJoin, tokenize } from './text';
 import { DIPHTHONGS, VOWELS } from './vowels';
+import { FLIP_LETTERS } from './flip';
 
 export { ACCENTS, AccentSchema, type Accent } from './accent';
 
@@ -133,6 +134,23 @@ const VowelsSchema = z
     glides: z.boolean().optional().describe('Toon ook de drie tweeklanken als glijbewegingen.'),
   })
   .describe('Klinkerkaart: de klinkers op hun plek in de mond. Tik, luister en zoek de gevraagde klinkers.');
+
+const SpaceSchema = z
+  .object({
+    q: Text.describe('Opdracht, bv. "Tik de klasse [+rond, −achter]".'),
+    targets: z.array(z.enum(VOWELS)).min(1).describe('De klinkers (IPA) die gevonden moeten worden; geen tweeklanken.'),
+    note: Text,
+  })
+  .describe('Klinkerruimte in 3D: hoogte, voor-achter en ronding als drie assen. Draai de ruimte en tik de gevraagde klinkers.');
+
+const FlipSchema = z
+  .object({
+    q: Text.describe('Opdracht, bv. "Maak van de b de drie andere letters".'),
+    start: z.enum(FLIP_LETTERS).describe('De letter op de tegel bij het begin.'),
+    targets: z.array(z.enum(FLIP_LETTERS)).min(1).describe('De letters die je door draaien moet maken.'),
+    note: Text,
+  })
+  .describe('Draaitegel in 3D: spiegel, kantel of draai een letter en ontdek welke letter je dan ziet.');
 
 const GridSchema = z
   .object({
@@ -286,6 +304,8 @@ export const PanelSchema = z
     blend: BlendSchema.optional(),
     swap: SwapSchema.optional(),
     vowels: VowelsSchema.optional(),
+    space: SpaceSchema.optional(),
+    flip: FlipSchema.optional(),
     grid: GridSchema.optional(),
     tableau: TableauSchema.optional(),
     sonority: SonoritySchema.optional(),
@@ -343,6 +363,18 @@ export const PanelSchema = z
       targets.forEach((target, i) => {
         if (!glides && DIPHTHONGS.includes(target)) issue(ctx, ['vowels', 'targets', i], 'Een tweeklank vinden kan alleen met glides: true');
       });
+    }
+    if (panel.space) {
+      const { targets } = panel.space;
+      if (!unique(targets)) issue(ctx, ['space', 'targets'], 'Klinkers staan dubbel');
+      targets.forEach((target, i) => {
+        if (DIPHTHONGS.includes(target)) issue(ctx, ['space', 'targets', i], 'Een tweeklank heeft geen vaste plek in de ruimte');
+      });
+    }
+    if (panel.flip) {
+      const { start, targets } = panel.flip;
+      if (!unique(targets)) issue(ctx, ['flip', 'targets'], 'Letters staan dubbel');
+      if (targets.includes(start)) issue(ctx, ['flip', 'targets'], 'De beginletter zie je al zonder te draaien');
     }
     if (panel.grid) {
       const { cols, rows, cells, targets } = panel.grid;

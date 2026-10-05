@@ -32,7 +32,7 @@ function ListenButton({ word }: { word: string }) {
 }
 
 /** Wat er over een aangetikte klank te zeggen valt, onder de kaart of tabel. */
-function SoundCard({ symbol, word, lines }: { symbol: string; word: string | undefined; lines: string[] }) {
+export function SoundCard({ symbol, word, lines }: { symbol: string; word: string | undefined; lines: string[] }) {
   const calm = useCalmMotion();
   return (
     <motion.div
@@ -91,7 +91,7 @@ function ScrollHint({ show }: { show: boolean }) {
 /* ------------------------------------------------------------------ klinkerkaart */
 
 /** Plek op de kaart (viewBox 400 × 350): links is voor in de mond, boven is de tong hoog. */
-const VOWEL_SPOTS: Record<Vowel, { x: number; y: number }> = {
+export const VOWEL_SPOTS: Record<Vowel, { x: number; y: number }> = {
   i: { x: 72, y: 48 },
   y: { x: 130, y: 48 },
   u: { x: 347, y: 48 },
@@ -118,7 +118,7 @@ const GLIDES: Record<string, { from: [number, number]; via: [number, number]; to
   ʌu: { from: [292, 262], via: [262, 150], to: [340, 62], start: 'ʌ' },
 };
 
-const MONOPHTHONGS = VOWELS.filter((vowel) => !DIPHTHONGS.includes(vowel));
+export const MONOPHTHONGS = VOWELS.filter((vowel) => !DIPHTHONGS.includes(vowel));
 
 /** Knoppen op de kaart: kleiner als de kaart smal is (telefoon), zodat ze elkaar niet raken. */
 const CHART_BUTTON =

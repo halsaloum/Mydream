@@ -67,6 +67,18 @@ export const KLANK_MASTER_LESSONS: LessonInput[] = [
               why: 'De leen-[g] is ook [−son], dus eindklankverscherping maakt hem stemloos: [k].',
             },
           },
+          {
+            text: 'Ook klinkers zijn bundels kenmerken. In *The Sound Pattern of English* krijgen ze er vooral drie soorten: [±hoog] en [±laag] voor de stand van de tong, [±achter] voor voor of achter, en [±rond] voor de lippen. Drie kenmerken zijn drie assen: samen spannen ze een *klinkerruimte* op. Een natuurlijke klasse is dan geen rijtje meer, maar een hoek of een wand van die ruimte. Draai de ruimte en zoek de hoek waar de zeldzaamste klinkers van de wereld wonen.',
+            space: {
+              q: 'Tik de klasse [+rond, −achter]',
+              targets: ['y', 'ʏ', 'øː'],
+              note: 'uu, u en eu: ronde lippen, maar de tong niet achterin. In de wereldatlas WALS heeft maar ongeveer één op de vijftien talen zulke klinkers.',
+            },
+            deep: {
+              q: 'Waarom geen vierde as?',
+              a: 'Het Nederlands heeft er eigenlijk wel een nodig: *ie* en *i* liggen dicht bij elkaar, maar *ie* is gespannen en *i* niet: [±gespannen], in SPE [±tense]. Een vierde as kun je niet tekenen. Daarom schrijven fonologen kenmerken als een matrix van plussen en minnen, en niet als plaatje. De ruimte hier is dus een vereenvoudiging: hij toont precies drie kenmerken, en laat zien waarom een klasse als [+rond, −achter] één samenhangend gebied is.',
+            },
+          },
         ],
       },
       {
