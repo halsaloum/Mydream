@@ -176,6 +176,75 @@ const CompoundSchema = z
   })
   .describe('Samenstellingen in 3D: kies twee voorwerpen in de goede volgorde, kies de spelling, en zie ze samensmelten.');
 
+/** Kleuren voor de vormmachine (bijvoeglijk naamwoord): Nederlandse namen, de app kiest de lak. */
+export const PAINTS = ['rood', 'groen', 'blauw', 'geel', 'oranje', 'roze', 'paars', 'goud', 'wit', 'zwart'] as const;
+
+const BinsSchema = z
+  .object({
+    q: Text.optional().describe('Opdracht boven de tafel; standaard "Zet elk voorwerp in de goede bak".'),
+    bins: z.array(Text).min(2).max(4).describe('Namen van de bakken, bv. "de" en "het". Bij rings: van het midden naar buiten.'),
+    rings: z.boolean().optional().describe('De bakken zijn ringen om één midden: het midden is de kern, buiten de rand (prototypen).'),
+    items: z
+      .array(
+        z.object({
+          thing: Thing,
+          bin: z.int().nonnegative().describe('Index van de goede bak.'),
+          note: Text.describe('Uitleg zodra het voorwerp in de goede bak staat.'),
+          hint: Text.optional().describe('Tip bij een verkeerde bak.'),
+        }),
+      )
+      .min(3)
+      .max(8),
+    note: Text,
+  })
+  .describe('Sorteertafel in 3D: kies een voorwerp en zet het in de goede bak of ring.');
+
+const MorphSchema = z
+  .object({
+    q: Text.optional().describe('Opdracht boven de machine; standaard "Kies de goede vorm".'),
+    rounds: z
+      .array(
+        z.object({
+          thing: Thing,
+          from: Text.describe('Waar je mee begint, bv. "de kast".'),
+          ask: Text.describe('Wat je moet maken, bv. "één kleine kast".'),
+          effect: z.enum(['klein', 'veel', 'klein-veel', 'kleur']).describe('Wat het voorwerp doet bij het goede antwoord: krimpen, vermenigvuldigen, allebei, of verven.'),
+          paint: z.enum(PAINTS).optional().describe('De kleur bij effect "kleur".'),
+          options: z.array(Text).min(2).max(4),
+          answer: Text,
+          note: Text.describe('Waarom deze vorm.'),
+        }),
+      )
+      .min(1)
+      .max(6),
+    note: Text,
+  })
+  .describe('Vormmachine in 3D: kies de goede vorm van het woord, en het voorwerp doet wat het morfeem betekent.');
+
+const CastSchema = z
+  .object({
+    q: Text.optional().describe('Opdracht boven het toneel; standaard "Tik aan wat de zin vraagt".'),
+    rounds: z
+      .array(
+        z.object({
+          text: Text.describe('De zin of het woord waar het om gaat.'),
+          ask: Text.describe('Wat je moet aantikken, bv. "Tik alle argumenten van zetten".'),
+          cast: z.array(Thing).min(2).max(6).describe('De voorwerpen in de kring.'),
+          answer: z.array(Thing).max(4).describe('Wat aangetikt moet worden; leeg = niets (dan is er een knop "Niets").'),
+          focus: Thing.optional().describe('Wat na het goede antwoord naar voren draait; standaard het eerste antwoord.'),
+          then: z
+            .object({ q: Text, options: z.array(Text).min(2).max(4), answer: Text })
+            .optional()
+            .describe('Een vervolgvraag zodra het tikken goed is.'),
+          note: Text.describe('Uitleg na het goede antwoord.'),
+        }),
+      )
+      .min(1)
+      .max(6),
+    note: Text,
+  })
+  .describe('Toneel in 3D: voorwerpen in een kring die je kunt draaien; tik aan wat de opdracht vraagt.');
+
 const SoundPairWord = z.object({ word: Text, sound: Text });
 
 const GridSchema = z
@@ -344,6 +413,9 @@ export const PanelSchema = z
     paradigm: ParadigmSchema.optional(),
     phrase: PhraseSchema.optional(),
     compound: CompoundSchema.optional(),
+    bins: BinsSchema.optional(),
+    morph: MorphSchema.optional(),
+    cast: CastSchema.optional(),
   })
   .superRefine((panel, ctx) => {
     if (panel.lab && !unique(panel.lab.chips.map((chip) => chip.k))) issue(ctx, ['lab', 'chips'], 'Knopteksten moeten uniek zijn');
@@ -410,6 +482,35 @@ export const PanelSchema = z
         if (!round.options.includes(round.answer)) issue(ctx, ['compound', 'rounds', i, 'answer'], 'Antwoord staat niet tussen de opties');
       });
       if (!unique(panel.compound.rounds.map((round) => round.answer))) issue(ctx, ['compound', 'rounds'], 'Rondes staan dubbel');
+    }
+    if (panel.bins) {
+      const { bins, items } = panel.bins;
+      if (!unique(bins)) issue(ctx, ['bins', 'bins'], 'Bakken moeten uniek zijn');
+      if (!unique(items.map((item) => item.thing))) issue(ctx, ['bins', 'items'], 'Voorwerpen staan dubbel');
+      items.forEach((item, i) => {
+        if (item.bin >= bins.length) issue(ctx, ['bins', 'items', i, 'bin'], `Bak ${item.bin} bestaat niet`);
+      });
+    }
+    if (panel.morph) {
+      panel.morph.rounds.forEach((round, i) => {
+        if (!unique(round.options)) issue(ctx, ['morph', 'rounds', i, 'options'], 'Opties moeten uniek zijn');
+        if (!round.options.includes(round.answer)) issue(ctx, ['morph', 'rounds', i, 'answer'], 'Antwoord staat niet tussen de opties');
+        if ((round.effect === 'kleur') !== (round.paint !== undefined)) issue(ctx, ['morph', 'rounds', i, 'paint'], 'Een kleur hoort bij effect "kleur", en alleen daar');
+      });
+    }
+    if (panel.cast) {
+      panel.cast.rounds.forEach((round, i) => {
+        if (!unique(round.cast)) issue(ctx, ['cast', 'rounds', i, 'cast'], 'Voorwerpen staan dubbel');
+        if (!unique(round.answer)) issue(ctx, ['cast', 'rounds', i, 'answer'], 'Antwoorden staan dubbel');
+        round.answer.forEach((id, j) => {
+          if (!round.cast.includes(id)) issue(ctx, ['cast', 'rounds', i, 'answer', j], `"${id}" staat niet in de kring`);
+        });
+        if (round.focus && !round.cast.includes(round.focus)) issue(ctx, ['cast', 'rounds', i, 'focus'], `"${round.focus}" staat niet in de kring`);
+        if (round.then) {
+          if (!unique(round.then.options)) issue(ctx, ['cast', 'rounds', i, 'then', 'options'], 'Opties moeten uniek zijn');
+          if (!round.then.options.includes(round.then.answer)) issue(ctx, ['cast', 'rounds', i, 'then', 'answer'], 'Antwoord staat niet tussen de opties');
+        }
+      });
     }
     if (panel.flip) {
       const { start, targets } = panel.flip;
