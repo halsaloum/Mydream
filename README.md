@@ -106,6 +106,7 @@ geen tegenstrijdige inhoud naast elkaar bestaat.
 | `packs/klank-master.ts` | Klank en letter | 9 — master: kenmerken en natuurlijke klassen, sonoriteit, ambisyllabiciteit, klemtoon en lettergreepgewicht, regelordening, Optimaliteitstheorie (twee lessen), categoriale perceptie, klankverandering |
 | `packs/greep.ts` | De lettergreep | 8 — bachelor: bewijs voor de lettergreep, onset-kern-coda, grenzen en fonotaxis, de rijm van drie plekken en de appendix, hiaat en glottisslag, schwa-epenthese, verkleinwoord en meervoud, lettergreepschriften |
 | `packs/greep-master.ts` | De lettergreep | 6 — master: moras en het minimale woord, typologie en verwerving, ONSET en NOCODA in OT, het prosodische woord, ritmeklassen, de lettergreep in spraakproductie |
+| `packs/greep-extra.ts` | De lettergreep | 1 — bachelor: rijm en metrum (eindrijm, alliteratie, assonantie, versvoeten, de alexandrijn) |
 | `packs/deel.ts` | Het betekenisvolle woorddeel | 8 — bachelor: morfeem en allomorf, buiging tegenover afleiding, de rechterhoofdregel, woordbomen, samenstellingen, tussenklanken, eisen van affixen en blokkering, stamwisseling en suppletie |
 | `packs/deel-master.ts` | Het betekenisvolle woorddeel | 6 — master: morfeem, proces of paradigma, inheemse en geleerde lagen met de haakjesparadox, productiviteit meten, prosodische morfologie, het mentale lexicon en de d/t-fout, woordvorming in beweging |
 | `packs/deel-extra.ts` | Het betekenisvolle woorddeel | 1 — bachelor: afkappingen, letterwoorden en mengwoorden (woordvorming zonder morfemen) |
