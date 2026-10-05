@@ -4,9 +4,9 @@ import { planFor } from '@/lib/plans';
 import { addDays, dayKey } from '@/lib/dates';
 import { EMPTY_PROGRESS, PROGRESS_KEY, useProgress } from './progress';
 import { continueTarget, recommendedLesson, streakDays } from './selectors';
-import { useSessions } from './sessions';
+import { carryOver, SESSIONS_KEY, useSessions } from './sessions';
 import { DEFAULT_SETTINGS, SETTINGS_KEY, useSettings } from './settings';
-import { storageNotices } from './storage';
+import { checkStorage, storageNotices } from './storage';
 import { applyImport, exportData, parseImport } from './transfer';
 
 beforeEach(() => {
@@ -25,6 +25,23 @@ describe('opslag', () => {
     expect(useSettings.getState().profile).toEqual(DEFAULT_SETTINGS.profile);
     expect(window.localStorage.getItem(`${SETTINGS_KEY}:reserve`)).toContain('kapot');
     expect(notices).toContain(SETTINGS_KEY);
+  });
+
+  it('meldt het als de browser niets wil opslaan', () => {
+    const kinds: string[] = [];
+    const stop = storageNotices.subscribe((notice) => kinds.push(notice.kind));
+    expect(checkStorage()).toBe(true);
+    const original = Storage.prototype.setItem;
+    Storage.prototype.setItem = () => {
+      throw new Error('QuotaExceededError');
+    };
+    try {
+      expect(checkStorage()).toBe(false);
+    } finally {
+      Storage.prototype.setItem = original;
+      stop();
+    }
+    expect(kinds).toEqual(['blocked']);
   });
 
   it('laat oefenpunten van niet-bestaande stappen weg, maar behoudt de rest', async () => {
@@ -70,6 +87,33 @@ describe('sessies en voortgang', () => {
     // Opnieuw dispatchen na afronden verandert niets.
     dispatch('l4', { type: 'advance', now: now + 1_000 });
     expect(useProgress.getState().lessons.l4?.attempts).toBe(1);
+  });
+});
+
+describe('les veranderd tijdens een update', () => {
+  it('gaat verder bij de eerste open stap in plaats van opnieuw te beginnen', async () => {
+    const plan = planFor('l5')!;
+    const keys = plan.map((item) => item.key);
+    expect(keys.length).toBeGreaterThan(3);
+    const session = useSessions.getState().start('l5', 'lesson', plan);
+    // Een oude versie van de les: één stap die nu niet meer bestaat, en drie stappen al gedaan.
+    const old = { ...session, plan: [keys[0]!, 'l5:weg#oud', keys[1]!, keys[2]!], queue: [keys[0]!, 'l5:weg#oud', keys[1]!, keys[2]!], pos: 3, firstTry: { [keys[1]!]: 1, 'l5:weg#oud': 0 } };
+    useSessions.setState({ byId: {} });
+    window.localStorage.setItem(SESSIONS_KEY, JSON.stringify({ state: { byId: { l5: old } }, version: 1 }));
+    await useSessions.persist.rehydrate();
+    const resumed = useSessions.getState().byId.l5!;
+    expect(resumed.plan).toEqual(keys);
+    expect(resumed.pos).toBe(2);
+    expect(resumed.phase).toBe('answering');
+    expect(resumed.firstTry).toEqual({ [keys[1]!]: 1 });
+  });
+
+  it('begint opnieuw als er nog niets gedaan was of de les al af was', () => {
+    const plan = planFor('w2')!;
+    const session = useSessions.getState().start('w2', 'lesson', plan);
+    const changed = { ...session, plan: ['l5:weg#oud'], queue: ['l5:weg#oud'] };
+    expect(carryOver('w2', changed)).toBeUndefined();
+    expect(carryOver('w2', { ...changed, pos: 0, phase: 'done' as const })).toBeUndefined();
   });
 });
 
