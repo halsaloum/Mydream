@@ -474,6 +474,12 @@ export const WOORD_LESSONS: LessonInput[] = [
           },
           {
             text: 'Het hele werkwoord kan naamwoord worden: *het lezen*. Maar het blijft half werkwoord. *Het lezen van boeken* is naamwoordelijk: met *van*, zoals bij een naamwoord. *Het boeken lezen* is werkwoordelijk: het lijdend voorwerp staat ervoor, zoals in een bijzin. Eén woord, twee soorten tegelijk. Dat heet een *gemengde categorie*.',
+            quiz: {
+              q: 'Welke vorm is werkwoordelijk gebouwd?',
+              options: ['het boeken lezen', 'het lezen van boeken', 'het lezen'],
+              answer: 'het boeken lezen',
+              why: 'Het lijdend voorwerp staat ervoor, zoals in een bijzin. Met van is het naamwoordelijk.',
+            },
             show: [{ right: 'het luide zingen van liedjes (naamwoord: -e en van)' }, { right: 'het luid liedjes zingen (werkwoord: geen -e, voorwerp ervoor)' }],
             deep: {
               q: 'Waarom luide en luid?',
@@ -690,6 +696,12 @@ export const WOORD_LESSONS: LessonInput[] = [
           },
           {
             text: 'De reeksen lekken. Door de eeuwen heen worden sterke werkwoorden zwak: *bakken* had vroeger *biek*, nu *bakte* (maar nog wel *gebakken*). *Waaien* heeft *woei* en *waaide* naast elkaar. Andersom gebeurt ook: *vragen* had *vraagde* en werd *vroeg*, naar het voorbeeld van *dragen*, *droeg*.',
+            quiz: {
+              q: 'Welk werkwoord werd juist sterk naar het voorbeeld van een ander?',
+              options: ['vragen (vroeg)', 'bakken (bakte)', 'waaien (waaide)'],
+              answer: 'vragen (vroeg)',
+              why: 'vraagde werd vroeg, naar dragen en droeg. bakken en waaien gaan de andere kant op.',
+            },
             rule: 'Vaak gebruikte werkwoorden blijven sterk. Zeldzame worden langzaam zwak.',
             deep: {
               q: 'Kun je dat meten?',
@@ -1129,6 +1141,12 @@ export const WOORD_LESSONS: LessonInput[] = [
           },
           {
             text: 'Waarom zo ingewikkeld? Het is een overblijfsel van een oud naamvalsysteem, dat het Duits nog heeft: *ein großes Haus*, *das große Haus*. Het Nederlands verloor de naamvallen, maar hield dit ene gaatje. Kinderen leren het laat: ze zeggen nog lang *een grote huis*.',
+            quiz: {
+              q: 'Wat zegt een kind dat de regel nog niet kent?',
+              options: ['een grote huis', 'een groot huis', 'het groot huis'],
+              answer: 'een grote huis',
+              why: 'Na een bij een het-woord in het enkelvoud valt de -e weg: een groot huis. Kinderen leren dat laat.',
+            },
             rule: 'Geen -e alleen bij: het-woord, enkelvoud, en geen de/het/dit/dat/die/deze of mijn/zijn/ons ervoor.',
             deep: {
               q: 'Is dit moeilijk voor iedereen?',

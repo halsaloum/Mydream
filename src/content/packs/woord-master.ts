@@ -482,6 +482,12 @@ export const WOORD_MASTER_LESSONS: LessonInput[] = [
           },
           {
             text: 'Is de paus een vrijgezel? Volgens de kenmerken [+man, +volwassen, −getrouwd] wel. Toch voelt het fout. Eleanor Rosch (1975) liet mensen beoordelen hoe goed iets bij een categorie past. Een roodborst scoort als ideale vogel, een pinguïn bijna onderaan. Mensen beslissen ook sneller dat een roodborst een vogel is. Categorieën hebben een *prototype*: een beste voorbeeld in het midden en een vage rand.',
+            quiz: {
+              q: 'Welke vogel scoorde bij Rosch als beste voorbeeld van een vogel?',
+              options: ['de roodborst', 'de pinguïn', 'de struisvogel'],
+              answer: 'de roodborst',
+              why: 'Het prototype zit in het midden van de categorie; de pinguïn hangt aan de rand.',
+            },
             rule: 'Een categorie is geen lijstje eisen maar een middelpunt met een vage rand.',
             deep: {
               q: 'Kopje of kom?',
@@ -714,6 +720,14 @@ export const WOORD_MASTER_LESSONS: LessonInput[] = [
           },
           {
             text: 'Woorden roepen een hele scène op. Charles Fillmore noemde dat een *frame*. Het koopframe heeft een koper, een verkoper, een goed en een prijs. *Kopen* zet de koper voorop, *verkopen* de verkoper, *kosten* het goed en de prijs. Wie een werkwoord kiest, kiest een perspectief.',
+            lab: {
+              label: 'Tik een werkwoord uit het koopframe',
+              chips: [
+                { k: 'kopen', out: 'Anna koopt een fiets van Piet.', note: 'De koper staat voorop.' },
+                { k: 'verkopen', out: 'Piet verkoopt Anna een fiets.', note: 'De verkoper staat voorop.' },
+                { k: 'kosten', out: 'De fiets kost honderd euro.', note: 'Het goed en de prijs staan voorop.' },
+              ],
+            },
             show: [{ right: 'Het bedrijf ontsloeg tweehonderd mensen. (wie deed het)' }, { right: 'Er gingen tweehonderd banen verloren. (niemand deed het)' }],
             deep: {
               q: 'Waarom is dat belangrijk voor een schrijver?',
@@ -925,6 +939,12 @@ export const WOORD_MASTER_LESSONS: LessonInput[] = [
           },
           {
             text: 'Gevolg: een paar honderd woorden maken het grootste deel van elke tekst, en de rest is een lange staart van zeldzame woorden. Ongeveer de helft van alle verschillende woorden in een groot corpus komt maar één keer voor: de *hapaxen* uit Het betekenisvolle woorddeel (d15). Voor lezen zonder woordenboek moet je volgens Paul Nation (2006) zo’n 98 procent van de woorden kennen; voor een roman zijn dat in het Engels 8.000 à 9.000 woordfamilies.',
+            quiz: {
+              q: 'Welk deel van de verschillende woorden in een groot corpus komt maar één keer voor?',
+              options: ['ongeveer de helft', 'ongeveer een procent', 'bijna alle'],
+              answer: 'ongeveer de helft',
+              why: 'Die hapaxen vormen de lange staart van de verdeling.',
+            },
             deep: {
               q: 'Wat betekent dat voor mij als leerder?',
               a: 'Dat de eerste duizend woorden je snel heel ver brengen, en dat elke duizend erna minder dekking opleveren. Vanaf een paar duizend woorden leer je nieuwe woorden het best door *veel te lezen*: zeldzame woorden kom je alleen in grote hoeveelheden tekst vaak genoeg tegen. Zo verklaart Zipf waarom lezen de beste woordenschatles is.',
