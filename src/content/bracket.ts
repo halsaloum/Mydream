@@ -42,9 +42,9 @@ export function parseBracket(source: string): BracketTree | null {
   return { leaves, nodes };
 }
 
-/** De letters van een stuk, aan elkaar. */
-export function spanText(tree: BracketTree, span: Span): string {
-  return tree.leaves.slice(span.from, span.to).join('');
+/** De letters van een stuk, aan elkaar; bij een boom van hele woorden met spaties ertussen. */
+export function spanText(tree: BracketTree, span: Span, words = false): string {
+  return tree.leaves.slice(span.from, span.to).join(words ? ' ' : '');
 }
 
 /** Is dit stuk een knoop van de boom? */

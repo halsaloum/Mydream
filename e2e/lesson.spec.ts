@@ -173,3 +173,36 @@ test('paradigma: elk leeg vakje goed invullen opent het volgende deel', async ({
   await expect(primary).toHaveText(/Volgende deel/);
   await expect(primary).toBeEnabled();
 });
+
+test('de woordgroep: de nieuwe lessen staan per stap, bachelor en master', async ({ page }) => {
+  await page.goto('/');
+  await page.getByRole('tab', { name: /^Niveau 6: De woordgroep/ }).click();
+  for (const stage of ['Bachelor', 'Master']) {
+    await expect(page.getByRole('heading', { name: new RegExp(`${stage}$`) }).first()).toBeVisible();
+  }
+  await expect(page.getByRole('link', { name: /Het lidwoord als kern/ })).toBeVisible();
+});
+
+test('groepenjager: begin en eind van elke groep tikken opent het volgende deel', async ({ page }) => {
+  await page.goto('/les/p7');
+  await expect(page.getByRole('heading', { name: 'Een voorzetsel komt nooit alleen' })).toBeVisible();
+  const primary = page.getByRole('contentinfo').getByRole('button').last();
+  await expect(primary).toBeDisabled();
+
+  await page.getByRole('button', { name: 'met', exact: true }).click();
+  await page.getByRole('button', { name: 'station.', exact: true }).click();
+  await expect(page.getByRole('status').filter({ hasText: 'twee voorzetselgroepen naast elkaar' })).toBeVisible();
+
+  for (const [first, last] of [
+    ['Na', 'eten'],
+    ['met', 'broer'],
+    ['naar', 'station.'],
+  ]) {
+    await page.getByRole('button', { name: first, exact: true }).click();
+    await page.getByRole('button', { name: last, exact: true }).click();
+  }
+
+  await expect(page.getByRole('status').filter({ hasText: 'Elke voorzetselgroep begint hier met zijn kern' })).toBeVisible();
+  await expect(primary).toHaveText(/Volgende deel/);
+  await expect(primary).toBeEnabled();
+});

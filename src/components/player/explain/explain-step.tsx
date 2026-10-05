@@ -16,6 +16,7 @@ import { Examples, RuleCard, StepHeading, type StepProps } from '../steps/shared
 import { GridWidget, TableauWidget, VowelsWidget } from './sound-widgets';
 import { SonorityWidget, TreeWidget } from './syllable-widgets';
 import { ParadigmWidget } from './paradigm-widget';
+import { PhraseWidget } from './phrase-widget';
 import { BracketWidget } from './word-widgets';
 import { AlphaWidget, BlendWidget, BuildWidget, LabWidget, MarkWidget, SplitWidget, SwapWidget, WheelWidget } from './widgets';
 
@@ -180,6 +181,8 @@ function PanelBody({
             return panel.bracket && <BracketWidget key={widget} data={panel.bracket} {...props} />;
           case 'paradigm':
             return panel.paradigm && <ParadigmWidget key={widget} data={panel.paradigm} {...props} />;
+          case 'phrase':
+            return panel.phrase && <PhraseWidget key={widget} data={panel.phrase} {...props} />;
         }
       })}
     </div>

@@ -202,10 +202,11 @@ const BracketSchema = z
   .object({
     q: Text.optional().describe('Opdracht boven de woordboom; standaard "Bouw het woord van binnen naar buiten".'),
     tree: Text.describe('De boom in haakjes, bv. "[[on [eet baar]] heid]": elk paar haakjes bevat precies twee stukken.'),
+    words: z.boolean().optional().describe('De bladeren zijn hele woorden, bv. "[het [rode boek]]": knopen heten dan "rode boek", met spaties.'),
     nodes: z
       .array(
         z.object({
-          w: Text.describe('De woorddelen van deze knoop aan elkaar, bv. "eetbaar".'),
+          w: Text.describe('De woorddelen van deze knoop aan elkaar, bv. "eetbaar" (bij words: met spaties, "rode boek").'),
           form: Text.optional().describe('Hoe het stuk geschreven wordt als dat anders is, bv. "balletje".'),
           cat: Text.describe('Woordsoort of soort stuk, bv. "bn".'),
           note: Text.describe('Wat er bij deze stap gebeurt.'),
@@ -220,6 +221,33 @@ const BracketSchema = z
     note: Text,
   })
   .describe('Woordboom: plak steeds twee buren aan elkaar tot het hele woord staat, in de volgorde van de boom.');
+
+const PhraseSpan = z
+  .tuple([z.int().nonnegative(), z.int().nonnegative()])
+  .describe('Eerste en laatste woord van de groep (indexen op spaties, vanaf 0, beide inclusief).');
+
+const PhraseSchema = z
+  .object({
+    q: Text.optional().describe('Opdracht boven de zin; standaard "Vind de woordgroepen".'),
+    sentence: Text,
+    groups: z
+      .array(
+        z.object({
+          span: PhraseSpan,
+          cat: Text.describe('Soort groep, bv. "naamwoordgroep".'),
+          head: z.int().nonnegative().describe('Index van de kern; ligt binnen de groep.'),
+          note: Text.describe('Uitleg zodra de groep gevonden is.'),
+        }),
+      )
+      .min(1)
+      .describe('De groepen die gevonden moeten worden.'),
+    traps: z
+      .array(z.object({ span: PhraseSpan, note: Text.describe('Waarom dit stuk geen groep is.') }))
+      .optional()
+      .describe('Verleidelijke stukken die geen woordgroep zijn.'),
+    note: Text,
+  })
+  .describe('Groepenjager: tik het eerste en het laatste woord van een woordgroep; vind alle gevraagde groepen.');
 
 const ParadigmCellSchema = z.union([
   Text.describe('Een vorm die al gegeven is.'),
@@ -264,6 +292,7 @@ export const PanelSchema = z
     tree: TreeSchema.optional(),
     bracket: BracketSchema.optional(),
     paradigm: ParadigmSchema.optional(),
+    phrase: PhraseSchema.optional(),
   })
   .superRefine((panel, ctx) => {
     if (panel.lab && !unique(panel.lab.chips.map((chip) => chip.k))) issue(ctx, ['lab', 'chips'], 'Knopteksten moeten uniek zijn');
@@ -346,7 +375,7 @@ export const PanelSchema = z
       const tree = parseBracket(source);
       if (!tree) issue(ctx, ['bracket', 'tree'], 'Geen geldige boom: elk paar haakjes bevat precies twee stukken');
       else {
-        const expected = tree.nodes.map((node) => spanText(tree, node));
+        const expected = tree.nodes.map((node) => spanText(tree, node, panel.bracket?.words));
         if (!unique(expected)) issue(ctx, ['bracket', 'tree'], 'Twee knopen hebben dezelfde letters');
         const given = nodes.map((node) => node.w);
         if (!unique(given)) issue(ctx, ['bracket', 'nodes'], 'Knopen staan dubbel');
@@ -373,6 +402,24 @@ export const PanelSchema = z
       if (extra && !unique(extra)) issue(ctx, ['paradigm', 'extra'], 'Valkuilen staan dubbel');
       extra?.forEach((form, i) => {
         if (answers.includes(form)) issue(ctx, ['paradigm', 'extra', i], `"${form}" is juist een goed antwoord`);
+      });
+    }
+    if (panel.phrase) {
+      const { sentence, groups, traps } = panel.phrase;
+      const count = tokenize(sentence).length;
+      const key = ([from, to]: readonly [number, number]) => `${from}-${to}`;
+      const checkSpan = (span: readonly [number, number], path: (string | number)[]) => {
+        if (span[0] > span[1]) issue(ctx, path, 'Het eerste woord staat na het laatste');
+        if (span[1] >= count) issue(ctx, path, `Index ${span[1]} valt buiten de zin (${count} woorden)`);
+      };
+      groups.forEach((group, i) => {
+        checkSpan(group.span, ['phrase', 'groups', i, 'span']);
+        if (group.head < group.span[0] || group.head > group.span[1]) issue(ctx, ['phrase', 'groups', i, 'head'], 'De kern ligt buiten de groep');
+      });
+      if (!unique(groups.map((group) => key(group.span)))) issue(ctx, ['phrase', 'groups'], 'Groepen staan dubbel');
+      traps?.forEach((trap, i) => {
+        checkSpan(trap.span, ['phrase', 'traps', i, 'span']);
+        if (groups.some((group) => key(group.span) === key(trap.span))) issue(ctx, ['phrase', 'traps', i, 'span'], 'Dit stuk is juist een groep');
       });
     }
     if (panel.tableau) {
