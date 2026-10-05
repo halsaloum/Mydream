@@ -1554,6 +1554,149 @@
                                   ],
                                   "additionalProperties": false,
                                   "description": "Groepenjager: tik het eerste en het laatste woord van een woordgroep; vind alle gevraagde groepen."
+                                },
+                                "compound": {
+                                  "type": "object",
+                                  "properties": {
+                                    "q": {
+                                      "description": "Opdracht boven de werkbank; standaard \"Bouw de samenstelling\".",
+                                      "type": "string",
+                                      "pattern": "\\S"
+                                    },
+                                    "rounds": {
+                                      "minItems": 1,
+                                      "maxItems": 6,
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object",
+                                        "properties": {
+                                          "clue": {
+                                            "type": "string",
+                                            "pattern": "\\S",
+                                            "description": "Wat je zoekt, bv. \"Een kast voor boeken\"."
+                                          },
+                                          "parts": {
+                                            "type": "array",
+                                            "prefixItems": [
+                                              {
+                                                "type": "string",
+                                                "enum": [
+                                                  "pim",
+                                                  "boek",
+                                                  "kast",
+                                                  "boekenkast",
+                                                  "pan",
+                                                  "koek",
+                                                  "pannenkoek",
+                                                  "zon",
+                                                  "bloem",
+                                                  "zonnebloem",
+                                                  "pot",
+                                                  "bloempot",
+                                                  "visser",
+                                                  "boot",
+                                                  "vissersboot",
+                                                  "ster"
+                                                ],
+                                                "description": "Een 3D-voorwerp uit `src/content/things.ts` (gemaakt met Meshy)."
+                                              },
+                                              {
+                                                "type": "string",
+                                                "enum": [
+                                                  "pim",
+                                                  "boek",
+                                                  "kast",
+                                                  "boekenkast",
+                                                  "pan",
+                                                  "koek",
+                                                  "pannenkoek",
+                                                  "zon",
+                                                  "bloem",
+                                                  "zonnebloem",
+                                                  "pot",
+                                                  "bloempot",
+                                                  "visser",
+                                                  "boot",
+                                                  "vissersboot",
+                                                  "ster"
+                                                ],
+                                                "description": "Een 3D-voorwerp uit `src/content/things.ts` (gemaakt met Meshy)."
+                                              }
+                                            ],
+                                            "items": false,
+                                            "minItems": 2,
+                                            "maxItems": 2,
+                                            "description": "Het eerste en het tweede deel, in de goede volgorde."
+                                          },
+                                          "result": {
+                                            "type": "string",
+                                            "enum": [
+                                              "pim",
+                                              "boek",
+                                              "kast",
+                                              "boekenkast",
+                                              "pan",
+                                              "koek",
+                                              "pannenkoek",
+                                              "zon",
+                                              "bloem",
+                                              "zonnebloem",
+                                              "pot",
+                                              "bloempot",
+                                              "visser",
+                                              "boot",
+                                              "vissersboot",
+                                              "ster"
+                                            ],
+                                            "description": "Het voorwerp dat de samenstelling is."
+                                          },
+                                          "options": {
+                                            "minItems": 2,
+                                            "maxItems": 4,
+                                            "type": "array",
+                                            "items": {
+                                              "type": "string",
+                                              "pattern": "\\S"
+                                            },
+                                            "description": "Spellingen om uit te kiezen."
+                                          },
+                                          "answer": {
+                                            "type": "string",
+                                            "pattern": "\\S"
+                                          },
+                                          "note": {
+                                            "type": "string",
+                                            "pattern": "\\S",
+                                            "description": "Waarom deze spelling."
+                                          },
+                                          "swap": {
+                                            "description": "Uitleg als de delen andersom gekozen worden: dan is het andere deel de baas.",
+                                            "type": "string",
+                                            "pattern": "\\S"
+                                          }
+                                        },
+                                        "required": [
+                                          "clue",
+                                          "parts",
+                                          "result",
+                                          "options",
+                                          "answer",
+                                          "note"
+                                        ],
+                                        "additionalProperties": false
+                                      }
+                                    },
+                                    "note": {
+                                      "type": "string",
+                                      "pattern": "\\S"
+                                    }
+                                  },
+                                  "required": [
+                                    "rounds",
+                                    "note"
+                                  ],
+                                  "additionalProperties": false,
+                                  "description": "Samenstellingen in 3D: kies twee voorwerpen in de goede volgorde, kies de spelling, en zie ze samensmelten."
                                 }
                               },
                               "required": [

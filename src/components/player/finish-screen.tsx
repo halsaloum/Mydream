@@ -12,6 +12,9 @@ import { celebrate } from '@/lib/confetti';
 import { cn } from '@/lib/cn';
 import { ease, transition, useCalmMotion } from '@/lib/motion';
 import { play } from '@/lib/sound';
+import { ToyCanvas } from '@/lib/toy3d/toy-canvas';
+
+const loadReward = () => import('@/lib/toy3d/scenes/reward').then((module) => module.rewardScene);
 
 export type FinishAction = { label: string; href: Route; onNavigate?: () => void };
 
@@ -78,29 +81,41 @@ export function FinishScreen({ mode, title, context, summary, learned, celebrate
 
   return (
     <div className="mx-auto w-full max-w-lg px-gutter pt-10 pb-12 text-center sm:pt-14">
-      <div className="relative mx-auto size-40">
-        <svg viewBox="0 0 120 120" aria-hidden className="absolute inset-0 -rotate-90">
-          <circle cx="60" cy="60" r="52" fill="none" stroke="var(--color-line)" strokeWidth="10" />
-          <motion.circle
-            cx="60"
-            cy="60"
-            r="52"
-            fill="none"
-            stroke="var(--accent)"
-            strokeWidth="10"
-            strokeLinecap="round"
-            strokeDasharray={RING}
-            initial={{ strokeDashoffset: calm || !party ? RING * (1 - accuracy / 100) : RING }}
-            animate={{ strokeDashoffset: RING * (1 - accuracy / 100) }}
-            transition={calm || !party ? { duration: 0 } : { duration: 0.9, delay: 0.35, ease: ease.out }}
-          />
-        </svg>
-        <div className="absolute inset-0 grid place-items-center">
-          <p aria-hidden className="font-display text-[2.6rem] leading-none font-extrabold tracking-[-0.03em] text-accent-ink tabular-nums">
-            <motion.span>{rounded}</motion.span>%
-          </p>
+      <div className="flex items-center justify-center gap-2 sm:gap-6">
+        <div className="relative size-40 shrink-0">
+          <svg viewBox="0 0 120 120" aria-hidden className="absolute inset-0 -rotate-90">
+            <circle cx="60" cy="60" r="52" fill="none" stroke="var(--color-line)" strokeWidth="10" />
+            <motion.circle
+              cx="60"
+              cy="60"
+              r="52"
+              fill="none"
+              stroke="var(--accent)"
+              strokeWidth="10"
+              strokeLinecap="round"
+              strokeDasharray={RING}
+              initial={{ strokeDashoffset: calm || !party ? RING * (1 - accuracy / 100) : RING }}
+              animate={{ strokeDashoffset: RING * (1 - accuracy / 100) }}
+              transition={calm || !party ? { duration: 0 } : { duration: 0.9, delay: 0.35, ease: ease.out }}
+            />
+          </svg>
+          <div className="absolute inset-0 grid place-items-center">
+            <p aria-hidden className="font-display text-[2.6rem] leading-none font-extrabold tracking-[-0.03em] text-accent-ink tabular-nums">
+              <motion.span>{rounded}</motion.span>%
+            </p>
+          </div>
         </div>
-        <Pim mood={mood(accuracy)} size="sm" reactKey="klaar" className="absolute -right-6 -bottom-1" />
+        <ToyCanvas
+          load={loadReward}
+          props={{ thing: accuracy >= 60 || summary.graded === 0 ? 'ster' : 'pim', drop: party && !calm }}
+          label={accuracy >= 60 || summary.graded === 0 ? 'Een gouden ster als beloning.' : 'Pim het potlood.'}
+          className="size-40 shrink-0"
+          fallback={
+            <div className="grid size-full place-items-center">
+              <Pim mood={mood(accuracy)} size="lg" reactKey="klaar" />
+            </div>
+          }
+        />
       </div>
       <p className="sr-only">{`${accuracy} procent in één keer goed.`}</p>
 

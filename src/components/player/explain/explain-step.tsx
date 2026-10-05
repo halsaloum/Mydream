@@ -19,6 +19,7 @@ import { ModelWidget } from './model-widget';
 import { SonorityWidget, TreeWidget } from './syllable-widgets';
 import { ParadigmWidget } from './paradigm-widget';
 import { PhraseWidget } from './phrase-widget';
+import { CompoundWidget } from './compound-widget';
 import { BracketWidget } from './word-widgets';
 import { AlphaWidget, BlendWidget, BuildWidget, LabWidget, MarkWidget, SplitWidget, SwapWidget, WheelWidget } from './widgets';
 
@@ -191,6 +192,8 @@ function PanelBody({
             return panel.paradigm && <ParadigmWidget key={widget} data={panel.paradigm} {...props} />;
           case 'phrase':
             return panel.phrase && <PhraseWidget key={widget} data={panel.phrase} {...props} />;
+          case 'compound':
+            return panel.compound && <CompoundWidget key={widget} data={panel.compound} {...props} />;
         }
       })}
     </div>

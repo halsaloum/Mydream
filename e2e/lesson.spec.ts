@@ -1,4 +1,4 @@
-import { expect, seedOnboarded, test } from './fixtures';
+import { expect, openStages, seedOnboarded, test } from './fixtures';
 
 test.beforeEach(async ({ page }) => seedOnboarded(page));
 
@@ -58,9 +58,7 @@ test('onbekende les toont een verzorgde melding', async ({ page }) => {
 test('de letter: de lessen staan per stap, van basis tot master', async ({ page }) => {
   await page.goto('/');
   await page.getByRole('tab', { name: /^Niveau 1: De letter/ }).click();
-  for (const stage of ['Basis', 'Bachelor', 'Master']) {
-    await expect(page.getByRole('heading', { name: new RegExp(`${stage}$`) }).first()).toBeVisible();
-  }
+  await openStages(page, ['Basis', 'Bachelor', 'Master']);
   await expect(page.getByRole('link', { name: /Hoofdletters: naam of soort/ })).toBeVisible();
   await expect(page.getByRole('link', { name: /Letters in je hoofd/ })).toBeVisible();
 });
@@ -68,9 +66,7 @@ test('de letter: de lessen staan per stap, van basis tot master', async ({ page 
 test('klank en letter: de lessen staan per stap, van basis tot master', async ({ page }) => {
   await page.goto('/');
   await page.getByRole('tab', { name: /^Niveau 2: Klank en letter/ }).click();
-  for (const stage of ['Basis', 'Bachelor', 'Master']) {
-    await expect(page.getByRole('heading', { name: new RegExp(`${stage}$`) }).first()).toBeVisible();
-  }
+  await openStages(page, ['Basis', 'Bachelor', 'Master']);
   await expect(page.getByRole('link', { name: /Taal als wedstrijd/ })).toBeVisible();
 });
 
@@ -95,9 +91,7 @@ test('OT-tableau: met het toetsenbord twee eisen wisselen tot de goede kandidaat
 test('de lettergreep: de nieuwe lessen staan per stap, bachelor en master', async ({ page }) => {
   await page.goto('/');
   await page.getByRole('tab', { name: /^Niveau 3: De lettergreep/ }).click();
-  for (const stage of ['Bachelor', 'Master']) {
-    await expect(page.getByRole('heading', { name: new RegExp(`${stage}$`) }).first()).toBeVisible();
-  }
+  await openStages(page, ['Bachelor', 'Master']);
   await expect(page.getByRole('link', { name: /ONSET tegen NOCODA/ })).toBeVisible();
 });
 
@@ -123,9 +117,7 @@ test('lettergreepboom: elke klank aan zijn tak hangen opent het volgende deel', 
 test('het betekenisvolle woorddeel: de nieuwe lessen staan per stap, bachelor en master', async ({ page }) => {
   await page.goto('/');
   await page.getByRole('tab', { name: /^Niveau 4: Het betekenisvolle woorddeel/ }).click();
-  for (const stage of ['Bachelor', 'Master']) {
-    await expect(page.getByRole('heading', { name: new RegExp(`${stage}$`) }).first()).toBeVisible();
-  }
+  await openStages(page, ['Bachelor', 'Master']);
   await expect(page.getByRole('link', { name: /Inheems, geleerd en een paradox/ })).toBeVisible();
 });
 
@@ -149,9 +141,7 @@ test('woordboom: twee buren plakken in de volgorde van de boom opent het volgend
 test('het woord: de nieuwe lessen staan per stap, bachelor en master', async ({ page }) => {
   await page.goto('/');
   await page.getByRole('tab', { name: /^Niveau 5: Het woord/ }).click();
-  for (const stage of ['Bachelor', 'Master']) {
-    await expect(page.getByRole('heading', { name: new RegExp(`${stage}$`) }).first()).toBeVisible();
-  }
+  await openStages(page, ['Bachelor', 'Master']);
   await expect(page.getByRole('link', { name: /Hebben of zijn\?/ })).toBeVisible();
 });
 

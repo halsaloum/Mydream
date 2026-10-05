@@ -29,7 +29,7 @@ Eerste keer e2e: `npx playwright install chromium`. Een draaiende server hergebr
 | Route                     | Scherm                                                                     |
 | ------------------------- | -------------------------------------------------------------------------- |
 | `/welkom/[stap]`          | Kennismaking (focus, tempo, startpunt); keuzes direct bewaard, terug werkt |
-| `/`                       | Leren: "Verder met jouw les", de niveaus met het groeiende voorbeeld, recente voortgang |
+| `/`                       | Leren: Pim en de letterblokken van *boek* in 3D, "Verder met jouw les", de niveaus als 3D-toren met het groeiende voorbeeld, recente voortgang |
 | `/lessen`                 | Bibliotheek: zoeken en filteren op niveau, vakgebied, status en oefenvorm (in de URL) |
 | `/les/[lessonId]`         | Lesplayer; direct te openen, hervat na verversen                           |
 | `/herhalen`, `/herhalen/sessie` | Opgeslagen oefenpunten en een herhaalronde (max. 8)                 |
@@ -57,6 +57,7 @@ gebruikt: `typescript-eslint` en de React-/a11y-plugins van `eslint-config-next`
 | zod | 4.6.5 | Lescontract en validatie van opgeslagen gegevens |
 | lucide-react | 1.52.0 | Iconen (naast eigen SVG voor Pim, niveaus en vakgebieden) |
 | canvas-confetti | 1.9.4 | Kleine beloning, pas geladen bij gebruik |
+| three, @types/three | 0.183.2, 0.183.1 | De 3D-voorwerpen (WebGL), pas geladen als er een 3D-onderdeel op de pagina staat |
 | vitest / jsdom | 5.0.3 / 30.1.2 | Unit- en componenttests |
 | @testing-library/react, user-event, jest-dom | 16.3.3, 14.6.7, 7.0.1 | Componenttests van oefenvormen |
 | @playwright/test | 1.63.0 | End-to-end (onboarding, les, hervatten, toetsenbord, rustige beweging) |
@@ -119,8 +120,9 @@ geen tegenstrijdige inhoud naast elkaar bestaat.
 | `packs/groep-master.ts` | De woordgroep | 4 — bachelor: nevenschikking en samentrekking · master: X-bar-theorie, structurele ambiguïteit en tuinpadzinnen, de DP-hypothese |
 | `packs/groep-theorie.ts` | De woordgroep | 4 — master: kwantoren en bereik, de betekenis van bijvoeglijke naamwoorden, woordgroep of samenstelling, zwaarte, volgorde en typologie |
 
-Een les kan een `stage` hebben (`basis`, `bachelor` of `master`). Die verschijnt als label op de les en als kopje
-in de lijst van het niveau; lessen zonder `stage` zien eruit als voorheen. De klanktabel staat één keer in
+Een les kan een `stage` hebben (`basis`, `bachelor` of `master`). Die verschijnt als label op de les en als
+uitklapbare groep in de lijst van het niveau (alleen de stap met je volgende les staat open); lessen zonder `stage`
+zien eruit als voorheen. De klanktabel staat één keer in
 `packs/tables.ts` en wordt per les met een eigen opdracht gebruikt.
 
 De demoset op `/oefenvormen` (`content/demo/`) is de voorbeeldinhoud uit "Interactieve lessen – ideeën", letterlijk
@@ -144,7 +146,7 @@ Elke vorm werkt met aanraken, muis en toetsenbord; slepen heeft altijd een klik-
 
 | Modus | Vormen | Gedrag |
 | --- | --- | --- |
-| uitleg | uitleg (met klikexperiment, knippen, markeren, uitgang plakken, wisselen, alfabet, klinkerwiel, letters plakken, klinkerkaart, klanktabel, OT-tableau, sonoriteitsberg, lettergreepboom, woordboom (ook voor woordgroepen), paradigma, groepenjager), nieuw begrip | Verder als de opdracht van een deel gedaan is |
+| uitleg | uitleg (met klikexperiment, knippen, markeren, uitgang plakken, wisselen, alfabet, klinkerwiel, letters plakken, klinkerkaart, klanktabel, OT-tableau, sonoriteitsberg, lettergreepboom, woordboom (ook voor woordgroepen), paradigma, groepenjager, samenstelbank in 3D), nieuw begrip | Verder als de opdracht van een deel gedaan is |
 | gecontroleerd | meerkeuze, combineren, invullen, woorden ordenen, alinea ordenen, sorteren, fout verbeteren, herschrijven, vrij schrijven (met taakeisen), Durf je?, dictee | Controleer → feedback blijft staan; fout komt later terug |
 | zelfcontrolerend | swipe-kaarten, woordbouwer, tijdschuif, snelrondje (ook zonder klok), zinstrein, markeerstiften, voegwoord-duw, zinstang, verwijsdraad, betekenisladder, twee betekenissen, chat-scenario, toonregelaar, zegt en bedoelt, weegschaal, alinea-stapel, eindredactie | Rondt zichzelf af; fouten tellen in de score en komen op de herhaalstapel |
 
@@ -160,3 +162,21 @@ alleen de sleepkopie, Motion de kaartjes zelf — nooit allebei hetzelfde elemen
 
 Rustige beweging volgt de systeemvoorkeur en een eigen, bewaarde instelling: geen verschuivingen, tellers of
 confetti, en scrollen zonder animatie.
+
+## 3D
+
+De 3D-onderdelen zijn echte WebGL-scènes in de stijl van glanzend speelgoed: de welkomstscène op de startpagina, de
+niveautoren, de samenstelbank (`compound` in het lescontract, nu in les d10) en de beloning na een les.
+
+- `src/lib/toy3d/stage.ts` — het speelgoedtheater: studiolicht, zachte schaduw, glanslak, horizontaal slepen om te
+  draaien (verticaal scrollen blijft werken), tikken met een raycaster. Shaders worden vooraf gebouwd (op de
+  achtergrond waar de browser dat kan) en er wordt alleen getekend zolang er iets beweegt.
+- `src/lib/toy3d/toy-canvas.tsx` — laadt three.js en een scène pas als het onderdeel op de pagina komt. Zonder
+  WebGL, of met WebGL zonder grafische kaart (`support.ts`), staat er de gewone 2D-versie en wordt three.js niet
+  gedownload. Met `localStorage['pennig:3d'] = 'altijd'` komt de 3D er toch (handig voor schermafbeeldingen).
+- `src/lib/toy3d/scenes/` — één bestand per scène; rustige beweging zet alles stil behalve wat de leerling zelf doet.
+- De voorwerpen staan in `public/models/dingen/` (GLB plus een WebP-icoon voor de knoppen) en in
+  `src/content/things.ts`. Ze zijn gemaakt met [Meshy](https://docs.meshy.ai): eerst een plaatje in één vaste
+  speelgoedstijl, dan een 3D-model uit dat plaatje. `scripts/meshy-dingen.mjs` doet dat en verkleint elk model
+  (WebP-textures, gekwantiseerde punten). Een nieuw voorwerp: beschrijving in `DINGEN`, dan `plaatje`, `model` en
+  `ophalen`, en een regel in `things.ts`.
