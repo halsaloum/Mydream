@@ -592,6 +592,36 @@
   -webkit-box-decoration-break: clone;
 }
 
+/* Taalvoorbeeld dat je kunt aantikken om het te horen */
+@utility example-listen {
+  display: inline;
+  cursor: pointer;
+  font-size: inherit;
+  line-height: inherit;
+  text-align: inherit;
+  text-decoration: underline dotted;
+  text-decoration-color: color-mix(in oklab, var(--accent-ink) 45%, transparent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.22em;
+  transition: background-color 150ms ease;
+  &:hover {
+    background: color-mix(in oklab, var(--accent-soft) 70%, var(--accent-line));
+  }
+  &:focus-visible {
+    outline: 3px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+}
+
+@utility example-listen-icon {
+  display: inline-block;
+  width: 0.62em;
+  height: 0.62em;
+  margin-left: 0.2em;
+  vertical-align: 0.05em;
+  opacity: 0.55;
+}
+
 /* Rustige beweging: systeemvoorkeur of eigen instelling */
 @media (prefers-reduced-motion: reduce) {
   *,

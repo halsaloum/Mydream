@@ -1,12 +1,14 @@
 'use client';
 
-import { ArrowRight, Check, Info, Sparkles, X } from 'lucide-react';
+import { ArrowRight, Check, Info, Sparkles, Volume2, X } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import type { ReactNode } from 'react';
 import type { Example, StepKind, StepOf } from '@/content/schema';
 import type { ResponseOf } from '@/engine/responses';
 import { cn } from '@/lib/cn';
 import { transition, useCalmMotion } from '@/lib/motion';
+import { speak, speakableExample, useCanSpeak } from '@/lib/speech';
+import { useSettings } from '@/state/settings';
 import { RichText } from '@/components/ui/rich-text';
 
 export type StepProps<K extends StepKind> = {
@@ -48,7 +50,7 @@ export function StepIntro({ prompt, intro, className }: { prompt: string; intro?
       <StepHeading>{prompt}</StepHeading>
       {intro && (
         <p className="mt-2 max-w-[60ch] text-body text-ink-soft">
-          <RichText text={intro} />
+          <RichText text={intro} listen />
         </p>
       )}
     </div>
@@ -151,6 +153,7 @@ export function Examples({ examples, className }: { examples: Example[]; classNa
             {example.wrong && <span className="sr-only">Goed: </span>}
             {example.right}
           </span>
+          <ExampleListen text={example.right} />
         </li>
       ))}
     </ul>
@@ -165,7 +168,7 @@ export function RuleCard({ text }: { text: string }) {
       </span>
       <p className="self-center font-display text-lead leading-snug font-bold text-ink">
         <span className="sr-only">Regel: </span>
-        <RichText text={text} />
+        <RichText text={text} listen />
       </p>
     </div>
   );
@@ -207,5 +210,23 @@ export function TaskBox({
         {status}
       </p>
     </section>
+  );
+}
+
+/** Luisterknopje bij een goed voorbeeld; alleen als het uit te spreken is en er een Nederlandse stem is. */
+function ExampleListen({ text }: { text: string }) {
+  const canSpeak = useCanSpeak();
+  const enabled = useSettings((state) => state.speech.examples);
+  const spoken = speakableExample(text, { sentence: true });
+  if (!canSpeak || !enabled || spoken === null) return null;
+  return (
+    <button
+      type="button"
+      onClick={() => speak(spoken)}
+      aria-label={`Luister naar ${spoken}`}
+      className="ml-auto grid size-9 place-items-center rounded-full text-ink-muted transition-colors duration-150 outline-none hover:bg-sunken hover:text-accent-ink focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-focus"
+    >
+      <Volume2 aria-hidden className="size-[1.1rem]" strokeWidth={2.5} />
+    </button>
   );
 }

@@ -7,16 +7,12 @@ import { dictationDiff, normalizeSpaces } from '@/engine/kinds';
 import { cn } from '@/lib/cn';
 import { transition, useCalmMotion } from '@/lib/motion';
 import { play as playCue } from '@/lib/sound';
+import { speak, stopSpeaking } from '@/lib/speech';
 import { Button } from '@/components/ui/button';
 import { TextField } from '@/components/ui/field';
 import { StepIntro, type StepProps } from '../shared';
 
 const HEIGHTS = [10, 18, 28, 40, 52, 36, 24, 44, 56, 38, 22, 30, 48, 34, 18, 26, 42, 54, 32, 20, 14, 24, 36, 46, 28, 16, 10, 8];
-
-type SpeechWindow = Window & typeof globalThis & {
-  speechSynthesis?: SpeechSynthesis;
-  SpeechSynthesisUtterance?: typeof SpeechSynthesisUtterance;
-};
 
 export function DictationStep({ step, response, onChange, locked, onSubmit }: StepProps<'dictation'>) {
   const calm = useCalmMotion();
@@ -32,11 +28,7 @@ export function DictationStep({ step, response, onChange, locked, onSubmit }: St
   useEffect(() => {
     return () => {
       clearTimer();
-      try {
-        (window as SpeechWindow).speechSynthesis?.cancel();
-      } catch {
-        // speechSynthesis kan in tests ontbreken.
-      }
+      stopSpeaking();
     };
   }, []);
 
@@ -46,32 +38,21 @@ export function DictationStep({ step, response, onChange, locked, onSubmit }: St
     clearTimer();
     setPlaying(true);
     onChange({ ...response, plays: response.plays + 1 });
-    const speechWindow = window as SpeechWindow;
-    const synth = speechWindow.speechSynthesis;
-    const Utterance = speechWindow.SpeechSynthesisUtterance;
-    let ms = slow ? 4200 : 2800;
-    try {
-      if (synth && Utterance) {
-        synth.cancel();
-        const utterance = new Utterance(step.sentence);
-        utterance.lang = 'nl-NL';
-        utterance.rate = slow ? 0.6 : 0.95;
-        utterance.onend = () => {
-          clearTimer();
-          setPlaying(false);
-        };
-        utterance.onerror = () => {
-          setPlaying(false);
-          onChange({ ...response, plays: response.plays + 1, shown: true });
-        };
-        synth.speak(utterance);
-        ms = slow ? 9000 : 6000;
-      } else {
+    // Met een Nederlandse stem: de stem van de instellingen, langzaam is nog eens een stuk trager.
+    // Zonder Nederlandse stem staat de zin er meteen bij, zodat je toch verder kunt.
+    const spoken = speak(step.sentence, {
+      slower: slow ? 0.7 : 1,
+      onEnd: () => {
+        clearTimer();
+        setPlaying(false);
+      },
+      onError: () => {
+        setPlaying(false);
         onChange({ ...response, plays: response.plays + 1, shown: true });
-      }
-    } catch {
-      onChange({ ...response, plays: response.plays + 1, shown: true });
-    }
+      },
+    });
+    if (!spoken) onChange({ ...response, plays: response.plays + 1, shown: true });
+    const ms = spoken ? (slow ? 12000 : 8000) : slow ? 4200 : 2800;
     timer.current = window.setTimeout(() => setPlaying(false), ms);
   };
 

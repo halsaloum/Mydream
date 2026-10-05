@@ -95,6 +95,21 @@ describe('klankexperimenten', () => {
     await user.click(screen.getByRole('button', { name: '/i/ zoals in piet' }));
     await user.click(await screen.findByRole('button', { name: 'Luister naar piet' }));
     expect(speak).toHaveBeenCalledWith(expect.objectContaining({ text: 'piet', lang: 'nl-NL' }));
+
+    // Hoor het verschil: het minimale paar piet – pit.
+    await user.click(screen.getByRole('button', { name: 'Luister naar pit, met /ɪ/' }));
+    expect(speak).toHaveBeenLastCalledWith(expect.objectContaining({ text: 'pit' }));
+    expect(screen.getByRole('button', { name: 'Vergelijk piet, pit, piet' })).toBeInTheDocument();
+  });
+
+  it('klinkerkaart: geen luisterknop als er alleen anderstalige stemmen zijn', async () => {
+    vi.stubGlobal('speechSynthesis', { speak: vi.fn(), cancel: vi.fn(), getVoices: () => [{ name: 'English', lang: 'en-US', voiceURI: 'en' }] });
+    vi.stubGlobal('SpeechSynthesisUtterance', class {});
+    const user = userEvent.setup();
+    show((solved, done) => <VowelsWidget data={HOOG} solved={solved} onSolved={done} />);
+
+    await user.click(screen.getByRole('button', { name: '/i/ zoals in piet' }));
+    expect(screen.queryByRole('button', { name: 'Luister naar piet' })).not.toBeInTheDocument();
   });
 
   it('klanktabel: zegt waar een klank staat en lost op met alle lipklanken', async () => {

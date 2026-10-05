@@ -7,6 +7,29 @@ import { useSettings } from '@/state/settings';
 export type Cue = 'tap' | 'select' | 'place' | 'remove' | 'right' | 'wrong' | 'win' | 'solved';
 
 let context: AudioContext | null = null;
+let master: AudioNode | null = null;
+
+/**
+ * Alle tonen gaan door één zachte keten: een filter haalt het schelle boven de 5 kHz weg,
+ * een compressor houdt akkoorden (zoals bij "win") even luid als losse tonen, zonder kraak.
+ */
+function output(ctx: AudioContext): AudioNode {
+  if (master) return master;
+  try {
+    const filter = ctx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.value = 5000;
+    filter.Q.value = 0.5;
+    const compressor = ctx.createDynamicsCompressor();
+    compressor.threshold.value = -18;
+    compressor.ratio.value = 4;
+    filter.connect(compressor).connect(ctx.destination);
+    master = filter;
+  } catch {
+    master = ctx.destination;
+  }
+  return master;
+}
 
 function audio(): AudioContext | null {
   if (typeof window === 'undefined') return null;
@@ -23,16 +46,26 @@ function audio(): AudioContext | null {
 
 function tone(ctx: AudioContext, gain: number, freq: number, start: number, length: number, type: OscillatorType = 'triangle') {
   const at = ctx.currentTime + start;
-  const osc = ctx.createOscillator();
   const env = ctx.createGain();
-  osc.type = type;
-  osc.frequency.setValueAtTime(freq, at);
   env.gain.setValueAtTime(0, at);
   env.gain.linearRampToValueAtTime(gain, at + 0.012);
   env.gain.exponentialRampToValueAtTime(0.0001, at + length);
-  osc.connect(env).connect(ctx.destination);
-  osc.start(at);
-  osc.stop(at + length + 0.02);
+  env.connect(output(ctx));
+  // Een zachte sinus een octaaf lager geeft de toon body, als een klokje in plaats van een piep.
+  const layers: [OscillatorType, number, number][] = [
+    [type, freq, 1],
+    ['sine', freq / 2, 0.35],
+  ];
+  for (const [shape, frequency, share] of layers) {
+    const osc = ctx.createOscillator();
+    const level = ctx.createGain();
+    osc.type = shape;
+    osc.frequency.setValueAtTime(frequency, at);
+    level.gain.value = share;
+    osc.connect(level).connect(env);
+    osc.start(at);
+    osc.stop(at + length + 0.02);
+  }
 }
 
 /** Kleine toonhoogtevariatie, zodat herhaalde tikken niet mechanisch klinken. */
