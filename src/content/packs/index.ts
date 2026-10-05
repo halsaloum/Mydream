@@ -23,9 +23,9 @@ import { WOORD_MASTER_LESSONS } from './woord-master';
  * de bestaande lessen van dat niveau en lopen op in diepte: basis, bachelor, master.
  */
 export const EXTRA_LESSONS: Readonly<Record<string, readonly LessonInput[]>> = {
-  letter: LETTER_LESSONS,
+  letter: [...LETTER_LESSONS, ...LETTER_MASTER_LESSONS],
   klank: [...KLANK_LESSONS, ...KLANK_VARIATIE_LESSONS, ...KLANK_MASTER_LESSONS, ...KLANK_EXTRA_MASTER_LESSONS],
-  greep: [...GREEP_LESSONS, ...GREEP_MASTER_LESSONS],
+  greep: [...GREEP_LESSONS, ...GREEP_EXTRA_LESSONS, ...GREEP_MASTER_LESSONS],
   deel: [...DEEL_LESSONS, ...DEEL_EXTRA_LESSONS, ...DEEL_MASTER_LESSONS],
   woord: [...WOORD_LESSONS, ...WOORD_EXTRA_LESSONS, ...WOORD_MASTER_LESSONS, ...WOORD_EXTRA_MASTER_LESSONS],
   groep: [...GROEP_LESSONS, ...GROEP_BOUW_LESSONS, ...GROEP_EXTRA_LESSONS, ...GROEP_MASTER_LESSONS, ...GROEP_THEORIE_LESSONS],
