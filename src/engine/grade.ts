@@ -1,4 +1,4 @@
-import type { Panel, Step, StepOf, WriteCriterion } from '@/content/schema';
+import type { Panel, Step, StepOf, TextTest, WriteCriterion } from '@/content/schema';
 import { tokenize } from '@/content/text';
 import { extraEvaluate, extraIsComplete, isExtraKind, type ExtraResponse, type Outcome } from './kinds';
 import { panelWidgets, type PanelWidget } from './plan';
@@ -46,12 +46,23 @@ export function wordCount(text: string): number {
 
 const escapeRegExp = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
-export function criterionRegExp(criterion: WriteCriterion): RegExp {
-  if ('anyWord' in criterion.test) {
-    const words = criterion.test.anyWord.map(escapeRegExp).join('|');
+/** De reguliere expressie achter een tekstcontrole (hele woorden of een eigen patroon). */
+export function textTestRegExp(test: TextTest): RegExp {
+  if ('anyWord' in test) {
+    const words = test.anyWord.map(escapeRegExp).join('|');
     return new RegExp(`(?<![\\p{L}\\p{N}])(?:${words})(?![\\p{L}\\p{N}])`, 'iu');
   }
-  return new RegExp(criterion.test.pattern, criterion.test.flags);
+  return new RegExp(test.pattern, test.flags);
+}
+
+export function criterionRegExp(criterion: WriteCriterion): RegExp {
+  return textTestRegExp(criterion.test);
+}
+
+/** Het gevonden signaalwoord: de vanggroepen van het patroon, anders de hele treffer. */
+function foundWords(match: RegExpMatchArray): string {
+  const groups = match.slice(1).filter((group): group is string => Boolean(group));
+  return (groups.length ? groups : [match[0]]).join(' … ').toLocaleLowerCase('nl');
 }
 
 export function criteriaStatus(step: StepOf<'write'>, text: string) {
@@ -59,8 +70,28 @@ export function criteriaStatus(step: StepOf<'write'>, text: string) {
   return {
     words,
     enoughWords: words >= step.minWords,
-    criteria: step.must.map((criterion) => ({ label: criterion.label, met: criterionRegExp(criterion).test(text) })),
+    criteria: step.must.map((criterion) => {
+      const match = text.match(criterionRegExp(criterion));
+      return { label: criterion.label, hint: criterion.hint ?? null, met: match !== null, found: match ? foundWords(match) : null };
+    }),
   };
+}
+
+/** Signalen bij woorden die op een drogreden kunnen wijzen. Geen fout: een vraag aan de schrijver. */
+export function writeAlarms(step: StepOf<'write'>, text: string, limit = 2): { head: string; tip: string }[] {
+  return (step.avoid ?? [])
+    .flatMap((alarm) => {
+      const match = text.match(textTestRegExp(alarm.test));
+      if (!match) return [];
+      return [{ head: `‘${alarm.show ?? foundWords(match)}’`, tip: alarm.tip }];
+    })
+    .slice(0, limit);
+}
+
+/** Zinsstarter toevoegen aan het eind van de tekst, met precies één spatie ervoor en erna. */
+export function appendStarter(text: string, starter: string): string {
+  const gap = text && !/\s$/.test(text) ? ' ' : '';
+  return `${text}${gap}${starter} `;
 }
 
 export function panelTasks(panel: Panel): { lab: boolean; widgets: PanelWidget[] } {

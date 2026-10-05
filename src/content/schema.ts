@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { AccentSchema } from './accent';
 import { EXTRA_STEP_SCHEMAS } from './kinds';
+import { ARGUMENT_STEP_SCHEMAS } from './kinds-argument';
 import { hasBalancedEmphasis, isPermutationJoin, tokenize } from './text';
 
 export { ACCENTS, AccentSchema, type Accent } from './accent';
@@ -174,26 +175,38 @@ export const PanelSchema = z
     }
   });
 
-const WriteCriterionSchema = z
-  .object({
-    label: Text.describe('Zichtbare taakeis, bv. "Een voorbeeld (bijvoorbeeld, zoals…)".'),
-    test: z.union([
-      z.object({ anyWord: z.array(Text).min(1).describe('Minstens één van deze hele woorden (hoofdletterongevoelig).') }),
-      z.object({
-        pattern: Text.describe('Reguliere expressie (JavaScript-syntaxis).'),
-        flags: z.string().regex(/^[imsu]*$/, 'Alleen de vlaggen i, m, s en u').optional(),
-      }),
-    ]),
-  })
-  .superRefine((criterion, ctx) => {
-    if ('pattern' in criterion.test) {
+/** Een tekstcontrole: hele woorden of een reguliere expressie. Vanggroepen in een expressie zijn het "gevonden" signaalwoord. */
+const TextTestSchema = z
+  .union([
+    z.object({ anyWord: z.array(Text).min(1).describe('Minstens één van deze hele woorden (hoofdletterongevoelig).') }),
+    z.object({
+      pattern: Text.describe('Reguliere expressie (JavaScript-syntaxis). Vanggroepen worden als gevonden woord getoond.'),
+      flags: z.string().regex(/^[imsu]*$/, 'Alleen de vlaggen i, m, s en u').optional(),
+    }),
+  ])
+  .superRefine((test, ctx) => {
+    if ('pattern' in test) {
       try {
-        new RegExp(criterion.test.pattern, criterion.test.flags);
+        new RegExp(test.pattern, test.flags);
       } catch {
-        issue(ctx, ['test', 'pattern'], 'Ongeldige reguliere expressie');
+        issue(ctx, ['pattern'], 'Ongeldige reguliere expressie');
       }
     }
   });
+
+const WriteCriterionSchema = z.object({
+  label: Text.describe('Zichtbare taakeis, bv. "Een voorbeeld (bijvoorbeeld, zoals…)".'),
+  hint: z.string().optional().describe('Voorbeeldwoorden, getoond zolang de eis nog open staat, bv. "want, omdat".'),
+  test: TextTestSchema,
+});
+
+const WriteAlarmSchema = z
+  .object({
+    test: TextTestSchema,
+    show: z.string().optional().describe('Hoe het gevonden patroon heet, bv. "of … of"; standaard het gevonden woord.'),
+    tip: Text.describe('Een vraag aan de schrijver; geen fout.'),
+  })
+  .describe('Signaal bij woorden die een drogreden kunnen zijn, zoals "iedereen" of "nooit".');
 
 const prompt = Text.describe('Opdracht boven de oefening.');
 const why = Text.describe('Uitleg die na het controleren zichtbaar blijft.');
@@ -274,9 +287,14 @@ const WriteStep = z.object({
   kind: z.literal('write'),
   id: StepId,
   prompt,
+  intro: z.string().optional().describe('Toelichting onder de opdracht.'),
+  start: z.string().optional().describe('Begintekst in het schrijfveld.'),
   minWords: z.int().nonnegative(),
   must: z.array(WriteCriterionSchema).describe('Taakeisen die de leerling tijdens het schrijven ziet afvinken.'),
+  avoid: z.array(WriteAlarmSchema).optional().describe('Signalen bij mogelijke drogredenen; ze houden de leerling niet tegen.'),
+  starters: z.array(Text).optional().describe('Zinsstarters die de leerling met één tik toevoegt.'),
   why,
+  done: z.object({ title: Text, text: Text }).optional().describe('Afsluitende feedback; standaard "why".'),
 });
 
 export const StepSchema = z
@@ -293,6 +311,7 @@ export const StepSchema = z
     RewriteStep,
     WriteStep,
     ...EXTRA_STEP_SCHEMAS,
+    ...ARGUMENT_STEP_SCHEMAS,
   ])
   .superRefine((step, ctx) => {
     switch (step.kind) {
@@ -408,6 +427,8 @@ export type StepInput = z.input<typeof StepSchema>;
 export type StepKind = Step['kind'];
 export type StepOf<K extends StepKind> = Extract<Step, { kind: K }>;
 export type WriteCriterion = z.infer<typeof WriteCriterionSchema>;
+export type TextTest = z.infer<typeof TextTestSchema>;
+export type WriteAlarm = z.infer<typeof WriteAlarmSchema>;
 export type Lesson = z.infer<typeof LessonSchema>;
 export type LayerExample = z.infer<typeof LayerExampleSchema>;
 export type Layer = z.infer<typeof LayerSchema>;

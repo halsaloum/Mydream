@@ -4,6 +4,14 @@ import type { ComponentType } from 'react';
 import type { Step, StepKind } from '@/content/schema';
 import type { Response } from '@/engine/responses';
 import { ExplainStep } from './explain/explain-step';
+import { DilemmaStep } from './steps/argument/dilemma';
+import { EvidenceStep } from './steps/argument/evidence';
+import { InspectStep } from './steps/argument/inspect';
+import { ReasonStep } from './steps/argument/reason';
+import { RebutStep } from './steps/argument/rebut';
+import { SlopeStep } from './steps/argument/slope';
+import { StrawmanStep } from './steps/argument/strawman';
+import { SupportStep } from './steps/argument/support';
 import { AmbiguityStep } from './steps/extra/ambiguity';
 import { BetStep } from './steps/extra/bet';
 import { ChatStep } from './steps/extra/chat';
@@ -65,6 +73,14 @@ const STEP_COMPONENTS: { [K in StepKind]: ComponentType<StepProps<K>> } = {
   proofread: ProofreadStep,
   bet: BetStep,
   dictation: DictationStep,
+  reason: ReasonStep,
+  support: SupportStep,
+  evidence: EvidenceStep,
+  rebut: RebutStep,
+  strawman: StrawmanStep,
+  slope: SlopeStep,
+  dilemma: DilemmaStep,
+  inspect: InspectStep,
 };
 
 type StepViewProps = {

@@ -51,8 +51,9 @@ export function initialResponse(step: Step): Response {
       return { kind: step.kind, value: null };
     case 'type':
     case 'rewrite':
-    case 'write':
       return { kind: step.kind, value: '' };
+    case 'write':
+      return { kind: 'write', value: step.start ?? '' };
     case 'order':
     case 'paragraph':
       return { kind: step.kind, placed: [] };

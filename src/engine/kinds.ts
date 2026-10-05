@@ -1,6 +1,20 @@
 import { z } from 'zod';
 import type { Step, StepKind, StepOf } from '@/content/schema';
 import { tokenize } from '@/content/text';
+import {
+  ARGUMENT_RESPONSE_SCHEMAS,
+  argumentEvaluate,
+  argumentFeedback,
+  argumentFits,
+  argumentInitialResponse,
+  argumentIsComplete,
+  argumentProgress,
+  isArgumentKind,
+  type ArgumentResponse,
+} from './argument';
+import { plural, taskOutcome, taskScore, type Feedback, type Outcome } from './outcome';
+
+export type { Feedback, Outcome } from './outcome';
 
 /**
  * Engine voor de oefenvormen uit "Interactieve lessen – ideeën": antwoordtoestand,
@@ -47,10 +61,18 @@ export const STEP_MODES: Record<StepKind, StepMode> = {
   scale: 'task',
   stack: 'task',
   proofread: 'task',
+  reason: 'task',
+  support: 'task',
+  evidence: 'task',
+  rebut: 'task',
+  strawman: 'task',
+  slope: 'task',
+  dilemma: 'task',
+  inspect: 'task',
 };
 
 /** Ontdekvormen zonder goed of fout: ze tellen niet mee in "in één keer goed". */
-const UNSCORED = new Set<StepKind>(['morph', 'timeline', 'train', 'clamp']);
+const UNSCORED = new Set<StepKind>(['morph', 'timeline', 'train', 'clamp', 'evidence']);
 
 export function stepMode(step: Step): StepMode {
   return STEP_MODES[step.kind];
@@ -90,11 +112,14 @@ export const EXTRA_RESPONSE_SCHEMAS = [
   z.object({ kind: z.literal('proofread'), found: z.array(index), slips: count }),
   z.object({ kind: z.literal('bet'), value: z.string().nullable(), bet: z.union([z.literal(1), z.literal(2), z.literal(3)]).nullable() }),
   z.object({ kind: z.literal('dictation'), value: z.string(), plays: count, shown: z.boolean() }),
+  ...ARGUMENT_RESPONSE_SCHEMAS,
 ] as const;
 
 export type ExtraResponse = z.infer<(typeof EXTRA_RESPONSE_SCHEMAS)[number]>;
 export type ExtraKind = ExtraResponse['kind'];
 export type ExtraResponseOf<K extends ExtraKind> = Extract<ExtraResponse, { kind: K }>;
+
+const isArgument = (r: ExtraResponse): r is ArgumentResponse => isArgumentKind(r.kind);
 
 const EXTRA_KINDS = new Set<string>(EXTRA_RESPONSE_SCHEMAS.map((schema) => schema.shape.kind.value));
 
@@ -200,12 +225,13 @@ export function extraInitialResponse(step: Step): ExtraResponse | null {
     case 'dictation':
       return { kind: 'dictation', value: '', plays: 0, shown: false };
     default:
-      return null;
+      return argumentInitialResponse(step);
   }
 }
 
 export function extraIsComplete(step: Step, r: ExtraResponse): boolean {
   if (step.kind !== r.kind) return false;
+  if (isArgument(r)) return argumentIsComplete(step, r);
   switch (r.kind) {
     case 'swipe':
       return step.kind === 'swipe' && r.answers.length >= step.cards.length;
@@ -251,6 +277,7 @@ export function extraIsComplete(step: Step, r: ExtraResponse): boolean {
 /** Past een opgeslagen antwoord nog bij de (mogelijk gewijzigde) stap? */
 export function extraFits(step: Step, r: ExtraResponse): boolean {
   if (step.kind !== r.kind) return false;
+  if (isArgument(r)) return argumentFits(step, r);
   switch (r.kind) {
     case 'swipe':
       return step.kind === 'swipe' && r.answers.length <= step.cards.length;
@@ -285,26 +312,9 @@ export function extraFits(step: Step, r: ExtraResponse): boolean {
   }
 }
 
-export type Outcome = {
-  /** 0–1: deel in één keer goed; null bij vormen zonder score. */
-  score: number | null;
-  correct: boolean;
-  /** Later in dezelfde les nog eens aanbieden. */
-  requeue: boolean;
-  /** Herhaalstapel: bewaren (miss) of opruimen (clear). */
-  review: 'miss' | 'clear' | null;
-};
-
-const taskScore = (items: number, mistakes: number) => (items + mistakes > 0 ? items / (items + mistakes) : 1);
-
-function taskOutcome(score: number | null): Outcome {
-  if (score === null) return { score: null, correct: true, requeue: false, review: null };
-  const rounded = Math.round(score * 1000) / 1000;
-  return { score: rounded, correct: rounded >= 1, requeue: false, review: rounded >= 1 ? 'clear' : 'miss' };
-}
-
 export function extraEvaluate(step: Step, r: ExtraResponse): Outcome {
   if (step.kind !== r.kind) return { score: 0, correct: false, requeue: true, review: 'miss' };
+  if (isArgument(r)) return argumentEvaluate(step, r);
   switch (r.kind) {
     case 'swipe': {
       if (step.kind !== 'swipe') break;
@@ -364,12 +374,10 @@ export function extraEvaluate(step: Step, r: ExtraResponse): Outcome {
   return { score: 0, correct: false, requeue: false, review: 'miss' };
 }
 
-export type Feedback = { title: string; body?: string };
-
-const plural = (n: number, one: string, many: string) => (n === 1 ? one : many);
 
 /** Afsluitende feedback voor de voettekst. Teksten uit de inhoud gaan voor. */
 export function extraFeedback(step: Step, r: ExtraResponse, outcome: Outcome): Feedback {
+  if (isArgument(r)) return argumentFeedback(step, r, outcome);
   const done = 'done' in step && step.done ? { title: step.done.title, body: step.done.text } : null;
   switch (r.kind) {
     case 'swipe': {
@@ -413,6 +421,7 @@ export function extraFeedback(step: Step, r: ExtraResponse, outcome: Outcome): F
 
 /** Voortgangstekst in de voettekst terwijl de leerling bezig is (teksten uit de mock-ups). */
 export function extraProgress(step: Step, r: ExtraResponse): string | null {
+  if (isArgument(r)) return argumentProgress(step, r);
   const nog = (n: number, one: string, many: string) => `Nog ${n} ${n === 1 ? one : many}`;
   switch (r.kind) {
     case 'swipe':

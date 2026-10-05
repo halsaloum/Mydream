@@ -22,7 +22,11 @@ const Done = z
   .object({ title: Text, text: Text, note: z.string().optional().describe('Slotopmerking in de oefening zelf.') })
   .describe('Afsluitende feedback zodra de oefening klaar is.');
 const Segment = z.object({ t: z.string(), hi: z.boolean().optional().describe('Uitgelicht stuk.') });
-const Person = z.object({ name: Text, initials: z.string().max(3).optional() });
+const Person = z.object({
+  name: Text,
+  role: z.string().optional().describe('Wie dit is voor de leerling, bv. "je teamleider".'),
+  initials: z.string().max(3).optional(),
+});
 const Image = z.object({ src: Text.describe('Pad naar een afbeelding in /public.'), alt: Text });
 
 const words = (text: string) => text.trim().split(/\s+/).filter(Boolean).length;
@@ -470,3 +474,6 @@ export const EXTRA_STEP_SCHEMAS = [
   BetStep,
   DictationStep,
 ] as const;
+
+/** Bouwstenen die ook andere reeksen oefenvormen gebruiken. */
+export { Done, Person, Segment, StepId, Text, intro, issue, prompt, unique };

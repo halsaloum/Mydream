@@ -97,6 +97,14 @@ export const EXERCISE_LABELS: Record<StepKind, string> = {
   proofread: 'Eindredactie',
   bet: 'Durf je?',
   dictation: 'Dictee',
+  reason: 'Want of dus',
+  support: 'Onderbouwen',
+  evidence: 'Bewijsbalk',
+  rebut: 'Ja, maar…',
+  strawman: 'Stroman',
+  slope: 'Hellend vlak',
+  dilemma: 'Vals dilemma',
+  inspect: 'Keuring',
 };
 
 /** Vakgebieden die als perspectief op elk niveau gelden. */

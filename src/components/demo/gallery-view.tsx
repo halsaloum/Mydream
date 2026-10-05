@@ -5,7 +5,7 @@ import { motion } from 'motion/react';
 import type { Route } from 'next';
 import Link from 'next/link';
 import { EXERCISE_LABELS, lessonEntries } from '@/content/catalog';
-import { demoEntries, type DemoEntry } from '@/content/demo';
+import { DEMO_GROUPS, demoEntries, type DemoEntry } from '@/content/demo';
 import type { StepKind } from '@/content/schema';
 import { DomainGlyph } from '@/components/brand/glyphs';
 import { LESSON_KINDS, lessonKinds } from '@/components/library/filters';
@@ -13,7 +13,6 @@ import { PageHeader } from '@/components/shell/app-shell';
 import { ButtonLink } from '@/components/ui/button';
 import { transition, useCalmMotion } from '@/lib/motion';
 
-const GROUPS: DemoEntry['group'][] = ['Morfologie', 'Syntaxis', 'Semantiek', 'Pragmatiek', 'Voor elk deel'];
 
 function promptOf(entry: DemoEntry): string {
   return 'prompt' in entry.step ? entry.step.prompt : entry.title;
@@ -43,7 +42,7 @@ export function GalleryView() {
         className="mb-0"
       />
 
-      {GROUPS.map((group) => {
+      {DEMO_GROUPS.map((group) => {
         const items = demoEntries.filter((entry) => entry.group === group);
         if (!items.length) return null;
         return (

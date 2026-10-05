@@ -8,12 +8,24 @@ import type { StepInput } from '../schema';
  * voortgang en verschijnen alleen op de pagina "Oefenvormen". Ze dienen als werkend
  * voorbeeld en testmateriaal voor elke oefenvorm, tot lessen uit de PDF's worden aangesloten.
  */
+/** Groepen in de galerij, in deze volgorde. */
+export const DEMO_GROUPS = [
+  'Morfologie',
+  'Syntaxis',
+  'Semantiek',
+  'Pragmatiek',
+  'Overtuigen in één alinea',
+  'Drogredenen herkennen',
+  'Voor elk deel',
+] as const;
+export type DemoGroup = (typeof DEMO_GROUPS)[number];
+
 export type DemoItem = {
   slug: string;
   title: string;
   /** Vakgebied voor de kleur en groepering in de galerij. */
   domain: string;
-  group: 'Morfologie' | 'Syntaxis' | 'Semantiek' | 'Pragmatiek' | 'Voor elk deel';
+  group: DemoGroup;
   step: StepInput;
 };
 
@@ -482,41 +494,6 @@ export const DEMO_ITEMS: DemoItem[] = [
           why: 'Weet jij …? vraagt niet óf je het weet, maar wát je weet.',
         },
       ],
-    },
-  },
-  {
-    slug: 'weegschaal',
-    title: 'Weegschaal',
-    domain: 'prag',
-    group: 'Pragmatiek',
-    step: {
-      kind: 'scale',
-      prompt: 'Wat weegt het zwaarst?',
-      intro: 'Je schrijft de gemeente: de bibliotheek moet op zondag open. Leg twee argumenten op de schaal en haal de lezer over.',
-      args: [
-        { id: 'mening', t: 'Ik vind een dichte bibliotheek gewoon zonde.', type: 'mening', w: 1, why: 'Dat is jouw mening. De lezer hoeft die niet te delen.' },
-        {
-          id: 'feit',
-          t: 'Doordeweeks sluit de bibliotheek om vijf uur, als de meeste mensen nog werken.',
-          type: 'feit',
-          w: 3,
-          why: 'Een feit dat de lezer kan nagaan. Dat weegt het zwaarst.',
-        },
-        { id: 'drog', t: 'Iedereen wil dit, dat weet u zelf ook wel.', type: 'drogreden', w: 0, why: 'Een drogreden. Dat iedereen iets zou willen, bewijst niets.' },
-        {
-          id: 'voorbeeld',
-          t: 'In mijn vorige woonplaats zat de leeszaal op zondag vol.',
-          type: 'voorbeeld',
-          w: 2,
-          why: 'Een voorbeeld uit de praktijk. Het maakt je punt zichtbaar, maar bewijst minder dan een feit.',
-        },
-      ],
-      max: 2,
-      doubt: 4,
-      done: {
-        title: 'De lezer is om',
-        text: 'Een feit dat de lezer kan nagaan, plus een voorbeeld dat het laat zien. Samen wegen ze zwaarder dan de twijfel.',
-      },
     },
   },
   {
