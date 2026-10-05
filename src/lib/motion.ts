@@ -24,6 +24,10 @@ export const spring = {
   tile: { type: 'spring', stiffness: 560, damping: 40, mass: 0.8 },
   /** Blokken die herschikken. */
   layout: { type: 'spring', stiffness: 460, damping: 42, mass: 0.9 },
+  /** Een nieuwe lesstap die binnenschuift: zacht, met een heel klein beetje veer. */
+  card: { type: 'spring', stiffness: 320, damping: 30, mass: 0.9 },
+  /** Feedback en beloningen die opspringen. */
+  pop: { type: 'spring', stiffness: 520, damping: 26, mass: 0.7 },
 } satisfies Record<string, Transition>;
 
 /** Rustige beweging: eigen instelling óf de systeemvoorkeur. Ook voor confetti, tellers en scrollen. */

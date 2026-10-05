@@ -36,7 +36,7 @@ export function LayerTag({ layer, layerIndex, domain, stage }: { layer: Layer; l
         data-accent={domain.accent}
         className="flex items-center gap-2.5 rounded-tile border-2 border-accent-line bg-accent-soft px-3.5 py-2 text-accent-ink"
       >
-        <span className="grid size-8 place-items-center rounded-chip bg-accent text-accent-on">
+        <span className="grid size-8 place-items-center rounded-chip bg-accent icon-tile">
           <DomainGlyph id={domain.id} className="size-[1.1rem]" />
         </span>
         <span className="leading-tight">

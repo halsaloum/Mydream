@@ -13,8 +13,12 @@ type EmptyStateProps = {
 /** Lege toestand: Pim, een heldere zin over wat hier komt, en wat je nu kunt doen. */
 export function EmptyState({ title, children, action, mood = 'idle', className }: EmptyStateProps) {
   return (
-    <div className={cn('flex flex-col items-center px-6 py-12 text-center', className)}>
-      <Pim mood={mood} size="lg" />
+    <div className={cn('stagger flex flex-col items-center px-6 py-12 text-center', className)}>
+      <span>
+        <span className="block animate-float">
+          <Pim mood={mood} size="lg" />
+        </span>
+      </span>
       <h2 className="mt-5 font-display text-title font-extrabold">{title}</h2>
       <div className="mt-2 max-w-md text-body text-ink-muted">{children}</div>
       {action && <div className="mt-6">{action}</div>}

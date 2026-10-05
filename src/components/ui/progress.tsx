@@ -39,8 +39,9 @@ export function ProgressBar({ value, max = 100, label, valueText, size = 'md', f
             />
           )}
           className={cn(
-            'relative h-full rounded-full bg-accent shadow-[inset_0_-3px_0_rgb(0_0_0/0.14)]',
-            size === 'md' && 'before:absolute before:inset-x-2 before:top-[3px] before:h-[3px] before:rounded-full before:bg-white/45',
+            'relative h-full overflow-hidden rounded-full bg-accent bg-linear-to-b from-white/20 to-transparent shadow-[inset_0_-3px_0_rgb(0_0_0/0.14)]',
+            size === 'md' &&
+              'before:absolute before:inset-x-2 before:top-[3px] before:h-[3px] before:rounded-full before:bg-white/45 after:absolute after:inset-y-0 after:left-0 after:w-1/3 after:animate-sheen after:bg-linear-to-r after:from-transparent after:via-white/45 after:to-transparent',
           )}
         />
       </Progress.Track>

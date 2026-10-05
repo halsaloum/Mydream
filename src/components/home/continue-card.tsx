@@ -48,7 +48,8 @@ export function ContinueCard({ target, firstTime }: { target: ContinueTarget; fi
       data-accent={entry.domain.accent}
       className="relative overflow-hidden rounded-sheet border-2 border-line bg-surface shadow-sheet"
     >
-      <div aria-hidden className="absolute inset-y-0 right-0 w-1/2 bg-[radial-gradient(120%_90%_at_100%_0%,var(--accent-soft),transparent_70%)]" />
+      <div aria-hidden className="absolute inset-y-0 right-0 w-2/3 bg-[radial-gradient(120%_100%_at_100%_0%,var(--accent-soft),transparent_70%)]" />
+      <div aria-hidden className="absolute -top-16 -right-10 size-56 rounded-full bg-accent opacity-[0.12] blur-3xl" />
       <div className="relative flex flex-col gap-6 p-6 sm:p-8">
         <div className="flex items-start gap-5">
           <div className="min-w-0 flex-1">
@@ -69,7 +70,9 @@ export function ContinueCard({ target, firstTime }: { target: ContinueTarget; fi
             </p>
             <p className="mt-3 text-body text-ink-soft">{status}</p>
           </div>
-          <Pim mood={resume ? 'happy' : 'idle'} size="lg" className="hidden sm:block" />
+          <span className="hidden animate-float sm:block">
+            <Pim mood={resume ? 'happy' : 'idle'} size="lg" />
+          </span>
         </div>
         {resume && (
           <ProgressBar
@@ -81,9 +84,9 @@ export function ContinueCard({ target, firstTime }: { target: ContinueTarget; fi
           />
         )}
         <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
-          <ButtonLink href={`/les/${entry.lesson.id}` as Route} variant="accent" size="lg" className="max-sm:w-full">
+          <ButtonLink href={`/les/${entry.lesson.id}` as Route} variant="accent" size="lg" className="group max-sm:w-full">
             Verder met jouw les
-            <ArrowRight aria-hidden className="size-5" strokeWidth={2.75} />
+            <ArrowRight aria-hidden className="size-5 transition-transform duration-300 ease-[var(--ease-spring)] group-hover:translate-x-1" strokeWidth={2.75} />
           </ButtonLink>
           <Link href="/lessen" className="rounded-chip font-bold text-ink-muted underline-offset-4 hover:text-ink hover:underline">
             Andere les kiezen

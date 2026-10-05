@@ -159,8 +159,8 @@ export function Examples({ examples, className }: { examples: Example[]; classNa
 
 export function RuleCard({ text }: { text: string }) {
   return (
-    <div className="flex gap-4 rounded-card border-2 border-accent-line bg-accent-soft p-4 shadow-[0_4px_0_var(--accent-line)]">
-      <span className="grid size-10 shrink-0 place-items-center rounded-control bg-accent text-accent-on shadow-[inset_0_-3px_0_rgb(0_0_0/0.14)]">
+    <div className="flex animate-rise gap-4 rounded-card border-2 border-accent-line bg-linear-to-br from-accent-soft to-surface p-4 shadow-[0_4px_0_var(--accent-line),0_16px_30px_-18px_var(--accent-deep)]">
+      <span className="grid size-10 shrink-0 place-items-center rounded-control bg-accent icon-tile">
         <Sparkles aria-hidden className="size-5" strokeWidth={2.5} />
       </span>
       <p className="self-center font-display text-lead leading-snug font-bold text-ink">

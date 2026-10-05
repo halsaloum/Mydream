@@ -66,7 +66,7 @@ export function GalleryView() {
                     className="group slab pressable flex h-full flex-col rounded-card border-2 border-line bg-surface p-5 hover:border-line-strong"
                   >
                     <span className="flex items-center gap-3">
-                      <span className="grid size-10 shrink-0 place-items-center rounded-control bg-accent text-accent-on shadow-[inset_0_-3px_0_rgb(0_0_0/0.14)]">
+                      <span className="grid size-10 shrink-0 place-items-center rounded-control bg-accent icon-tile">
                         <DomainGlyph id={entry.domain.id} className="size-5" />
                       </span>
                       <span className="min-w-0">
