@@ -299,6 +299,12 @@ export const LETTER_LESSONS: LessonInput[] = [
         panels: [
           {
             text: 'Waarom schrijven we één klank op twee manieren? Omdat het vroeger twee klanken waren. In het Middelnederlands klonk de *ij* als een lange *ie*: *wijn* klonk ongeveer als *wien*. De *ei* was al een tweeklank. Rond de zestiende eeuw werd ook die lange *ie* een tweeklank, en in Holland en Brabant vielen de twee samen. De spelling bleef staan.',
+            quiz: {
+              q: 'Hoe klonk wijn in het Middelnederlands ongeveer?',
+              options: ['als wien', 'zoals nu', 'als wajn'],
+              answer: 'als wien',
+              why: 'De ij was toen een lange ie-klank. Pas later werd het een tweeklank.',
+            },
             rule: 'ij en ei klinken nu gelijk, maar waren vroeger twee klanken. De spelling onthoudt het verschil.',
             deep: {
               q: 'Hoor je het oude verschil nog ergens?',
@@ -326,6 +332,7 @@ export const LETTER_LESSONS: LessonInput[] = [
           },
           {
             text: 'Twee achtervoegsels moet je gewoon kennen. *-lijk* schrijf je met *ij*, maar je zegt het met een doffe klank: *vriendelijk* klinkt als *vriendelək*. *-heid* schrijf je met *ei*: *vrijheid*, *waarheid*. Zo kan één woord allebei hebben: *eerlijkheid*.',
+            build: { stem: 'eerlijk', endings: ['heid', 'hijd', 'held'], answer: 'heid', note: 'eerlijkheid: -lijk met ij, -heid met ei.' },
             rule: '*-lijk* met *ij*, *-heid* met *ei*: *duidelijkheid*.',
             show: [
               { wrong: 'vriendelijkhijd', right: 'vriendelijkheid' },
@@ -596,6 +603,12 @@ export const LETTER_LESSONS: LessonInput[] = [
           },
           {
             text: 'De apostrof kan ook laten zien dat er letters weg zijn. *’s Morgens* is ingekort uit *des morgens*. *Zo’n* komt van *zo een*, *m’n* van *mijn*. Begint een zin met zo’n ingekort woordje, dan krijgt het volgende woord de hoofdletter: *’s Avonds lees ik.*',
+            quiz: {
+              q: 'Hoe begin je deze zin goed?',
+              options: ['’s Avonds lees ik.', '’S avonds lees ik.', '’s avonds lees ik.'],
+              answer: '’s Avonds lees ik.',
+              why: 'De hoofdletter gaat naar het woord na ’s.',
+            },
             rule: 'Zin begint met *’s* of *’t*? De hoofdletter gaat naar het woord erna: *’s Morgens*.',
             show: [
               { wrong: 'zon fiets', right: 'zo’n fiets' },
@@ -858,6 +871,12 @@ export const LETTER_LESSONS: LessonInput[] = [
           },
           {
             text: 'Tot slot een zetregel. Een losse letter aan het eind of begin van een regel leest rommelig, en hij spaart vrijwel geen ruimte. Zetters en de meeste tekstverwerkers breken *apen* daarom niet af als *a-pen*, al is dat een correcte lettergreepgrens.',
+            quiz: {
+              q: 'Welke afbreking vermijden zetters, al is hij correct?',
+              options: ['a-pen', 'ap-pels', 'la-chen'],
+              answer: 'a-pen',
+              why: 'Een losse a op de regel leest rommelig en spaart geen ruimte.',
+            },
             rule: 'Correct is niet altijd mooi: laat liever geen losse letter achter.',
           },
         ],
@@ -1058,6 +1077,12 @@ export const LETTER_LESSONS: LessonInput[] = [
           },
           {
             text: 'En na een dubbele punt? Daar schrijf je in principe een kleine letter: *Eén ding is zeker: het wordt laat.* Alleen bij een letterlijk citaat of een eigennaam komt er een hoofdletter: *Ze zei: ‘Het wordt laat.’*',
+            quiz: {
+              q: 'Welke zin is goed geschreven?',
+              options: ['Eén ding is zeker: het wordt laat.', 'Eén ding is zeker: Het wordt laat.', 'Eén ding is zeker: Het Wordt Laat.'],
+              answer: 'Eén ding is zeker: het wordt laat.',
+              why: 'Geen citaat en geen naam na de dubbele punt: kleine letter.',
+            },
             rule: 'Na een dubbele punt: klein, behalve bij een citaat of een naam.',
           },
         ],
@@ -1281,6 +1306,11 @@ export const LETTER_LESSONS: LessonInput[] = [
           },
           {
             text: 'Waarom staan de *Y* en de *Z* achteraan? Omdat ze laat kwamen. In de eerste eeuw voor Christus leende het Latijn veel Griekse woorden, en daarvoor haalden de Romeinen de Griekse *Y* (upsilon) en *Z* (zèta) erbij. Nieuwe letters sluiten achteraan aan.',
+            alpha: {
+              q: 'Tik de twee letters die de Romeinen pas voor Griekse leenwoorden toevoegden',
+              targets: ['y', 'z'],
+              note: 'y en z kwamen in de eerste eeuw voor Christus achteraan bij.',
+            },
             rule: 'Wie laat komt, staat achteraan: *Y* en *Z* kwamen er pas voor Griekse leenwoorden bij.',
           },
           {
@@ -1390,6 +1420,12 @@ export const LETTER_LESSONS: LessonInput[] = [
         panels: [
           {
             text: 'Een Romein zou deze zin niet herkennen: hij schreef alleen hoofdletters, en vaak zonder spaties. Op de zuil van keizer Trajanus in Rome (113 na Christus) staan de beroemdste: de *capitalis monumentalis*. Letterontwerpers kopiëren die vormen nog steeds. Kleine letters bestonden toen gewoon niet.',
+            quiz: {
+              q: 'Welke letters staan op de zuil van Trajanus?',
+              options: ['alleen hoofdletters', 'alleen kleine letters', 'hoofdletters en kleine letters'],
+              answer: 'alleen hoofdletters',
+              why: 'Kleine letters bestonden toen nog niet.',
+            },
             deep: {
               q: 'Zonder spaties? Hoe las je dat?',
               a: 'Hardop en langzaam. Dat heet *scriptio continua*: doorlopend schrift. De spatie tussen woorden werd pas in de zevende en achtste eeuw gewoon, bij Ierse en Angelsaksische monniken. Zij lazen Latijn als vreemde taal en hadden houvast nodig. Volgens de historicus Paul Saenger maakte de spatie stillezen veel makkelijker.',
@@ -1478,6 +1514,12 @@ export const LETTER_LESSONS: LessonInput[] = [
           },
           {
             text: 'Lees je woorden aan hun silhouet? Lang dachten onderzoekers van wel. Maar oogbewegingsonderzoek laat zien dat je de losse letters van een woord tegelijk herkent, niet de vorm als geheel. Tekst in hoofdletters leest vooral trager omdat je hem minder gewend bent.',
+            quiz: {
+              q: 'Waarom leest tekst in hoofdletters trager?',
+              options: ['vooral omdat je hem minder gewend bent', 'omdat je woorden aan hun silhouet leest', 'omdat hoofdletters groter zijn'],
+              answer: 'vooral omdat je hem minder gewend bent',
+              why: 'Je herkent de losse letters; met oefening lees je ook hoofdletters vlot.',
+            },
             deep: {
               q: 'Hoe test je dat?',
               a: 'Geef lezers woorden in *AlTeRnErEnDe* hoofd- en kleine letters. Het silhouet is dan weg, maar met wat oefening lezen ze bijna even snel. Ook de *woordvormtheorie* voorspelt dat een woord met een fout die het silhouet heel laat, zoals *tesl* voor *test*, lastiger op te merken is; dat effect valt in experimenten tegen. Kevin Larson vatte dat onderzoek in 2004 samen in *The Science of Word Recognition*.',
@@ -1591,6 +1633,12 @@ export const LETTER_LESSONS: LessonInput[] = [
           },
           {
             text: 'Diepte heeft gevolgen. In een groot onderzoek naar het eerste leesjaar in dertien Europese spellingen lazen kinderen uit landen met een ondiepe spelling aan het eind van dat jaar bijna alle simpele woorden goed. Nederlandse kinderen kwamen ook hoog uit. Kinderen in Schotland, die Engels leerden lezen, lazen er maar ongeveer een derde goed.',
+            swap: {
+              goal: 'Zet de spellingen van meeste naar minste goed gelezen woorden na één leesjaar',
+              blocks: ['Engels', 'Fins', 'Frans'],
+              accept: ['Fins Frans Engels'],
+              note: 'Fins bijna perfect, Frans lager, Engels veruit het laagst (Seymour en collega’s, 2003).',
+            },
             deep: {
               q: 'Welk onderzoek?',
               a: 'Seymour, Aro en Erskine (2003) vergeleken het eerste leesjaar in dertien Europese spellingen. Fins, Grieks en Duits scoorden bijna perfect, Frans, Portugees en Deens lager, Engels veruit het laagst. Het idee erachter heet de *orthografische-diepte-hypothese* (Katz en Frost, 1992): hoe dieper de spelling, hoe langer leren lezen duurt.',

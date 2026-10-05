@@ -136,6 +136,12 @@ export const LETTER_MASTER_LESSONS: LessonInput[] = [
           },
           {
             text: 'Dan de *ligaturen*: twee letters die tot één teken versmelten. In goed zetwerk worden *f* en *i* samen *ﬁ*, zodat de punt van de *i* niet tegen de *f* botst. Soms wordt een ligatuur een eigen letter: de Deense *æ*, de Duitse *ß* uit *ſ* + *z* of *ſ* + *s*. En de Nederlandse *ij*? Die staat in Unicode als *ĳ*, één teken, maar we typen hem als *i* + *j*.',
+            quiz: {
+              q: 'Waaruit ontstond de Duitse ß?',
+              options: ['uit lange ſ met z of s', 'uit b en s', 'uit twee gewone s’en'],
+              answer: 'uit lange ſ met z of s',
+              why: 'Een ligatuur die een eigen letter werd.',
+            },
             deep: {
               q: 'Is de hoofdletter een allograaf?',
               a: 'Strikt genomen niet helemaal. *A* en *a* veranderen het woord niet, dus het lijken allografen. Maar een hoofdletter zegt wel iets: *de Kamer* (het parlement) is iets anders dan *de kamer* (een vertrek). De hoofdletter draagt dus betekenis op een hoger niveau dan de letter: hij markeert een eigennaam of een zinsbegin. Daarom zien veel grafematici hem als een eigen teken boven op de letter.',
@@ -303,6 +309,12 @@ export const LETTER_MASTER_LESSONS: LessonInput[] = [
           },
           {
             text: 'Voor het grote *Woordenboek der Nederlandsche Taal* maakten Matthias de Vries en Lammert te Winkel een spelling (1863–1866). België nam die in 1864 over, Nederland in 1883: voor het eerst één spelling voor beide. Zij schreven *mensch* en *visch* omdat de *ch* er ooit klonk, en maakten verschil tussen *zachtlange* en *scherplange* klinkers: *boomen* met *oo*, maar *hopen* met één *o*, op grond van de geschiedenis.',
+            quiz: {
+              q: 'Welk land nam de spelling van De Vries en Te Winkel als eerste over?',
+              options: ['België', 'Nederland', 'Suriname'],
+              answer: 'België',
+              why: 'België in 1864, Nederland pas in 1883.',
+            },
             rule: 'De Vries en Te Winkel: spelling naar uitspraak, gelijkvormigheid, analogie en afkomst.',
             deep: {
               q: 'Wat was dat verschil tussen zachtlang en scherplang?',
@@ -320,6 +332,12 @@ export const LETTER_MASTER_LESSONS: LessonInput[] = [
           },
           {
             text: 'In 1954 kwam het eerste *Groene Boekje*. Voor leenwoorden gaf het vaak twee spellingen: een *voorkeurspelling* en een *toegelaten* spelling, zoals *cadeau* naast *kado*. Dat leverde verwarring op en verdween in 1995. In 2005 volgden nog regels voor de tussen-n (*paardenbloem*), wat zoveel protest gaf dat het Genootschap Onze Taal in 2006 een eigen *Witte Boekje* uitbracht. De laatste editie van het Groene Boekje is van 2015.',
+            quiz: {
+              q: 'Waarom bracht Onze Taal in 2006 een eigen Witte Boekje uit?',
+              options: ['uit onvrede met de regels van 2005', 'omdat er nog geen woordenlijst was', 'om de spelling van 1804 terug te brengen'],
+              answer: 'uit onvrede met de regels van 2005',
+              why: 'Vooral de nieuwe regels voor de tussen-n gaven protest.',
+            },
             deep: {
               q: 'Wat leer je hiervan als taalkundige?',
               a: 'Elke hervorming kiest tussen principes die botsen. In 1947 won de uitspraak (*mens*, *bomen*). Bij *logisch* won de traditie. Bij *hond* met *d* wint de woordbouw. Bij de tussen-n won een abstracte regel over de vorm van het eerste deel, ook waar je geen n hoort. Spelling is dus geen natuurverschijnsel, maar een politieke en culturele afspraak.',
@@ -434,6 +452,12 @@ export const LETTER_MASTER_LESSONS: LessonInput[] = [
           },
           {
             text: 'Je kent vast het rondzingende bericht: *Vlgones een odnzreoek op Cmabirdge mkaat het neit uit in wlkee vlogrode de ltteers saatn*. Dat onderzoek in Cambridge heeft nooit bestaan. Maar er klopt iets van: verwisselde letters lezen opmerkelijk goed, vooral naast elkaar en midden in het woord. Dat heet het *transpositie-effect*: *jugde* roept *judge* bijna net zo snel op als het echte woord.',
+            quiz: {
+              q: 'Wat klopt er van het Cambridge-bericht?',
+              options: ['het effect bestaat, het onderzoek niet', 'het onderzoek bestaat, het effect niet', 'allebei'],
+              answer: 'het effect bestaat, het onderzoek niet',
+              why: 'Verwisselde buren lees je goed, maar een onderzoek in Cambridge heeft er nooit achter gezeten.',
+            },
             rule: 'Verwisselde buren midden in een woord lees je goed; verre verwisselingen en de eerste letter niet.',
             deep: {
               q: 'Wat zegt dat over hoe je letters codeert?',
@@ -498,6 +522,12 @@ export const LETTER_MASTER_LESSONS: LessonInput[] = [
           },
           {
             text: 'Lezen is te nieuw voor de evolutie: schrift bestaat pas zo’n vijfduizend jaar. Toch heeft elke geoefende lezer op ongeveer dezelfde plek in de linkerhersenhelft een gebied dat letterreeksen herkent: het *visuele woordvormgebied*. Volgens Stanislas Dehaene ‘recyclet’ lezen een gebied dat eigenlijk gezichten en voorwerpen herkent. Daarbij leer je ook iets af: spiegelbeelden als hetzelfde zien, want *b* is geen *d*.',
+            quiz: {
+              q: 'Wat moet je afleren als je leert lezen?',
+              options: ['spiegelbeelden als hetzelfde zien', 'gezichten herkennen', 'kleuren onderscheiden'],
+              answer: 'spiegelbeelden als hetzelfde zien',
+              why: 'Voor een leeuw maakt links of rechts niet uit, voor b en d wel.',
+            },
             deep: {
               q: 'Wat doet dat gebied precies?',
               a: 'Het reageert op letters, ongeacht lettertype of hoofdletter: *LEZEN*, *lezen* en *LeZeN* activeren het op dezelfde manier. Die *abstracte letteridentiteit* is precies het grafeembegrip uit de les over allografen, maar dan in je hersenen. Bij mensen die nooit leerden lezen, is het gebied minder gespecialiseerd voor letters.',
@@ -655,6 +685,12 @@ export const LETTER_MASTER_LESSONS: LessonInput[] = [
           },
           {
             text: 'Door die redundantie kun je tekst lezen waar letters uit ontbreken. Haal alle klinkers weg: *Dt s n zn zndr klnkrs*. Lukt nog redelijk, toch? Medeklinkers dragen in het Nederlands meer informatie dan klinkers. Dat is ook waarom een medeklinkerschrift, zoals het Hebreeuws en Arabisch, prima werkt voor wie de taal kent.',
+            quiz: {
+              q: 'Waarom kun je een zin zonder klinkers vaak nog lezen?',
+              options: ['medeklinkers dragen veel informatie en de context vult aan', 'klinkers zijn in het Nederlands overbodig', 'omdat de zin kort is'],
+              answer: 'medeklinkers dragen veel informatie en de context vult aan',
+              why: 'Dat is redundantie: de taal zegt meer dan strikt nodig.',
+            },
             deep: {
               q: 'Hangt dat samen met de wet van Zipf?',
               a: 'Ja, het is dezelfde gedachte op een ander niveau. Op woordniveau zijn de vaakste woorden het kortst (*de*, *en*, *een*): dat zie je in de les over Zipf bij Het woord. Op letterniveau krijgen voorspelbare tekens weinig informatie. Taal lijkt overal een compromis te zoeken tussen kort en duidelijk.',
