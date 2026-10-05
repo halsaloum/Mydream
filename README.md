@@ -96,13 +96,14 @@ de bron) via `adapters/legacy.ts`, voegt de nieuwe lessen uit `packs/` toe en va
 `legacy/course.ts` bevat alleen de typen: de tweede cursus (`COURSE`) en `BOOKS` zijn bewust weggelaten, zodat er
 geen tegenstrijdige inhoud naast elkaar bestaat.
 
-`packs/` bevat 74 nieuwe lessen voor vijf niveaus, achter de bestaande lessen van dat niveau (`withExtraLessons`):
+`packs/` bevat 77 nieuwe lessen voor vijf niveaus, achter de bestaande lessen van dat niveau (`withExtraLessons`):
 
 | Bestand | Niveau | Lessen |
 | --- | --- | --- |
 | `packs/letter.ts` | De letter | 8 — basis: alfabet, ij, accenten en leestekens in woorden · bachelor: afbreken, schriftgeschiedenis, diepe en ondiepe spelling · master: grafeem en allograaf, spellinggeschiedenis |
 | `packs/klank.ts` | Klank en letter | 15 — basis: foneem, articulatie, klinkerkaart, gespannen en ongespannen, tweeklanken, sjwa · bachelor: medeklinkertabel, allofonen, verscherping, assimilatie, ’t kofschip, epenthese en deletie, klemtoon, ij en ei, de vier spellingprincipes |
 | `packs/klank-master.ts` | Klank en letter | 9 — master: kenmerken en natuurlijke klassen, sonoriteit, ambisyllabiciteit, klemtoon en lettergreepgewicht, regelordening, Optimaliteitstheorie (twee lessen), categoriale perceptie, klankverandering |
+| `packs/klank-extra.ts` | Klank en letter | 3 — bachelor: variatie in de uitspraak (r, g, w, stemloos worden) · master: bron en filter, formanten en spectrogram, VOT · zinsaccent, focus en intonatie |
 | `packs/greep.ts` | De lettergreep | 8 — bachelor: bewijs voor de lettergreep, onset-kern-coda, grenzen en fonotaxis, de rijm van drie plekken en de appendix, hiaat en glottisslag, schwa-epenthese, verkleinwoord en meervoud, lettergreepschriften |
 | `packs/greep-master.ts` | De lettergreep | 6 — master: moras en het minimale woord, typologie en verwerving, ONSET en NOCODA in OT, het prosodische woord, ritmeklassen, de lettergreep in spraakproductie |
 | `packs/deel.ts` | Het betekenisvolle woorddeel | 8 — bachelor: morfeem en allomorf, buiging tegenover afleiding, de rechterhoofdregel, woordbomen, samenstellingen, tussenklanken, eisen van affixen en blokkering, stamwisseling en suppletie |
