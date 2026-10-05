@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/button';
 import { Disclosure } from '@/components/ui/disclosure';
 import { RichText } from '@/components/ui/rich-text';
 import { Examples, RuleCard, StepHeading, type StepProps } from '../steps/shared';
+import { GridWidget, TableauWidget, VowelsWidget } from './sound-widgets';
 import { AlphaWidget, BlendWidget, BuildWidget, LabWidget, MarkWidget, SplitWidget, SwapWidget, WheelWidget } from './widgets';
 
 /** Naar een ander uitlegdeel (de voettekst gebruikt dit ook voor "Volgende deel"). */
@@ -162,6 +163,12 @@ function PanelBody({
             return panel.wheel && <WheelWidget key={widget} data={panel.wheel} {...props} />;
           case 'blend':
             return panel.blend && <BlendWidget key={widget} data={panel.blend} {...props} />;
+          case 'vowels':
+            return panel.vowels && <VowelsWidget key={widget} data={panel.vowels} {...props} />;
+          case 'grid':
+            return panel.grid && <GridWidget key={widget} data={panel.grid} {...props} />;
+          case 'tableau':
+            return panel.tableau && <TableauWidget key={widget} data={panel.tableau} {...props} />;
         }
       })}
     </div>

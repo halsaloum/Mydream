@@ -1,15 +1,17 @@
 import { z } from 'zod';
 import { adaptLegacyCourse } from './adapters/legacy';
+import { withExtraLessons } from './packs';
 import { CoursePackSchema, type CoursePack, type Domain, type Layer, type Lesson, type StepKind } from './schema';
 
 /**
  * De enige actieve inhoudsbron van de app.
  *
- * Nu: de bestaande bouwlagen uit `legacy/build.ts` via de adapter.
+ * Nu: de bestaande bouwlagen uit `legacy/build.ts` via de adapter, aangevuld met de nieuwe lessen
+ * uit `packs/` (achter de bestaande lessen van hun niveau). Alles gaat door hetzelfde contract.
  * Later: vervang `adaptLegacyCourse()` door een gevalideerde JSON-cursus (zie README, "Lessen aansluiten").
  */
 function loadCourse(): CoursePack {
-  const result = CoursePackSchema.safeParse(adaptLegacyCourse());
+  const result = CoursePackSchema.safeParse(withExtraLessons(adaptLegacyCourse()));
   if (!result.success) {
     throw new Error(`Lesinhoud voldoet niet aan het contract:\n${z.prettifyError(result.error)}`);
   }

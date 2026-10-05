@@ -21,12 +21,12 @@ import { Tile } from '../tile';
  * oorspronkelijke app). Alles werkt met aanraken, muis en toetsenbord.
  */
 type Data<K extends keyof Panel> = NonNullable<Panel[K]>;
-type WidgetProps<K extends keyof Panel> = { data: Data<K>; solved: boolean; onSolved: () => void };
+export type WidgetProps<K extends keyof Panel> = { data: Data<K>; solved: boolean; onSolved: () => void };
 
-const ICON = 'size-[1.05rem]';
-const SHAKE = { x: [0, -6, 6, -3, 0] };
+export const ICON = 'size-[1.05rem]';
+export const SHAKE = { x: [0, -6, 6, -3, 0] };
 
-function useSolve(onSolved: () => void) {
+export function useSolve(onSolved: () => void) {
   const box = useRef<HTMLDivElement>(null);
   return {
     box,
@@ -39,7 +39,7 @@ function useSolve(onSolved: () => void) {
 }
 
 /** Kort "nee"-signaal op één element: rood en een schudbeweging, daarna weer neutraal. */
-function useFlash<T>() {
+export function useFlash<T>() {
   const [flash, setFlash] = useState<{ value: T; n: number } | null>(null);
   const timer = useRef<number | undefined>(undefined);
   return {
@@ -88,7 +88,7 @@ export function SplitWidget({ data, solved, onSolved }: WidgetProps<'split'>) {
     <div ref={box}>
       <TaskBox
         icon={<Scissors aria-hidden className={ICON} strokeWidth={2.5} />}
-        title="Knip het woord in lettergrepen"
+        title={data.q ?? 'Knip het woord in lettergrepen'}
         solved={solved}
         status={solved ? `${data.answer} · ${data.note}` : 'Tik tussen de letters om te knippen. Nog eens tikken plakt ze weer.'}
       >

@@ -2,7 +2,9 @@ import { z } from 'zod';
 import { AccentSchema } from './accent';
 import { EXTRA_STEP_SCHEMAS } from './kinds';
 import { ARGUMENT_STEP_SCHEMAS } from './kinds-argument';
+import { canWin, winsAlone } from './tableau';
 import { hasBalancedEmphasis, isPermutationJoin, tokenize } from './text';
+import { DIPHTHONGS, VOWELS } from './vowels';
 
 export { ACCENTS, AccentSchema, type Accent } from './accent';
 
@@ -21,6 +23,9 @@ export { ACCENTS, AccentSchema, type Accent } from './accent';
 export const SCHEMA_VERSION = 1 as const;
 
 export const SKILLS = ['Spelling', 'Woorden', 'Zinsbouw', 'Complex', 'Alinea'] as const;
+
+/** Hoe diep een les gaat: van de basis tot het niveau van een masteropleiding taalwetenschap. */
+export const STAGES = ['basis', 'bachelor', 'master'] as const;
 
 const Text = z.string().regex(/\S/, 'Mag niet leeg zijn');
 const Rich = Text.refine(hasBalancedEmphasis, 'Markeringen met * moeten in paren voorkomen').describe(
@@ -61,8 +66,13 @@ const QuizSchema = z
   .describe('Snelle check binnen de uitleg. De app toont deze als losse meerkeuzevraag direct na de uitleg.');
 
 const SplitSchema = z
-  .object({ word: Text, answer: Text.describe('Woord met koppeltekens op de knippunten, bv. "bo-men".'), note: Text })
-  .describe('Knip een woord in lettergrepen.');
+  .object({
+    q: Text.optional().describe('Opdracht boven het woord; standaard "Knip het woord in lettergrepen".'),
+    word: Text,
+    answer: Text.describe('Woord met koppeltekens op de knippunten, bv. "bo-men".'),
+    note: Text,
+  })
+  .describe('Knip een woord in stukken: lettergrepen, of bijvoorbeeld grafemen.');
 
 const MarkSchema = z
   .object({
@@ -114,6 +124,53 @@ const SwapSchema = z
   })
   .describe('Wissel blokken tot de zin klopt.');
 
+const VowelsSchema = z
+  .object({
+    q: Text.describe('Opdracht, bv. "Tik alle gespannen klinkers".'),
+    targets: z.array(z.enum(VOWELS)).min(1).describe('De klinkers (IPA) die gevonden moeten worden.'),
+    note: Text,
+    glides: z.boolean().optional().describe('Toon ook de drie tweeklanken als glijbewegingen.'),
+  })
+  .describe('Klinkerkaart: de klinkers op hun plek in de mond. Tik, luister en zoek de gevraagde klinkers.');
+
+const GridSchema = z
+  .object({
+    q: Text.describe('Opdracht, bv. "Tik alle stemhebbende medeklinkers".'),
+    cols: z.array(Text).min(1).max(8).describe('Kolomkoppen, bv. articulatieplaatsen.'),
+    rows: z.array(Text).min(1).max(8).describe('Rijkoppen, bv. articulatiewijzen.'),
+    cells: z
+      .array(
+        z.object({
+          t: Text.describe('Het teken, bv. "p".'),
+          row: z.int().nonnegative(),
+          col: z.int().nonnegative(),
+          ex: z.string().optional().describe('Voorbeeldwoord, bv. "pak".'),
+        }),
+      )
+      .min(2),
+    targets: z.array(Text).min(1).describe('De tekens die gevonden moeten worden.'),
+    note: Text,
+  })
+  .describe('Klanktabel: een tabel zoals de IPA-tabel. Tik alle gevraagde klanken aan.');
+
+const TableauSchema = z
+  .object({
+    input: Text.describe('De onderliggende vorm, bv. "/hɔnd/".'),
+    constraints: z
+      .array(z.object({ name: Text, note: Text.describe('Wat de eis verbiedt of vraagt.') }))
+      .min(2)
+      .max(4)
+      .describe('De eisen in de beginvolgorde; links staat de hoogste.'),
+    candidates: z
+      .array(z.object({ form: Text, marks: z.array(z.int().min(0).max(3)).describe('Overtredingen per eis, in de volgorde van de eisen.') }))
+      .min(2)
+      .max(4),
+    winner: z.int().nonnegative().describe('Index van de kandidaat die moet winnen.'),
+    goal: Text.describe('Wat de leerling moet bereiken, bv. "Laat de Nederlandse uitspraak winnen".'),
+    note: Text,
+  })
+  .describe('OT-tableau: zet de eisen in een rangorde waarbij de juiste kandidaat wint.');
+
 export const PanelSchema = z
   .object({
     text: Rich,
@@ -129,6 +186,9 @@ export const PanelSchema = z
     wheel: WheelSchema.optional(),
     blend: BlendSchema.optional(),
     swap: SwapSchema.optional(),
+    vowels: VowelsSchema.optional(),
+    grid: GridSchema.optional(),
+    tableau: TableauSchema.optional(),
   })
   .superRefine((panel, ctx) => {
     if (panel.lab && !unique(panel.lab.chips.map((chip) => chip.k))) issue(ctx, ['lab', 'chips'], 'Knopteksten moeten uniek zijn');
@@ -172,6 +232,39 @@ export const PanelSchema = z
       accept.forEach((answer, i) => {
         if (!isPermutationJoin(blocks, answer)) issue(ctx, ['swap', 'accept', i], 'Geen volgorde van precies deze blokken');
       });
+    }
+    if (panel.vowels) {
+      const { targets, glides } = panel.vowels;
+      if (!unique(targets)) issue(ctx, ['vowels', 'targets'], 'Klinkers staan dubbel');
+      targets.forEach((target, i) => {
+        if (!glides && DIPHTHONGS.includes(target)) issue(ctx, ['vowels', 'targets', i], 'Een tweeklank vinden kan alleen met glides: true');
+      });
+    }
+    if (panel.grid) {
+      const { cols, rows, cells, targets } = panel.grid;
+      if (!unique(cells.map((cell) => cell.t))) issue(ctx, ['grid', 'cells'], 'Tekens moeten uniek zijn');
+      cells.forEach((cell, i) => {
+        if (cell.row >= rows.length) issue(ctx, ['grid', 'cells', i, 'row'], `Rij ${cell.row} bestaat niet`);
+        if (cell.col >= cols.length) issue(ctx, ['grid', 'cells', i, 'col'], `Kolom ${cell.col} bestaat niet`);
+      });
+      if (!unique(targets)) issue(ctx, ['grid', 'targets'], 'Tekens staan dubbel');
+      targets.forEach((target, i) => {
+        if (!cells.some((cell) => cell.t === target)) issue(ctx, ['grid', 'targets', i], `"${target}" staat niet in de tabel`);
+      });
+    }
+    if (panel.tableau) {
+      const { constraints, candidates, winner } = panel.tableau;
+      const marks = candidates.map((candidate) => candidate.marks);
+      if (!unique(constraints.map((constraint) => constraint.name))) issue(ctx, ['tableau', 'constraints'], 'Eisen moeten uniek zijn');
+      if (!unique(candidates.map((candidate) => candidate.form))) issue(ctx, ['tableau', 'candidates'], 'Kandidaten moeten uniek zijn');
+      candidates.forEach((candidate, i) => {
+        if (candidate.marks.length !== constraints.length) issue(ctx, ['tableau', 'candidates', i, 'marks'], `Verwacht ${constraints.length} getallen`);
+      });
+      if (winner >= candidates.length) issue(ctx, ['tableau', 'winner'], 'Deze kandidaat bestaat niet');
+      else if (candidates.every((candidate) => candidate.marks.length === constraints.length)) {
+        if (!canWin(marks, winner)) issue(ctx, ['tableau', 'winner'], 'Bij geen enkele rangorde wint deze kandidaat');
+        else if (winsAlone(marks, constraints.map((_, i) => i), winner)) issue(ctx, ['tableau', 'constraints'], 'De beginvolgorde is al de oplossing');
+      }
     }
   });
 
@@ -342,10 +435,13 @@ export const StepSchema = z
     }
   });
 
+export const StageSchema = z.enum(STAGES).describe('Diepte: basis, bachelor of master. Lessen zonder stap tonen geen label.');
+
 export const LessonSchema = z.object({
   id: Id,
   title: Text,
   skill: SkillSchema,
+  stage: StageSchema.optional(),
   icon: Text.describe('Kort teken op de lestegel, bv. "dt" of "¶".'),
   domain: Id.describe('Hoofdvakgebied: verwijst naar een domein-id van de cursus.'),
   also: z.array(Id).optional().describe('Andere vakgebieden die in de les meespelen.'),
@@ -430,6 +526,8 @@ export type WriteCriterion = z.infer<typeof WriteCriterionSchema>;
 export type TextTest = z.infer<typeof TextTestSchema>;
 export type WriteAlarm = z.infer<typeof WriteAlarmSchema>;
 export type Lesson = z.infer<typeof LessonSchema>;
+export type LessonInput = z.input<typeof LessonSchema>;
+export type Stage = z.infer<typeof StageSchema>;
 export type LayerExample = z.infer<typeof LayerExampleSchema>;
 export type Layer = z.infer<typeof LayerSchema>;
 export type Domain = z.infer<typeof DomainSchema>;

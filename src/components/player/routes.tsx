@@ -29,7 +29,7 @@ export function LessonRoute({ lessonId }: { lessonId: string }) {
     context: entry.domain.name,
     accent: entry.domain.accent,
     exit: { href: '/', label: 'Les sluiten (je voortgang is bewaard)' },
-    tag: { layer: entry.layer, layerIndex: entry.layerIndex, domain: entry.domain },
+    tag: { layer: entry.layer, layerIndex: entry.layerIndex, domain: entry.domain, stage: entry.lesson.stage },
     finish: {
       title: entry.lesson.title,
       context: `${entry.domain.name} · Niveau ${entry.layerIndex + 1}: ${entry.layer.name}`,

@@ -4,10 +4,11 @@ import { Tabs } from '@base-ui/react/tabs';
 import { ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { course, getDomain, lessonEntries } from '@/content/catalog';
-import type { Domain, Layer } from '@/content/schema';
+import { course, getDomain, lessonEntries, type LessonEntry } from '@/content/catalog';
+import type { Domain, Layer, Stage } from '@/content/schema';
 import { DomainGlyph, LayerGlyph } from '@/components/brand/glyphs';
 import { LessonRow } from '@/components/lesson/lesson-row';
+import { STAGE_ACCENTS, STAGE_LABELS } from '@/components/lesson/stage-badge';
 import { IconButton } from '@/components/ui/button';
 import { RichText } from '@/components/ui/rich-text';
 import type { SessionState } from '@/engine/session';
@@ -98,6 +99,17 @@ function Ring({ ratio, label }: { ratio: number; label: string }) {
       />
     </svg>
   );
+}
+
+/** Opeenvolgende lessen met dezelfde stap (basis, bachelor, master) als één groep. */
+function stageRuns(entries: readonly LessonEntry[]): { stage: Stage | undefined; entries: LessonEntry[] }[] {
+  const runs: { stage: Stage | undefined; entries: LessonEntry[] }[] = [];
+  for (const entry of entries) {
+    const last = runs.at(-1);
+    if (last && last.stage === entry.lesson.stage) last.entries.push(entry);
+    else runs.push({ stage: entry.lesson.stage, entries: [entry] });
+  }
+  return runs;
 }
 
 function FieldPill({ domain }: { domain: Domain }) {
@@ -312,13 +324,26 @@ function LayerDetail({
                   <p className="text-caption text-ink-muted">{domain.q}</p>
                 </div>
               </div>
-              <ul className="space-y-2.5">
-                {inDomain.map((entry) => (
-                  <li key={entry.lesson.id}>
-                    <LessonRow entry={entry} progress={progress} sessions={sessions} isNext={entry.lesson.id === nextId} />
-                  </li>
+              <div className="space-y-4">
+                {stageRuns(inDomain).map((run) => (
+                  <div key={run.entries[0]?.lesson.id}>
+                    {run.stage && (
+                      <h4 data-accent={STAGE_ACCENTS[run.stage]} className="mb-2 flex items-center gap-2 label-caps text-accent-ink">
+                        <span aria-hidden className="size-2 rounded-full bg-accent" />
+                        <span className="sr-only">Stap: </span>
+                        {STAGE_LABELS[run.stage]}
+                      </h4>
+                    )}
+                    <ul className="space-y-2.5">
+                      {run.entries.map((entry) => (
+                        <li key={entry.lesson.id}>
+                          <LessonRow entry={entry} progress={progress} sessions={sessions} isNext={entry.lesson.id === nextId} showStage={false} />
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 ))}
-              </ul>
+              </div>
             </section>
           );
         })}
