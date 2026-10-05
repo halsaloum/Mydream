@@ -35,7 +35,7 @@ Niet een losse verzameling taalregels, maar één doorlopende constructie: hetze
 - Elke interactie werkt met aanraken, muis en toetsenbord; slepen heeft altijd een klik- of knopalternatief.
 - Een les is rechtstreeks via de URL te openen en hervat na verversen.
 - Schrijf geen nieuwe lessen, wijzig geen uitleg en bedenk geen curriculum.
-- Stack ligt vast: Next.js App Router, React, TypeScript (strikt), Base UI, Tailwind CSS, Motion, dnd-kit, Zustand, Zod, Lucide, canvas-confetti, Web Audio, Vitest, Testing Library, Playwright.
+- Stack ligt vast: Next.js App Router, React, TypeScript (strikt), Base UI, Tailwind CSS, Motion, dnd-kit, Zustand, Zod, Lucide, canvas-confetti, three.js (3D), Web Audio, Vitest, Testing Library, Playwright.
 
 ## Brand Commitments
 

@@ -1,13 +1,15 @@
 'use client';
 
+import { Collapsible } from '@base-ui/react/collapsible';
 import { Tabs } from '@base-ui/react/tabs';
-import { ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react';
-import { motion } from 'motion/react';
+import { ChevronDown, ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react';
+import { motion, type HTMLMotionProps } from 'motion/react';
 import { useEffect, useState } from 'react';
 import { course, getDomain, lessonEntries, type LessonEntry } from '@/content/catalog';
 import type { Domain, Layer, Stage } from '@/content/schema';
 import { DomainGlyph, LayerGlyph } from '@/components/brand/glyphs';
 import { LayerTower } from './layer-tower';
+import { ToyCanvas } from '@/lib/toy3d/toy-canvas';
 import { LessonRow } from '@/components/lesson/lesson-row';
 import { STAGE_ACCENTS, STAGE_LABELS } from '@/components/lesson/stage-badge';
 import { IconButton } from '@/components/ui/button';
@@ -17,9 +19,10 @@ import { cn } from '@/lib/cn';
 import { spring, transition, useCalmMotion } from '@/lib/motion';
 import { play } from '@/lib/sound';
 import type { ProgressData } from '@/state/progress';
-import { layerCompletion } from '@/state/selectors';
+import { layerCompletion, lessonStatus } from '@/state/selectors';
 
 const AUTOPLAY_MS = 2600;
+const loadTower = () => import('@/lib/toy3d/scenes/tower').then((module) => module.towerScene);
 
 /** Het voorbeeld dat door de niveaus groeit: stukken in Fraunces, wat nieuw is uitgelicht. */
 function GrowingExample({ layer, index, total }: { layer: Layer; index: number; total: number }) {
@@ -113,6 +116,82 @@ function stageRuns(entries: readonly LessonEntry[]): { stage: Stage | undefined;
   return runs;
 }
 
+type Run = ReturnType<typeof stageRuns>[number];
+
+/** Welke stap open staat: die met de volgende les, anders de eerste met iets te doen. */
+function openRun(runs: readonly Run[], progress: ProgressData, sessions: Record<string, SessionState>, nextId: string | undefined): number {
+  const withNext = runs.findIndex((run) => run.entries.some((entry) => entry.lesson.id === nextId));
+  if (withNext >= 0) return withNext;
+  return runs.findIndex((run) => run.entries.some((entry) => lessonStatus(entry.lesson.id, progress, sessions) !== 'done'));
+}
+
+/**
+ * Eén stap (basis, bachelor, master) als uitklapbare groep. Alleen de stap waar je nu bent staat
+ * open, zodat een niveau met twintig lessen niet één lange lijst wordt. Lessen zonder stap staan altijd open.
+ */
+function StageRun({
+  run,
+  progress,
+  sessions,
+  nextId,
+  defaultOpen,
+}: {
+  run: Run;
+  progress: ProgressData;
+  sessions: Record<string, SessionState>;
+  nextId: string | undefined;
+  defaultOpen: boolean;
+}) {
+  const calm = useCalmMotion();
+  const done = run.entries.filter((entry) => lessonStatus(entry.lesson.id, progress, sessions) === 'done').length;
+  const list = (
+    <ul className="stagger space-y-2.5">
+      {run.entries.map((entry) => (
+        <li key={entry.lesson.id}>
+          <LessonRow entry={entry} progress={progress} sessions={sessions} isNext={entry.lesson.id === nextId} showStage={false} />
+        </li>
+      ))}
+    </ul>
+  );
+  if (!run.stage) return list;
+  return (
+    <Collapsible.Root defaultOpen={defaultOpen} data-accent={STAGE_ACCENTS[run.stage]}>
+      <h4>
+        <Collapsible.Trigger
+          onClick={() => play('tap')}
+          className="group flex min-h-11 w-full items-center gap-2 rounded-control px-1 text-left outline-none hover:bg-ink/[0.03] focus-visible:outline-3 focus-visible:outline-focus"
+        >
+          <span aria-hidden className="size-2 rounded-full bg-accent" />
+          <span className="label-caps text-accent-ink">
+            <span className="sr-only">Stap: </span>
+            {STAGE_LABELS[run.stage]}
+          </span>
+          <span className="ml-auto text-caption font-bold text-ink-muted tabular-nums">
+            {done} van {run.entries.length} af
+          </span>
+          <span className="grid size-7 shrink-0 place-items-center rounded-chip bg-surface shadow-slab-sm transition-transform duration-200 group-data-[panel-open]:rotate-180">
+            <ChevronDown aria-hidden className="size-4" strokeWidth={2.75} />
+          </span>
+        </Collapsible.Trigger>
+      </h4>
+      <Collapsible.Panel
+        keepMounted
+        render={(props, state) => (
+          <motion.div
+            {...(props as HTMLMotionProps<'div'>)}
+            initial={false}
+            animate={{ height: state.open ? 'auto' : 0, opacity: state.open ? 1 : 0 }}
+            transition={calm ? { duration: 0 } : transition.base}
+          />
+        )}
+        className="overflow-hidden"
+      >
+        <div className="pt-2 pb-1">{list}</div>
+      </Collapsible.Panel>
+    </Collapsible.Root>
+  );
+}
+
 function FieldPill({ domain }: { domain: Domain }) {
   return (
     <li
@@ -191,11 +270,18 @@ export function LayerMachine({ selected, onSelect, progress, sessions, nextId }:
           </div>
         </div>
 
-        <div className="grid gap-2 px-6 pt-6 sm:px-8 md:grid-cols-[minmax(0,1fr)_15rem] md:items-center">
+        <div className="grid gap-2 px-6 pt-6 sm:px-8 md:grid-cols-[minmax(0,1fr)_19rem] md:items-center">
           <div aria-live={playing ? 'off' : 'polite'}>
             <GrowingExample key={layer.id} layer={layer} index={selected} total={layers.length} />
           </div>
-          <LayerTower layers={layers} selected={selected} progress={progress} onSelect={go} className="-my-10 scale-[0.8] md:-mt-8 md:mb-0 md:scale-100" />
+          <ToyCanvas
+            load={loadTower}
+            props={{ layers, selected, ratios: layers.map((item) => layerCompletion(item, progress).ratio) }}
+            onTap={(id) => go(Number(id.split(':')[1]))}
+            label="De negen niveaus als toren van blokken, van letter onderaan tot alinea bovenaan."
+            className="-mx-4 h-80 md:mx-0 md:-mt-6 md:h-[24rem]"
+            fallback={<LayerTower layers={layers} selected={selected} progress={progress} onSelect={go} className="-my-10 scale-[0.8] md:-mt-8 md:mb-0 md:scale-100" />}
+          />
         </div>
 
         <Tabs.List aria-label="Niveaus, van letter tot alinea" className="mt-2 flex items-end gap-1 px-4 sm:gap-2 sm:px-8">
@@ -328,24 +414,16 @@ function LayerDetail({
                   <p className="text-caption text-ink-muted">{domain.q}</p>
                 </div>
               </div>
-              <div className="space-y-4">
-                {stageRuns(inDomain).map((run) => (
-                  <div key={run.entries[0]?.lesson.id}>
-                    {run.stage && (
-                      <h4 data-accent={STAGE_ACCENTS[run.stage]} className="mb-2 flex items-center gap-2 label-caps text-accent-ink">
-                        <span aria-hidden className="size-2 rounded-full bg-accent" />
-                        <span className="sr-only">Stap: </span>
-                        {STAGE_LABELS[run.stage]}
-                      </h4>
-                    )}
-                    <ul className="stagger space-y-2.5">
-                      {run.entries.map((entry) => (
-                        <li key={entry.lesson.id}>
-                          <LessonRow entry={entry} progress={progress} sessions={sessions} isNext={entry.lesson.id === nextId} showStage={false} />
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+              <div className="space-y-3">
+                {stageRuns(inDomain).map((run, k, runs) => (
+                  <StageRun
+                    key={run.entries[0]?.lesson.id}
+                    run={run}
+                    progress={progress}
+                    sessions={sessions}
+                    nextId={nextId}
+                    defaultOpen={openRun(runs, progress, sessions, nextId) === k}
+                  />
                 ))}
               </div>
             </section>

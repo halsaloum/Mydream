@@ -7,6 +7,7 @@ import { canWin, winsAlone } from './tableau';
 import { hasBalancedEmphasis, isPermutationJoin, tokenize } from './text';
 import { DIPHTHONGS, VOWELS } from './vowels';
 import { FLIP_LETTERS } from './flip';
+import { THING_IDS } from './things';
 
 export { ACCENTS, AccentSchema, type Accent } from './accent';
 
@@ -151,6 +152,29 @@ const FlipSchema = z
     note: Text,
   })
   .describe('Draaitegel in 3D: spiegel, kantel of draai een letter en ontdek welke letter je dan ziet.');
+
+const Thing = z.enum(THING_IDS).describe('Een 3D-voorwerp uit `src/content/things.ts` (gemaakt met Meshy).');
+
+const CompoundSchema = z
+  .object({
+    q: Text.optional().describe('Opdracht boven de werkbank; standaard "Bouw de samenstelling".'),
+    rounds: z
+      .array(
+        z.object({
+          clue: Text.describe('Wat je zoekt, bv. "Een kast voor boeken".'),
+          parts: z.tuple([Thing, Thing]).describe('Het eerste en het tweede deel, in de goede volgorde.'),
+          result: Thing.describe('Het voorwerp dat de samenstelling is.'),
+          options: z.array(Text).min(2).max(4).describe('Spellingen om uit te kiezen.'),
+          answer: Text,
+          note: Text.describe('Waarom deze spelling.'),
+          swap: Text.optional().describe('Uitleg als de delen andersom gekozen worden: dan is het andere deel de baas.'),
+        }),
+      )
+      .min(1)
+      .max(6),
+    note: Text,
+  })
+  .describe('Samenstellingen in 3D: kies twee voorwerpen in de goede volgorde, kies de spelling, en zie ze samensmelten.');
 
 const SoundPairWord = z.object({ word: Text, sound: Text });
 
@@ -319,6 +343,7 @@ export const PanelSchema = z
     bracket: BracketSchema.optional(),
     paradigm: ParadigmSchema.optional(),
     phrase: PhraseSchema.optional(),
+    compound: CompoundSchema.optional(),
   })
   .superRefine((panel, ctx) => {
     if (panel.lab && !unique(panel.lab.chips.map((chip) => chip.k))) issue(ctx, ['lab', 'chips'], 'Knopteksten moeten uniek zijn');
@@ -376,6 +401,15 @@ export const PanelSchema = z
       targets.forEach((target, i) => {
         if (DIPHTHONGS.includes(target)) issue(ctx, ['space', 'targets', i], 'Een tweeklank heeft geen vaste plek in de ruimte');
       });
+    }
+    if (panel.compound) {
+      panel.compound.rounds.forEach((round, i) => {
+        if (round.parts[0] === round.parts[1]) issue(ctx, ['compound', 'rounds', i, 'parts'], 'Twee verschillende delen nodig');
+        if (round.parts.includes(round.result)) issue(ctx, ['compound', 'rounds', i, 'result'], 'De samenstelling is geen van de delen');
+        if (!unique(round.options)) issue(ctx, ['compound', 'rounds', i, 'options'], 'Opties moeten uniek zijn');
+        if (!round.options.includes(round.answer)) issue(ctx, ['compound', 'rounds', i, 'answer'], 'Antwoord staat niet tussen de opties');
+      });
+      if (!unique(panel.compound.rounds.map((round) => round.answer))) issue(ctx, ['compound', 'rounds'], 'Rondes staan dubbel');
     }
     if (panel.flip) {
       const { start, targets } = panel.flip;
