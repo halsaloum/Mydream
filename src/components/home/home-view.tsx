@@ -12,6 +12,7 @@ import { useHydrated } from '@/state/hydration';
 import { continueTarget, recommendedLesson, streakDays } from '@/state/selectors';
 import { useSettings } from '@/state/settings';
 import { ContinueCard } from './continue-card';
+import { HeroScene } from './hero-scene';
 import { LayerMachine } from './layer-machine';
 import { RecentProgress } from './recent-progress';
 
@@ -60,8 +61,8 @@ export function HomeView() {
 
   return (
     <div className="stagger flex flex-col gap-section">
-      <div className="grid items-end gap-8 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
-        <div>
+      <div className="grid gap-6 lg:grid-cols-2 lg:grid-rows-[auto_auto] lg:gap-x-10 lg:gap-y-7">
+        <div className="lg:self-end">
           <h1 className="font-serif text-[clamp(2.5rem,1.9rem+2.6vw,4rem)] leading-[1.02] font-medium tracking-[-0.02em] text-ink">
             Van letter <em className="text-ink-muted">tot alinea</em>
           </h1>
@@ -70,7 +71,10 @@ export function HomeView() {
           </p>
           {profile.goalMinutes && <TodayGoal goal={profile.goalMinutes} activeMs={today?.activeMs ?? 0} streak={streakDays(progress.activity)} />}
         </div>
-        <ContinueCard target={target} firstTime={firstTime} />
+        <HeroScene className="order-last -mt-2 h-60 sm:h-80 lg:order-none lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:my-0 lg:h-full lg:min-h-[28rem]" />
+        <div className="lg:self-start">
+          <ContinueCard target={target} firstTime={firstTime} />
+        </div>
       </div>
 
       <LayerMachine
