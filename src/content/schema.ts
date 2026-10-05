@@ -29,12 +29,16 @@ export const SKILLS = ['Spelling', 'Woorden', 'Zinsbouw', 'Complex', 'Alinea'] a
 export const STAGES = ['basis', 'bachelor', 'master'] as const;
 
 const Text = z.string().regex(/\S/, 'Mag niet leeg zijn');
-const Rich = Text.refine(hasBalancedEmphasis, 'Markeringen met * moeten in paren voorkomen').describe('Tekst waarin *woord* een taalvoorbeeld markeert.');
+const Rich = Text.refine(hasBalancedEmphasis, 'Markeringen met * moeten in paren voorkomen').describe(
+  'Tekst waarin *woord* een taalvoorbeeld markeert.',
+);
 const Id = z
   .string()
   .regex(/^[a-z0-9][a-z0-9-]*$/, 'Gebruik kleine letters, cijfers en koppeltekens')
   .describe('Stabiele sleutel; wijzig niet zodra leerlingen voortgang hebben.');
-const StepId = Id.optional().describe('Optionele stabiele sleutel van de stap. Zonder id wordt de positie plus een inhoudsvingerafdruk gebruikt.');
+const StepId = Id.optional().describe(
+  'Optionele stabiele sleutel van de stap. Zonder id wordt de positie plus een inhoudsvingerafdruk gebruikt.',
+);
 
 export const SkillSchema = z.enum(SKILLS);
 
@@ -52,7 +56,9 @@ export const ExampleSchema = z.object({
 const LabSchema = z
   .object({
     label: Text.describe('Opdrachtzin boven de knoppen, bv. "Tik een woord".'),
-    chips: z.array(z.object({ k: Text.describe('Knoptekst'), out: Text.describe('Resultaat'), note: Text.describe('Toelichting') })).min(1),
+    chips: z
+      .array(z.object({ k: Text.describe('Knoptekst'), out: Text.describe('Resultaat'), note: Text.describe('Toelichting') }))
+      .min(1),
   })
   .describe('Klikexperiment: kies een knop en zie het resultaat veranderen.');
 
@@ -88,7 +94,9 @@ const BuildSchema = z
   })
   .describe('Plak de juiste uitgang achter een stam.');
 
-const AlphaSchema = z.object({ q: Text, targets: z.array(z.string().regex(/^[a-z]$/)).min(1), note: Text }).describe('Tik de doelletters in het alfabet aan.');
+const AlphaSchema = z
+  .object({ q: Text, targets: z.array(z.string().regex(/^[a-z]$/)).min(1), note: Text })
+  .describe('Tik de doelletters in het alfabet aan.');
 
 const WheelSchema = z
   .object({
@@ -185,11 +193,7 @@ export const SYLLABLE_ROLES = ['onset', 'kern', 'coda', 'appendix'] as const;
 const TreeSchema = z
   .object({
     q: Text.optional().describe('Opdracht boven de boom; standaard "Hang elke klank in de boom".'),
-    segs: z
-      .array(z.object({ t: Text, role: z.enum(SYLLABLE_ROLES) }))
-      .min(2)
-      .max(8)
-      .describe('De klanken van één lettergreep, met hun plek.'),
+    segs: z.array(z.object({ t: Text, role: z.enum(SYLLABLE_ROLES) })).min(2).max(8).describe('De klanken van één lettergreep, met hun plek.'),
     note: Text,
   })
   .describe('Lettergreepboom: kies een tak (onset, kern, coda) en hang de klanken eraan.');
@@ -429,14 +433,7 @@ export const PanelSchema = z
       if (winner >= candidates.length) issue(ctx, ['tableau', 'winner'], 'Deze kandidaat bestaat niet');
       else if (candidates.every((candidate) => candidate.marks.length === constraints.length)) {
         if (!canWin(marks, winner)) issue(ctx, ['tableau', 'winner'], 'Bij geen enkele rangorde wint deze kandidaat');
-        else if (
-          winsAlone(
-            marks,
-            constraints.map((_, i) => i),
-            winner,
-          )
-        )
-          issue(ctx, ['tableau', 'constraints'], 'De beginvolgorde is al de oplossing');
+        else if (winsAlone(marks, constraints.map((_, i) => i), winner)) issue(ctx, ['tableau', 'constraints'], 'De beginvolgorde is al de oplossing');
       }
     }
   });
@@ -447,10 +444,7 @@ const TextTestSchema = z
     z.object({ anyWord: z.array(Text).min(1).describe('Minstens één van deze hele woorden (hoofdletterongevoelig).') }),
     z.object({
       pattern: Text.describe('Reguliere expressie (JavaScript-syntaxis). Vanggroepen worden als gevonden woord getoond.'),
-      flags: z
-        .string()
-        .regex(/^[imsu]*$/, 'Alleen de vlaggen i, m, s en u')
-        .optional(),
+      flags: z.string().regex(/^[imsu]*$/, 'Alleen de vlaggen i, m, s en u').optional(),
     }),
   ])
   .superRefine((test, ctx) => {
@@ -524,10 +518,7 @@ const ParagraphStep = z.object({
   kind: z.literal('paragraph'),
   id: StepId,
   prompt,
-  parts: z
-    .array(z.object({ role: Text, text: Text }))
-    .min(2)
-    .describe('Zinnen in de juiste volgorde; de app schudt ze.'),
+  parts: z.array(z.object({ role: Text, text: Text })).min(2).describe('Zinnen in de juiste volgorde; de app schudt ze.'),
   why,
 });
 const SortStep = z.object({

@@ -36,10 +36,7 @@ test('les direct openen, met het toetsenbord doen en na verversen hervatten', as
 test('regelvenster: focus, Escape en terug naar de knop', async ({ page }) => {
   await page.goto('/les/l4');
   await page.getByRole('radio', { name: 'rustig' }).click();
-  await page
-    .getByRole('contentinfo')
-    .getByRole('button', { name: /Ik snap het/ })
-    .click();
+  await page.getByRole('contentinfo').getByRole('button', { name: /Ik snap het/ }).click();
 
   const opener = page.getByRole('button', { name: 'De regel' });
   await opener.click();

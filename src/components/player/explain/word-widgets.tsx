@@ -26,12 +26,7 @@ function Piece({ tree, span, info, solved, words }: { tree: BracketTree; span: S
   if (!node) return null;
   const meta = info.get(spanText(tree, span, words));
   return (
-    <span
-      className={cn(
-        'inline-flex flex-col items-center rounded-chip border-2 px-1 pt-1 pb-0.5',
-        solved ? 'border-green-line bg-green-soft' : 'border-accent bg-accent-soft',
-      )}
-    >
+    <span className={cn('inline-flex flex-col items-center rounded-chip border-2 px-1 pt-1 pb-0.5', solved ? 'border-green-line bg-green-soft' : 'border-accent bg-accent-soft')}>
       <span className="flex items-center gap-1">
         <Piece tree={tree} span={{ from: node.from, to: node.split }} info={info} solved={solved} words={words} />
         <Piece tree={tree} span={{ from: node.split, to: node.to }} info={info} solved={solved} words={words} />

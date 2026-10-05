@@ -94,9 +94,7 @@ describe('nieuwe lessen (packs)', () => {
       .flatMap((layer) => layer.lessons)
       .flatMap((lesson) => lesson.steps)
       .flatMap((step) => (step.kind === 'explain' ? step.panels : []))
-      .flatMap((panel) =>
-        (['vowels', 'grid', 'tableau', 'sonority', 'tree', 'bracket', 'paradigm', 'phrase'] as const).filter((widget) => panel[widget] !== undefined),
-      );
+      .flatMap((panel) => (['vowels', 'grid', 'tableau', 'sonority', 'tree', 'bracket', 'paradigm', 'phrase'] as const).filter((widget) => panel[widget] !== undefined));
     expect(new Set(widgets)).toEqual(new Set(['vowels', 'grid', 'tableau', 'sonority', 'tree', 'bracket', 'paradigm', 'phrase']));
   });
 
@@ -196,44 +194,19 @@ describe('contractvalidatie weigert onjuiste inhoud', () => {
         note: 'n',
       },
     });
-    const bounded = PanelSchema.safeParse(
-      tableau(1, [
-        [0, 1],
-        [1, 1],
-      ]),
-    );
+    const bounded = PanelSchema.safeParse(tableau(1, [[0, 1], [1, 1]]));
     expect(bounded.success).toBe(false);
     if (!bounded.success) expect(z.prettifyError(bounded.error)).toMatch(/Bij geen enkele rangorde/);
-    const solved = PanelSchema.safeParse(
-      tableau(0, [
-        [0, 1],
-        [1, 0],
-      ]),
-    );
+    const solved = PanelSchema.safeParse(tableau(0, [[0, 1], [1, 0]]));
     expect(solved.success).toBe(false);
     if (!solved.success) expect(z.prettifyError(solved.error)).toMatch(/al de oplossing/);
-    expect(
-      PanelSchema.safeParse(
-        tableau(1, [
-          [0, 1],
-          [1, 0],
-        ]),
-      ).success,
-    ).toBe(true);
+    expect(PanelSchema.safeParse(tableau(1, [[0, 1], [1, 0]])).success).toBe(true);
   });
 
   it('sonoriteitsberg: knippunten buiten het woord of niet oplopend', () => {
     const berg = (cuts: number[]) => ({
       text: 'Knip.',
-      sonority: {
-        segs: [
-          { t: 'a', s: 6 },
-          { t: 'p', s: 1 },
-          { t: 'a', s: 6 },
-        ],
-        cuts,
-        note: 'n',
-      },
+      sonority: { segs: [{ t: 'a', s: 6 }, { t: 'p', s: 1 }, { t: 'a', s: 6 }], cuts, note: 'n' },
     });
     const outside = PanelSchema.safeParse(berg([3]));
     expect(outside.success).toBe(false);
