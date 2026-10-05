@@ -96,11 +96,12 @@ de bron) via `adapters/legacy.ts`, voegt de nieuwe lessen uit `packs/` toe en va
 `legacy/course.ts` bevat alleen de typen: de tweede cursus (`COURSE`) en `BOOKS` zijn bewust weggelaten, zodat er
 geen tegenstrijdige inhoud naast elkaar bestaat.
 
-`packs/` bevat 74 nieuwe lessen voor vijf niveaus, achter de bestaande lessen van dat niveau (`withExtraLessons`):
+`packs/` bevat 78 nieuwe lessen voor vijf niveaus, achter de bestaande lessen van dat niveau (`withExtraLessons`):
 
 | Bestand | Niveau | Lessen |
 | --- | --- | --- |
-| `packs/letter.ts` | De letter | 8 — basis: alfabet, ij, accenten en leestekens in woorden · bachelor: afbreken, schriftgeschiedenis, diepe en ondiepe spelling · master: grafeem en allograaf, spellinggeschiedenis |
+| `packs/letter.ts` | De letter | 8 — basis: alfabet en woordenboekregels, ij en ei, accent, apostrof, trema en koppelteken · bachelor: afbreken, hoofdletters (eigennaam en soortnaam), schriftgeschiedenis van Proto-Sinaïtisch tot J, U en W, van kapitaal tot onderkast, spellingdiepte in twee richtingen |
+| `packs/letter-master.ts` | De letter | 4 — master: grafeem en allograaf (vrije en positionele allografie), twee eeuwen spellinggeschiedenis, oogbewegingen en het tweerouteleesmodel, letterfrequentie en informatie |
 | `packs/klank.ts` | Klank en letter | 15 — basis: foneem, articulatie, klinkerkaart, gespannen en ongespannen, tweeklanken, sjwa · bachelor: medeklinkertabel, allofonen, verscherping, assimilatie, ’t kofschip, epenthese en deletie, klemtoon, ij en ei, de vier spellingprincipes |
 | `packs/klank-master.ts` | Klank en letter | 9 — master: kenmerken en natuurlijke klassen, sonoriteit, ambisyllabiciteit, klemtoon en lettergreepgewicht, regelordening, Optimaliteitstheorie (twee lessen), categoriale perceptie, klankverandering |
 | `packs/greep.ts` | De lettergreep | 8 — bachelor: bewijs voor de lettergreep, onset-kern-coda, grenzen en fonotaxis, de rijm van drie plekken en de appendix, hiaat en glottisslag, schwa-epenthese, verkleinwoord en meervoud, lettergreepschriften |

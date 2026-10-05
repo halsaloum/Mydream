@@ -6,6 +6,7 @@ import { GREEP_MASTER_LESSONS } from './greep-master';
 import { KLANK_LESSONS } from './klank';
 import { KLANK_MASTER_LESSONS } from './klank-master';
 import { LETTER_LESSONS } from './letter';
+import { LETTER_MASTER_LESSONS } from './letter-master';
 import { WOORD_LESSONS } from './woord';
 import { WOORD_MASTER_LESSONS } from './woord-master';
 
@@ -14,7 +15,7 @@ import { WOORD_MASTER_LESSONS } from './woord-master';
  * de bestaande lessen van dat niveau en lopen op in diepte: basis, bachelor, master.
  */
 export const EXTRA_LESSONS: Readonly<Record<string, readonly LessonInput[]>> = {
-  letter: LETTER_LESSONS,
+  letter: [...LETTER_LESSONS, ...LETTER_MASTER_LESSONS],
   klank: [...KLANK_LESSONS, ...KLANK_MASTER_LESSONS],
   greep: [...GREEP_LESSONS, ...GREEP_MASTER_LESSONS],
   deel: [...DEEL_LESSONS, ...DEEL_MASTER_LESSONS],

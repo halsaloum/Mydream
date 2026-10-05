@@ -55,6 +55,16 @@ test('onbekende les toont een verzorgde melding', async ({ page }) => {
   await expect(page.getByRole('link', { name: 'Naar alle lessen' })).toBeVisible();
 });
 
+test('de letter: de lessen staan per stap, van basis tot master', async ({ page }) => {
+  await page.goto('/');
+  await page.getByRole('tab', { name: /^Niveau 1: De letter/ }).click();
+  for (const stage of ['Basis', 'Bachelor', 'Master']) {
+    await expect(page.getByRole('heading', { name: new RegExp(`${stage}$`) }).first()).toBeVisible();
+  }
+  await expect(page.getByRole('link', { name: /Hoofdletters: naam of soort/ })).toBeVisible();
+  await expect(page.getByRole('link', { name: /Letters in je hoofd/ })).toBeVisible();
+});
+
 test('klank en letter: de lessen staan per stap, van basis tot master', async ({ page }) => {
   await page.goto('/');
   await page.getByRole('tab', { name: /^Niveau 2: Klank en letter/ }).click();
