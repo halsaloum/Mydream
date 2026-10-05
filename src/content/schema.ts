@@ -7,6 +7,7 @@ import { canWin, winsAlone } from './tableau';
 import { hasBalancedEmphasis, isPermutationJoin, tokenize } from './text';
 import { DIPHTHONGS, VOWELS } from './vowels';
 import { FLIP_LETTERS } from './flip';
+import { MODEL_IDS, normalizeAnswer } from './models';
 
 export { ACCENTS, AccentSchema, type Accent } from './accent';
 
@@ -151,6 +152,29 @@ const FlipSchema = z
     note: Text,
   })
   .describe('Draaitegel in 3D: spiegel, kantel of draai een letter en ontdek welke letter je dan ziet.');
+
+const ModelPartSchema = z.object({
+  id: z.string().regex(/^[a-z0-9-]+$/, 'Alleen kleine letters, cijfers en -').describe('Sleutel van het onderdeel, bv. "stuur".'),
+  at: z.tuple([z.number(), z.number(), z.number()]).describe('Plek van de stip op het model (x, y, z in meters, zoals in het GLB-bestand).'),
+  normal: z.tuple([z.number(), z.number(), z.number()]).optional().describe('Richting waarin de stip kijkt; van achteren wordt hij doorzichtig.'),
+  ask: Text.describe('Vraag bij dit onderdeel, bv. "Hoe heet dit? Met de of het."'),
+  answer: Text.describe('Wat de leerling moet typen, bv. "het stuur".'),
+  also: z.array(Text).optional().describe('Andere goede antwoorden, bv. "het pedaal" naast "de trapper".'),
+  hint: Text.optional().describe('Tip na een fout zonder bekende valkuil, bv. "fiets + en + rek".'),
+  traps: z
+    .array(z.object({ w: Text.describe('Een verleidelijk fout antwoord.'), note: Text.describe('Waarom het niet klopt.') }))
+    .optional(),
+  note: Text.describe('Uitleg zodra het onderdeel goed is.'),
+});
+
+const ModelSchema = z
+  .object({
+    q: Text.describe('Opdracht boven het model, bv. "Tik een stip en schrijf het onderdeel op".'),
+    model: z.enum(MODEL_IDS).describe('Welk 3D-model (zie content/models.ts).'),
+    parts: z.array(ModelPartSchema).min(1).max(10),
+    note: Text,
+  })
+  .describe('3D-model (gemaakt met Meshy): draai het model, tik een stip op een onderdeel en typ het woord.');
 
 const GridSchema = z
   .object({
@@ -306,6 +330,7 @@ export const PanelSchema = z
     vowels: VowelsSchema.optional(),
     space: SpaceSchema.optional(),
     flip: FlipSchema.optional(),
+    model: ModelSchema.optional(),
     grid: GridSchema.optional(),
     tableau: TableauSchema.optional(),
     sonority: SonoritySchema.optional(),
@@ -369,6 +394,17 @@ export const PanelSchema = z
       if (!unique(targets)) issue(ctx, ['space', 'targets'], 'Klinkers staan dubbel');
       targets.forEach((target, i) => {
         if (DIPHTHONGS.includes(target)) issue(ctx, ['space', 'targets', i], 'Een tweeklank heeft geen vaste plek in de ruimte');
+      });
+    }
+    if (panel.model) {
+      const { parts } = panel.model;
+      if (!unique(parts.map((part) => part.id))) issue(ctx, ['model', 'parts'], 'Onderdelen staan dubbel');
+      parts.forEach((part, i) => {
+        const good = [part.answer, ...(part.also ?? [])].map(normalizeAnswer);
+        if (!unique(good)) issue(ctx, ['model', 'parts', i, 'also'], 'Goede antwoorden staan dubbel');
+        part.traps?.forEach((trap, k) => {
+          if (good.includes(normalizeAnswer(trap.w))) issue(ctx, ['model', 'parts', i, 'traps', k, 'w'], `"${trap.w}" is juist een goed antwoord`);
+        });
       });
     }
     if (panel.flip) {

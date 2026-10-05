@@ -21,11 +21,11 @@ import { ICON, SHAKE, useFlash, useSolve, type WidgetProps } from './widgets';
  */
 
 /** Gedeelde knopstijl voor de standen en bewegingen onder een 3D-ruimte. */
-const CONTROL =
+export const CONTROL =
   'slab inline-flex min-h-10 items-center gap-1.5 rounded-control border-2 border-line-strong bg-surface px-3 text-small font-bold text-ink transition-[background-color,border-color,color] duration-200 [--lift:2px] outline-none hover:border-accent focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-focus aria-pressed:border-accent aria-pressed:bg-accent-soft aria-pressed:text-accent-ink';
 
 /** Een rij knoppen onder de ruimte. */
-function Controls({ label, children }: { label: string; children: ReactNode }) {
+export function Controls({ label, children }: { label: string; children: ReactNode }) {
   return (
     <div role="group" aria-label={label} className="mt-3 flex flex-wrap items-center justify-center gap-2">
       {children}
