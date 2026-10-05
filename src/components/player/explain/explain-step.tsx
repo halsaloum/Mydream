@@ -141,12 +141,12 @@ function PanelBody({
   return (
     <div className="space-y-5">
       <p className="max-w-[62ch] text-[1.3rem] leading-[1.65] text-ink">
-        <RichText text={panel.text} />
+        <RichText text={panel.text} listen />
       </p>
       {panel.rule && <RuleCard text={panel.rule} />}
       {panel.deep && (
         <Disclosure summary={panel.deep.q} icon={<Lightbulb aria-hidden className="size-5" strokeWidth={2.4} />}>
-          <RichText text={panel.deep.a} />
+          <RichText text={panel.deep.a} listen />
         </Disclosure>
       )}
       {panel.show && panel.show.length > 0 && <Examples examples={panel.show} />}

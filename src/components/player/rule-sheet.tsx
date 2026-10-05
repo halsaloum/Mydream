@@ -52,7 +52,7 @@ export function RuleSheet({
             {rule.kind === 'learn' ? (
               <>
                 <p className="text-body leading-relaxed text-ink-soft">
-                  <RichText text={rule.body} />
+                  <RichText text={rule.body} listen />
                 </p>
                 {rule.example.length > 0 && <Examples examples={rule.example} />}
               </>
@@ -60,7 +60,7 @@ export function RuleSheet({
               rule.panels.map((panel, k) => (
                 <div key={k} className="space-y-3">
                   <p className="text-body leading-relaxed text-ink-soft">
-                    <RichText text={panel.text} />
+                    <RichText text={panel.text} listen />
                   </p>
                   {panel.rule && <RuleCard text={panel.rule} />}
                   {panel.show && panel.show.length > 0 && <Examples examples={panel.show} />}

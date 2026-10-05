@@ -152,6 +152,8 @@ const FlipSchema = z
   })
   .describe('Draaitegel in 3D: spiegel, kantel of draai een letter en ontdek welke letter je dan ziet.');
 
+const SoundPairWord = z.object({ word: Text, sound: Text });
+
 const GridSchema = z
   .object({
     q: Text.describe('Opdracht, bv. "Tik alle stemhebbende medeklinkers".'),
@@ -164,6 +166,10 @@ const GridSchema = z
           row: z.int().nonnegative(),
           col: z.int().nonnegative(),
           ex: z.string().optional().describe('Voorbeeldwoord, bv. "pak".'),
+          pair: z
+            .tuple([SoundPairWord, SoundPairWord])
+            .optional()
+            .describe('Minimaal paar om het verschil te horen, bv. pak /p/ en bak /b/.'),
         }),
       )
       .min(2),
