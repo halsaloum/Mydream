@@ -19,24 +19,29 @@ import { ICON, SHAKE, useFlash, useSolve, type WidgetProps } from './widgets';
 type Info = WidgetProps<'bracket'>['data']['nodes'][number];
 
 /** Een stuk als geneste doos: bladeren als letters, knopen als kader met hun woordsoort. */
-function Piece({ tree, span, info, solved }: { tree: BracketTree; span: Span; info: Map<string, Info>; solved: boolean }) {
-  if (span.to - span.from === 1) return <span className="px-0.5 font-serif text-[1.35rem] leading-none text-ink">{tree.leaves[span.from]}</span>;
+function Piece({ tree, span, info, solved, words }: { tree: BracketTree; span: Span; info: Map<string, Info>; solved: boolean; words: boolean }) {
+  if (span.to - span.from === 1)
+    return <span className={cn('px-0.5 font-serif leading-none text-ink', words ? 'text-[1.15rem]' : 'text-[1.35rem]')}>{tree.leaves[span.from]}</span>;
   const node = tree.nodes.find((candidate) => candidate.from === span.from && candidate.to === span.to);
   if (!node) return null;
-  const meta = info.get(spanText(tree, span));
+  const meta = info.get(spanText(tree, span, words));
   return (
     <span className={cn('inline-flex flex-col items-center rounded-chip border-2 px-1 pt-1 pb-0.5', solved ? 'border-green-line bg-green-soft' : 'border-accent bg-accent-soft')}>
       <span className="flex items-center gap-1">
-        <Piece tree={tree} span={{ from: node.from, to: node.split }} info={info} solved={solved} />
-        <Piece tree={tree} span={{ from: node.split, to: node.to }} info={info} solved={solved} />
+        <Piece tree={tree} span={{ from: node.from, to: node.split }} info={info} solved={solved} words={words} />
+        <Piece tree={tree} span={{ from: node.split, to: node.to }} info={info} solved={solved} words={words} />
       </span>
       {meta && <span className={cn('mt-0.5 text-[0.6875rem] leading-none font-extrabold', solved ? 'text-green-ink' : 'text-accent-ink')}>{meta.cat}</span>}
     </span>
   );
 }
 
-/** Plak twee buren aan elkaar tot het hele woord staat. Opgelost als de boom compleet is. */
+/**
+ * Plak twee buren aan elkaar tot het hele woord staat. Opgelost als de boom compleet is.
+ * Met `words` zijn de bladeren hele woorden en bouw je zo een woordgroep op.
+ */
 export function BracketWidget({ data, solved, onSolved }: WidgetProps<'bracket'>) {
+  const words = data.words ?? false;
   const tree = useMemo(() => parseBracket(data.tree), [data.tree]);
   const info = useMemo(() => new Map(data.nodes.map((node) => [node.w, node])), [data.nodes]);
   const leafSpans = useMemo(() => tree?.leaves.map((_, i) => ({ from: i, to: i + 1 })) ?? [], [tree]);
@@ -51,7 +56,7 @@ export function BracketWidget({ data, solved, onSolved }: WidgetProps<'bracket'>
   const root = { from: 0, to: tree.leaves.length };
   const shown = solved ? [root] : units;
   const label = (span: Span) => {
-    const text = spanText(tree, span);
+    const text = spanText(tree, span, words);
     return info.get(text)?.form ?? text;
   };
 
@@ -60,7 +65,7 @@ export function BracketWidget({ data, solved, onSolved }: WidgetProps<'bracket'>
     const right = units[i + 1];
     if (solved || !left || !right) return;
     const merged = { from: left.from, to: right.to };
-    const text = spanText(tree, merged);
+    const text = spanText(tree, merged, words);
     if (!isNode(tree, merged)) {
       trigger(i);
       const trap = data.traps?.find((candidate) => candidate.w === text);
@@ -77,12 +82,13 @@ export function BracketWidget({ data, solved, onSolved }: WidgetProps<'bracket'>
   };
 
   const status = solved ? data.note : (message ?? 'Tik op een plusje om twee buren aan elkaar te plakken. Begin bij de kern.');
+  const title = data.q ?? (words ? 'Bouw de woordgroep van binnen naar buiten' : 'Bouw het woord van binnen naar buiten');
 
   return (
     <div ref={box}>
-      <TaskBox icon={<Workflow aria-hidden className={ICON} strokeWidth={2.5} />} title={data.q ?? 'Bouw het woord van binnen naar buiten'} solved={solved} status={status}>
+      <TaskBox icon={<Workflow aria-hidden className={ICON} strokeWidth={2.5} />} title={title} solved={solved} status={status}>
         <div className="-mx-1 overflow-x-auto px-1 pb-1">
-          <ol className="mx-auto flex w-max items-end gap-1" aria-label="Stukken van het woord" lang="nl">
+          <ol className="mx-auto flex w-max items-end gap-1" aria-label={words ? 'Stukken van de woordgroep' : 'Stukken van het woord'} lang="nl">
             {shown.map((span, i) => {
               const bad = flash === i || flash === i - 1;
               return (
@@ -96,7 +102,7 @@ export function BracketWidget({ data, solved, onSolved }: WidgetProps<'bracket'>
                       bad ? 'border-red bg-red-soft' : span.to - span.from === 1 ? 'border-line-strong bg-surface' : 'border-transparent',
                     )}
                   >
-                    <Piece tree={tree} span={span} info={info} solved={solved} />
+                    <Piece tree={tree} span={span} info={info} solved={solved} words={words} />
                   </motion.span>
                   {!solved && i < shown.length - 1 && (
                     <button

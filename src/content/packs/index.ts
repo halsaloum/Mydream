@@ -3,6 +3,10 @@ import { DEEL_LESSONS } from './deel';
 import { DEEL_EXTRA_LESSONS } from './deel-extra';
 import { DEEL_MASTER_LESSONS } from './deel-master';
 import { GREEP_LESSONS } from './greep';
+import { GROEP_LESSONS } from './groep';
+import { GROEP_BOUW_LESSONS } from './groep-bouw';
+import { GROEP_EXTRA_LESSONS, GROEP_MASTER_LESSONS } from './groep-master';
+import { GROEP_THEORIE_LESSONS } from './groep-theorie';
 import { GREEP_MASTER_LESSONS } from './greep-master';
 import { GREEP_EXTRA_LESSONS } from './greep-extra';
 import { KLANK_LESSONS } from './klank';
@@ -24,6 +28,7 @@ export const EXTRA_LESSONS: Readonly<Record<string, readonly LessonInput[]>> = {
   greep: [...GREEP_LESSONS, ...GREEP_EXTRA_LESSONS, ...GREEP_MASTER_LESSONS],
   deel: [...DEEL_LESSONS, ...DEEL_EXTRA_LESSONS, ...DEEL_MASTER_LESSONS],
   woord: [...WOORD_LESSONS, ...WOORD_EXTRA_LESSONS, ...WOORD_MASTER_LESSONS, ...WOORD_EXTRA_MASTER_LESSONS],
+  groep: [...GROEP_LESSONS, ...GROEP_BOUW_LESSONS, ...GROEP_EXTRA_LESSONS, ...GROEP_MASTER_LESSONS, ...GROEP_THEORIE_LESSONS],
 };
 
 /** Voegt de extra lessen toe aan hun niveau. Een onbekend niveau is een fout in de inhoud. */
