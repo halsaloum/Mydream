@@ -7,6 +7,7 @@ import { exerciseCountLabel, type LessonEntry } from '@/content/catalog';
 import type { SessionState } from '@/engine/session';
 import { cn } from '@/lib/cn';
 import type { ProgressData } from '@/state/progress';
+import { StageBadge } from './stage-badge';
 
 export function lessonStatusText(entry: LessonEntry, progress: ProgressData, sessions: Record<string, SessionState>, isNext: boolean) {
   const session = sessions[entry.lesson.id];
@@ -24,10 +25,12 @@ type LessonRowProps = {
   isNext: boolean;
   /** Toon de andere vakgebieden die meespelen. */
   showAlso?: boolean;
+  /** Toon de stap (basis, bachelor, master) als label; uit als de lijst al per stap is ingedeeld. */
+  showStage?: boolean;
 };
 
 /** Een les als regel in een lijst: icoon, titel, status. Leidt direct naar de les. */
-export function LessonRow({ entry, progress, sessions, isNext, showAlso = true }: LessonRowProps) {
+export function LessonRow({ entry, progress, sessions, isNext, showAlso = true, showStage = true }: LessonRowProps) {
   const done = Boolean(progress.lessons[entry.lesson.id]);
   return (
     <Link
@@ -49,7 +52,10 @@ export function LessonRow({ entry, progress, sessions, isNext, showAlso = true }
         {done ? <Check aria-hidden className="size-5" strokeWidth={3} /> : <span aria-hidden>{entry.lesson.icon}</span>}
       </span>
       <span className="min-w-0 flex-1">
-        <span className="block leading-snug font-bold text-ink">{entry.lesson.title}</span>
+        <span className="block leading-snug font-bold text-ink">
+          {entry.lesson.title}
+          {showStage && entry.lesson.stage && <StageBadge stage={entry.lesson.stage} className="ml-2 align-[0.12em]" />}
+        </span>
         <span className={cn('block text-caption font-semibold', isNext ? 'text-accent-ink' : 'text-ink-muted')}>
           {lessonStatusText(entry, progress, sessions, isNext)}
         </span>

@@ -6,7 +6,7 @@ import type { Route } from 'next';
 import Link from 'next/link';
 import { useEffect, useRef, useState, type MouseEvent, type ReactNode } from 'react';
 import type { Accent } from '@/content/accent';
-import type { Domain, Layer, Step } from '@/content/schema';
+import type { Domain, Layer, Stage, Step } from '@/content/schema';
 import { evaluate, expectedAnswer, isComplete, isPanelReady } from '@/engine/grade';
 import { extraFeedback, extraProgress, isExtraKind, stepMode, type ExtraResponse } from '@/engine/kinds';
 import type { Response } from '@/engine/responses';
@@ -35,7 +35,7 @@ export type PlayerMeta = {
   exit: { href: Route; label: string };
   finish: { title: string; context?: string; primary: FinishAction; secondary?: FinishAction; learned: string[] };
   /** Niveau en vakgebied, getoond bij de eerste stap. */
-  tag?: { layer: Layer; layerIndex: number; domain: Domain };
+  tag?: { layer: Layer; layerIndex: number; domain: Domain; stage?: Stage | undefined };
 };
 
 const PRAISE = ['Precies!', 'Klopt!', 'Mooi zo!', 'Helemaal goed!'];

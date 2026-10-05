@@ -3,12 +3,13 @@
 import { RotateCcw } from 'lucide-react';
 import { motion } from 'motion/react';
 import { course, getLessonEntry } from '@/content/catalog';
-import type { Domain, Layer } from '@/content/schema';
+import type { Domain, Layer, Stage } from '@/content/schema';
 import { DomainGlyph } from '@/components/brand/glyphs';
+import { STAGE_ACCENTS, STAGE_LABELS } from '@/components/lesson/stage-badge';
 import { transition, useCalmMotion } from '@/lib/motion';
 
-/** Bij de eerste stap: op welk niveau en in welk vakgebied deze les zit. */
-export function LayerTag({ layer, layerIndex, domain }: { layer: Layer; layerIndex: number; domain: Domain }) {
+/** Bij de eerste stap: op welk niveau en in welk vakgebied deze les zit, en hoe diep hij gaat. */
+export function LayerTag({ layer, layerIndex, domain, stage }: { layer: Layer; layerIndex: number; domain: Domain; stage?: Stage | undefined }) {
   const calm = useCalmMotion();
   return (
     <div className="mb-8 flex flex-wrap items-stretch gap-2.5">
@@ -43,6 +44,17 @@ export function LayerTag({ layer, layerIndex, domain }: { layer: Layer; layerInd
           <span className="block font-display text-body font-extrabold">{domain.name}</span>
         </span>
       </div>
+      {stage && (
+        <div
+          data-accent={STAGE_ACCENTS[stage]}
+          className="flex items-center rounded-tile border-2 border-accent-line bg-accent-soft px-3.5 py-2 text-accent-ink"
+        >
+          <span className="leading-tight">
+            <span className="block text-caption font-bold">Stap</span>
+            <span className="block font-display text-body font-extrabold">{STAGE_LABELS[stage]}</span>
+          </span>
+        </div>
+      )}
     </div>
   );
 }

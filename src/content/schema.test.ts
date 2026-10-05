@@ -6,7 +6,8 @@ import { z } from 'zod';
 import { adaptLegacyCourse } from './adapters/legacy';
 import { course, lessonEntries, lessonOverview } from './catalog';
 import { LESSONS } from './legacy/build';
-import { CoursePackSchema, StepSchema, type CoursePackInput } from './schema';
+import { EXTRA_LESSONS, withExtraLessons } from './packs';
+import { CoursePackSchema, PanelSchema, STAGES, StepSchema, type CoursePackInput } from './schema';
 
 const SCHEMA_FILE = path.resolve(import.meta.dirname, '../../content/schema/course-pack.schema.json');
 
@@ -20,10 +21,15 @@ function firstLesson(pack: CoursePackInput) {
   return lesson;
 }
 
+const EXTRA_IDS = new Set(Object.values(EXTRA_LESSONS).flatMap((lessons) => lessons.map((lesson) => lesson.id)));
+const legacyEntries = lessonEntries.filter((entry) => !EXTRA_IDS.has(entry.lesson.id));
+
 describe('bestaande lesinhoud', () => {
-  it('voldoet aan het contract: 9 niveaus, 29 lessen, 7 vakgebieden waarvan 4 perspectieven', () => {
+  it('voldoet aan het contract: 9 niveaus, 29 + 32 lessen, 7 vakgebieden waarvan 4 perspectieven', () => {
     expect(course.layers).toHaveLength(9);
-    expect(lessonEntries).toHaveLength(29);
+    expect(legacyEntries).toHaveLength(29);
+    expect(EXTRA_IDS.size).toBe(32);
+    expect(lessonEntries).toHaveLength(61);
     expect(course.domains.map((domain) => domain.id)).toEqual(['orth', 'fon', 'morf', 'syn', 'sem', 'prag', 'tekst']);
     expect(course.domains.filter((domain) => domain.persp).map((domain) => domain.id)).toEqual(['morf', 'syn', 'sem', 'prag']);
     expect(course.layers.every((layer) => layer.growth && layer.learn && layer.example && layer.fields.length > 0)).toBe(true);
@@ -31,12 +37,12 @@ describe('bestaande lesinhoud', () => {
   });
 
   it('volgt dezelfde volgorde als de oorspronkelijke app', () => {
-    expect(lessonEntries.map((entry) => entry.lesson.id)).toEqual(LESSONS.map((lesson) => lesson.id));
+    expect(legacyEntries.map((entry) => entry.lesson.id)).toEqual(LESSONS.map((lesson) => lesson.id));
   });
 
   it('laat de inhoud ongewijzigd; alleen schrijfcriteria krijgen een JSON-vorm', () => {
     LESSONS.forEach((legacy, i) => {
-      const adapted = lessonEntries[i]?.lesson;
+      const adapted = legacyEntries[i]?.lesson;
       expect(adapted?.title).toBe(legacy.title);
       expect(adapted?.also).toEqual(legacy.also);
       legacy.steps.forEach((step, s) => {
@@ -61,6 +67,39 @@ describe('bestaande lesinhoud', () => {
       exerciseKinds: ['sort', 'fix'],
       exerciseCount: 2,
     });
+  });
+});
+
+describe('nieuwe lessen (packs)', () => {
+  it('staan achter de bestaande lessen van hun niveau', () => {
+    for (const [layerId, extra] of Object.entries(EXTRA_LESSONS)) {
+      const ids = course.layers.find((layer) => layer.id === layerId)?.lessons.map((lesson) => lesson.id) ?? [];
+      expect(ids.slice(-extra.length)).toEqual(extra.map((lesson) => lesson.id));
+    }
+  });
+
+  it('hebben allemaal een stap en lopen op van basis naar master', () => {
+    for (const extra of Object.values(EXTRA_LESSONS)) {
+      const stages = extra.map((lesson) => lesson.stage);
+      expect(stages.every((stage) => stage !== undefined)).toBe(true);
+      const ranks = stages.map((stage) => STAGES.indexOf(stage!));
+      expect(ranks).toEqual(ranks.toSorted((a, b) => a - b));
+    }
+    const stages = new Set(Object.values(EXTRA_LESSONS).flatMap((lessons) => lessons.map((lesson) => lesson.stage)));
+    expect([...stages].toSorted()).toEqual([...STAGES].toSorted());
+  });
+
+  it('gebruiken de nieuwe klankexperimenten', () => {
+    const widgets = course.layers
+      .flatMap((layer) => layer.lessons)
+      .flatMap((lesson) => lesson.steps)
+      .flatMap((step) => (step.kind === 'explain' ? step.panels : []))
+      .flatMap((panel) => (['vowels', 'grid', 'tableau'] as const).filter((widget) => panel[widget] !== undefined));
+    expect(new Set(widgets)).toEqual(new Set(['vowels', 'grid', 'tableau']));
+  });
+
+  it('weigert lessen voor een onbekend niveau', () => {
+    expect(() => withExtraLessons(adaptLegacyCourse(), { bestaatniet: [] })).toThrow(/onbekend niveau: bestaatniet/);
   });
 });
 
@@ -110,6 +149,58 @@ describe('contractvalidatie weigert onjuiste inhoud', () => {
     pack.layers[1]!.lessons.push({ ...lesson, domain: 'onbekend' });
     expectIssue(pack, /bestaat al/);
     expectIssue(pack, /Onbekend domein/);
+  });
+
+  it('klinkerkaart: een tweeklank zoeken zonder glijbanen', () => {
+    const result = PanelSchema.safeParse({ text: 'Tik.', vowels: { q: 'Tik', targets: ['i', 'ɛi'], note: 'n' } });
+    expect(result.success).toBe(false);
+    if (!result.success) expect(z.prettifyError(result.error)).toMatch(/glides: true/);
+  });
+
+  it('klanktabel: een doelklank die niet in de tabel staat, of een cel buiten de tabel', () => {
+    const result = PanelSchema.safeParse({
+      text: 'Tik.',
+      grid: {
+        q: 'Tik',
+        cols: ['lippen'],
+        rows: ['plofklank'],
+        cells: [
+          { t: 'p', row: 0, col: 0 },
+          { t: 'b', row: 0, col: 1 },
+        ],
+        targets: ['m'],
+        note: 'n',
+      },
+    });
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(z.prettifyError(result.error)).toMatch(/Kolom 1 bestaat niet/);
+      expect(z.prettifyError(result.error)).toMatch(/"m" staat niet in de tabel/);
+    }
+  });
+
+  it('OT-tableau: een winnaar die nooit kan winnen, of een opgave die al is opgelost', () => {
+    const tableau = (winner: number, marks: number[][]) => ({
+      text: 'Wissel.',
+      tableau: {
+        input: '/hɔnd/',
+        constraints: [
+          { name: 'IDENT', note: 'n' },
+          { name: 'CODA', note: 'n' },
+        ],
+        candidates: marks.map((m, i) => ({ form: `[k${i}]`, marks: m })),
+        winner,
+        goal: 'g',
+        note: 'n',
+      },
+    });
+    const bounded = PanelSchema.safeParse(tableau(1, [[0, 1], [1, 1]]));
+    expect(bounded.success).toBe(false);
+    if (!bounded.success) expect(z.prettifyError(bounded.error)).toMatch(/Bij geen enkele rangorde/);
+    const solved = PanelSchema.safeParse(tableau(0, [[0, 1], [1, 0]]));
+    expect(solved.success).toBe(false);
+    if (!solved.success) expect(z.prettifyError(solved.error)).toMatch(/al de oplossing/);
+    expect(PanelSchema.safeParse(tableau(1, [[0, 1], [1, 0]])).success).toBe(true);
   });
 
   it('ongelijke markeringen en ongeldige reguliere expressies', () => {
