@@ -4,8 +4,8 @@ Leerapp voor Nederlands schrijven met Pim het potlood, opnieuw gebouwd in Next.j
 Nederlands op moedertaalniveau lezen en verstaan, en de schrijftaal willen beheersen: van letter tot alinea.
 
 Deze versie is **de interface en de oefenengine**. De lessen worden later apart uit PDF's gemaakt; de bestaande
-lesinhoud draait ongewijzigd mee als referentie en testmateriaal. Voor "De letter", "Klank en letter" en "De lettergreep"
-staan er al nieuwe lessen bij, tot masterniveau (zie [Eén inhoudsbron](#één-inhoudsbron)).
+lesinhoud draait ongewijzigd mee als referentie en testmateriaal. Voor "De letter", "Klank en letter", "De lettergreep",
+"Het betekenisvolle woorddeel" en "Het woord" staan er al nieuwe lessen bij, tot masterniveau (zie [Eén inhoudsbron](#één-inhoudsbron)).
 
 ```bash
 npm install
@@ -96,7 +96,7 @@ de bron) via `adapters/legacy.ts`, voegt de nieuwe lessen uit `packs/` toe en va
 `legacy/course.ts` bevat alleen de typen: de tweede cursus (`COURSE`) en `BOOKS` zijn bewust weggelaten, zodat er
 geen tegenstrijdige inhoud naast elkaar bestaat.
 
-`packs/` bevat 46 nieuwe lessen voor drie niveaus, achter de bestaande lessen van dat niveau (`withExtraLessons`):
+`packs/` bevat 74 nieuwe lessen voor vijf niveaus, achter de bestaande lessen van dat niveau (`withExtraLessons`):
 
 | Bestand | Niveau | Lessen |
 | --- | --- | --- |
@@ -105,6 +105,10 @@ geen tegenstrijdige inhoud naast elkaar bestaat.
 | `packs/klank-master.ts` | Klank en letter | 9 — master: kenmerken en natuurlijke klassen, sonoriteit, ambisyllabiciteit, klemtoon en lettergreepgewicht, regelordening, Optimaliteitstheorie (twee lessen), categoriale perceptie, klankverandering |
 | `packs/greep.ts` | De lettergreep | 8 — bachelor: bewijs voor de lettergreep, onset-kern-coda, grenzen en fonotaxis, de rijm van drie plekken en de appendix, hiaat en glottisslag, schwa-epenthese, verkleinwoord en meervoud, lettergreepschriften |
 | `packs/greep-master.ts` | De lettergreep | 6 — master: moras en het minimale woord, typologie en verwerving, ONSET en NOCODA in OT, het prosodische woord, ritmeklassen, de lettergreep in spraakproductie |
+| `packs/deel.ts` | Het betekenisvolle woorddeel | 8 — bachelor: morfeem en allomorf, buiging tegenover afleiding, de rechterhoofdregel, woordbomen, samenstellingen, tussenklanken, eisen van affixen en blokkering, stamwisseling en suppletie |
+| `packs/deel-master.ts` | Het betekenisvolle woorddeel | 6 — master: morfeem, proces of paradigma, inheemse en geleerde lagen met de haakjesparadox, productiviteit meten, prosodische morfologie, het mentale lexicon en de d/t-fout, woordvorming in beweging |
+| `packs/woord.ts` | Het woord | 8 — bachelor: lexeem, woordvorm en lemma, woordsoorten bewijzen, conversie en de naamwoordelijke infinitief, sterke en zwakke werkwoorden, geslacht en verwijzing, de buiging van het bijvoeglijk naamwoord, betekenisrelaties, polysemie en homonymie |
+| `packs/woord-master.ts` | Het woord | 6 — master: valentie en thematische rollen, onaccusativiteit (hebben of zijn), prototypen tegenover kenmerken, collocaties, idioom en frames, de wet van Zipf en lexicale dichtheid, partikelwerkwoorden en klitieken |
 
 Een les kan een `stage` hebben (`basis`, `bachelor` of `master`). Die verschijnt als label op de les en als kopje
 in de lijst van het niveau; lessen zonder `stage` zien eruit als voorheen. De klanktabel staat één keer in
@@ -131,7 +135,7 @@ Elke vorm werkt met aanraken, muis en toetsenbord; slepen heeft altijd een klik-
 
 | Modus | Vormen | Gedrag |
 | --- | --- | --- |
-| uitleg | uitleg (met klikexperiment, knippen, markeren, uitgang plakken, wisselen, alfabet, klinkerwiel, letters plakken, klinkerkaart, klanktabel, OT-tableau, sonoriteitsberg, lettergreepboom), nieuw begrip | Verder als de opdracht van een deel gedaan is |
+| uitleg | uitleg (met klikexperiment, knippen, markeren, uitgang plakken, wisselen, alfabet, klinkerwiel, letters plakken, klinkerkaart, klanktabel, OT-tableau, sonoriteitsberg, lettergreepboom, woordboom, paradigma), nieuw begrip | Verder als de opdracht van een deel gedaan is |
 | gecontroleerd | meerkeuze, combineren, invullen, woorden ordenen, alinea ordenen, sorteren, fout verbeteren, herschrijven, vrij schrijven (met taakeisen), Durf je?, dictee | Controleer → feedback blijft staan; fout komt later terug |
 | zelfcontrolerend | swipe-kaarten, woordbouwer, tijdschuif, snelrondje (ook zonder klok), zinstrein, markeerstiften, voegwoord-duw, zinstang, verwijsdraad, betekenisladder, twee betekenissen, chat-scenario, toonregelaar, zegt en bedoelt, weegschaal, alinea-stapel, eindredactie | Rondt zichzelf af; fouten tellen in de score en komen op de herhaalstapel |
 

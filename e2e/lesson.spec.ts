@@ -109,3 +109,57 @@ test('lettergreepboom: elke klank aan zijn tak hangen opent het volgende deel', 
   await expect(primary).toHaveText(/Volgende deel/);
   await expect(primary).toBeEnabled();
 });
+
+test('het betekenisvolle woorddeel: de nieuwe lessen staan per stap, bachelor en master', async ({ page }) => {
+  await page.goto('/');
+  await page.getByRole('tab', { name: /^Niveau 4: Het betekenisvolle woorddeel/ }).click();
+  for (const stage of ['Bachelor', 'Master']) {
+    await expect(page.getByRole('heading', { name: new RegExp(`${stage}$`) }).first()).toBeVisible();
+  }
+  await expect(page.getByRole('link', { name: /Inheems, geleerd en een paradox/ })).toBeVisible();
+});
+
+test('woordboom: twee buren plakken in de volgorde van de boom opent het volgende deel', async ({ page }) => {
+  await page.goto('/les/d8');
+  await expect(page.getByRole('heading', { name: 'De volgorde van plakken' })).toBeVisible();
+  const primary = page.getByRole('contentinfo').getByRole('button').last();
+  await expect(primary).toBeDisabled();
+
+  await page.getByRole('button', { name: 'Plak on en lees' }).click();
+  await expect(page.getByRole('status').filter({ hasText: 'onlezen bestaat niet' })).toBeVisible();
+  await page.getByRole('button', { name: 'Plak lees en baar' }).click();
+  await page.getByRole('button', { name: 'Plak on en leesbaar' }).click();
+  await page.getByRole('button', { name: 'Plak onleesbaar en heid' }).click();
+
+  await expect(page.getByRole('status').filter({ hasText: 'drie stappen' })).toBeVisible();
+  await expect(primary).toHaveText(/Volgende deel/);
+  await expect(primary).toBeEnabled();
+});
+
+test('het woord: de nieuwe lessen staan per stap, bachelor en master', async ({ page }) => {
+  await page.goto('/');
+  await page.getByRole('tab', { name: /^Niveau 5: Het woord/ }).click();
+  for (const stage of ['Bachelor', 'Master']) {
+    await expect(page.getByRole('heading', { name: new RegExp(`${stage}$`) }).first()).toBeVisible();
+  }
+  await expect(page.getByRole('link', { name: /Hebben of zijn\?/ })).toBeVisible();
+});
+
+test('paradigma: elk leeg vakje goed invullen opent het volgende deel', async ({ page }) => {
+  await page.goto('/les/w10');
+  await expect(page.getByRole('heading', { name: 'Klinkerwisseling met een geschiedenis' })).toBeVisible();
+  const primary = page.getByRole('contentinfo').getByRole('button').last();
+  await page.getByRole('radio', { name: /^rijden/ }).click();
+  await primary.click();
+  await expect(primary).toBeDisabled();
+
+  await page.getByRole('button', { name: 'geloopt' }).click();
+  await expect(page.getByRole('status').filter({ hasText: 'Reeks 1' })).toBeVisible();
+  for (const form of ['gereden', 'bood', 'bond', 'gebonden', 'nam', 'genomen', 'gaf', 'droeg', 'gedragen', 'liep']) {
+    await page.getByRole('button', { name: form, exact: true }).click();
+  }
+
+  await expect(page.getByRole('status').filter({ hasText: 'Zeven reeksen' })).toBeVisible();
+  await expect(primary).toHaveText(/Volgende deel/);
+  await expect(primary).toBeEnabled();
+});

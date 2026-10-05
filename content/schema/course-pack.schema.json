@@ -981,6 +981,183 @@
                                   ],
                                   "additionalProperties": false,
                                   "description": "Lettergreepboom: kies een tak (onset, kern, coda) en hang de klanken eraan."
+                                },
+                                "bracket": {
+                                  "type": "object",
+                                  "properties": {
+                                    "q": {
+                                      "description": "Opdracht boven de woordboom; standaard \"Bouw het woord van binnen naar buiten\".",
+                                      "type": "string",
+                                      "pattern": "\\S"
+                                    },
+                                    "tree": {
+                                      "type": "string",
+                                      "pattern": "\\S",
+                                      "description": "De boom in haakjes, bv. \"[[on [eet baar]] heid]\": elk paar haakjes bevat precies twee stukken."
+                                    },
+                                    "nodes": {
+                                      "minItems": 1,
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object",
+                                        "properties": {
+                                          "w": {
+                                            "type": "string",
+                                            "pattern": "\\S",
+                                            "description": "De woorddelen van deze knoop aan elkaar, bv. \"eetbaar\"."
+                                          },
+                                          "form": {
+                                            "description": "Hoe het stuk geschreven wordt als dat anders is, bv. \"balletje\".",
+                                            "type": "string",
+                                            "pattern": "\\S"
+                                          },
+                                          "cat": {
+                                            "type": "string",
+                                            "pattern": "\\S",
+                                            "description": "Woordsoort of soort stuk, bv. \"bn\"."
+                                          },
+                                          "note": {
+                                            "type": "string",
+                                            "pattern": "\\S",
+                                            "description": "Wat er bij deze stap gebeurt."
+                                          }
+                                        },
+                                        "required": [
+                                          "w",
+                                          "cat",
+                                          "note"
+                                        ],
+                                        "additionalProperties": false
+                                      },
+                                      "description": "Eén regel per samengestelde knoop van de boom."
+                                    },
+                                    "traps": {
+                                      "description": "Uitleg bij verleidelijke verkeerde stappen.",
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object",
+                                        "properties": {
+                                          "w": {
+                                            "type": "string",
+                                            "pattern": "\\S",
+                                            "description": "Een verkeerde plakstap, bv. \"oneet\"."
+                                          },
+                                          "note": {
+                                            "type": "string",
+                                            "pattern": "\\S",
+                                            "description": "Waarom die niet kan."
+                                          }
+                                        },
+                                        "required": [
+                                          "w",
+                                          "note"
+                                        ],
+                                        "additionalProperties": false
+                                      }
+                                    },
+                                    "note": {
+                                      "type": "string",
+                                      "pattern": "\\S"
+                                    }
+                                  },
+                                  "required": [
+                                    "tree",
+                                    "nodes",
+                                    "note"
+                                  ],
+                                  "additionalProperties": false,
+                                  "description": "Woordboom: plak steeds twee buren aan elkaar tot het hele woord staat, in de volgorde van de boom."
+                                },
+                                "paradigm": {
+                                  "type": "object",
+                                  "properties": {
+                                    "q": {
+                                      "description": "Opdracht boven de tabel; standaard \"Vul het paradigma in\".",
+                                      "type": "string",
+                                      "pattern": "\\S"
+                                    },
+                                    "cols": {
+                                      "minItems": 1,
+                                      "maxItems": 5,
+                                      "type": "array",
+                                      "items": {
+                                        "type": "string",
+                                        "pattern": "\\S"
+                                      },
+                                      "description": "Kolomkoppen, bv. \"verleden tijd\" en \"voltooid deelwoord\"."
+                                    },
+                                    "rows": {
+                                      "minItems": 1,
+                                      "maxItems": 8,
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object",
+                                        "properties": {
+                                          "label": {
+                                            "type": "string",
+                                            "pattern": "\\S",
+                                            "description": "Rijkop, bv. het hele werkwoord."
+                                          },
+                                          "cells": {
+                                            "minItems": 1,
+                                            "type": "array",
+                                            "items": {
+                                              "anyOf": [
+                                                {
+                                                  "type": "string",
+                                                  "pattern": "\\S",
+                                                  "description": "Een vorm die al gegeven is."
+                                                },
+                                                {
+                                                  "type": "object",
+                                                  "properties": {
+                                                    "fill": {
+                                                      "type": "string",
+                                                      "pattern": "\\S",
+                                                      "description": "De vorm die de leerling moet kiezen."
+                                                    },
+                                                    "hint": {
+                                                      "description": "Tip als er een verkeerde vorm in dit vakje wordt gezet.",
+                                                      "type": "string",
+                                                      "pattern": "\\S"
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "fill"
+                                                  ],
+                                                  "additionalProperties": false
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        },
+                                        "required": [
+                                          "label",
+                                          "cells"
+                                        ],
+                                        "additionalProperties": false
+                                      }
+                                    },
+                                    "extra": {
+                                      "description": "Vormen die nergens passen; ze staan tussen de keuzes als valkuil.",
+                                      "type": "array",
+                                      "items": {
+                                        "type": "string",
+                                        "pattern": "\\S"
+                                      }
+                                    },
+                                    "note": {
+                                      "type": "string",
+                                      "pattern": "\\S"
+                                    }
+                                  },
+                                  "required": [
+                                    "cols",
+                                    "rows",
+                                    "note"
+                                  ],
+                                  "additionalProperties": false,
+                                  "description": "Paradigma: een tabel met lege vakjes. Kies een vakje en zet de goede vorm erin."
                                 }
                               },
                               "required": [

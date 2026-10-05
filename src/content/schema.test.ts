@@ -25,11 +25,11 @@ const EXTRA_IDS = new Set(Object.values(EXTRA_LESSONS).flatMap((lessons) => less
 const legacyEntries = lessonEntries.filter((entry) => !EXTRA_IDS.has(entry.lesson.id));
 
 describe('bestaande lesinhoud', () => {
-  it('voldoet aan het contract: 9 niveaus, 29 + 46 lessen, 7 vakgebieden waarvan 4 perspectieven', () => {
+  it('voldoet aan het contract: 9 niveaus, 29 + 74 lessen, 7 vakgebieden waarvan 4 perspectieven', () => {
     expect(course.layers).toHaveLength(9);
     expect(legacyEntries).toHaveLength(29);
-    expect(EXTRA_IDS.size).toBe(46);
-    expect(lessonEntries).toHaveLength(75);
+    expect(EXTRA_IDS.size).toBe(74);
+    expect(lessonEntries).toHaveLength(103);
     expect(course.domains.map((domain) => domain.id)).toEqual(['orth', 'fon', 'morf', 'syn', 'sem', 'prag', 'tekst']);
     expect(course.domains.filter((domain) => domain.persp).map((domain) => domain.id)).toEqual(['morf', 'syn', 'sem', 'prag']);
     expect(course.layers.every((layer) => layer.growth && layer.learn && layer.example && layer.fields.length > 0)).toBe(true);
@@ -94,8 +94,8 @@ describe('nieuwe lessen (packs)', () => {
       .flatMap((layer) => layer.lessons)
       .flatMap((lesson) => lesson.steps)
       .flatMap((step) => (step.kind === 'explain' ? step.panels : []))
-      .flatMap((panel) => (['vowels', 'grid', 'tableau', 'sonority', 'tree'] as const).filter((widget) => panel[widget] !== undefined));
-    expect(new Set(widgets)).toEqual(new Set(['vowels', 'grid', 'tableau', 'sonority', 'tree']));
+      .flatMap((panel) => (['vowels', 'grid', 'tableau', 'sonority', 'tree', 'bracket', 'paradigm'] as const).filter((widget) => panel[widget] !== undefined));
+    expect(new Set(widgets)).toEqual(new Set(['vowels', 'grid', 'tableau', 'sonority', 'tree', 'bracket', 'paradigm']));
   });
 
   it('weigert lessen voor een onbekend niveau', () => {
@@ -229,6 +229,39 @@ describe('contractvalidatie weigert onjuiste inhoud', () => {
     expect(order.success).toBe(false);
     if (!order.success) expect(z.prettifyError(order.error)).toMatch(/onset, kern, coda, appendix/);
     expect(PanelSchema.safeParse(boom(['onset', 'kern', 'coda', 'appendix'])).success).toBe(true);
+  });
+
+  it('woordboom: ongeldige boom, ontbrekende of verzonnen knopen, een val die juist goed is', () => {
+    const boom = (tree: string, nodes: string[], traps: string[] = []) => ({
+      text: 'Bouw.',
+      bracket: { tree, nodes: nodes.map((w) => ({ w, cat: 'bn', note: 'n' })), traps: traps.map((w) => ({ w, note: 'n' })), note: 'n' },
+    });
+    const check = (panel: unknown, message: RegExp) => {
+      const result = PanelSchema.safeParse(panel);
+      expect(result.success).toBe(false);
+      if (!result.success) expect(z.prettifyError(result.error)).toMatch(message);
+    };
+    check(boom('[on lees baar]', ['onleesbaar']), /precies twee stukken/);
+    check(boom('[on [lees baar]]', ['onleesbaar']), /Knoop "leesbaar" heeft geen uitleg/);
+    check(boom('[on [lees baar]]', ['leesbaar', 'onleesbaar', 'baar']), /"baar" is geen knoop/);
+    check(boom('[on [lees baar]]', ['leesbaar', 'onleesbaar'], ['leesbaar']), /juist een goede stap/);
+    expect(PanelSchema.safeParse(boom('[on [lees baar]]', ['leesbaar', 'onleesbaar'], ['onlees'])).success).toBe(true);
+  });
+
+  it('paradigma: verkeerd aantal vakjes, niets in te vullen, een valkuil die juist goed is', () => {
+    const tabel = (cells: unknown[], extra: string[] = []) => ({
+      text: 'Vul in.',
+      paradigm: { cols: ['verleden tijd', 'voltooid deelwoord'], rows: [{ label: 'rijden', cells }], extra, note: 'n' },
+    });
+    const check = (panel: unknown, message: RegExp) => {
+      const result = PanelSchema.safeParse(panel);
+      expect(result.success).toBe(false);
+      if (!result.success) expect(z.prettifyError(result.error)).toMatch(message);
+    };
+    check(tabel([{ fill: 'reed' }]), /Verwacht 2 vakjes/);
+    check(tabel(['reed', 'gereden']), /geen vakje om in te vullen/);
+    check(tabel(['reed', { fill: 'gereden' }], ['gereden']), /juist een goed antwoord/);
+    expect(PanelSchema.safeParse(tabel(['reed', { fill: 'gereden' }], ['gereed'])).success).toBe(true);
   });
 
   it('ongelijke markeringen en ongeldige reguliere expressies', () => {

@@ -4,12 +4,12 @@ test.beforeEach(async ({ page }) => seedOnboarded(page));
 
 test('bibliotheek: filter staat in de URL en de resultaten volgen', async ({ page }) => {
   await page.goto('/lessen');
-  await expect(page.getByRole('status').filter({ hasText: '75 lessen' })).toBeVisible();
+  await expect(page.getByRole('status').filter({ hasText: '103 lessen' })).toBeVisible();
   await page.getByRole('button', { name: /9\. De alinea/ }).click();
   await expect(page).toHaveURL(/niveau=alinea/);
   await expect(page.getByRole('status').filter({ hasText: '2 lessen' })).toBeVisible();
   await page.getByRole('button', { name: 'Filters wissen' }).click();
-  await expect(page.getByRole('status').filter({ hasText: '75 lessen' })).toBeVisible();
+  await expect(page.getByRole('status').filter({ hasText: '103 lessen' })).toBeVisible();
 });
 
 test('oefenvorm: swipe-kaarten met alleen het toetsenbord', async ({ page }) => {

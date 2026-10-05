@@ -15,6 +15,8 @@ import { RichText } from '@/components/ui/rich-text';
 import { Examples, RuleCard, StepHeading, type StepProps } from '../steps/shared';
 import { GridWidget, TableauWidget, VowelsWidget } from './sound-widgets';
 import { SonorityWidget, TreeWidget } from './syllable-widgets';
+import { ParadigmWidget } from './paradigm-widget';
+import { BracketWidget } from './word-widgets';
 import { AlphaWidget, BlendWidget, BuildWidget, LabWidget, MarkWidget, SplitWidget, SwapWidget, WheelWidget } from './widgets';
 
 /** Naar een ander uitlegdeel (de voettekst gebruikt dit ook voor "Volgende deel"). */
@@ -174,6 +176,10 @@ function PanelBody({
             return panel.sonority && <SonorityWidget key={widget} data={panel.sonority} {...props} />;
           case 'tree':
             return panel.tree && <TreeWidget key={widget} data={panel.tree} {...props} />;
+          case 'bracket':
+            return panel.bracket && <BracketWidget key={widget} data={panel.bracket} {...props} />;
+          case 'paradigm':
+            return panel.paradigm && <ParadigmWidget key={widget} data={panel.paradigm} {...props} />;
         }
       })}
     </div>
