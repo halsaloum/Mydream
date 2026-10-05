@@ -20,7 +20,9 @@ import { WOORD_MASTER_LESSONS } from './woord-master';
 export const EXTRA_LESSONS: Readonly<Record<string, readonly LessonInput[]>> = {
   letter: [...LETTER_LESSONS, ...LETTER_MASTER_LESSONS],
   klank: [...KLANK_LESSONS, ...KLANK_MASTER_LESSONS],
-
+  greep: [...GREEP_LESSONS, ...GREEP_EXTRA_LESSONS, ...GREEP_MASTER_LESSONS],
+  deel: [...DEEL_LESSONS, ...DEEL_EXTRA_LESSONS, ...DEEL_MASTER_LESSONS],
+  woord: [...WOORD_LESSONS, ...WOORD_EXTRA_LESSONS, ...WOORD_MASTER_LESSONS, ...WOORD_EXTRA_MASTER_LESSONS],
 };
 
 /** Voegt de extra lessen toe aan hun niveau. Een onbekend niveau is een fout in de inhoud. */
