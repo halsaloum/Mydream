@@ -27,7 +27,7 @@ const figtree = Figtree({
 
 export const metadata: Metadata = {
   title: { default: 'pennig — van letter tot alinea', template: '%s · pennig' },
-  description: 'Jouw rustige plek om Nederlands te leren schrijven. Korte uitleg, gerichte schrijfoefeningen en stap voor stap van letter naar een helder verhaal.',
+  description: 'Leer Nederlands schrijven, van letter tot alinea, met Pim het potlood.',
   applicationName: 'pennig',
 };
 

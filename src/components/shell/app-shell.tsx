@@ -64,7 +64,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       >
         Naar de inhoud
       </a>
-      <header className="sticky top-0 z-40 border-b border-line bg-canvas/95 backdrop-blur">
+      <header className="sticky top-0 z-40 border-b border-line/80 bg-canvas/85 shadow-[0_8px_24px_-20px_rgb(60_40_10/0.35)] backdrop-blur-xl backdrop-saturate-150 supports-[backdrop-filter]:bg-canvas/70">
         <div className="mx-auto flex h-16 w-full max-w-6xl items-center gap-4 px-gutter">
           <Wordmark />
           <NavigationMenu.Root aria-label="Hoofdnavigatie" className="ml-auto hidden md:block">
@@ -85,7 +85,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                         <motion.span
                           layoutId="nav-active"
                           transition={spring.layout}
-                          className="absolute inset-x-3 bottom-0 h-0.5 bg-green-ink"
+                          className="absolute inset-0 -z-10 rounded-control border-2 border-line bg-surface shadow-slab-sm"
                         />
                       )}
                       <item.icon
@@ -180,7 +180,7 @@ export function PageHeader({ title, description, action, className }: PageHeader
   return (
     <div className={cn('mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between', className)}>
       <div className="min-w-0">
-        <h1 className="font-serif text-headline font-medium tracking-[-0.03em] text-ink">{title}</h1>
+        <h1 className="bg-linear-to-br from-ink to-ink-soft bg-clip-text font-display text-headline font-extrabold tracking-[-0.03em] text-transparent">{title}</h1>
         {description && <p className="mt-2 max-w-2xl text-lead text-ink-muted">{description}</p>}
       </div>
       {action && <div className="shrink-0">{action}</div>}
