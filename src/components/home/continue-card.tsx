@@ -40,7 +40,7 @@ export function ContinueCard({ target, firstTime }: { target: ContinueTarget; fi
     ? `Je was bij stap ${Math.min(resume.pos + 1, resume.queue.length)} van ${resume.queue.length}. Je antwoorden staan klaar.`
     : firstTime
       ? 'Je eerste les. Pim legt eerst uit, daarna oefen je zelf.'
-      : 'De volgende les in je leerlijn.';
+      : 'Eerst een helder voorbeeld, daarna zelf proberen. Je hoeft het nog niet perfect te kunnen.';
 
   return (
     <section
@@ -51,6 +51,10 @@ export function ContinueCard({ target, firstTime }: { target: ContinueTarget; fi
       <div aria-hidden className="absolute inset-y-0 right-0 w-2/3 bg-[radial-gradient(120%_100%_at_100%_0%,var(--accent-soft),transparent_70%)]" />
       <div aria-hidden className="absolute -top-16 -right-10 size-56 rounded-full bg-accent opacity-[0.12] blur-3xl" />
       <div className="relative flex flex-col gap-6 p-6 sm:p-8">
+        <p className="inline-flex items-center gap-2 text-small font-bold text-accent-ink">
+          <span aria-hidden className="size-2 rounded-full bg-accent" />
+          {resume ? 'Pak de draad weer op' : firstTime ? 'Hier begint jouw schrijfavontuur' : 'Klaar voor de volgende stap?'}
+        </p>
         <div className="flex items-start gap-5">
           <div className="min-w-0 flex-1">
             <h2 id="verder-titel" className="font-display text-title font-extrabold">
@@ -85,10 +89,10 @@ export function ContinueCard({ target, firstTime }: { target: ContinueTarget; fi
         )}
         <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
           <ButtonLink href={`/les/${entry.lesson.id}` as Route} variant="accent" size="lg" className="group max-sm:w-full">
-            Verder met jouw les
+            {resume ? 'Verder met jouw les' : firstTime ? 'Begin met schrijven' : 'Start de volgende les'}
             <ArrowRight aria-hidden className="size-5 transition-transform duration-300 ease-[var(--ease-spring)] group-hover:translate-x-1" strokeWidth={2.75} />
           </ButtonLink>
-          <Link href="/lessen" className="rounded-chip font-bold text-ink-muted underline-offset-4 hover:text-ink hover:underline">
+          <Link href="/lessen" className="inline-flex min-h-11 items-center justify-center rounded-chip font-bold text-ink-muted underline-offset-4 hover:text-ink hover:underline focus-visible:outline-3 focus-visible:outline-focus max-sm:w-full">
             Andere les kiezen
           </Link>
         </div>

@@ -3,7 +3,7 @@
 import { Flame } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
-import { course, totalLessons } from '@/content/catalog';
+import { course } from '@/content/catalog';
 import { PageSkeleton } from '@/components/ui/empty-state';
 import { ProgressBar } from '@/components/ui/progress';
 import { dayKey, minutes } from '@/lib/dates';
@@ -67,7 +67,7 @@ export function HomeView() {
             Van letter <em className="text-ink-muted">tot alinea</em>
           </h1>
           <p className="mt-4 max-w-md text-lead text-ink-soft">
-            {totalLessons} lessen in {course.layers.length} niveaus. Elk niveau bouwt voort op het niveau eronder.
+            Van je eerste letter naar een eigen verhaal. Ontdek hoe woorden zinnen worden, en zinnen een alinea. Stap voor stap, op jouw tempo.
           </p>
           {profile.goalMinutes && <TodayGoal goal={profile.goalMinutes} activeMs={today?.activeMs ?? 0} streak={streakDays(progress.activity)} />}
         </div>
