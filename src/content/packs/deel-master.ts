@@ -904,6 +904,29 @@ export const DEEL_MASTER_LESSONS: LessonInput[] = [
               a: 'Vertrouw niet op wat er ‘goed uitziet’, want dat is juist de opgeslagen vorm. Zoek het onderwerp, zet het naast het werkwoord en pas de regel bewust toe: *hij* + *vind* + *t*. Vervang bij twijfel door *lopen*: *hij loopt*, dus *hij vindt*. Zo schakel je de tweede route in.',
             },
           },
+          {
+            text: 'Welke meervouden moet je opslaan, en welke kun je bouwen? Gebruik de toets van Pinker: kan iemand die het woord nooit hoorde, het meervoud voorspellen? *Boek*, *boeken*: ja, dat volgt uit de regel. *Glas*, *glazen*: nee, want *klas* heeft *klassen*. Zo’n vorm moet in je geheugen staan. Maar onthoud de les van Baayen, Dijkstra en Schreuder: ook een voorspelbaar meervoud dat je vaak ziet, sla je óók op. De toets zegt dus wat je móét opslaan, niet wat je toevallig ook opslaat.',
+            rule: 'Voorspelbaar uit de regel: opbouwen kan. Niet voorspelbaar (stamwissel, oud meervoud): opslaan moet.',
+            bins: {
+              q: 'Opbouwen met de regel, of opslaan in je geheugen?',
+              bins: ['opbouwen kan', 'opslaan moet'],
+              items: [
+                { thing: 'boek', bin: 0, note: 'boek + en, zonder wissel. Toch is boeken zo frequent dat je het waarschijnlijk ook als geheel kent: beide routes racen.' },
+                { thing: 'kip', bin: 0, note: 'kip + en, met een spellingregel: de p verdubbelt na een korte klinker. Spelling is hier regel, geen geheugen.' },
+                { thing: 'mus', bin: 0, note: 'mus, mussen: korte klinker, dus dubbele s. Een spellingregel, geen stamwissel.' },
+                { thing: 'glas', bin: 1, note: 'glazen: s naar z én een lange klinker. Klas, klassen doet geen van beide. Niet te voorspellen, dus opslaan.', hint: 'Kun je glazen voorspellen? Kijk naar klas, klassen.' },
+                { thing: 'hangslot', bin: 1, note: 'sloten met een lange o, maar pot geeft potten. Een fossiele verlenging: opslaan.', hint: 'Vergelijk slot, sloten met pot, potten.' },
+                { thing: 'ei', bin: 1, note: 'eieren: een oud meervoud op -er. Geen enkele levende regel maakt dat, dus het staat als geheel in je geheugen.', hint: 'Welke regel maakt van ei eieren?' },
+                {
+                  thing: 'muis',
+                  bin: 1,
+                  note: 'muizen met z, maar kruis geeft kruisen. Ernestus en Baayen (2003) lieten zien dat sprekers bij verzonnen woorden gokken op de vorm van vergelijkbare woorden. Een neiging is geen regel: muizen sla je op.',
+                  hint: 'muis, muizen; kruis, kruisen. Kun je dat voorspellen?',
+                },
+              ],
+              note: 'Drie keer was de regel genoeg, vier keer niet. Wat je niet kunt voorspellen, móét in het geheugen; wat je vaak ziet, staat er vaak ook.',
+            },
+          },
         ],
       },
       {

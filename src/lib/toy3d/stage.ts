@@ -74,6 +74,8 @@ export type Stage = {
   wake: () => void;
   /** Duw de wereld in een richting (bv. bij een fout antwoord). */
   nudge: (yaw: number) => void;
+  /** Draai de wereld zacht naar deze stand (de kortste kant op), bv. om een voorwerp naar voren te halen. */
+  turnTo: (yaw: number) => void;
   dispose: () => void;
 };
 
@@ -422,6 +424,12 @@ export function createStage(canvas: HTMLCanvasElement, options: StageOptions): S
     nudge: (amount) => {
       wake();
       yawTarget = Math.min(limit[1], Math.max(limit[0], yawTarget + amount));
+      lastInput = performance.now();
+    },
+    turnTo: (value) => {
+      wake();
+      const delta = Math.atan2(Math.sin(value - yawTarget), Math.cos(value - yawTarget));
+      yawTarget = Math.min(limit[1], Math.max(limit[0], yawTarget + delta));
       lastInput = performance.now();
     },
     dispose: () => {
