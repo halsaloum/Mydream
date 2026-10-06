@@ -164,6 +164,20 @@ test('paradigma: elk leeg vakje goed invullen opent het volgende deel', async ({
   await expect(primary).toBeEnabled();
 });
 
+test('fiets in 3D: een onderdeel kiezen en het woord met het goede lidwoord typen', async ({ page }) => {
+  await page.goto('/les/d20');
+  await expect(page.getByRole('heading', { name: 'Een fiets vol woorden' })).toBeVisible();
+  await page.getByRole('group', { name: 'Kies een onderdeel' }).getByRole('button', { name: 'Onderdeel 2' }).click();
+
+  const veld = page.getByLabel(/Tring tring/);
+  await veld.fill('het bel');
+  await veld.press('Enter');
+  await expect(page.getByText('Het is de bel, net als de deurbel.')).toBeVisible();
+  await veld.fill('de bel');
+  await veld.press('Enter');
+  await expect(page.getByRole('status').filter({ hasText: '1 van 8 onderdelen goed, nog 7' })).toBeVisible();
+});
+
 test('een afgeronde les blijft na verversen afgerond', async ({ page }) => {
   await page.goto('/les/l4');
   await page.getByRole('radio', { name: 'rustig' }).click();
