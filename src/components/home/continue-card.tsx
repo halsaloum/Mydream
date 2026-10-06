@@ -50,7 +50,7 @@ export function ContinueCard({ target, firstTime }: { target: ContinueTarget; fi
     >
       <div aria-hidden className="absolute inset-y-0 right-0 w-2/3 bg-[radial-gradient(120%_100%_at_100%_0%,var(--accent-soft),transparent_70%)]" />
       <div aria-hidden className="absolute -top-16 -right-10 size-56 rounded-full bg-accent opacity-[0.12] blur-3xl" />
-      <div className="relative flex flex-col gap-6 p-6 sm:p-8">
+      <div className="relative flex flex-col gap-4 p-5 sm:p-6">
         <p className="inline-flex items-center gap-2 text-small font-bold text-accent-ink">
           <span aria-hidden className="size-2 rounded-full bg-accent" />
           {resume ? 'Pak de draad weer op' : firstTime ? 'Hier begint jouw schrijfavontuur' : 'Klaar voor de volgende stap?'}
@@ -61,7 +61,7 @@ export function ContinueCard({ target, firstTime }: { target: ContinueTarget; fi
               <span className="sr-only">Verder met jouw les: </span>
               {entry.lesson.title}
             </h2>
-            <p className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-small font-semibold text-ink-muted">
+            <p className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-2 text-caption font-semibold text-ink-muted">
               <span className="inline-flex items-center gap-1.5">
                 <LayerGlyph id={entry.layer.id} className="size-4" />
                 Niveau {entry.layerIndex + 1} · {entry.layer.name}
@@ -87,7 +87,7 @@ export function ContinueCard({ target, firstTime }: { target: ContinueTarget; fi
             valueText={`${resume.pos} van ${resume.queue.length} stappen gedaan`}
           />
         )}
-        <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-line/70 pt-4">
           <ButtonLink href={`/les/${entry.lesson.id}` as Route} variant="accent" size="lg" className="group max-sm:w-full">
             {resume ? 'Verder met jouw les' : firstTime ? 'Begin met schrijven' : 'Start de volgende les'}
             <ArrowRight aria-hidden className="size-5 transition-transform duration-300 ease-[var(--ease-spring)] group-hover:translate-x-1" strokeWidth={2.75} />

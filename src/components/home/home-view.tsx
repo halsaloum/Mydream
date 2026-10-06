@@ -61,17 +61,18 @@ export function HomeView() {
 
   return (
     <div className="stagger flex flex-col gap-section">
-      <div className="grid gap-6 lg:grid-cols-2 lg:grid-rows-[auto_auto] lg:gap-x-10 lg:gap-y-7">
-        <div className="lg:self-end">
-          <h1 className="font-serif text-[clamp(2.5rem,1.9rem+2.6vw,4rem)] leading-[1.02] font-medium tracking-[-0.02em] text-ink">
+      <div className="grid items-start gap-5 lg:grid-cols-[1.1fr_0.9fr] lg:grid-rows-[auto_auto] lg:gap-x-8 lg:gap-y-6">
+        <div>
+          <p className="mb-3 text-caption font-bold tracking-[0.12em] text-green-ink uppercase">Kleine stappen. Steeds beter schrijven.</p>
+          <h1 className="font-serif text-[clamp(2.5rem,1.7rem+2.6vw,3.75rem)] leading-[1.08] font-medium tracking-[-0.025em] text-ink">
             Van letter <em className="text-ink-muted">tot alinea</em>
           </h1>
-          <p className="mt-4 max-w-md text-lead text-ink-soft">
-            Van je eerste letter naar een eigen verhaal. Ontdek hoe woorden zinnen worden, en zinnen een alinea. Stap voor stap, op jouw tempo.
+          <p className="mt-4 max-w-lg text-body leading-relaxed text-ink-soft">
+            Letters worden woorden. Woorden worden jouw verhaal. Leer samen met Pim schrijven, op jouw tempo.
           </p>
           {profile.goalMinutes && <TodayGoal goal={profile.goalMinutes} activeMs={today?.activeMs ?? 0} streak={streakDays(progress.activity)} />}
         </div>
-        <HeroScene className="order-last -mt-2 h-60 sm:h-80 lg:order-none lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:my-0 lg:h-full lg:min-h-[28rem]" />
+        <HeroScene className="order-last h-60 sm:h-72 lg:order-none lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:h-full lg:min-h-[26rem] lg:max-h-[36rem]" />
         <div className="lg:self-start">
           <ContinueCard target={target} firstTime={firstTime} />
         </div>
