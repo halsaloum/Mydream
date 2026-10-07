@@ -3,6 +3,7 @@
 import type { Route } from 'next';
 import { useCallback, useMemo } from 'react';
 import { getLessonEntry, lessonOverview, nextLessonEntry } from '@/content/catalog';
+import { lessonIcon } from '@/content/lesson-icons';
 import { demoEntries, demoLessonId, getDemo } from '@/content/demo';
 import { buildPlan } from '@/engine/plan';
 import { lookupStep, planFor } from '@/lib/plans';
@@ -29,7 +30,7 @@ export function LessonRoute({ lessonId }: { lessonId: string }) {
     context: entry.domain.name,
     accent: entry.domain.accent,
     exit: { href: '/', label: 'Les sluiten (je voortgang is bewaard)' },
-    tag: { layer: entry.layer, layerIndex: entry.layerIndex, domain: entry.domain, stage: entry.lesson.stage },
+    tag: { layer: entry.layer, layerIndex: entry.layerIndex, domain: entry.domain, stage: entry.lesson.stage, icon: lessonIcon(lessonId) },
     finish: {
       title: entry.lesson.title,
       context: `${entry.domain.name} · Niveau ${entry.layerIndex + 1}: ${entry.layer.name}`,

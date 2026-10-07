@@ -97,7 +97,7 @@ de bron) via `adapters/legacy.ts`, voegt de nieuwe lessen uit `packs/` toe en va
 `legacy/course.ts` bevat alleen de typen: de tweede cursus (`COURSE`) en `BOOKS` zijn bewust weggelaten, zodat er
 geen tegenstrijdige inhoud naast elkaar bestaat.
 
-`packs/` bevat 101 nieuwe lessen voor zes niveaus, achter de bestaande lessen van dat niveau (`withExtraLessons`):
+`packs/` bevat 104 nieuwe lessen voor zes niveaus, achter de bestaande lessen van dat niveau (`withExtraLessons`):
 
 | Bestand | Niveau | Lessen |
 | --- | --- | --- |
@@ -112,9 +112,12 @@ geen tegenstrijdige inhoud naast elkaar bestaat.
 | `packs/deel.ts` | Het betekenisvolle woorddeel | 8 — bachelor: morfeem en allomorf, buiging tegenover afleiding, de rechterhoofdregel, woordbomen, samenstellingen, tussenklanken, eisen van affixen en blokkering, stamwisseling en suppletie |
 | `packs/deel-master.ts` | Het betekenisvolle woorddeel | 6 — master: morfeem, proces of paradigma, inheemse en geleerde lagen met de haakjesparadox, productiviteit meten, prosodische morfologie, het mentale lexicon en de d/t-fout, woordvorming in beweging |
 | `packs/deel-extra.ts` | Het betekenisvolle woorddeel | 1 — bachelor: afkappingen, letterwoorden en mengwoorden (woordvorming zonder morfemen) |
+| `packs/nieuw/d21–d24.ts` | Het betekenisvolle woorddeel | 4 — bachelor: werkwoorden met be-, ver- en ont-, persoonsnamen (bakker, bakster, schilderes), aaneen, met streepje of los · master: waar morfologie en zinsbouw elkaar raken (synthetische samenstellingen, argumentvererving) |
 | `packs/woord.ts` | Het woord | 8 — bachelor: lexeem, woordvorm en lemma, woordsoorten bewijzen, conversie en de naamwoordelijke infinitief, sterke en zwakke werkwoorden, geslacht en verwijzing, de buiging van het bijvoeglijk naamwoord, betekenisrelaties, polysemie en homonymie |
 | `packs/woord-master.ts` | Het woord | 6 — master: valentie en thematische rollen, onaccusativiteit (hebben of zijn), prototypen tegenover kenmerken, collocaties, idioom en frames, de wet van Zipf en lexicale dichtheid, partikelwerkwoorden en klitieken |
 | `packs/woord-extra.ts` | Het woord | 2 — bachelor: leenwoorden, uitvoer en volksetymologie · master: het mentale lexicon (frequentie, priming, puntje van de tong, het model van Levelt) |
+| `packs/nieuw/w23–w26.ts` | Het woord | 4 — bachelor: werkwoordspelling bewezen (word, wordt, gebeurd), die, dat, wat en wie · master: de vier gezichten van er, tijd en aspect |
+| `packs/onderzoek/` | Woorddeel en woord | Een derde uitlegronde (`onderzoek`) met zwaardere oefeningen achter elke les van beide niveaus; `withResearch` plakt die achter de bestaande stappen |
 | `packs/groep.ts` | De woordgroep | 4 — bachelor: bewijs voor de woordgroep (constituenttests), kern en bepalingen, de naamwoordgroep van binnen, bijvoeglijke naamwoorden stapelen (volgorde en komma) |
 | `packs/groep-bouw.ts` | De woordgroep | 4 — bachelor: de voorzetselgroep en R-woorden, complement of bepaling, de bijvoeglijke groep, lange bepalingen voor en na (naamwoordstijl, bijstelling, beperkende en uitbreidende bijzin) |
 | `packs/groep-master.ts` | De woordgroep | 4 — bachelor: nevenschikking en samentrekking · master: X-bar-theorie, structurele ambiguïteit en tuinpadzinnen, de DP-hypothese |
@@ -180,3 +183,6 @@ niveautoren, de samenstelbank (`compound` in het lescontract, nu in les d10) en 
   speelgoedstijl, dan een 3D-model uit dat plaatje. `scripts/meshy-dingen.mjs` doet dat en verkleint elk model
   (WebP-textures, gekwantiseerde punten). Een nieuw voorwerp: beschrijving in `DINGEN`, dan `plaatje`, `model` en
   `ophalen`, en een regel in `things.ts`.
+- De les-iconen van Het betekenisvolle woorddeel en Het woord staan in `public/iconen/lessen/` en
+  `src/content/lesson-icons.ts`; ze komen uit dezelfde Meshy-stijl (alleen het plaatje, `scripts/meshy-iconen.mjs`)
+  en staan in de lessenlijst en bij het begin van de les. Een les zonder plaatje houdt zijn tekstteken.

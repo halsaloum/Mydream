@@ -18,6 +18,9 @@ import { LETTER_MASTER_LESSONS } from './letter-master';
 import { WOORD_LESSONS } from './woord';
 import { WOORD_EXTRA_LESSONS, WOORD_EXTRA_MASTER_LESSONS } from './woord-extra';
 import { WOORD_MASTER_LESSONS } from './woord-master';
+import { LES_D21 } from './nieuw/d21';
+import { LES_W24 } from './nieuw/w24';
+import { withResearch } from './onderzoek';
 
 /**
  * Lessen die later bij de oorspronkelijke niveaus zijn geschreven, per niveau-id. Ze komen achter
@@ -27,8 +30,8 @@ export const EXTRA_LESSONS: Readonly<Record<string, readonly LessonInput[]>> = {
   letter: [...LETTER_LESSONS, ...LETTER_MASTER_LESSONS],
   klank: [...KLANK_LESSONS, ...KLANK_VARIATIE_LESSONS, ...KLANK_MASTER_LESSONS, ...KLANK_EXTRA_MASTER_LESSONS],
   greep: [...GREEP_LESSONS, ...GREEP_EXTRA_LESSONS, ...GREEP_MASTER_LESSONS],
-  deel: [...DEEL_LESSONS, ...DEEL_EXTRA_LESSONS, ...DEEL_3D_LESSONS, ...DEEL_MASTER_LESSONS],
-  woord: [...WOORD_LESSONS, ...WOORD_EXTRA_LESSONS, ...WOORD_MASTER_LESSONS, ...WOORD_EXTRA_MASTER_LESSONS],
+  deel: withResearch([...DEEL_LESSONS, ...DEEL_EXTRA_LESSONS, ...DEEL_3D_LESSONS, LES_D21, ...DEEL_MASTER_LESSONS]),
+  woord: withResearch([...WOORD_LESSONS, ...WOORD_EXTRA_LESSONS, LES_W24, ...WOORD_MASTER_LESSONS, ...WOORD_EXTRA_MASTER_LESSONS]),
   groep: [...GROEP_LESSONS, ...GROEP_BOUW_LESSONS, ...GROEP_EXTRA_LESSONS, ...GROEP_MASTER_LESSONS, ...GROEP_THEORIE_LESSONS],
 };
 

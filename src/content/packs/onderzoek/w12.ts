@@ -1,0 +1,160 @@
+import type { StepInput } from '../../schema';
+
+/** Onderzoek bij w12: een derde uitlegronde op onderzoeksniveau, daarna zwaardere oefeningen. */
+export const ONDERZOEK_W12: StepInput[] = [
+  {
+    kind: 'explain',
+    id: 'onderzoek',
+    title: 'Sterk en zwak, een grens die verrast, en een verborgen klank',
+    panels: [
+      {
+        text: 'Kijk naar het Duits: *ein großes Haus*, maar *das große Haus*. Na *ein* draagt het bijvoeglijk naamwoord het geslacht (*-es*), want *ein* zegt niets. Na *das* is het al gezegd, en volgt een neutrale *-e*. Germanisten noemen dat *sterke* en *zwakke* buiging. Het Nederlands volgt dezelfde logica met minder middelen: na *een* zegt de kale vorm ‘onzijdig’ (*een groot huis*), na *het* staat de neutrale *-e* (*het grote huis*).',
+        rule: 'Zwijgt het lidwoord over het geslacht, dan spreekt het bijvoeglijk naamwoord. Spreekt het lidwoord, dan volgt de neutrale -e.',
+        paradigm: {
+          q: 'Vul de Nederlandse vormen in, naast het Duits',
+          cols: ['na een / ein', 'na het, de / das, der'],
+          rows: [
+            { label: 'Duits: Haus', cells: ['ein großes Haus', 'das große Haus'] },
+            {
+              label: 'Nederlands: huis',
+              cells: [
+                { fill: 'een groot huis', hint: 'Een zegt niets; de kale vorm zegt: onzijdig.' },
+                { fill: 'het grote huis', hint: 'Het zegt het al; dan volgt de neutrale -e.' },
+              ],
+            },
+            { label: 'Duits: Mann', cells: ['ein großer Mann', 'der große Mann'] },
+            {
+              label: 'Nederlands: man',
+              cells: [
+                { fill: 'een grote man', hint: 'Een de-woord krijgt na een een -e.' },
+                { fill: 'de grote man', hint: 'Na de: de neutrale -e.' },
+              ],
+            },
+          ],
+          extra: ['een grote huis', 'het groot huis'],
+          note: 'In beide talen spreekt het bijvoeglijk naamwoord als het lidwoord zwijgt. Het Duits heeft daar drie uitgangen voor (-er, -e, -es), het Nederlands nog maar één verschil: kaal of -e.',
+        },
+      },
+      {
+        text: 'Welke woorden tellen als *bepaald*? Niet alleen *de*, *het*, *dit* en *dat*, maar ook bezittelijke woorden (*ons oude huis*) en een naam met *-s* (*Jans oude huis*). Aan de andere kant staan *een*, *geen*, *elk*, *ieder*, *zo’n*, *zulk* en *veel*: *elk nieuw huis*, *zulk mooi weer*. Let op *elk*: dat gaat over alle huizen, en toch blijft het bijvoeglijk naamwoord kaal. De grens loopt dus langs een klasse van woorden, niet precies langs de betekenis ‘bekend’ of ‘onbekend’.',
+        lab: {
+          label: 'Tik een woord en kijk wat het bijvoeglijk naamwoord doet',
+          chips: [
+            { k: 'elk', out: 'elk nieuw huis', note: 'Alle huizen, en toch kaal: elk hoort bij de groep van een.' },
+            { k: 'ieder', out: 'ieder klein kind', note: 'Net als elk: kaal.' },
+            { k: 'zo’n', out: 'zo’n mooi huis', note: 'zo’n is zo een: kaal.' },
+            { k: 'ons', out: 'ons oude huis', note: 'Bezittelijk: -e, net als na het.' },
+            { k: 'Jans', out: 'Jans oude huis', note: 'Een naam met -s werkt als een bezittelijk woord: -e.' },
+          ],
+        },
+      },
+      {
+        text: 'De *-e* doet ook iets met de klank. Aan het eind van een woord wordt een stemhebbende medeklinker stemloos: *boos* eindigt op een s-klank. Komt er een *-e* achter, dan hoor je de medeklinker die eronder zat: *boze*, *lieve*, *halve*. Maar het kale woord verraadt niet wat er onder zit: *wijs* wordt *wijze*, *kuis* blijft *kuise*. Je kent het van het meervoud: *huis*, *huizen*, maar *kous*, *kousen*.',
+        rule: 'De -e laat de onderliggende medeklinker horen: boos, boze. Welke dat is, moet je per woord kennen.',
+        mark: {
+          q: 'Tik de woorden waarin de -e een andere medeklinker laat horen dan de kale vorm',
+          sentence: 'Een boze buur, een kuise non, een wijze uil en een lieve hond.',
+          targets: [1, 7, 11],
+          note: 'boos → boze, wijs → wijze, lief → lieve. Kuis houdt zijn s: kuise.',
+        },
+        deep: {
+          q: 'Waarom schrijf je boos dan niet met een z?',
+          a: 'Omdat de spelling bij *s/z* en *f/v* de uitspraak van het losse woord volgt: aan het eind van een Nederlands woord schrijf je geen *z* of *v*. Bij *d* is dat anders. Daar wint de gelijkvormigheid: *rond*, *ronde*, met een *d* in allebei, ook al hoor je in *rond* een t.',
+        },
+      },
+      {
+        text: 'En als het zelfstandig naamwoord ontbreekt? Na *iets*, *niets*, *wat* en *veel* krijgt het bijvoeglijk naamwoord *-s*: een oude tweede naamval die ‘iets van die soort’ betekent. Eindigt het woord al op een *s*, dan komt er niets bij: *iets fris*. Wordt het bijvoeglijk naamwoord zelf een zelfstandig naamwoord, dan kiest de betekenis de uitgang: *de rijke* (één persoon), *de rijken* (mensen) en *het goede* (iets abstracts).',
+        rule: 'Zonder zelfstandig naamwoord: -s na iets en niets, -en voor mensen in het meervoud, -e voor iets abstracts.',
+        quiz: {
+          q: 'De rijk… worden steeds rijker. Welke vorm past?',
+          options: ['De rijken', 'De rijke', 'De rijks'],
+          answer: 'De rijken',
+          why: 'Mensen in het meervoud: -en. De rijke is één persoon, en -s komt alleen na iets, niets, wat en veel.',
+        },
+      },
+    ],
+  },
+  {
+    kind: 'sort',
+    id: 'bepaald',
+    prompt: 'Met -e of kaal?',
+    buckets: ['met -e', 'kaal'],
+    items: [
+      { t: 'elk (nieuw) huis', b: 1 },
+      { t: 'ons (nieuw) huis', b: 0 },
+      { t: 'zo’n (mooi) huis', b: 1 },
+      { t: 'Jans (oud) huis', b: 0 },
+      { t: 'veel (vers) brood', b: 1 },
+      { t: 'dit (warm) bad', b: 0 },
+      { t: 'zulk (mooi) weer', b: 1 },
+      { t: 'ieder (klein) kind', b: 1 },
+      { t: 'wat een (raar) verhaal', b: 1 },
+      { t: 'dat (groot) huis', b: 0 },
+    ],
+    why: 'Kaal na woorden uit de groep van een: elk, ieder, zo’n, zulk, veel, wat een. Met -e na bepaalde woorden: ons, Jans, dit, dat. Alle tien zijn het het-woorden in het enkelvoud.',
+  },
+  {
+    kind: 'bet',
+    id: 'lid',
+    prompt: 'Welke zin is goed?',
+    options: ['Elk nieuw lid krijgt een cadeau.', 'Elk nieuwe lid krijgt een cadeau.', 'Elke nieuwe lid krijgt een cadeau.'],
+    answer: 'Elk nieuw lid krijgt een cadeau.',
+    why: 'Het lid is een het-woord: elk, niet elke. En na elk blijft het bijvoeglijk naamwoord kaal, ook al gaat het over alle leden.',
+  },
+  {
+    kind: 'type',
+    id: 'fris',
+    prompt: 'Vul de goede vorm van fris in.',
+    before: 'Het is warm. Wil je iets',
+    after: 'drinken?',
+    hint: 'fris…',
+    answer: 'fris',
+    why: 'Na iets komt een -s, maar fris eindigt al op een s. Dus iets fris, net als iets vies.',
+  },
+  {
+    kind: 'fix',
+    id: 'wijze',
+    prompt: 'Tik het foute woord aan en verbeter het.',
+    sentence: 'De wijse uil keek naar de vieze muis.',
+    wrong: 1,
+    answer: 'wijze',
+    why: 'wijs, wijze: de -e laat de z horen, net als bij vies, vieze. Kuis en kuise laten zien dat je het per woord moet weten.',
+  },
+  {
+    kind: 'highlight',
+    id: 'vier-regels',
+    prompt: 'Kleur elk bijvoeglijk naamwoord met zijn regel',
+    intro: 'Vier stiften, vier regels: kaal, -e, -s, of een woord dat nooit buigt.',
+    pens: [
+      { id: 'kaal', label: 'kaal', tag: 'onbepaald + het', ask: 'Is dit een het-woord in het enkelvoud na een woord uit de groep van een?', accent: 'blue' },
+      { id: 'e', label: 'met -e', tag: 'standaard', ask: 'Is dit de gewone vorm met -e?', accent: 'orange' },
+      { id: 's', label: 'met -s', tag: 'na iets', ask: 'Staat dit woord na iets, niets, wat of veel?', accent: 'purple' },
+      { id: 'nooit', label: 'buigt nooit', tag: 'onbuigbaar', ask: 'Kan dit woord helemaal geen -e krijgen?', accent: 'teal' },
+    ],
+    words: [
+      { t: 'Zulk' },
+      { t: 'mooi', role: 'kaal' },
+      { t: 'weer!' },
+      { t: 'We' },
+      { t: 'aten' },
+      { t: 'iets' },
+      { t: 'lekkers', role: 's' },
+      { t: 'aan' },
+      { t: 'een' },
+      { t: 'houten', role: 'nooit' },
+      { t: 'tafel' },
+      { t: 'in' },
+      { t: 'ons' },
+      { t: 'oude', role: 'e' },
+      { t: 'huis' },
+      { t: 'met' },
+      { t: 'een' },
+      { t: 'rood', role: 'kaal' },
+      { t: 'dak.' },
+    ],
+    done: {
+      title: 'Vier regels in één zin',
+      text: 'mooi en rood zijn kaal (zulk en een met een het-woord), lekkers krijgt -s na iets, houten buigt nooit en oude krijgt -e na ons.',
+    },
+  },
+];
