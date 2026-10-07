@@ -64,7 +64,7 @@ export const ONDERZOEK_W12: StepInput[] = [
       },
       {
         text: 'En als het zelfstandig naamwoord ontbreekt? Na *iets*, *niets*, *wat* en *veel* krijgt het bijvoeglijk naamwoord *-s*: een oude tweede naamval die ‘iets van die soort’ betekent. Eindigt het woord al op een *s*, dan komt er niets bij: *iets fris*. Wordt het bijvoeglijk naamwoord zelf een zelfstandig naamwoord, dan kiest de betekenis de uitgang: *de rijke* (één persoon), *de rijken* (mensen) en *het goede* (iets abstracts).',
-        rule: 'Zonder zelfstandig naamwoord: -s na iets en niets, -en voor mensen in het meervoud, -e voor iets abstracts.',
+        rule: 'Zonder zelfstandig naamwoord: -s na iets en niets, -e voor één persoon of iets abstracts, -en voor mensen in het meervoud.',
         quiz: {
           q: 'De rijk… worden steeds rijker. Welke vorm past?',
           options: ['De rijken', 'De rijke', 'De rijks'],

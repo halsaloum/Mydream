@@ -18,7 +18,7 @@ export const ONDERZOEK_D11: StepInput[] = [
         },
         deep: {
           q: 'Waarom zou on- zo kieskeurig zijn?',
-          a: 'Een gangbare verklaring: ontkennen is pas nuttig als het tegendeel de gewone, verwachte toestand is. *Ongezond* zegt iets, want gezond is de norm. *Onziek* zou alleen *gezond* betekenen, en dat woord bestaat al. Zo werkt ook de blokkering uit de eerste uitleg mee.',
+          a: 'Een gangbare verklaring: ontkennen is pas nuttig als wat je ontkent de gewone, verwachte toestand is. *Ongezond* zegt iets, want gezond is de norm. *Onziek* zou alleen *gezond* betekenen, en dat woord bestaat al. Zo werkt ook de blokkering uit de eerste uitleg mee.',
         },
       },
       {
@@ -30,7 +30,11 @@ export const ONDERZOEK_D11: StepInput[] = [
             { k: 'lezer', out: 'iemand die leest', note: 'Het onderwerp van lezen: een persoon.' },
             { k: 'wekker', out: 'iets wat wekt', note: 'Het onderwerp van wekken: een ding. Zo ook opener en aansteker.' },
             { k: 'meevaller', out: 'iets wat meevalt', note: 'Het onderwerp van meevallen: een gebeurtenis. Zo ook tegenvaller.' },
-            { k: 'Amsterdammer', out: 'iemand uit Amsterdam', note: 'Geen werkwoord als basis. Is dit hetzelfde -er, of een ander achtervoegsel met dezelfde vorm?' },
+            {
+              k: 'Amsterdammer',
+              out: 'iemand uit Amsterdam',
+              note: 'Geen werkwoord als basis. Is dit hetzelfde -er, of een ander achtervoegsel met dezelfde vorm?',
+            },
           ],
         },
       },
@@ -48,7 +52,7 @@ export const ONDERZOEK_D11: StepInput[] = [
         },
       },
       {
-        text: 'Soms bestaat de basis niet eens los. *Toerist* komt niet van *toerisme*, en *toerisme* niet van *toerist*: ze delen het stuk *toer-* en ruilen hun achtervoegsel. Wie *populisme* kent, weet meteen wat een *populist* is. De eis gaat dan niet over één basiswoord, maar over een familie: *-ist* past bij elk woord op *-isme*. Morfologen noemen dat *paradigmatische* woordvorming. Je maakt een woord door een affix te ruilen, niet door er een bij te plakken.',
+        text: 'Soms bestaat de basis niet eens los. *Populist* komt niet van *populisme*, en *populisme* niet van *populist*: ze delen het stuk *popul-*, dat los niet bestaat, en ruilen hun achtervoegsel. Wie *pacifisme* kent, weet meteen wat een *pacifist* is. De eis gaat dan niet over één basiswoord, maar over een familie: *-ist* past bij veel woorden op *-isme*. Morfologen noemen dat *paradigmatische* woordvorming. Je maakt een woord door een affix te ruilen, niet door er een bij te plakken.',
         rule: 'Paradigmatisch: ruil *-isme* voor *-ist* of *-istisch*. Stapelen (*toerismist*) kan niet.',
         paradigm: {
           q: 'Ruil het achtervoegsel',
@@ -165,8 +169,18 @@ export const ONDERZOEK_D11: StepInput[] = [
         why: 'schuldig is negatief, en toch bestaat onschuldig. Een neiging, geen wet.',
       },
       { t: 'In meevaller noemt -er het onderwerp van meevallen.', ok: true, why: 'Het valt mee: het onderwerp is de gebeurtenis zelf.' },
-      { t: 'Een wekker is iemand die wekt.', ok: false, fix: 'een wekker is een ding dat wekt', why: '-er kan ook een instrument noemen, zoals opener en aansteker.' },
-      { t: 'Brandbaar past precies in de regel dat -baar een lijdend voorwerp wil.', ok: false, fix: 'branden heeft hier geen lijdend voorwerp', why: 'Hout brandt. Brandbaar is een levend tegenvoorbeeld.' },
+      {
+        t: 'De wekker naast je bed is iemand die wekt.',
+        ok: false,
+        fix: 'die wekker is een ding dat wekt',
+        why: '-er kan ook een instrument noemen, zoals opener en aansteker.',
+      },
+      {
+        t: 'Brandbaar past precies in de regel dat -baar een lijdend voorwerp wil.',
+        ok: false,
+        fix: 'branden heeft hier geen lijdend voorwerp',
+        why: 'Hout brandt. Brandbaar is een levend tegenvoorbeeld.',
+      },
       { t: 'Een populist maak je door -isme te ruilen voor -ist.', ok: true, why: 'Paradigmatische woordvorming: ruilen in plaats van plakken.' },
     ],
   },

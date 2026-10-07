@@ -8,7 +8,7 @@ export const ONDERZOEK_D10: StepInput[] = [
     title: 'Wat een tussenklank eigenlijk is',
     panels: [
       {
-        text: 'In de verdieping las je dat de tussen-s een rest is van de oude tweede naamval: *des konings*. Maar kijk naar *regeringsleider* en *liefdesbrief*. *Regering* en *liefde* zijn vrouwelijke woorden, en vrouwelijke woorden kregen in de tweede naamval nooit een *-s*. Dat hoor je nog in vaste uitdrukkingen: *de macht der gewoonte*, niet *der gewoontes*. Toch hebben ze nu een tussen-s. De *s* is dus losgekomen van de naamval en verder gekropen door *analogie*.',
+        text: 'Eerder in deze les zag je dat de tussen-s een rest is van de oude tweede naamval: *des konings*. Maar kijk naar *regeringsleider* en *liefdesbrief*. *Regering* en *liefde* zijn vrouwelijke woorden, en vrouwelijke woorden kregen in de tweede naamval nooit een *-s*. Dat hoor je nog in vaste uitdrukkingen: *de macht der gewoonte*, niet *des gewoontes*. Toch hebben ze nu een tussen-s. De *s* is dus losgekomen van de naamval en verder gekropen door *analogie*.',
         rule: 'De tussen-s begon als naamval, maar leeft nu als bindmorfeem met een eigen verspreiding.',
         quiz: {
           q: 'Waarom kan de s in ‘regeringsleider’ geen oude naamvals-s zijn?',
@@ -18,7 +18,7 @@ export const ONDERZOEK_D10: StepInput[] = [
         },
         deep: {
           q: 'Laat het Duits hetzelfde zien?',
-          a: 'Ja. *Liebe* is vrouwelijk en heeft in geen enkele naamval een vorm *Liebes*. Toch zegt elke Duitser *Liebesbrief*. Ook *-ung* en *-heit* waren vrouwelijk, en juist zij trekken nu de *s* het sterkst: *Regierungschef*, *Freiheitskampf*. In beide talen staat de nieuwe *s* precies op een plek waar de oude naamval hem nooit zette.',
+          a: 'Ja. *Liebe* is vrouwelijk en heeft in geen enkele naamval een vorm *Liebes*. Toch zegt elke Duitser *Liebesbrief*. Ook *-ung* en *-heit* zijn vrouwelijk, en juist zij trekken nu de *s* het sterkst: *Regierungschef*, *Freiheitskampf*. In beide talen staat de nieuwe *s* precies op een plek waar de oude naamval hem nooit zette.',
         },
       },
       {
@@ -40,14 +40,18 @@ export const ONDERZOEK_D10: StepInput[] = [
         },
       },
       {
-        text: 'Andrea Krott en collega’s lieten zien dat de familie van het eerste deel de keuze stuurt. Maar een familie geeft een kans, geen zekerheid. *Huis* gaat bijna altijd zonder tussenklank (*huiskamer*, *huisarts*, *huiswerk*), en toch zeg je *huizenmarkt*: daar gaat het echt om veel huizen. De betekenis kan de familie dus overstemmen. Zet elk voorwerp in de bak die zijn familie het vaakst kiest.',
+        text: 'Je zag al dat de familie van het eerste deel de keuze stuurt (Krott en collega’s). Maar een familie geeft een kans, geen zekerheid. *Huis* gaat bijna altijd zonder tussenklank (*huiskamer*, *huisarts*, *huiswerk*), en toch zeg je *huizenmarkt*: daar gaat het echt om veel huizen. De betekenis kan de familie dus overstemmen. Zet elk voorwerp in de bak die zijn familie het vaakst kiest.',
         rule: 'De familie wijst de weg, maar een echt bedoeld meervoud kan *-en-* afdwingen: *huiskamer*, maar *huizenmarkt*.',
         bins: {
           q: 'Welke tussenklank kiest de familie meestal?',
           bins: ['meestal -en-', 'meestal -s-', 'meestal niets'],
           items: [
             { thing: 'kip', bin: 0, note: 'kippensoep, kippenhok, kippenvel. Een uitzondering is kipfilet.' },
-            { thing: 'ster', bin: 0, note: 'sterrenhemel, sterrenbeeld, sterrenkunde: de familie is bijna eensgezind.' },
+            {
+              thing: 'ster',
+              bin: 0,
+              note: 'sterrenhemel, sterrenbeeld, sterrenkunde, sterrenwacht. Daarnaast bestaat sterspeler: ook deze familie is niet helemaal eensgezind.',
+            },
             { thing: 'pan', bin: 0, note: 'pannenkoek, pannenlap, pannenset. Ook als er maar één pan bedoeld is.' },
             { thing: 'visser', bin: 1, note: 'vissersboot, vissersdorp, vissershaven. Persoonsnamen op -er kiezen vaak een s: bakkerswinkel, lezersbrief.' },
             {
@@ -56,7 +60,7 @@ export const ONDERZOEK_D10: StepInput[] = [
               note: 'huiskamer, huisarts, huiswerk. Maar huizenmarkt en huizenprijzen: als het meervoud echt bedoeld is, wint -en-.',
               hint: 'Denk aan huiskamer, huisarts en huiswerk.',
             },
-            { thing: 'kasteel', bin: 2, note: 'kasteeltuin, kasteelheer, kasteelmuur: nooit iets ertussen.' },
+            { thing: 'kasteel', bin: 2, note: 'kasteeltuin, kasteelheer, kasteelmuur: de familie zet er niets tussen.' },
             {
               thing: 'glas',
               bin: 2,
@@ -156,11 +160,29 @@ export const ONDERZOEK_D10: StepInput[] = [
         fix: 'liefde is vrouwelijk en kreeg nooit een naamvals-s; de s kwam door analogie',
         why: 'Vergelijk de macht der gewoonte: een vrouwelijk woord zonder s.',
       },
-      { t: 'In vrijheids- en onafhankelijkheidsstrijd blijft de tussen-s bij het eerste deel.', ok: true, why: 'Dat laat zien dat de tussenklank qua vorm bij het eerste deel hoort.' },
-      { t: 'Huilebalk krijgt geen n omdat huil een werkwoordstam is.', ok: true, why: 'Een werkwoord heeft geen meervoud; de -en-regel geldt alleen voor zelfstandige naamwoorden.' },
-      { t: 'In rodekool is de e een tussenklank.', ok: false, fix: 'het is de buigings-e van rood', why: 'de rode kool: het bijvoeglijk naamwoord is gebogen.' },
+      {
+        t: 'In vrijheids- en onafhankelijkheidsstrijd blijft de tussen-s bij het eerste deel.',
+        ok: true,
+        why: 'Dat laat zien dat de tussenklank qua vorm bij het eerste deel hoort.',
+      },
+      {
+        t: 'Huilebalk krijgt geen n omdat huil een werkwoordstam is.',
+        ok: true,
+        why: 'Een werkwoord heeft geen meervoud; de -en-regel geldt alleen voor zelfstandige naamwoorden.',
+      },
+      {
+        t: 'In rodekool is de e een tussenklank.',
+        ok: false,
+        fix: 'het is de buigings-e van rood',
+        why: 'de rode kool: het bijvoeglijk naamwoord is gebogen.',
+      },
       { t: 'De familie van huis kiest meestal niets, maar huizenmarkt heeft toch -en-.', ok: true, why: 'Als het meervoud echt bedoeld is, wint -en-.' },
-      { t: 'De familie van het eerste deel legt de tussenklank altijd helemaal vast.', ok: false, fix: 'een familie geeft een kans, geen zekerheid', why: 'kippensoep naast kipfilet, huiskamer naast huizenmarkt.' },
+      {
+        t: 'De familie van het eerste deel legt de tussenklank altijd helemaal vast.',
+        ok: false,
+        fix: 'een familie geeft een kans, geen zekerheid',
+        why: 'kippensoep naast kipfilet, huiskamer naast huizenmarkt.',
+      },
     ],
   },
 ];

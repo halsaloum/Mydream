@@ -25,7 +25,7 @@ export const ONDERZOEK_W15: StepInput[] = [
         },
       },
       {
-        text: 'Hoe komen rollen op hun plek? Mark Baker (1988) stelde de *UTAH* voor, de *Uniformity of Theta Assignment Hypothesis*: dezelfde rol staat onderliggend altijd op dezelfde plek. Een thema hoort op de plek van het lijdend voorwerp. Dan moet *het glas* in *Het glas breekt* onderliggend lijdend voorwerp zijn, ook al staat het vooraan als onderwerp. Dat is precies de analyse van onaccusatieve werkwoorden uit w16.',
+        text: 'Hoe komen rollen op hun plek? Mark Baker (1988) stelde de *UTAH* voor, de *Uniformity of Theta Assignment Hypothesis*: dezelfde rol staat onderliggend altijd op dezelfde plek. Een thema hoort op de plek van het lijdend voorwerp. Dan moet *het glas* in *Het glas breekt* onderliggend lijdend voorwerp zijn, ook al staat het vooraan als onderwerp. Dat is precies de analyse van onaccusatieve werkwoorden (zie w16).',
         rule: 'UTAH: zelfde rol, zelfde onderliggende plek. Een thema als onderwerp is een verschoven lijdend voorwerp.',
         quiz: {
           q: 'Volgens de UTAH: waar begint ‘het ijs’ in ‘Het ijs smelt’?',
@@ -50,10 +50,10 @@ export const ONDERZOEK_W15: StepInput[] = [
               ],
             },
             {
-              label: 'bevallen: Die film bevalt me.',
+              label: 'bevallen: Dat boek bevalt me.',
               cells: [
                 { fill: 'meewerkend voorwerp', hint: 'Een passief kan niet. Me is hier meewerkend voorwerp, net als bij piacere.' },
-                { fill: 'is', hint: 'Die film is me goed bevallen.' },
+                { fill: 'is', hint: 'Dat boek is me goed bevallen.' },
               ],
             },
             {
@@ -141,7 +141,7 @@ export const ONDERZOEK_W15: StepInput[] = [
     id: 'beplanten',
     prompt: 'Maak de be-variant: de plaats wordt lijdend voorwerp.',
     source: 'Ze plant tulpen in de border.',
-    accept: ['Ze beplant de border met tulpen.'],
+    accept: ['Ze beplant de border met tulpen.', 'De border beplant ze met tulpen.'],
     why: 'be- maakt van de border het lijdend voorwerp, en tulpen schuift naar een met-groep. Nu staat de hele border vol: het holistische effect.',
   },
   {
@@ -156,7 +156,11 @@ export const ONDERZOEK_W15: StepInput[] = [
         why: 'Een bepaalde lege plek: de context vult hem in. Dat is het verschil met Anna at.',
       },
       { t: 'Verslinden kan zijn lijdend voorwerp niet missen.', ok: true, why: 'Anna verslond is onaf.' },
-      { t: 'Volgens de UTAH begint het glas in Het glas breekt op de plek van het lijdend voorwerp.', ok: true, why: 'Zelfde rol als in Ik breek het glas, dus zelfde onderliggende plek.' },
+      {
+        t: 'Volgens de UTAH begint het glas in Het glas breekt op de plek van het lijdend voorwerp.',
+        ok: true,
+        why: 'Zelfde rol als in Ik breek het glas, dus zelfde onderliggende plek.',
+      },
       {
         t: 'Vrezen en beangstigen zetten de ervaarder op dezelfde plek.',
         ok: false,

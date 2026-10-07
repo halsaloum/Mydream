@@ -57,10 +57,10 @@ export const ONDERZOEK_W7: StepInput[] = [
   {
     kind: 'bet',
     id: 'kupado',
-    prompt: 'Na twee minuten bidakupadotigolabu… hoort een baby twee stukken. Naar welk stuk luistert hij langer?',
-    options: ['kupado', 'bidaku', 'allebei even lang'],
-    answer: 'kupado',
-    why: 'Bidaku kent hij al: een woord uit de stroom. Kupado loopt over een woordgrens (ku + pado) en is daardoor nieuw. Baby’s luisteren langer naar wat nieuw is; zo zag Saffran dat ze de woorden gevonden hadden.',
+    prompt: 'Na twee minuten bidakupadotigolabu… hoort een baby twee losse stukken. Naar welk stuk luistert hij langer?',
+    options: ['tigola', 'padoti', 'allebei even lang'],
+    answer: 'tigola',
+    why: 'Padoti kent hij al: een woord uit de stroom. Tigola loopt over een woordgrens (ti + gola) en is daardoor nieuw. Baby’s luisteren langer naar wat nieuw is; zo zag Saffran dat ze de woorden gevonden hadden.',
   },
   {
     kind: 'type',
@@ -104,13 +104,41 @@ export const ONDERZOEK_W7: StepInput[] = [
     id: 'eilanden',
     prompt: 'Klopt deze zin?',
     cards: [
-      { t: 'In gewone spraak zitten pauzes tussen de woorden.', ok: false, fix: 'Meestal loopt de stroom gewoon door', why: 'Daarom moet een luisteraar zelf knippen, net als de baby’s van Saffran.' },
-      { t: 'Baby’s van acht maanden kunnen woorden vinden door bij te houden welke lettergrepen samen voorkomen.', ok: true, why: 'Na twee minuten luisteren herkenden ze de woorden van de kunsttaal.' },
-      { t: 'Volgens Postal wijst een voornaamwoord makkelijk naar een stuk binnen een woord.', ok: false, fix: 'Volgens Postal juist niet: woorden zijn anaforische eilanden', why: 'Hij is theedrinker, maar hij vindt hem te heet: hem als thee klinkt vreemd.' },
-      { t: 'Ward, Sproat en McKoon vonden echte zinnen die toch naar een stuk in een woord verwijzen.', ok: true, why: 'Daarom zagen zij het als een kwestie van zichtbaarheid, niet als een harde regel.' },
+      {
+        t: 'In gewone spraak zit tussen elke twee woorden een pauze.',
+        ok: false,
+        fix: 'Meestal loopt de stroom gewoon door',
+        why: 'Daarom moet een luisteraar zelf knippen, net als de baby’s van Saffran.',
+      },
+      {
+        t: 'Baby’s van acht maanden kunnen woorden vinden door bij te houden welke lettergrepen samen voorkomen.',
+        ok: true,
+        why: 'Na twee minuten luisteren herkenden ze de woorden van de kunsttaal.',
+      },
+      {
+        t: 'Volgens Postal wijst een voornaamwoord makkelijk naar een stuk binnen een woord.',
+        ok: false,
+        fix: 'Volgens Postal juist niet: woorden zijn anaforische eilanden',
+        why: 'Hij is theedrinker, maar hij vindt hem te heet: hem als thee klinkt vreemd.',
+      },
+      {
+        t: 'Ward, Sproat en McKoon vonden echte zinnen die toch naar een stuk in een woord verwijzen.',
+        ok: true,
+        why: 'Daarom zagen zij het als een kwestie van zichtbaarheid, niet als een harde regel.',
+      },
       { t: 'In blijf-van-mijn-lijfhuis is het eerste deel een hele zin.', ok: true, why: 'Een gebiedende wijs met een voorzetselgroep.' },
-      { t: 'Lieber zag woordgroepsamenstellingen als bewijs dat woordbouw en zinsbouw strikt gescheiden zijn.', ok: false, fix: 'Juist als bewijs dat ze niet strikt gescheiden zijn', why: 'De zinsbouw levert hier een stuk aan de woordbouw.' },
-      { t: 'Een snelle trein is altijd een sneltrein.', ok: false, fix: 'Een snelle trein is elke trein die hard rijdt', why: 'Sneltrein is een soort trein, met de klemtoon op snel.' },
+      {
+        t: 'Lieber zag woordgroepsamenstellingen als bewijs dat woordbouw en zinsbouw strikt gescheiden zijn.',
+        ok: false,
+        fix: 'Juist als bewijs dat ze niet strikt gescheiden zijn',
+        why: 'De zinsbouw levert hier een stuk aan de woordbouw.',
+      },
+      {
+        t: 'Een snelle trein is altijd een sneltrein.',
+        ok: false,
+        fix: 'Een snelle trein is elke trein die hard rijdt',
+        why: 'Sneltrein is een soort trein, met de klemtoon op snel.',
+      },
     ],
   },
 ];

@@ -1,4 +1,264 @@
 import type { StepInput } from '../../schema';
 
 /** Onderzoek bij w9: een derde uitlegronde op onderzoeksniveau, daarna zwaardere oefeningen. */
-export const ONDERZOEK_W9: StepInput[] = [];
+export const ONDERZOEK_W9: StepInput[] = [
+  {
+    kind: 'explain',
+    id: 'onderzoek',
+    title: 'Wat het nieuwe woord betekent, en welke kant de pijl op wijst',
+    panels: [
+      {
+        text: 'Wat betekent een werkwoord dat uit een naamwoord komt? Eve Clark en Herbert Clark (1979) bekeken meer dan duizend nieuwe Engelse gevallen en zagen: dat hangt af van de rol die het ding speelt. Bij *hameren* is de hamer het gereedschap. Bij *zouten* doe je zout ergens op. Bij *potten* zet je iets in een pot. Bij *vissen* is de vis wat je wilt vangen. Het werkwoord zelf zegt niet welke rol: dat vult de luisteraar in met wat hij van het ding weet. Een fiets is om op te rijden, dus *fietsen* is rijden op een fiets, niet een fiets slaan.',
+        rule: 'Een werkwoord uit een naamwoord betekent: doen wat je met dat ding gewoonlijk doet. De rol van het ding vul je zelf in.',
+        cast: {
+          q: 'Tik aan wat de opdracht vraagt',
+          rounds: [
+            {
+              text: 'naam + -en = werkwoord?',
+              ask: 'Tik elk ding waarvan de naam ook een werkwoord is geworden',
+              cast: ['vis', 'zon', 'boek', 'huis', 'ster', 'kip'],
+              answer: ['vis', 'zon', 'boek', 'huis'],
+              focus: 'vis',
+              then: { q: 'Welke rol heeft de vis in vissen?', options: ['wat je wilt vangen', 'het gereedschap', 'de plaats'], answer: 'wat je wilt vangen' },
+              note: 'Vier dingen, vier rollen. De vis is wat je vangt, de zon is waar je in ligt, het boek is waar je iets in zet (een reis boeken), het huis is waar je zit (het bedrijf huist in Delft). Sterren en kippen: nog geen werkwoord, al zou iedereen begrijpen wat kippen zou betekenen.',
+            },
+            {
+              text: 'Ik heb vanmiddag heerlijk gezond.',
+              ask: 'Tik aan waar deze zin over gaat',
+              cast: ['zon', 'vis', 'ei', 'glas'],
+              answer: ['zon'],
+              then: {
+                q: 'Wat is gezond in deze zin?',
+                options: ['het voltooid deelwoord van zonnen', 'een bijvoeglijk naamwoord', 'een zelfstandig naamwoord'],
+                answer: 'het voltooid deelwoord van zonnen',
+              },
+              note: 'Zonnen is zwak: zonde, gezond. Zo botst het deelwoord met het bijvoeglijk naamwoord gezond, en de verleden tijd zonde met de zonde uit de kerk. Conversie levert geregeld zulke dubbelgangers op.',
+            },
+            {
+              text: 'Ze heeft het huisje aan zee geboekt.',
+              ask: 'Tik het ding waar dit werkwoord uit komt',
+              cast: ['boek', 'huis', 'boot', 'munten'],
+              answer: ['boek'],
+              then: {
+                q: 'Welke rol speelt het boek in boeken?',
+                options: ['de plaats waar je iets in zet', 'het ding dat je maakt', 'het gereedschap waarmee je slaat'],
+                answer: 'de plaats waar je iets in zet',
+              },
+              note: 'Boeken is in het boek zetten: eerst letterlijk in het reserveringsboek, nu in een database. De rol blijft, ook als er geen boek meer aan te pas komt. Het huis is hier het lijdend voorwerp, niet de bron van het werkwoord.',
+            },
+          ],
+          note: 'Hetzelfde patroon, vier rollen. Welke rol, zegt het werkwoord zelf niet; dat weet je van het ding.',
+        },
+        deep: {
+          q: 'Kan een nieuw werkwoord elke betekenis krijgen?',
+          a: 'In principe ja, zolang spreker en luisteraar dezelfde kennis delen. Clark en Clark noemen zo’n vers gemaakt werkwoord een *contextual*: de context levert de betekenis. Maar zodra een werkwoord gewoon wordt, bevriest de betekenis. *Zonnen* is alleen nog ‘in de zon liggen’, al zou je het ook voor ‘de zon laten schijnen’ kunnen bedenken. Conventie wint het van creativiteit.',
+        },
+      },
+      {
+        text: 'Van een bijvoeglijk naamwoord maak je op twee manieren een werkwoord. Kaal, door conversie: *wit* → *witten*, *droog* → *drogen*. Of met *ver-* erbij: *geel* → *vergelen*, *groot* → *vergroten*, *klein* → *verkleinen*. Opvallend: *groten* en *kleinen* bestaan niet. Het voorvoegsel en de wisseling van woordsoort gebeuren in één klap. De betekenis verschilt ook: de kale vorm is vaak ‘X maken’ (*witten*), de *ver*-vorm ‘X worden’ (*vergelen*) of ‘X-er maken’ (*vergroten*). *Vergulden* komt van het oude bijvoeglijk naamwoord *gulden*, ‘van goud’, dat je nog kent van de munt. Alle vormen zijn zwak, en dat levert spelwerk op: *witte*, *vergeelde*, *verguldde*.',
+        rule: 'Werkwoord uit een bijvoeglijk naamwoord: kaal (*witten*) of met *ver-* (*vergelen*). Altijd zwak: let op de *dd* in *verguldde*.',
+        morph: {
+          q: 'Kies de goede vorm en zie het ding van kleur veranderen',
+          rounds: [
+            {
+              thing: 'huis',
+              from: 'de muur van het huis',
+              ask: 'Maak de muur wit: Gisteren … ik de muur. (witten)',
+              effect: 'kleur',
+              paint: 'wit',
+              options: ['witte', 'wittede', 'witde'],
+              answer: 'witte',
+              note: 'Stam wit + te, want de t zit in ’t kofschip: witte. Dezelfde letters als het bijvoeglijk naamwoord in de witte muur, maar hier een werkwoord.',
+            },
+            {
+              thing: 'boek',
+              from: 'het oude boek',
+              ask: 'Het papier werd geel: Het boek … in de zon. (vergelen)',
+              effect: 'kleur',
+              paint: 'geel',
+              options: ['vergeelde', 'vergeelte', 'vergelede'],
+              answer: 'vergeelde',
+              note: 'ver- plus geel: zo wordt de kleur een werkwoord. Stam vergeel + de, want de l zit niet in ’t kofschip.',
+            },
+            {
+              thing: 'ster',
+              from: 'de ster',
+              ask: 'Ze maakte hem van goud: Ze … de ster. (vergulden)',
+              effect: 'kleur',
+              paint: 'goud',
+              options: ['verguldde', 'vergulde', 'verguldte'],
+              answer: 'verguldde',
+              note: 'Stam verguld + de: twee d’s, net als bij raadde en antwoordde. Het deelwoord heeft er één: verguld.',
+            },
+          ],
+          note: 'Drie kleuren, drie zwakke werkwoorden. Het ding doet wat het werkwoord zegt: het wordt wit, geel of goud.',
+        },
+        deep: {
+          q: 'Is vergelen dan nog conversie?',
+          a: 'Niet zuiver. Er komt een voorvoegsel bij, maar het hoofdwerk is toch de wisseling van bijvoeglijk naamwoord naar werkwoord. In Het betekenisvolle woorddeel zag je dezelfde vraag bij *verfilmen* en *ontbossen*: een voorvoegsel links dat tóch de woordsoort lijkt te bepalen. Sommige morfologen zien *ver-* hier als het hoofd, anderen zien conversie en een voorvoegsel in één stap.',
+        },
+      },
+      {
+        text: 'Soms bedriegt de richting. *Stofzuigen* lijkt een samenstelling van *stof* en *zuigen*, en *stofzuiger* een afleiding daarvan. Historisch is het andersom: eerst was er het woord *zuiger*, toen de *stofzuiger*, en pas daarna knipten sprekers *-er* eraf en kregen we *stofzuigen*. Dat heet *terugvorming*. Zo ook *beeldhouwen* uit *beeldhouwer*. Zulke werkwoorden gedragen zich anders dan scheidbare werkwoorden: *ik stofzuig de kamer*, niet *ik zuig de kamer stof*, en het deelwoord is *gestofzuigd*, met *ge-* vooraan.',
+        rule: 'Terugvorming: het korte woord is het jongste. *Stofzuiger* kwam vóór *stofzuigen*, en het werkwoord valt niet uit elkaar.',
+        bracket: {
+          q: 'Bouw stofzuiger zoals het ontstond',
+          tree: '[stof [zuig er]]',
+          nodes: [
+            { w: 'zuiger', cat: 'zn', note: 'zuig + er: iets wat zuigt. Een pomp heeft een zuiger.' },
+            { w: 'stofzuiger', cat: 'zn (samenstelling)', note: 'stof + zuiger: een zuiger voor stof. Dit woord is ouder dan het werkwoord.' },
+          ],
+          traps: [{ w: 'stofzuig', note: 'Dit werkwoord bestond nog niet. Het werd pas later uit stofzuiger teruggevormd, door -er weg te laten.' }],
+          note: 'Eerst zuiger, dan stofzuiger, en pas daarna stofzuigen. De korte vorm is hier de jongste.',
+        },
+        deep: {
+          q: 'Maar een stofzuiger is toch iets wat stof zuigt?',
+          a: 'Precies, en daarom is de boom omstreden. Qua betekenis past *[[stof zuig] er]*: iets wat stof zuigt. Qua vorm past *[stof [zuig er]]*: een zuiger voor stof, want het werkwoord *stofzuigen* bestond nog niet. Zo’n botsing tussen betekenis en bouw heet een *haakjesparadox*. Dat het werkwoord *stofzuigen* zich als één blok gedraagt, past bij de tweede boom: het is als geheel uit *stofzuiger* gesneden.',
+        },
+      },
+      {
+        text: 'Voor het schrijven is conversie een valkuil. Wie een werkwoord in een naamwoord verstopt (*het indienen van*, *het beoordelen van*), heeft daarna een leeg werkwoord nodig om de zin rond te krijgen: *gebeuren*, *plaatsvinden*, *verrichten*. Jan Renkema noemt dat in de *Schrijfwijzer* *naamwoordstijl*: lange zinnen, veel *van*, en de handelende persoon zakt weg. Zulke zinnen lezen zwaar. Zet het werkwoord terug en zeg wie wat doet. Niet elke naamwoordelijke infinitief is fout: *het lezen* mag, als het over de handeling zelf gaat.',
+        rule: 'Naamwoordstijl: *het indienen van de aanvraag vond plaats* → *de student diende de aanvraag in*.',
+        mark: {
+          q: 'Tik de twee verstopte werkwoorden',
+          sentence: 'Het indienen van de aanvraag door de student gebeurde na het verstrijken van de termijn.',
+          targets: [1, 11],
+          note: 'indienen en verstrijken zijn naamwoord geworden. Terug naar werkwoord: De student diende de aanvraag in nadat de termijn verstreken was. Korter, en je ziet wie wat doet.',
+        },
+        deep: {
+          q: 'Wanneer is een naamwoord wél handig?',
+          a: 'Als de handeling zelf het onderwerp van gesprek is (*Het indienen kost tien minuten*), in koppen en titels, of als je bewust niet wilt zeggen wie het deed. Naamwoordstijl is dus geen fout, maar een keuze die je moet kunnen verantwoorden.',
+        },
+      },
+    ],
+  },
+  {
+    kind: 'sort',
+    id: 'rollen',
+    prompt: 'Welke rol speelt het ding in het werkwoord?',
+    buckets: ['gereedschap', 'je doet het ding ergens op', 'het ding is de plek', 'je vangt of haalt het ding'],
+    items: [
+      { t: 'hameren', b: 0 },
+      { t: 'fietsen', b: 0 },
+      { t: 'zouten', b: 1 },
+      { t: 'verven', b: 1 },
+      { t: 'zadelen', b: 1 },
+      { t: 'potten', b: 2 },
+      { t: 'boeken', b: 2 },
+      { t: 'huizen', b: 2 },
+      { t: 'vissen', b: 3 },
+      { t: 'muizen', b: 3 },
+    ],
+    why: 'Steeds doe je wat je met het ding gewoonlijk doet. Hamer en fiets: gereedschap. Zout, verf en zadel: je doet het ergens op. Pot, boek en huis: daar zet je iets in of daar ben je. Vis en muis: die vang je (katten die muizen, mauwen niet). Zulke rollen onderscheidden Clark en Clark.',
+  },
+  {
+    kind: 'ambiguity',
+    id: 'vissen',
+    prompt: 'Eén vorm, twee woordsoorten',
+    intro: 'Kies een betekenis en zoek de zin die alleen dát kan betekenen.',
+    sentence: 'Ik zag haar vissen.',
+    meanings: [
+      {
+        id: 'ww',
+        label: 'Zij was aan het vissen (werkwoord)',
+        highlight: ['vissen'],
+        right: 'Klopt. Vissen is hier de infinitief, net als in ik zag haar lopen.',
+      },
+      {
+        id: 'zn',
+        label: 'Ik zag de vissen die van haar zijn (naamwoord)',
+        highlight: ['haar vissen'],
+        right: 'Klopt. Haar vissen is een naamwoordgroep: het meervoud van de vis.',
+      },
+    ],
+    options: [
+      { t: 'Ik zag haar vissen, gisteren nog.', fits: null, note: 'Nog steeds allebei mogelijk: er kwam alleen een tijd bij.' },
+      { t: 'Ik zag haar vissen met een hengel aan de steiger.', fits: 'ww' },
+      { t: 'Ik zag haar vissen rondjes zwemmen in de kom.', fits: 'zn' },
+    ],
+    done: {
+      title: 'Twee woordsoorten, één vorm',
+      text: 'vissen is het meervoud van vis én de infinitief van het werkwoord dat eruit is gemaakt. Alleen de omgeving beslist welke van de twee je leest.',
+    },
+  },
+  {
+    kind: 'chat',
+    id: 'huisgenoot',
+    prompt: 'App met je huisgenoot',
+    intro: 'Kies telkens het antwoord met de goede vorm van het werkwoord.',
+    contact: { name: 'Sam', role: 'je huisgenoot', initials: 'S' },
+    rounds: [
+      {
+        say: 'Heb jij de kamer nog gedaan?',
+        options: ['Ja, ik heb net gestofzuigd.', 'Ja, ik heb net stofgezogen.'],
+        right: 0,
+        fix: 'stofgezogen → gestofzuigd',
+        why: 'Stofzuigen is uit stofzuiger teruggevormd en valt niet uit elkaar: ge- komt vooraan, en het is zwak.',
+      },
+      {
+        say: 'En die vlek op de muur in de gang?',
+        options: ['Die heb ik gisteren gewitten.', 'Die heb ik gisteren gewit.'],
+        right: 1,
+        fix: 'gewitten → gewit',
+        why: 'Witten komt van wit en is zwak: witte, gewit. Een deelwoord op -en hoort bij sterke werkwoorden.',
+      },
+      {
+        say: 'Top. Nog iets geregeld voor de vakantie?',
+        options: ['Ja, ik heb het huisje gebookt.', 'Ja, ik heb het huisje geboekt.'],
+        right: 1,
+        fix: 'gebookt → geboekt',
+        why: 'Boeken is een Nederlands werkwoord uit boek: in het boek zetten. Boekte, geboekt.',
+      },
+      {
+        say: 'Haha, en jij? Lekker in de tuin gezeten?',
+        options: ['Ja, ik heb de hele middag gezond.', 'Ja, ik heb de hele middag gezonnen.'],
+        right: 0,
+        fix: 'gezonnen → gezond',
+        why: 'Zonnen komt van zon en is dus zwak: zonde, gezond. Gezonnen zou een sterk deelwoord zijn, zoals gezongen.',
+      },
+    ],
+    bye: 'Gezond én gezond, mooi zo. Ik ga de vissen voeren.',
+  },
+  {
+    kind: 'rewrite',
+    id: 'naamwoordstijl',
+    prompt: 'Haal de naamwoordstijl weg: zet het werkwoord terug en de handelende persoon vooraan.',
+    source: 'Het controleren van de tekst gebeurde door Anna.',
+    accept: ['Anna controleerde de tekst.', 'Anna heeft de tekst gecontroleerd.'],
+    why: 'Het werkwoord komt terug uit het naamwoord, het lege gebeurde verdwijnt, en wie het deed staat vooraan. Van acht woorden naar vier.',
+  },
+  {
+    kind: 'swipe',
+    id: 'richting',
+    prompt: 'Klopt deze zin?',
+    cards: [
+      { t: 'Bij fietsen is de fiets het gereedschap, bij vissen is de vis wat je vangt.', ok: true, why: 'Twee verschillende rollen voor het ding.' },
+      {
+        t: 'Een werkwoord uit een naamwoord zegt zelf welke rol het ding speelt.',
+        ok: false,
+        fix: 'De luisteraar vult de rol in met wat hij van het ding weet',
+        why: 'Een fiets is om op te rijden, dus fietsen is rijden, niet slaan.',
+      },
+      {
+        t: 'Vergroten is gemaakt van het werkwoord groten.',
+        ok: false,
+        fix: 'Groten bestaat niet: ver- en de woordsoortwissel komen in één stap',
+        why: 'Zo ook verkleinen: kleinen bestaat evenmin.',
+      },
+      {
+        t: 'Stofzuigen is ouder dan stofzuiger.',
+        ok: false,
+        fix: 'Stofzuiger is ouder: stofzuigen is een terugvorming',
+        why: 'Sprekers knipten -er van het naamwoord af.',
+      },
+      { t: 'Het voltooid deelwoord van stofzuigen is gestofzuigd.', ok: true, why: 'Het werkwoord is één blok: ge- vooraan, zwak.' },
+      {
+        t: 'Naamwoordstijl is altijd fout.',
+        ok: false,
+        fix: 'Het is een keuze: soms is de handeling zelf het onderwerp',
+        why: 'Het indienen kost tien minuten is prima.',
+      },
+      { t: 'Gezond kan het voltooid deelwoord van zonnen zijn.', ok: true, why: 'Zonnen is zwak: zonde, gezond.' },
+    ],
+  },
+];

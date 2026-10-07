@@ -8,18 +8,24 @@ export const ONDERZOEK_D19: StepInput[] = [
     title: 'Korte woorden, volle grammatica',
     panels: [
       {
-        text: 'Is *prof* een nieuw woord, of een andere vorm van *professor*? Kijk naar de grammatica. Een afkapping erft het lidwoord van haar bronwoord:*het lab* (*het laboratorium*), *het abo* (*het abonnement*), *de uni* (*de universiteit*). Maar het meervoud maakt ze zelf, met de regels voor korte woorden: *profs*, niet *professoren*. Een afkapping is dus een nieuw woord dat iets van zijn bron meeneemt.',
+        text: 'Is *prof* een nieuw woord, of een andere vorm van *professor*? Kijk naar de grammatica. Een afkapping erft het lidwoord van haar bronwoord: *het lab* (*het laboratorium*), *het abo* (*het abonnement*), *de uni* (*de universiteit*). Maar het meervoud maakt ze zelf: *profs*, niet *professoren*. Een afkapping is dus een nieuw woord dat iets van zijn bron meeneemt.',
         rule: 'Een afkapping erft het lidwoord van haar bron, maar buigt als een nieuw kort woord: *het lab*, *de labs*.',
         paradigm: {
           q: 'Vul het meervoud van de afkapping in',
           cols: ['meervoud van de bron', 'meervoud van de afkapping'],
           rows: [
-            { label: 'prof (professor)', cells: ['professoren', { fill: 'profs', hint: 'Een kort woord op een medeklinker: gewoon -s.' }] },
+            {
+              label: 'prof (professor)',
+              cells: ['professoren', { fill: 'profs', hint: 'De afkapping kiest -s, net als labs. Op een medeklinker: geen apostrof.' }],
+            },
             { label: 'lab (laboratorium)', cells: ['laboratoria', { fill: 'labs', hint: 'Niet het Latijnse -a van laboratoria: het korte woord kiest -s.' }] },
-            { label: 'abo (abonnement)', cells: ['abonnementen', { fill: 'abo’s', hint: 'Eindigt op één klinkerletter: een apostrof voor de s, net als foto’s.' }] },
+            {
+              label: 'abo (abonnement)',
+              cells: ['abonnementen', { fill: 'abo’s', hint: 'Eindigt op één klinkerletter: een apostrof voor de s, net als foto’s.' }],
+            },
             { label: 'uni (universiteit)', cells: ['universiteiten', { fill: 'uni’s', hint: 'Eindigt op één klinkerletter: apostrof.' }] },
           ],
-          extra: ['proffen', 'abos', 'unis'],
+          extra: ['prof’s', 'abos', 'unis'],
           note: 'Het lidwoord komt van de bron, het meervoud volgt de vorm van het nieuwe woord: profs, labs, abo’s, uni’s.',
         },
       },
@@ -49,7 +55,7 @@ export const ONDERZOEK_D19: StepInput[] = [
         },
       },
       {
-        text: 'Het eindpunt: het letterwoord wordt een gewoon woord, en niemand ziet de letters nog. *Radar*, *laser* en *aids* waren Engelse letterwoorden; nu schrijf je ze klein, als soortnaam. *Pin* (persoonlijk identificatienummer) werd zelfs een werkwoord: *pinnen*, *ik pin*, *gepind*. *Sms* gaat dezelfde weg: *sms’en*, nog met een apostrof, omdat je het letter voor letter zegt. Tik de woorden die als letterwoord begonnen.',
+        text: 'Het eindpunt: het letterwoord wordt een gewoon woord, en niemand ziet de letters nog. *Radar*, *laser* en *aids* waren Engelse letterwoorden; nu schrijf je ze klein, als soortnaam. *Pin* (uit het Engelse *personal identification number*) werd zelfs een werkwoord: *pinnen*, *ik pin*, *gepind*. *Sms* gaat dezelfde weg: *sms’en*, nog met een apostrof, omdat je het letter voor letter zegt. Tik de woorden die als letterwoord begonnen.',
         rule: 'Een letterwoord kan een gewoon woord worden: klein geschreven, en zelfs een werkwoord (*pinnen*).',
         mark: {
           q: 'Tik de woorden die als letterwoord begonnen',
@@ -136,8 +142,13 @@ export const ONDERZOEK_D19: StepInput[] = [
       { t: 'Het meervoud van prof is professoren, net als bij het bronwoord.', ok: false, fix: 'profs', why: 'Het meervoud maakt de afkapping zelf.' },
       { t: 'In btw valt de klemtoon op de b.', ok: false, fix: 'op de w: bee-tee-WEE', why: 'Initiaalwoorden krijgen de klemtoon achteraan.' },
       { t: 'Een lid van de VVD is een VVD’er.', ok: true, why: 'Letterwoord letter voor letter + -er: een apostrof.' },
-      { t: 'Laser schrijf je met hoofdletters, omdat het een letterwoord is.', ok: false, fix: 'laser is een gewoon woord geworden: klein', why: 'Niemand kent de letters nog; het is een soortnaam.' },
-      { t: 'Pinnen begon als letterwoord.', ok: true, why: 'Pin: persoonlijk identificatienummer. Nu een gewoon werkwoord: gepind.' },
+      {
+        t: 'Laser schrijf je met hoofdletters, omdat het een letterwoord is.',
+        ok: false,
+        fix: 'laser is een gewoon woord geworden: klein',
+        why: 'Niemand kent de letters nog; het is een soortnaam.',
+      },
+      { t: 'Pinnen begon als letterwoord.', ok: true, why: 'Pin: personal identification number. Nu een gewoon werkwoord: gepind.' },
     ],
   },
 ];

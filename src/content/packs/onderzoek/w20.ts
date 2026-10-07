@@ -9,7 +9,7 @@ export const ONDERZOEK_W20: StepInput[] = [
     panels: [
       {
         text: 'Waar zit *ge-* in *opgebeld*? Niet vooraan, maar tussen *op* en *bellen*. Dat is al een aanwijzing dat *op* buiten het werkwoord staat. In een bijzin zie je het nog duidelijker. Naast *dat hij me heeft opgebeld* kan ook *dat hij me op heeft gebeld*. Het partikel springt over het hulpwerkwoord heen, en *ge-* blijft netjes bij *bellen*. *Opgebeld* is dus eigenlijk *op* plus *gebeld*. De spelling schrijft die twee alleen aan elkaar als ze naast elkaar staan.',
-        rule: 'ge- hoort bij de stam, niet bij het partikel: op + gebeld. Daarom kan het partikel weglopen.',
+        rule: 'ge- hoort bij de stam, niet bij het partikel: op + gebeld. Het partikel kan dus weglopen; ge- blijft bij bellen.',
         lab: {
           label: 'Tik een bijzin',
           chips: [
@@ -21,7 +21,7 @@ export const ONDERZOEK_W20: StepInput[] = [
         },
       },
       {
-        text: 'Toch gedraagt *uitvoeren* zich in de woordvorming als één woord. *Uitvoerbaar* betekent ‘kan uitgevoerd worden’, niet ‘kan gevoerd worden, uit’. Het achtervoegsel *-baar* plakt dus aan het hele partikelwerkwoord. Zo ook *aanbieder*, *opzegging* en *onuitvoerbaar*. De zinsbouw haalt het werkwoord uit elkaar, de woordvorming pakt het als één stam. Dat is precies wat Geert Booij (2010) met een *constructie* bedoelt: één eenheid in het lexicon, met twee stukken in de zin.',
+        text: 'Toch gedraagt *uitvoeren* zich in de woordvorming als één woord. *Uitvoerbaar* betekent ‘kan uitgevoerd worden’, niet ‘kan gevoerd worden, uit’. Het achtervoegsel *-baar* plakt dus aan het hele partikelwerkwoord. Zo ook *aanbieder*, *opzegging* en *onuitvoerbaar*. De zinsbouw haalt het werkwoord uit elkaar, de woordvorming pakt het als één stam. Zo krijgt de *constructie* van Geert Booij (2010) uit de les een harde toets: wat als stam voor *-baar* en *-ing* dient, is in je hoofd één geheel.',
         bracket: {
           q: 'Bouw onuitvoerbaar van binnen naar buiten',
           tree: '[on [[uit voer] baar]]',
@@ -34,11 +34,11 @@ export const ONDERZOEK_W20: StepInput[] = [
             { w: 'voerbaar', note: 'Voerbaar zou ‘kan gevoerd worden’ zijn. De betekenis is uitvoeren, dus uit hoort er eerst bij.' },
             { w: 'onuit', note: 'on- plakt aan een bijvoeglijk naamwoord, niet aan een partikel.' },
           ],
-          note: 'In de zin staat het werkwoord in twee stukken (ik voer het uit), maar de woordvorming ziet één stam. Een woordgroep zou dat niet kunnen.',
+          note: 'In de zin staat het werkwoord in twee stukken (ik voer het uit), maar de woordvorming ziet één stam. Een gewone woordgroep kan dat niet.',
         },
       },
       {
-        text: 'Arnold Zwicky (1977) onderscheidde *simpele* klitieken, die gewoon op de plek van het volle woord staan, en *speciale*, met een eigen plek. De Nederlandse zwakke voornaamwoorden zijn verrassend speciaal. *’m* moet vóór een bijwoord: *Ik heb ’m gisteren gezien*, niet (fout) *Ik heb gisteren ’m gezien*. Het zwakke *het* komt vóór het meewerkend voorwerp: *Ik heb het hem gegeven*, niet (fout) *Ik heb hem het gegeven*. En *ie* kan nooit vooraan: *Komt ie?* wel, (fout) *Ie komt* niet. Het volle *hem* mag wél vooraan: *Hem heb ik gezien.*',
+        text: 'Arnold Zwicky (1977) onderscheidde *simpele* klitieken, die gewoon op de plek van het volle woord staan, en *speciale*, met een eigen plek. De Nederlandse zwakke voornaamwoorden staan lang niet altijd op de plek van het volle woord. *’m* moet vóór een bijwoord: *Ik heb ’m gisteren gezien*, niet (fout) *Ik heb gisteren ’m gezien*. Het zwakke *het* komt vóór het meewerkend voorwerp: *Ik heb het hem gegeven*, niet (fout) *Ik heb hem het gegeven*. En *ie* kan nooit vooraan: *Komt ie?* wel, (fout) *Ie komt* niet. Het volle *hem* mag wél vooraan: *Hem heb ik gezien.*',
         rule: 'Zwakke voornaamwoorden hebben een eigen plek: vroeg in het middenveld, en niet op plek 1 (behalve een onderwerp als ’k of ze).',
         swap: {
           goal: 'Zet de klitiek op zijn eigen plek',
@@ -70,8 +70,8 @@ export const ONDERZOEK_W20: StepInput[] = [
       { a: 'plaats', b: 'gevonden', joined: true, tip: 'plaatsgevonden: plaatsvinden is één scheidbaar werkwoord.' },
       { a: 'kennis', b: 'gemaakt', joined: true, tip: 'kennisgemaakt, net als kennismaken.' },
       { a: 'goed', b: 'keuren', joined: true, tip: 'goedkeuren: toestemming geven, één werkwoord.' },
-      { a: 'goed', b: 'schrijven', joined: false, tip: 'Ze kan goed schrijven: goed is een gewoon bijwoord.' },
-      { a: 'teleur', b: 'gesteld', joined: true, tip: 'teleurgesteld: teleur bestaat niet los.' },
+      { a: 'goed', b: 'zingen', joined: false, tip: 'Ze kan goed zingen: goed is een gewoon bijwoord, geen partikel.' },
+      { a: 'teleur', b: 'gesteld', joined: true, tip: 'teleurgesteld: teleur kent geen eigen leven buiten dit werkwoord, en toch gaat het los: ik stel je teleur.' },
       { a: 'terug', b: 'te geven', joined: false, tip: 'terug te geven: te staat ertussen.' },
       { a: 'in', b: 'gelogd', joined: true, tip: 'ingelogd: ook een leenwerkwoord wordt een partikelwerkwoord.' },
     ],
@@ -116,7 +116,7 @@ export const ONDERZOEK_W20: StepInput[] = [
       { t: 'zette' },
       { t: 'de' },
       { t: 'buurman' },
-      { t: 'z’n' },
+      { t: 'zijn' },
       { t: 'auto' },
       { t: 'voor' },
       { t: 'mijn' },

@@ -1,4 +1,185 @@
 import type { StepInput } from '../../schema';
 
 /** Onderzoek bij d7: een derde uitlegronde op onderzoeksniveau, daarna zwaardere oefeningen. */
-export const ONDERZOEK_D7: StepInput[] = [];
+export const ONDERZOEK_D7: StepInput[] = [
+  {
+    kind: 'explain',
+    id: 'onderzoek',
+    title: 'Het hoofd als bundel kenmerken',
+    panels: [
+      {
+        text: 'Waar het meervoud zit, verraadt het hoofd. Een *procureur-generaal* is een procureur, dus *procureurs-generaal*; zo ook *secretarissen-generaal*, *officieren van justitie* en *ministers van Staat*. Het hoofd staat links en het meervoud gaat erheen, net als het lidwoord bij *het kabinet-Rutte*. Bij *oud-leerling* en *ex-minister* landt het meervoud rechts: *oud-leerlingen*, *ex-ministers*. Toch is een ex-minister geen minister meer: de is-een-toets faalt, maar meervoud en lidwoord komen gewoon van rechts. Arnold Zwicky (1985) liet voor de zin zien dat de toetsen voor ‘hoofd’ niet altijd naar hetzelfde woord wijzen. In een woord is het niet anders: ‘hoofd’ is een bundel kenmerken, zoals woordsoort, lidwoord, meervoud en betekenis. Meestal wijzen ze naar hetzelfde deel. De boeiende gevallen zijn die waar ze uit elkaar lopen.',
+        rule: 'Het meervoud zit op het hoofd: *procureurs-generaal* (hoofd links), *oud-leerlingen* (hoofd rechts).',
+        paradigm: {
+          q: 'Zet het meervoud op het hoofd',
+          cols: ['meervoud'],
+          rows: [
+            { label: 'procureur-generaal', cells: [{ fill: 'procureurs-generaal', hint: 'Een procureur-generaal is een procureur, geen generaal.' }] },
+            { label: 'secretaris-generaal', cells: [{ fill: 'secretarissen-generaal', hint: 'Een soort secretaris: het meervoud gaat naar links.' }] },
+            { label: 'officier van justitie', cells: [{ fill: 'officieren van justitie', hint: 'Het hoofd is officier; van justitie is de nabepaling.' }] },
+            { label: 'oud-leerling', cells: [{ fill: 'oud-leerlingen', hint: 'oud- staat ervoor; leerling krijgt het meervoud.' }] },
+            { label: 'ex-minister', cells: [{ fill: 'ex-ministers', hint: 'ex- is een voorvoegsel; minister krijgt het meervoud.' }] },
+          ],
+          extra: ['procureur-generaals', 'secretaris-generalen', 'officier van justities', 'oud-leerlings'],
+          note: 'Drie keer links, twee keer rechts. Het meervoud landt op het hoofd, ook bij ex-minister, al is een ex-minister geen minister meer.',
+        },
+        deep: {
+          q: 'Waarom staat het hoofd daar links?',
+          a: 'Omdat het versteende woordgroepen zijn, net als het Franse *pomme de terre*. *Procureur-generaal* houdt de Franse volgorde (*procureur général*). In *officier van justitie* staat de nabepaling achter de kern, zoals in elke Nederlandse woordgroep: *de officier van de rechtbank*. Zo’n groep die als één naam ging werken, hield zijn oude bouw, met de kern links. Een gewone samenstelling is van meet af aan een woord, en daar geldt de rechterhoofdregel.',
+        },
+      },
+      {
+        text: 'Ook een leenwoord krijgt zijn lidwoord vaak via een hoofd, maar dan via de vertaling ervan. *Weekend* is *het weekend*, want *end* is *het einde*. Zo ook *het keyboard* en *het dashboard* (*het bord*) en *het e-book* (*het boek*), maar *de smartphone* (*de telefoon*). Zonder zo’n herkenbaar hoofd wordt een leenwoord meestal een *de*-woord: *de computer*, *de website*. Percolatie werkt dus zelfs door een taalgrens heen: het lidwoord van het Nederlandse hoofd sijpelt omhoog in een Engels woord.',
+        rule: 'Een leenwoord met een herkenbaar hoofd krijgt vaak het lidwoord van de Nederlandse vertaling van dat hoofd; anders meestal *de*.',
+        lab: {
+          label: 'Tik een leenwoord',
+          chips: [
+            { k: 'weekend', out: 'het weekend', note: 'end is einde, en het is het einde.' },
+            { k: 'keyboard', out: 'het keyboard', note: 'board is bord: het bord.' },
+            { k: 'smartphone', out: 'de smartphone', note: 'phone is telefoon: de telefoon.' },
+            { k: 'e-book', out: 'het e-book', note: 'book is boek: het boek.' },
+            { k: 'website', out: 'de website', note: 'site heeft geen vast Nederlands hoofd. Dan wint de standaard: de.' },
+          ],
+        },
+        deep: {
+          q: 'Waarom is de de standaard?',
+          a: 'Omdat *de* in het Nederlands de grote groep is en *het* de kleine. Kinderen die Nederlands leren, zeggen lang *de* bij alles (*de huis*), en volwassen leerders vaak ook. Een nieuw woord zonder duidelijk hoofd gaat daarom naar de grote groep. Blijft het hoofd herkenbaar, dan wint het hoofd.',
+        },
+      },
+      {
+        text: 'Het sterkste hoofd van het Nederlands is *-je*. Het maakt een *het*-woord van alles wat het tegenkomt, ook van stukken die geen zelfstandig naamwoord zijn. *Onder ons* wordt *het onderonsje*, het bijwoord *om* wordt *het ommetje*, *uit* wordt *het uitje*, *toe* wordt *het toetje*, en de telwoorden in *een-twee* worden *het een-tweetje*. Een voorzetselgroep, een bijwoord, een telwoord: *-je* legt zijn woordsoort en lidwoord op, en het meervoud volgt het hoofd: *onderonsjes*, *uitjes*. De rechterhoofdregel in zijn zuiverste vorm.',
+        rule: 'Een achtervoegsel is het hoofd van alles waar het aan plakt, ook van een woordgroep of een bijwoord.',
+        build: {
+          before: 'Een vertrouwelijk gesprek onder ons is een…',
+          stem: 'onderons',
+          endings: ['je', 'tje', 'etje', 'pje'],
+          answer: 'je',
+          note: 'Na een s komt -je: onderonsje. Het hele stuk onder ons is de basis; -je is het hoofd en maakt er een het-woord van. Meervoud: onderonsjes.',
+        },
+        deep: {
+          q: 'Kan een voorvoegsel dat ook?',
+          a: 'Zelden. *on-* laat de woordsoort met rust (*onaardig* blijft bijvoeglijk) en *her-* ook (*herlezen* blijft een werkwoord). De uitzonderingen zijn *be-*, *ver-*, *ont-* en *ge-*: *bebossen* maakt een werkwoord van *bos*, *het gezeur* een zelfstandig naamwoord van *zeuren*. Over die eigenwijze voorvoegsels gaat de les Be-, ver-, ont-.',
+        },
+      },
+      {
+        text: 'Meestal lopen de kenmerken netjes samen, maar niet altijd. *Blik* is *de blik*, en toch is het *het ogenblik*. *Stip* is *de stip*, en toch *het tijdstip*. Het meervoud volgt wel gewoon het rechterdeel (*ogenblikken*, *tijdstippen*) en de woordsoort ook. Het rechterdeel heeft hier dus zijn meervoud en zijn woordsoort doorgegeven, maar zijn lidwoord niet. Zulke woorden zijn oud en zeldzaam; de taal bewaart ze als uitzondering in het geheugen. Ze laten zien dat ‘hoofd’ geen ondeelbaar ding is, maar een bundel kenmerken die soms rafelt.',
+        rule: 'Bij *het ogenblik* en *het tijdstip* geeft het rechterdeel meervoud en woordsoort door, maar niet zijn lidwoord.',
+        quiz: {
+          q: 'Welk kenmerk van blik komt in ogenblik niet mee?',
+          options: ['het lidwoord: de blik, maar het ogenblik', 'het meervoud', 'de woordsoort'],
+          answer: 'het lidwoord: de blik, maar het ogenblik',
+          why: 'ogenblikken en zelfstandig naamwoord komen gewoon van blik. Alleen het lidwoord wijkt af: een oude uitzondering die je uit je hoofd moet kennen.',
+        },
+        deep: {
+          q: 'En de exocentrische samenstellingen?',
+          a: 'Bij *dikkop* en *roodborst* (zie Samenstellingen zonder einde) ontbreekt het betekenishoofd: een dikkop is geen kop. Maar lidwoord en meervoud komen gewoon van rechts: *de dikkop*, *dikkoppen*. Daar rafelt de bundel aan de kant van de betekenis; bij *ogenblik* aan de kant van het lidwoord. Dat is het punt van Zwicky, toegepast op het woord: de kenmerken kunnen los van elkaar uitvallen.',
+        },
+      },
+    ],
+  },
+  {
+    kind: 'type',
+    id: 'justitie',
+    prompt: 'Typ het meervoud.',
+    before: 'De twee',
+    after: 'bespraken de zaak.',
+    hint: 'officier van justitie',
+    answer: 'officieren van justitie',
+    why: 'Het hoofd is officier, en daar zit het meervoud. Van justitie is een nabepaling en blijft zoals hij is.',
+  },
+  {
+    kind: 'proofread',
+    id: 'redactie',
+    prompt: 'Lees de tekst na',
+    intro: 'Er staan vier fouten in lidwoord of meervoud. Tik ze aan.',
+    tokens: [
+      { t: 'Op' },
+      { t: 'de', fix: 'het', why: 'het ogenblik: een oude uitzondering, het lidwoord komt niet van de blik.' },
+      { t: 'ogenblik' },
+      { t: 'dat' },
+      { t: 'de' },
+      { t: 'procureur-generaals', fix: 'procureurs-generaal', why: 'Een procureur-generaal is een procureur: het meervoud gaat naar het hoofd, links.' },
+      { t: 'in' },
+      { t: 'de', fix: 'het', why: 'het weekend: via het hoofd end, en het is het einde.' },
+      { t: 'weekend' },
+      { t: 'hun' },
+      { t: 'onderonsje' },
+      { t: 'begonnen,' },
+      { t: 'viel' },
+      { t: 'de', fix: 'het', why: 'het keyboard: board is bord, en het is het bord.' },
+      { t: 'keyboard' },
+      { t: 'van' },
+      { t: 'de' },
+      { t: 'tafel.' },
+    ],
+    done: {
+      title: 'Vier hoofden gevonden',
+      text: 'Het ogenblik en het weekend en het keyboard: drie keer een lidwoord dat van ergens anders komt dan je denkt. En procureurs-generaal: het meervoud op het hoofd, links. Het onderonsje was al goed: -je is het hoofd.',
+    },
+  },
+  {
+    kind: 'bet',
+    id: 'flexboard',
+    prompt: 'Een verzonnen leenwoord: een ‘flexboard’, een buigbare plank. De of het?',
+    options: ['het', 'de'],
+    answer: 'het',
+    why: 'board is bord, en het is het bord: het flexboard, net als het keyboard, het skateboard en het dashboard. Het hoofd wijst de weg, ook door een taalgrens heen.',
+  },
+  {
+    kind: 'sort',
+    id: 'meervoud-waar',
+    prompt: 'Waar komt het meervoud?',
+    buckets: ['op het linkerdeel', 'op het rechterdeel'],
+    items: [
+      { t: 'procureur-generaal', b: 0 },
+      { t: 'secretaris-generaal', b: 0 },
+      { t: 'officier van justitie', b: 0 },
+      { t: 'minister van Staat', b: 0 },
+      { t: 'commissaris van de Koning', b: 0 },
+      { t: 'oud-leerling', b: 1 },
+      { t: 'ex-minister', b: 1 },
+      { t: 'vicevoorzitter', b: 1 },
+      { t: 'zakmes', b: 1 },
+      { t: 'onderonsje', b: 1 },
+    ],
+    why: 'procureurs-generaal, secretarissen-generaal, officieren van justitie, ministers van Staat, commissarissen van de Koning: versteende groepen met de kern links. oud-leerlingen, ex-ministers, vicevoorzitters, zakmessen, onderonsjes: gewone woorden met het hoofd rechts, bij onderonsje het achtervoegsel -je.',
+  },
+  {
+    kind: 'swipe',
+    id: 'bundel',
+    prompt: 'Klopt deze zin?',
+    cards: [
+      {
+        t: 'Het meervoud van procureur-generaal is procureur-generaals.',
+        ok: false,
+        fix: 'procureurs-generaal',
+        why: 'Een procureur-generaal is een procureur: het meervoud zit op het hoofd, links.',
+      },
+      {
+        t: 'Een ex-minister is geen minister meer, en toch krijgt minister het meervoud: ex-ministers.',
+        ok: true,
+        why: 'De is-een-toets faalt, maar meervoud en lidwoord komen van rechts. Hier rafelt de bundel aan de kant van de betekenis.',
+      },
+      { t: 'Weekend is een het-woord omdat end in het Nederlands het einde is.', ok: true, why: 'Het lidwoord van het vertaalde hoofd sijpelt omhoog.' },
+      {
+        t: 'Zonder herkenbaar hoofd wordt een leenwoord meestal een het-woord.',
+        ok: false,
+        fix: 'meestal een de-woord',
+        why: 'de is de grote groep; een nieuw woord zonder hoofd gaat daarheen.',
+      },
+      { t: 'In onderonsje is -je het hoofd van een hele voorzetselgroep.', ok: true, why: 'onder ons is de basis; -je maakt er een het-woord van.' },
+      {
+        t: 'Bij ogenblik komen lidwoord, meervoud en woordsoort allemaal van blik.',
+        ok: false,
+        fix: 'het meervoud en de woordsoort wel, het lidwoord niet',
+        why: 'de blik, maar het ogenblik: de bundel rafelt.',
+      },
+      {
+        t: 'Volgens Zwicky wijzen de toetsen voor hoofd altijd naar hetzelfde deel.',
+        ok: false,
+        fix: 'ze kunnen uit elkaar lopen; hoofd is eerder een bundel kenmerken',
+        why: 'Juist waar ze uit elkaar lopen, zie je dat het er meer dan één zijn.',
+      },
+    ],
+  },
+];

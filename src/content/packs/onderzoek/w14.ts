@@ -9,7 +9,7 @@ export const ONDERZOEK_W14: StepInput[] = [
     panels: [
       {
         text: 'Niet elk woord met meer lezingen is dubbelzinnig. *Tante* kan de zus van je vader of van je moeder zijn, maar dat is één betekenis die gewoon *vaag* is. Arnold Zwicky en Jerrold Sadock (1975) gaven er een toets voor: zet er *en Piet ook* achter. *Ik heb een tante, en Piet ook* mag over twee soorten tantes gaan: vaag. *Ik sta bij de bank, en Piet ook* moet over dezelfde soort bank gaan: ambigu. Dirk Geeraerts (1993) liet zien dat zulke toetsen elkaar soms tegenspreken; de grens is minder scherp dan het woordenboek doet geloven.',
-        rule: 'Vaag: één betekenis met open details. Ambigu: twee betekenissen, en ook moet dezelfde kiezen.',
+        rule: 'Vaag: één betekenis met open details. Ambigu: twee betekenissen, en *ook* moet dezelfde kiezen.',
         lab: {
           label: 'Tik een zin met ook',
           chips: [
@@ -21,7 +21,7 @@ export const ONDERZOEK_W14: StepInput[] = [
         },
       },
       {
-        text: 'Metaforen komen in groepen. George Lakoff en Mark Johnson (1980) lieten zien dat hele domeinen op elkaar worden gelegd. *TIJD IS GELD*: je *bespaart*, *verspilt* en *investeert* tijd. *RUZIE IS OORLOG*: je *valt* een standpunt *aan* en *wint* een discussie; *MEER IS OMHOOG*: prijzen *stijgen*, de werkloosheid *daalt*. Zo wordt polysemie voorspelbaar: wie één woord uit het domein geld op tijd toepast, kan de rest raden.',
+        text: 'Metaforen komen in groepen. George Lakoff en Mark Johnson (1980) lieten zien dat hele domeinen op elkaar worden gelegd. *TIJD IS GELD*: je *bespaart*, *verspilt* en *investeert* tijd. *DISCUSSIE IS OORLOG*: je *valt* een standpunt *aan* en *wint* een discussie. *MEER IS OMHOOG*: prijzen *stijgen*, de werkloosheid *daalt*. Zo wordt polysemie voorspelbaar: wie één woord uit het domein geld op tijd toepast, kan de rest raden.',
         rule: 'Een conceptuele metafoor legt een heel domein over een ander: dan verschuiven veel woorden tegelijk.',
         mark: {
           q: 'Tik de woorden die tijd als geld behandelen',
@@ -41,7 +41,7 @@ export const ONDERZOEK_W14: StepInput[] = [
         },
       },
       {
-        text: 'Hoe tel je betekenissen? Volg *bureau*. In het Frans was *bure* een grove wollen stof, en een tafel die ermee bedekt was, werd een *bureau*. Daarna werd het de kamer met zulke tafels, en ten slotte de instelling die daar werkt: *het reisbureau*. Elke stap is metonymie: het ene hoort bij het andere. Adam Kilgarriff (1997) gaf een artikel de titel *I don’t believe in word senses*: woordenboeken knippen zo’n doorlopende keten in genummerde betekenissen, maar die grenzen leggen ze zelf.',
+        text: 'Hoe tel je betekenissen? Volg *bureau*. In het Frans was *bureau* eerst een grove wollen stof (van *bure*), daarna een tafel die ermee bedekt was. Toen werd het de kamer met zulke tafels, en ten slotte de instelling die daar werkt: *het reisbureau*. Elke stap is metonymie: het ene hoort bij het andere. Adam Kilgarriff (1997) gaf een artikel de titel *I don’t believe in word senses*: woordenboeken knippen zo’n doorlopende keten in genummerde betekenissen, maar die grenzen leggen ze zelf.',
         rule: 'Betekenissen vormen vaak een keten, geen rijtje losse vakjes.',
         swap: {
           goal: 'Zet de betekenissen van bureau in de volgorde van de geschiedenis',
@@ -56,7 +56,7 @@ export const ONDERZOEK_W14: StepInput[] = [
     kind: 'sort',
     id: 'domein',
     prompt: 'Welke conceptuele metafoor?',
-    buckets: ['TIJD IS GELD', 'RUZIE IS OORLOG', 'MEER IS OMHOOG'],
+    buckets: ['TIJD IS GELD', 'DISCUSSIE IS OORLOG', 'MEER IS OMHOOG'],
     items: [
       { t: 'tijd besparen', b: 0 },
       { t: 'tijd verspillen', b: 0 },
@@ -98,7 +98,7 @@ export const ONDERZOEK_W14: StepInput[] = [
   {
     kind: 'bet',
     id: 'tante',
-    prompt: 'Ik ga naar mijn tante, en Piet ook. Kan zijn tante van moederskant zijn en de mijne van vaderskant?',
+    prompt: 'Ik heb een tante in Utrecht, en Piet ook. Kan die van Piet van moederskant zijn en de mijne van vaderskant?',
     options: ['Ja: tante is vaag', 'Nee: tante is ambigu'],
     answer: 'Ja: tante is vaag',
     why: 'Ook laat hier twee soorten tantes toe. Dan is het één vage betekenis, geen twee betekenissen.',
@@ -129,7 +129,7 @@ export const ONDERZOEK_W14: StepInput[] = [
     ],
     done: {
       title: 'Twee motoren',
-      text: 'Kantoor en Brussel staan voor de mensen die er werken: metonymie. Opschroeven en kelderen lenen het beeld van draaien en omlaag gaan: metafoor, met meer is omhoog.',
+      text: 'Kantoor staat voor de mensen die er werken, Brussel voor het bestuur dat er zit: metonymie. Opschroeven en kelderen lenen het beeld van draaien en omlaag gaan: metafoor, met meer is omhoog.',
     },
   },
   {
@@ -148,7 +148,7 @@ export const ONDERZOEK_W14: StepInput[] = [
       {
         t: 'Bureau betekende eerst een kantoor.',
         ok: false,
-        fix: 'Het was eerst een wollen stof',
+        fix: 'Het Franse bureau was eerst een wollen stof',
         why: 'Stof, tafel, kamer, instelling: een keten van metonymie.',
       },
       { t: 'Toetsen voor ambiguïteit geven altijd hetzelfde antwoord.', ok: false, fix: 'Ze spreken elkaar soms tegen', why: 'Dat liet Geeraerts zien.' },

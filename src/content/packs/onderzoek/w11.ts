@@ -56,7 +56,7 @@ export const ONDERZOEK_W11: StepInput[] = [
               ],
             },
           ],
-          extra: ['kvinnat'],
+          extra: ['kvinnat', 'husen', 'de huis'],
           note: 'Duits drie, Nederlands en Zweeds twee, Afrikaans één. Het Nederlands en het Zweeds kwamen elk langs hun eigen weg bij hetzelfde systeem uit.',
         },
       },
@@ -112,7 +112,7 @@ export const ONDERZOEK_W11: StepInput[] = [
     after: 'frimsel.',
     hint: 'de of het',
     answer: 'het',
-    why: 'Een groot, zonder -e: dat kan alleen bij een het-woord in het enkelvoud. Je kent het woord niet, maar de congruentie verraadt het geslacht. Precies wat Hockett bedoelde.',
+    why: 'Een groot, zonder -e: dat wijst op een het-woord in het enkelvoud. Je kent het woord niet, maar de congruentie verraadt het geslacht. Precies wat Hockett bedoelde.',
   },
   {
     kind: 'highlight',
@@ -124,7 +124,7 @@ export const ONDERZOEK_W11: StepInput[] = [
       { id: 'bet', label: 'betekenis', tag: 'volgt de persoon', ask: 'Past dit woord bij een meisje als persoon?', accent: 'pink' },
     ],
     words: [
-      { t: 'Het', role: 'gram' },
+      { t: 'Het' },
       { t: 'kleine' },
       { t: 'meisje' },
       { t: 'dat', role: 'gram' },
@@ -141,7 +141,7 @@ export const ONDERZOEK_W11: StepInput[] = [
     ],
     done: {
       title: 'Van links naar rechts',
-      text: 'Het en dat volgen de grammatica, haar en ze de persoon. Precies de volgorde van Corbett: dichtbij grammatica, verder weg betekenis.',
+      text: 'Dat volgt de grammatica, net als het lidwoord het; haar en ze volgen de persoon. Precies de volgorde van Corbett: dichtbij grammatica, verder weg betekenis.',
     },
   },
   {

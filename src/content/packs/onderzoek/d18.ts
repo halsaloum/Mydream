@@ -1,4 +1,210 @@
 import type { StepInput } from '../../schema';
 
 /** Onderzoek bij d18: een derde uitlegronde op onderzoeksniveau, daarna zwaardere oefeningen. */
-export const ONDERZOEK_D18: StepInput[] = [];
+export const ONDERZOEK_D18: StepInput[] = [
+  {
+    kind: 'explain',
+    id: 'onderzoek',
+    title: 'Schema’s, slijtage en lagen',
+    panels: [
+      {
+        text: 'Een affixoïde is meer dan een modewoord. Kijk naar *hoofd-*: in *hoofdingang*, *hoofdrol* en *hoofdstad* betekent het ‘belangrijkste’, een betekenis die het losse woord *hoofd* niet heeft. Zo ook *-boer* in *groenteboer* en *sigarenboer* (een verkoper, geen boer), *-moe* in *vergadermoe*, *-vrij* in *suikervrij* en *-arm* in *zoutarm*. Geert Booij beschrijft ze in *Construction Morphology* (2010), en met Matthias Hüning: een samenstellingsschema met één vaste plek, zoals [X-vrij] ‘zonder X’, krijgt een eigen betekenis en wordt productief. Het deel is nog een woord, maar in het schema werkt het als een affix. Daarom hoef je geen scherpe grens te trekken: de affixoïde zit precies tussen samenstelling en afleiding in.',
+        rule: 'Affixoïde: een woord dat in een vast schema een eigen, gebonden betekenis heeft (*hoofd-*, *-vrij*, *-moe*, *reuze-*).',
+        mark: {
+          q: 'Tik de woorden waarin reuze ‘heel’ betekent',
+          sentence: 'reuzeleuk reuzenrad reuzegezellig reuzenpanda reuzeblij reuzenstap',
+          targets: [0, 2, 4],
+          note: 'reuzeleuk, reuzegezellig, reuzeblij: de versterker, zonder n. reuzenrad, reuzenpanda, reuzenstap: een echte reus, en dan een gewone samenstelling met tussen-n.',
+        },
+        deep: {
+          q: 'Hoe toets je of iets een affixoïde is?',
+          a: 'Drie vragen. Heeft het deel een betekenis die het losse woord mist (*-boer* als verkoper)? Is het productief in die betekenis (*vergadermoe*, *reclamemoe*, of een nieuw woord als *schermmoe*)? En bestaat het losse woord nog gewoon? Bij *-heid* is dat al eeuwen niet meer zo, en *lijk* bestaat alleen nog met een heel andere betekenis: die twee zijn de helling helemaal afgegleden. Een affixoïde staat halverwege, en de spelling verraadt het: *reuzeleuk* zonder *n*, *reuzenrad* met.',
+        },
+      },
+      {
+        text: 'Versterkers slijten. *Hartstikke* komt van *hartsteek*, een steek in het hart: *hartstikke dood* was zo dood als iemand die in het hart gestoken is. Nu is het ook *hartstikke leuk*. *Ontzettend* komt van *ontzetten* (met schrik vervullen), *vreselijk* van *vrees*, *geweldig* van *geweld*. Telkens verdween de oude inhoud en bleef alleen ‘heel’ over. Dat heet *verbleking*, een vaste stap op de helling van Hopper en Traugott. En omdat een versleten versterker niets meer zegt, zoeken sprekers een nieuwe: *reuze*, *kei*, *mega*, *super*. Elke generatie heeft zo haar eigen woord voor ‘heel’.',
+        rule: 'Verbleking: een inhoudswoord wordt een versterker en raakt zijn eigen betekenis kwijt (*hartstikke dood* → *hartstikke leuk*).',
+        lab: {
+          label: 'Tik een versterker en zie wat hij ooit betekende',
+          chips: [
+            {
+              k: 'hartstikke',
+              out: 'van hartsteek: een steek in het hart',
+              note: 'Eerst alleen hartstikke dood. Toen het beeld van de steek versleet, bleef ‘heel’ over.',
+            },
+            { k: 'ontzettend', out: 'van ontzetten: met schrik vervullen', note: 'Ontzettend leuk zou vroeger een tegenspraak zijn.' },
+            { k: 'vreselijk', out: 'van vrees', note: 'Vreselijk aardig: de vrees is weg, de versterking blijft.' },
+            { k: 'geweldig', out: 'van geweld: met kracht', note: 'Hier kantelde de lading zelfs van negatief naar positief.' },
+            { k: 'reuze', out: 'van reus', note: 'Nog doorzichtig: de reus zit er nog in. Over vijftig jaar misschien niet meer.' },
+          ],
+        },
+        deep: {
+          q: 'Waarom slijten juist versterkers zo snel?',
+          a: 'Omdat ze hun werk doen door op te vallen. Een versterker die iedereen gebruikt, valt niet meer op en versterkt dus niets meer. Dan moet er een nieuwe komen, en die slijt op zijn beurt. Taalkundigen vergelijken het met inflatie: hoe meer er wordt uitgegeven, hoe minder elk woord waard is. Dezelfde kringloop zie je bij scheldwoorden, en bij de eufemismen in het volgende paneel.',
+        },
+      },
+      {
+        text: 'Ook aan de kant van de luisteraar bewegen woorden. Een woord voor iets gevoeligs raakt besmet door waar het naar verwijst, en sprekers vervangen het door een nieuw, netter woord. Dat woord raakt op zijn beurt besmet. Steven Pinker noemde dit de *eufemismetredmolen*. Zijn Engelse voorbeeld: *water closet* werd *toilet*, toen *bathroom*, toen *restroom*. In het Nederlands werd *invalide* *gehandicapt*, en toen *persoon met een beperking*. De les van Pinker: niet het woord is het probleem, maar de houding erachter. Zolang die niet verandert, draait de molen door. Voor een schrijver betekent dat: kies het woord dat je lezers nú als neutraal ervaren, en weet dat het over twintig jaar anders kan liggen.',
+        rule: 'Eufemismetredmolen: het nette woord neemt de lading van het oude over, en moet zelf weer vervangen worden.',
+        swap: {
+          goal: 'Zet de woorden in de volgorde waarin ze elkaar afwisselden',
+          blocks: ['gehandicapt', 'persoon met een beperking', 'invalide'],
+          accept: ['invalide gehandicapt persoon met een beperking'],
+          note: 'invalide (uit het Frans, letterlijk ‘niet valide’), gehandicapt (naar het Engelse handicapped), persoon met een beperking. Elk woord was ooit het nieuwe, nette woord.',
+        },
+        deep: {
+          q: 'Is dit pragmatiek of semantiek?',
+          a: 'Allebei. De betekenis (naar wie het woord verwijst) blijft vaak gelijk; wat verschuift is de *connotatie*: wat het woord over de spreker en zijn houding zegt. Dat is pragmatiek. Pas als de connotatie vast aan het woord gaat kleven, zoals bij *wijf* in Het woord, wordt hij deel van de betekenis. De tredmolen is dus pragmatiek die langzaam semantiek wordt.',
+        },
+      },
+      {
+        text: 'Hoe oud zijn de woorden die je gebruikt? De woordenschat is gelaagd als een boomstam. In het hart zitten de *erfwoorden*: Germaans, al duizenden jaren in de familie (*huis*, *ei*, *vis*). Daaromheen de oude leenwoorden uit het Latijn, meegekomen met de Romeinen (*munt* van *moneta*, *tegel* van *tegula*, *keuken* van *coquina*), en later de laag uit het Frans. De jongste ring is Engels (*computer*, en dus *computermuis*). Nicoline van der Sijs bracht in haar *Leenwoordenboek* (1996) en *Chronologisch woordenboek* (2001) per woord in kaart wanneer het binnenkwam. Een leenwoord is pas echt geland als de grammatica het inlijft: *computers*, *computertje*, *gedownload*.',
+        rule: 'De woordenschat heeft lagen: erfwoorden in de kern, oude leenwoorden eromheen, Engels aan de rand.',
+        bins: {
+          q: 'Zet elk ding in de laag waar zijn naam vandaan komt',
+          bins: ['erfwoord', 'oud leenwoord (Latijn, Frans, Italiaans)', 'leenwoord uit het Engels'],
+          rings: true,
+          items: [
+            { thing: 'huis', bin: 0, note: 'Germaans erfwoord, verwant aan Engels house en Duits Haus.' },
+            { thing: 'ei', bin: 0, note: 'Erfwoord: Engels egg, Duits Ei. Zo oud dat het in alle Germaanse talen zit.' },
+            {
+              thing: 'zitbank',
+              bin: 0,
+              note: 'Germaans: een bank om op te zitten, verwant aan Engels bench.',
+              hint: 'Deze bank stond al in Germaanse huizen.',
+            },
+            {
+              thing: 'pan',
+              bin: 1,
+              note: 'Vroege ontlening aan het Latijn (panna): de Romeinen brachten het kookgerei en het woord.',
+              hint: 'Een Romeins keukenwoord.',
+            },
+            { thing: 'kasteel', bin: 1, note: 'Latijn castellum, via het Frans: een versterkte plaats.' },
+            { thing: 'munten', bin: 1, note: 'Latijn moneta: de Romeinen brachten het geld en het woord. Engels mint komt van hetzelfde woord.' },
+            {
+              thing: 'geldbank',
+              bin: 1,
+              note: 'Via het Italiaanse banca, de tafel van de geldwisselaar. Het Italiaans had bank zelf weer van de Germanen: een woord dat heen en terug reisde.',
+              hint: 'Deze bank kwam met de Italiaanse geldwisselaars.',
+            },
+            {
+              thing: 'computermuis',
+              bin: 2,
+              note: 'Computer kwam in de twintigste eeuw uit het Engels; muis is een erfwoord. Een samenstelling kan uit twee lagen bestaan.',
+              hint: 'Uit welke taal komt computer?',
+            },
+          ],
+          note: 'Drie erfwoorden, vier oude leenwoorden en één jong. Let op de twee banken: dezelfde vorm, maar de ene zat altijd al in de familie en de andere kwam via Italië terug.',
+        },
+      },
+    ],
+  },
+  {
+    kind: 'sort',
+    id: 'soort-beweging',
+    prompt: 'Wat voor beweging zit erin?',
+    buckets: ['affixoïde', 'verbleking', 'eufemisme', 'ingeburgerd leenwoord'],
+    items: [
+      { t: 'hoofdingang', b: 0 },
+      { t: 'suikervrij', b: 0 },
+      { t: 'groenteboer', b: 0 },
+      { t: 'hartstikke leuk', b: 1 },
+      { t: 'ontzettend aardig', b: 1 },
+      { t: 'vreselijk lekker', b: 1 },
+      { t: 'persoon met een beperking', b: 2 },
+      { t: 'toilet', b: 2 },
+      { t: 'gedownload', b: 3 },
+      { t: 'computertje', b: 3 },
+    ],
+    why: 'Affixoïde: een woord met een gebonden betekenis in een schema (belangrijkste, zonder, verkoper). Verbleking: een versterker zonder zijn oude inhoud. Eufemisme: het nette woord op de tredmolen. Ingeburgerd: Nederlandse buiging op een Engels woord.',
+  },
+  {
+    kind: 'ladder',
+    id: 'tredmolen',
+    prompt: 'De tredmolen in de tijd',
+    intro: 'Drie woorden voor dezelfde groep mensen, elk ooit het nieuwe en nette woord. Zet ze van oud naar nieuw.',
+    sentence: { before: 'In het beleid van toen heette iemand een', after: '.' },
+    steps: [{ t: 'gastarbeider' }, { t: 'allochtoon' }, { t: 'persoon met een migratieachtergrond' }],
+    low: 'oudste',
+    high: 'nieuwste',
+    startHint: 'Begin bij het woord uit de jaren zestig, toen men dacht dat de arbeiders te gast waren.',
+    done: {
+      title: 'Drie keer vervangen',
+      text: 'gastarbeider (jaren zestig), allochtoon (lang de term in het beleid), persoon met een migratieachtergrond (het CBS koos die term in 2016). Elk woord kreeg een lading door de discussie eromheen en werd vervangen: de tredmolen van Pinker in drie stappen.',
+    },
+  },
+  {
+    kind: 'speed',
+    id: 'aaneen',
+    prompt: 'Aan elkaar of los?',
+    intro: 'Affixoïden en versterkers die een voorvoegsel werden, schrijf je aaneen. Een gewoon bijwoord blijft los.',
+    seconds: 45,
+    items: [
+      { a: 'reuze', b: 'leuk', joined: true, tip: 'reuzeleuk: de versterker, zonder n en aaneen.' },
+      { a: 'heel', b: 'leuk', joined: false, tip: 'heel leuk: een gewoon bijwoord, los.' },
+      { a: 'kei', b: 'hard', joined: true, tip: 'keihard: kei is hier een affixoïde voor heel.' },
+      { a: 'super', b: 'leuk', joined: true, tip: 'superleuk: super werkt als voorvoegsel en plakt vast.' },
+      { a: 'suiker', b: 'vrij', joined: true, tip: 'suikervrij: het schema X-vrij, zonder X.' },
+      { a: 'vrij', b: 'van suiker', joined: false, tip: 'vrij van suiker: dezelfde betekenis, maar een woordgroep.' },
+      { a: 'vergader', b: 'moe', joined: true, tip: 'vergadermoe: -moe als affixoïde, aaneen.' },
+      { a: 'moe', b: 'van vergaderen', joined: false, tip: 'moe van vergaderen: het losse woord moe met een bepaling.' },
+      { a: 'hoofd', b: 'ingang', joined: true, tip: 'hoofdingang: hoofd- betekent belangrijkste.' },
+      { a: 'erg', b: 'moe', joined: false, tip: 'erg moe: een bijwoord bij een bijvoeglijk naamwoord, los.' },
+    ],
+    done: {
+      title: 'Vast of los',
+      text: 'Zodra een woord in een schema een gebonden betekenis krijgt, plakt het vast: reuzeleuk, keihard, suikervrij, vergadermoe. Een bijwoord met zijn eigen betekenis blijft los.',
+    },
+  },
+  {
+    kind: 'type',
+    id: 'glutenvrij',
+    prompt: 'Een affixoïde aan het werk: typ het woord.',
+    before: 'Brood zonder gluten is',
+    after: '.',
+    hint: '…vrij',
+    answer: 'glutenvrij',
+    why: '-vrij als affixoïde betekent zonder: suikervrij, alcoholvrij, glutenvrij. Aaneen, want het is één woord uit een vast schema.',
+  },
+  {
+    kind: 'swipe',
+    id: 'beweging-waar',
+    prompt: 'Klopt deze zin?',
+    cards: [
+      {
+        t: 'Hoofd in hoofdingang betekent gewoon hoofd.',
+        ok: false,
+        fix: 'Het betekent belangrijkste',
+        why: 'Een gebonden betekenis die het losse woord niet heeft: een affixoïde.',
+      },
+      {
+        t: 'Reuzeleuk schrijf je zonder n, reuzenrad met n.',
+        ok: true,
+        why: 'De versterker heeft geen n; een echte reus geeft een gewone samenstelling met tussen-n.',
+      },
+      {
+        t: 'Hartstikke betekende oorspronkelijk heel.',
+        ok: false,
+        fix: 'Het komt van hartsteek: een steek in het hart',
+        why: 'Pas na verbleking bleef alleen heel over.',
+      },
+      {
+        t: 'Volgens Pinker lost een nieuw woord het probleem van een besmet woord blijvend op.',
+        ok: false,
+        fix: 'Het nieuwe woord raakt op zijn beurt besmet',
+        why: 'De tredmolen draait door zolang de houding erachter niet verandert.',
+      },
+      {
+        t: 'Geldbank en zitbank hebben dezelfde herkomst, maar via een andere weg.',
+        ok: true,
+        why: 'De geldbank kwam via het Italiaans terug: dezelfde Germaanse bank, geleend en teruggeleend.',
+      },
+      { t: 'Munt is een erfwoord.', ok: false, fix: 'Een oud leenwoord uit het Latijn (moneta)', why: 'De Romeinen brachten het geld en het woord.' },
+      {
+        t: 'Een leenwoord is ingeburgerd zodra het Nederlandse buiging krijgt.',
+        ok: true,
+        why: 'computers, computertje, gedownload: de grammatica heeft het woord ingelijfd.',
+      },
+    ],
+  },
+];

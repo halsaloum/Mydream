@@ -34,7 +34,7 @@ export const WOORD_LESSONS: LessonInput[] = [
               label: 'Tik een geval',
               chips: [
                 { k: 'ziekenhuisparkeerplaats', out: 'schrift: 1 woord · klank: 1 woord', note: 'Lang, maar één hoofdklemtoon en geen spatie.' },
-                { k: 'de pijp uit gaan', out: 'schrift: 4 woorden · betekenis: 1', note: 'Vier spaties, maar je leert het als één geheel: doodgaan.' },
+                { k: 'de pijp uit gaan', out: 'schrift: 4 woorden · betekenis: 1', note: 'Drie spaties, maar je leert het als één geheel: doodgaan.' },
                 { k: '’k weet het niet', out: '’k: grammaticaal een woord, klank: geen', note: '’k leunt op het volgende woord. Het heeft geen eigen klemtoon.' },
                 { k: 'ik bel je op', out: 'opbellen: 1 woord, 2 plekken', note: 'Eén woord in het woordenboek, maar de zin trekt het uit elkaar.' },
               ],

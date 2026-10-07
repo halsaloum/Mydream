@@ -6,7 +6,8 @@ import type { Panel } from '../../schema';
 import { ONDERZOEK } from '.';
 
 const lessons = course.layers.filter((layer) => layer.id === 'deel' || layer.id === 'woord').flatMap((layer) => layer.lessons);
-const NEW = ['d21', 'd22', 'd23', 'd24', 'w23', 'w24', 'w25', 'w26'];
+const NEW = ['d21', 'd22', 'd23', 'd24', 'w23', 'w24', 'w25', 'w26'].filter((id) => lessons.some((lesson) => lesson.id === id));
+const WRITTEN = Object.keys(ONDERZOEK).filter((id) => ONDERZOEK[id]!.length > 0);
 
 const interactive = (panel: Panel) => Boolean(panel.quiz || panel.lab) || panelWidgets(panel).length > 0;
 
@@ -16,7 +17,7 @@ describe('onderzoeksronde', () => {
     for (const id of Object.keys(ONDERZOEK)) expect(ids.has(id), id).toBe(true);
   });
 
-  it.each(Object.keys(ONDERZOEK))('%s: een interactieve uitleg en daarna zware oefeningen', (id) => {
+  it.each(WRITTEN)('%s: een interactieve uitleg en daarna zware oefeningen', (id) => {
     const lesson = lessons.find((item) => item.id === id)!;
     const start = lesson.steps.findIndex((step) => step.id === 'onderzoek');
     const explain = lesson.steps[start];

@@ -8,16 +8,34 @@ export const ONDERZOEK_W19: StepInput[] = [
     title: 'Een rechte lijn, klonterende woorden en een staart zonder eind',
     panels: [
       {
-        text: 'Zet de rang en de frequentie allebei op een *logaritmische* schaal (1, 10, 100, 1000), en de wet van Zipf wordt een *rechte lijn* die naar beneden loopt. De helling heet *α* (alfa). Bij α = 1 zakt de frequentie één stap van tien bij elke stap van tien in rang. In echte corpora wijkt de top af: de allerfrequentste woorden komen minder vaak voor dan de rechte lijn voorspelt. Benoît Mandelbrot (1953) loste dat op met een extra getal in de formule, dat de kop van de lijn afvlakt.',
+        text: 'Zet de rang en de frequentie allebei op een *logaritmische* schaal (1, 10, 100, 1000), en de wet van Zipf wordt een *rechte lijn* die naar beneden loopt. De steilheid van die lijn heet *α* (alfa). Bij α = 1 zakt de frequentie één stap van tien bij elke stap van tien in rang. In echte corpora wijkt de top af: de allerfrequentste woorden komen minder vaak voor dan de rechte lijn voorspelt. Benoît Mandelbrot (1953) loste dat op met een extra getal in de formule, dat de kop van de lijn afvlakt.',
         rule: 'Zipf op een dubbel-logaritmische schaal: een rechte lijn met helling −α.',
         paradigm: {
           q: 'Vul de rechte lijn in (α = 1)',
           cols: ['frequentie', 'log₁₀ van de frequentie'],
           rows: [
             { label: 'rang 1', cells: ['100.000', '5'] },
-            { label: 'rang 10', cells: [{ fill: '10.000', hint: 'Tien keer zo ver in rang: 100.000 gedeeld door 10.' }, { fill: '4', hint: 'Tien tot de vierde is 10.000.' }] },
-            { label: 'rang 100', cells: [{ fill: '1.000', hint: '100.000 gedeeld door 100.' }, { fill: '3', hint: 'Tien tot de derde is 1.000.' }] },
-            { label: 'rang 1000', cells: [{ fill: '100', hint: '100.000 gedeeld door 1000.' }, { fill: '2', hint: 'Tien tot de tweede is 100.' }] },
+            {
+              label: 'rang 10',
+              cells: [
+                { fill: '10.000', hint: 'Tien keer zo ver in rang: 100.000 gedeeld door 10.' },
+                { fill: '4', hint: 'Tien tot de vierde is 10.000.' },
+              ],
+            },
+            {
+              label: 'rang 100',
+              cells: [
+                { fill: '1.000', hint: '100.000 gedeeld door 100.' },
+                { fill: '3', hint: 'Tien tot de derde is 1.000.' },
+              ],
+            },
+            {
+              label: 'rang 1000',
+              cells: [
+                { fill: '100', hint: '100.000 gedeeld door 1000.' },
+                { fill: '2', hint: 'Tien tot de tweede is 100.' },
+              ],
+            },
           ],
           extra: ['50.000', '1'],
           note: 'De log zakt steeds precies één stap: 5, 4, 3, 2. Op papier met logaritmische assen wordt dat een rechte lijn met helling −1. 50.000 hoort bij rang 2, niet bij rang 10.',
@@ -121,7 +139,8 @@ export const ONDERZOEK_W19: StepInput[] = [
   {
     kind: 'bet',
     id: 'spreiding',
-    prompt: 'Een leerder leest één dik boek over zeilen en ziet het woord fok veertig keer. Een ander woord ziet hij ook veertig keer, maar verspreid over veertig teksten. Welk woord herkent hij later sneller, als Adelman en collega’s gelijk hebben?',
+    prompt:
+      'Een leerder leest één dik boek over zeilen en ziet het woord fok veertig keer. Een ander woord ziet hij ook veertig keer, maar verspreid over veertig teksten. Welk woord herkent hij later sneller, als Adelman en collega’s gelijk hebben?',
     options: ['het woord uit veertig teksten', 'fok, uit het zeilboek', 'allebei even snel'],
     answer: 'het woord uit veertig teksten',
     why: 'Gelijke frequentie, maar het tweede woord heeft veertig contexten en fok maar één. Contextuele diversiteit voorspelt herkenning beter dan ruwe frequentie. Gevarieerd lezen helpt dus meer dan één boek herlezen.',
@@ -132,7 +151,11 @@ export const ONDERZOEK_W19: StepInput[] = [
     prompt: 'Klopt deze zin?',
     cards: [
       { t: 'Op een dubbel-logaritmische schaal is de wet van Zipf een rechte lijn.', ok: true, why: 'Met helling −α, bij gewone tekst ongeveer −1.' },
-      { t: 'Mandelbrot paste de formule aan, omdat de allerfrequentste woorden niet precies op de lijn liggen.', ok: true, why: 'Zijn extra getal laat de kop van de lijn afvlakken.' },
+      {
+        t: 'Mandelbrot paste de formule aan, omdat de allerfrequentste woorden niet precies op de lijn liggen.',
+        ok: true,
+        why: 'Zijn extra getal laat de kop van de lijn afvlakken.',
+      },
       {
         t: 'Twee woorden met dezelfde frequentie worden altijd even snel herkend.',
         ok: false,
@@ -151,7 +174,11 @@ export const ONDERZOEK_W19: StepInput[] = [
         fix: 'Vier keer zoveel tekst geeft twee keer zoveel types',
         why: 'Tot de macht 0,5 is de wortel. Twee keer zoveel tekst geeft maar ongeveer 1,4 keer zoveel types.',
       },
-      { t: 'Hoe groot een corpus ook is, er blijven nieuwe woorden bijkomen.', ok: true, why: 'De staart van Zipf heeft geen eind: namen, samenstellingen en nieuwvormingen.' },
+      {
+        t: 'Hoe groot een corpus ook is, er blijven nieuwe woorden bijkomen.',
+        ok: true,
+        why: 'De staart van Zipf heeft geen eind: namen, samenstellingen en nieuwvormingen.',
+      },
     ],
   },
 ];
