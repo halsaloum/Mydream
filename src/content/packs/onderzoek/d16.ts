@@ -8,7 +8,7 @@ export const ONDERZOEK_D16: StepInput[] = [
     title: 'De maat op de proef',
     panels: [
       {
-        text: 'De trochee verklaart *tafels* en *boeken*, maar hoe ver reikt hij? Drie randgevallen. Eén: *professor* eindigt beklemtoond (*pro-FES-sor*), dus je verwacht *-en*. Dat klopt, maar de klemtoon verhuist mee: *pro-fes-SO-ren*. Zo eindigt het woord tóch op een trochee. Een inheems woord kan dat niet: *ta-FE-len* zegt niemand, dus daar wint *-s*. Twee: woorden op een beklemtoonde *-ie* kiezen *-en*, met een trema (*industrieën*, *knieën*), maar woorden op *-é*, *-eau* of *-u* kiezen *-s* (*cafés*, *bureaus*, *menu’s*). Drie: bij *aardappels* en *aardappelen* bestaan beide vormen naast elkaar. De maat is een sterke voorkeur, geen wet.',
+        text: 'De trochee verklaart *tafels* en *boeken*, maar hoe ver reikt hij? Drie randgevallen. Eén: *professor* eindigt onbeklemtoond (*pro-FES-sor*), dus je verwacht *-s*. *Professors* bestaat ook, maar naast die vorm staat *professoren*, en dan verhuist de klemtoon mee: *pro-fes-SO-ren*. Zo eindigt het woord tóch op een trochee. Een inheems woord kan dat niet: *ta-FE-len* zegt niemand, dus daar wint *-s*. Twee: woorden op een beklemtoonde *-ie* kiezen *-en*, met een trema (*industrieën*, *knieën*), maar woorden op *-é*, *-eau* of *-u* kiezen *-s* (*cafés*, *bureaus*, *menu’s*). Drie: bij *aardappels* en *aardappelen* bestaan beide vormen naast elkaar. De maat is een sterke voorkeur, geen wet.',
         rule: 'Na een zwakke lettergreep *-s*, na een sterke *-en*; de geleerde woorden op *-or* lossen het op door de klemtoon te verschuiven.',
         lab: {
           label: 'Tik een woord en zie het meervoud',
@@ -31,17 +31,17 @@ export const ONDERZOEK_D16: StepInput[] = [
         },
         deep: {
           q: 'Waarom schuift de klemtoon bij professoren?',
-          a: 'Omdat het woord die beweging meebracht uit het Latijn: *professor*, meervoud *professōres*, met een lange, beklemtoonde *o*. Taalkundigen beschrijven dat als twee opgeslagen stamvormen, *proFESsor* en *profesSOR-*, net als de geleerde stam *nervos-* in *nervositeit* uit Inheems, geleerd en een paradox. Geen regel die ter plekke rekent, maar een allomorf die met het woord is meegeleend. Daarom kan *tafel* het trucje niet nadoen.',
+          a: 'Omdat het woord die beweging meebracht uit het Latijn: *professor*, meervoud *professōres*, met een lange, beklemtoonde *o*. Je kunt dat beschrijven als twee opgeslagen stamvormen, *proFESsor* en *profesSOR-*, net als de geleerde stam *nervos-* in *nervositeit* uit Inheems, geleerd en een paradox. Dan rekent er geen regel ter plekke, maar is er een allomorf die met het woord is meegeleend. Daarom kan *tafel* het trucje niet nadoen.',
         },
       },
       {
-        text: 'Verdubbelen kan het Nederlands ook, maar anders dan het Ilokano. *Tiktak*, *zigzag*, *wirwar*, *mikmak*, *kriskras*: twee keer dezelfde medeklinkers, met een vaste klinkerwissel. En de volgorde ligt vast: eerst de *i*, dan de *a*. *Taktik* en *zagzig* klinken fout, zonder dat iemand je die regel ooit leerde. Het Engels (*tick-tock*, *chit-chat*) en het Duits (*Zickzack*, *Wirrwarr*) kennen precies hetzelfde patroon. Er is geen basiswoord (*zig* of *zag* bestaat niet los), dus het is geen afleiding. Het is een mal: een geraamte van medeklinkers met een vaste klinkermelodie, zoals *k-t-b* in het Arabisch.',
+        text: 'Verdubbelen kan het Nederlands ook, maar anders dan het Ilokano. *Tiktak*, *zigzag*, *wirwar*, *mikmak*, *kriskras*: twee keer dezelfde medeklinkers, met een vaste klinkerwissel. En de volgorde ligt vast: eerst de *i*, dan de *a*. *Taktik* en *zagzig* klinken fout, zonder dat iemand je die regel ooit leerde. Het Engels (*tick-tock*, *chit-chat*) en het Duits (*Zickzack*, *Wirrwarr*) kennen precies hetzelfde patroon. Er is ook een rijmende variant: andere beginklank, zelfde rest (*holderdebolder*). Er is geen basiswoord waar *zigzag* van komt, dus het is geen afleiding. Het is een mal: een geraamte van medeklinkers met een vaste klinkermelodie, zoals *k-t-b* in het Arabisch.',
         rule: 'Klinkerwisselverdubbeling: zelfde medeklinkers, eerst *i*, dan *a* (*tiktak*, *zigzag*, *wirwar*).',
         mark: {
           q: 'Tik de vormen die Nederlandse oren accepteren',
           sentence: 'tiktak taktik zagzig zigzag wirwar warwir mikmak makmik',
           targets: [0, 3, 4, 6],
-          note: 'tiktak, zigzag, wirwar, mikmak: steeds de i vóór de a. De omgekeerde vormen bestaan nergens, en ze voelen meteen verkeerd.',
+          note: 'tiktak, zigzag, wirwar, mikmak: steeds de i vóór de a. De omgekeerde vormen bestaan niet, en ze voelen meteen verkeerd.',
         },
         deep: {
           q: 'Waarom i vóór a?',
@@ -63,18 +63,18 @@ export const ONDERZOEK_D16: StepInput[] = [
         },
       },
       {
-        text: 'Iemand uit Groningen is een *Groninger*, niet een *Groningener*. Iemand uit Vlissingen een *Vlissinger*. Botsen twee gelijke lettergrepen, dan slikt het Nederlands er één in. Dat heet *haplologie*. Zo werd het Latijnse *tragicocomoedia* al bij de Romeinen *tragicomoedia*, ons *tragikomedie*, en *mineraal* plus *-logie* werd *mineralogie*. Taalkundigen doen het zelf ook: het vak dat morfologie en fonologie verbindt heet *morfonologie*, met één *fo* te weinig. Het is een prosodische eis, net als ∗LAPSE: niet twee keer hetzelfde stuk achter elkaar.',
-        rule: 'Haplologie: van twee gelijke lettergrepen op een rij blijft er één over (*Groning-en-er* wordt *Groninger*).',
+        text: 'Iemand uit Groningen is een *Groninger*, niet een *Groningener*. Iemand uit Vlissingen een *Vlissinger*. Bij plaatsnamen op *-ingen* valt *-en* weg voor *-er*: het woord wordt korter dan de som van zijn delen. Een verwant verschijnsel is *haplologie*: botsen twee gelijke lettergrepen, dan blijft er één over. Zo werd het Latijnse *tragicocomoedia* al bij de Romeinen *tragicomoedia*, ons *tragikomedie*, en *mineraal* plus *-logie* werd *mineralogie*. Taalkundigen doen het zelf ook: het vak dat morfologie en fonologie verbindt heet *morfonologie*, met één *fo* te weinig. Haplologie is een eis over de vorm, net als ∗LAPSE: niet twee keer hetzelfde stuk achter elkaar.',
+        rule: 'Haplologie: van twee gelijke lettergrepen op een rij blijft er één over (*minera-lo-logie* wordt *mineralogie*).',
         build: {
           before: 'Iemand uit Scheveningen is een…',
           stem: 'Schevening',
           endings: ['er', 'ener', 'enaar'],
           answer: 'er',
-          note: 'Scheveninger: -ingen plus -er zou twee keer bijna dezelfde lettergreep geven. Eén keer is genoeg.',
+          note: 'Scheveninger: bij een plaatsnaam op -ingen valt -en weg voor -er, net als bij Groninger en Vlissinger.',
         },
         deep: {
           q: 'Werkt haplologie ook in de spelling?',
-          a: 'Niet altijd. In de uitspraak laten veel mensen een lettergreep vallen (*eigenlijk* klinkt vaak als *eik*), maar de spelling houdt het hele woord. Alleen waar de korte vorm hét woord werd, zoals *Groninger* en *tragikomisch*, zie je de haplologie ook op papier. Bij *antwoordde* en *verbreedde* schrijf je juist twee keer *d*: daar botsen geen lettergrepen, maar de stam en de uitgang, en die moet je allebei kunnen zien.',
+          a: 'Alleen waar de korte vorm hét woord werd, zoals *mineralogie* en *tragikomisch*, zie je de haplologie ook op papier. Bij *antwoordde* en *verbreedde* schrijf je juist twee keer *d*: daar botsen geen lettergrepen, maar de stam en de uitgang, en die moet je allebei kunnen zien.',
         },
       },
     ],
@@ -93,7 +93,7 @@ export const ONDERZOEK_D16: StepInput[] = [
       { t: 'harrewarren', b: 1 },
       { t: 'een date-date', b: 2 },
       { t: 'koffie-koffie', b: 2 },
-      { t: 'Groninger', b: 3 },
+      { t: 'mineralogie', b: 3 },
       { t: 'morfonologie', b: 3 },
     ],
     why: 'Klinkerwissel: zelfde medeklinkers, eerst i, dan a. Rijm: andere beginklank, zelfde rest (holder-bolder, roeze-moeze, harre-warre). Nadruk: een heel woord herhaald voor het typische geval. Haplologie: een dubbele lettergreep weggeslikt.',
@@ -104,9 +104,9 @@ export const ONDERZOEK_D16: StepInput[] = [
     prompt: 'Typ de inwonernaam.',
     before: 'Iemand uit Wageningen is een',
     after: '.',
-    hint: 'let op de dubbele lettergreep',
+    hint: 'denk aan Groninger',
     answer: 'Wageninger',
-    why: 'Wageningen plus -er zou Wageningener geven: twee keer bijna dezelfde lettergreep. Haplologie laat er één vallen: Wageninger.',
+    why: 'Bij een plaatsnaam op -ingen valt -en weg voor -er: Wageninger, net als Groninger. Wageningener zegt niemand.',
   },
   {
     kind: 'ambiguity',
@@ -171,7 +171,7 @@ export const ONDERZOEK_D16: StepInput[] = [
         why: 'De mal bestaat uit medeklinkers plus een vaste klinkermelodie, zonder los stuk.',
       },
       { t: 'Een koffie-koffie is het typische geval van koffie.', ok: true, why: 'Nadrukverdubbeling versmalt de betekenis tot het prototype.' },
-      { t: 'Groninger is ontstaan door haplologie.', ok: true, why: 'Groningen plus -er, met één lettergreep ingeslikt.' },
+      { t: 'Mineralogie is ontstaan door haplologie.', ok: true, why: 'mineraal plus -logie: van lo-lo bleef één lo over.' },
       {
         t: 'Aardappels is fout, het moet aardappelen zijn.',
         ok: false,

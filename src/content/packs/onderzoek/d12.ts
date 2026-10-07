@@ -8,7 +8,7 @@ export const ONDERZOEK_D12: StepInput[] = [
     title: 'Allomorfie op de proef',
     panels: [
       {
-        text: 'Soms kiest niet de klank en niet de herkomst de allomorf, maar de *betekenis*. Een *pad* in het bos wordt *paden*, een *pad* in de vijver *padden*. Een *blad* aan een boom wordt *bladeren*, een *blad* papier of een tijdschrift *bladen*. Een *been* om op te lopen wordt *benen*; de botten in je lijf heten *beenderen*. Eén vorm, twee meervouden: de allomorf hangt aan het woord mét zijn betekenis, niet aan de klanken.',
+        text: 'Soms kiest niet de klank en niet de herkomst de allomorf, maar de *betekenis*. Een *pad* in het bos wordt *paden*, een *pad* in de vijver *padden*. Een *blad* aan een boom wordt *bladeren*, een *blad* papier of een tijdschrift *bladen*. Een *been* om op te lopen wordt *benen*; de botten in je lijf heten meestal *beenderen*. Eén vorm, twee meervouden: de allomorf hangt aan het woord mét zijn betekenis, niet aan de klanken.',
         rule: 'Lexicale allomorfie kan per betekenis verschillen: *paden* en *padden*, *bladen* en *bladeren*.',
         paradigm: {
           q: 'Kies het meervoud dat bij de betekenis hoort',
@@ -19,7 +19,7 @@ export const ONDERZOEK_D12: StepInput[] = [
             { label: 'blad (aan een boom)', cells: [{ fill: 'bladeren', hint: 'Bij een plant: het oude -er plus -en, net als kinderen.' }] },
             { label: 'blad (een tijdschrift)', cells: [{ fill: 'bladen' }] },
             { label: 'been (om op te lopen)', cells: [{ fill: 'benen' }] },
-            { label: 'been (een bot)', cells: [{ fill: 'beenderen', hint: 'Bij botten: met -er-, net als bladeren.' }] },
+            { label: 'been (een bot)', cells: [{ fill: 'beenderen', hint: 'Bij botten meestal met -er-, net als bladeren.' }] },
           ],
           extra: ['paadden', 'bladden'],
           note: 'Zes rijen, drie vormen. Of het pad een weg of een dier is, zie je niet aan pad: het meervoud hangt aan de betekenis.',
@@ -150,7 +150,7 @@ export const ONDERZOEK_D12: StepInput[] = [
       { t: 'hof', b: 1 },
       { t: 'weg', b: 1 },
     ],
-    why: 'glaasje, blaadje, paadje, gaatje en scheepje nemen de lange klinker van het meervoud mee. dagje, slotje, hofje en wegje niet, al is het meervoud ook lang. Dat sla je per woord op.',
+    why: 'glaasje, blaadje, paadje, gaatje en scheepje nemen de lange klinker van het meervoud mee. dagje, slotje, hofje en weggetje niet, al is het meervoud ook lang. Dat sla je per woord op.',
   },
   {
     kind: 'bet',
@@ -176,7 +176,12 @@ export const ONDERZOEK_D12: StepInput[] = [
     prompt: 'Klopt deze zin?',
     cards: [
       { t: 'Paden en padden zijn meervouden die aan een betekenis hangen.', ok: true, why: 'Een pad in het bos tegenover een pad in de vijver.' },
-      { t: 'Het verkleinwoord neemt altijd de klinker van het meervoud over.', ok: false, fix: 'soms wel (glaasje), soms niet (slotje)', why: 'Daarom moet je het per woord weten.' },
+      {
+        t: 'Het verkleinwoord neemt altijd de klinker van het meervoud over.',
+        ok: false,
+        fix: 'soms wel (glaasje), soms niet (slotje)',
+        why: 'Daarom moet je het per woord weten.',
+      },
       {
         t: 'Warner en collega’s vonden dat de verscherping het verschil tussen d en t volledig wegneemt.',
         ok: false,
@@ -184,7 +189,11 @@ export const ONDERZOEK_D12: StepInput[] = [
         why: 'Onvolledige neutralisatie: klein, en nog omstreden.',
       },
       { t: 'Verhuisde schrijf je met -de omdat de stam eigenlijk op z eindigt.', ok: true, why: 'verhuizen: de z zit niet in ’t kofschip.' },
-      { t: 'Scheepvaart laat zien dat de lange stam ook vóór een medeklinker kan staan.', ok: true, why: 'scheep- is een opgeslagen stamvorm, geen gevolg van een open lettergreep.' },
+      {
+        t: 'Scheepvaart laat zien dat de lange stam ook vóór een medeklinker kan staan.',
+        ok: true,
+        why: 'scheep- is een opgeslagen stamvorm, geen gevolg van een open lettergreep.',
+      },
       { t: 'Goddelijk heeft een lange o, net als goden.', ok: false, fix: 'goddelijk heeft een korte o', why: 'Afleidingen volgen het meervoud niet altijd.' },
     ],
   },

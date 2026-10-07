@@ -18,20 +18,24 @@ export const ONDERZOEK_D18: StepInput[] = [
         },
         deep: {
           q: 'Hoe toets je of iets een affixoïde is?',
-          a: 'Drie vragen. Heeft het deel een betekenis die het losse woord mist (*-boer* als verkoper)? Is het productief in die betekenis (*vergadermoe*, *reclamemoe*, of een nieuw woord als *schermmoe*)? En bestaat het losse woord nog gewoon? Bij *-heid* en *-lijk* is dat laatste al eeuwen niet meer zo: die zijn de helling helemaal afgegleden. Een affixoïde staat halverwege, en de spelling verraadt het: *reuzeleuk* zonder *n*, *reuzenrad* met.',
+          a: 'Drie vragen. Heeft het deel een betekenis die het losse woord mist (*-boer* als verkoper)? Is het productief in die betekenis (*vergadermoe*, *reclamemoe*, of een nieuw woord als *schermmoe*)? En bestaat het losse woord nog gewoon? Bij *-heid* is dat al eeuwen niet meer zo, en *lijk* bestaat alleen nog met een heel andere betekenis: die twee zijn de helling helemaal afgegleden. Een affixoïde staat halverwege, en de spelling verraadt het: *reuzeleuk* zonder *n*, *reuzenrad* met.',
         },
       },
       {
-        text: 'Versterkers slijten. *Hartstikke* betekende ooit ‘door het hart gestoken’, vandaar *hartstikke dood*; nu is het ook *hartstikke leuk*. *Ontzettend* komt van *ontzetten* (met schrik vervullen), *vreselijk* van *vrees*, *geweldig* van *geweld*. Telkens verdween de oude inhoud en bleef alleen ‘heel’ over. Dat heet *verbleking*, een vaste stap op de helling van Hopper en Traugott. En omdat een versleten versterker niets meer zegt, zoeken sprekers een nieuwe: *reuze*, *kei*, *mega*, *super*. Elke generatie heeft zo haar eigen woord voor ‘heel’.',
+        text: 'Versterkers slijten. *Hartstikke* komt van *hartsteek*, een steek in het hart: *hartstikke dood* was zo dood als iemand die in het hart gestoken is. Nu is het ook *hartstikke leuk*. *Ontzettend* komt van *ontzetten* (met schrik vervullen), *vreselijk* van *vrees*, *geweldig* van *geweld*. Telkens verdween de oude inhoud en bleef alleen ‘heel’ over. Dat heet *verbleking*, een vaste stap op de helling van Hopper en Traugott. En omdat een versleten versterker niets meer zegt, zoeken sprekers een nieuwe: *reuze*, *kei*, *mega*, *super*. Elke generatie heeft zo haar eigen woord voor ‘heel’.',
         rule: 'Verbleking: een inhoudswoord wordt een versterker en raakt zijn eigen betekenis kwijt (*hartstikke dood* → *hartstikke leuk*).',
         lab: {
           label: 'Tik een versterker en zie wat hij ooit betekende',
           chips: [
-            { k: 'hartstikke', out: 'door het hart gestoken', note: 'Eerst alleen hartstikke dood. Toen het ‘dood’ versleet, bleef ‘heel’ over.' },
+            {
+              k: 'hartstikke',
+              out: 'van hartsteek: een steek in het hart',
+              note: 'Eerst alleen hartstikke dood. Toen het beeld van de steek versleet, bleef ‘heel’ over.',
+            },
             { k: 'ontzettend', out: 'van ontzetten: met schrik vervullen', note: 'Ontzettend leuk zou vroeger een tegenspraak zijn.' },
             { k: 'vreselijk', out: 'van vrees', note: 'Vreselijk aardig: de vrees is weg, de versterking blijft.' },
             { k: 'geweldig', out: 'van geweld: met kracht', note: 'Hier kantelde de lading zelfs van negatief naar positief.' },
-            { k: 'reuze', out: 'van reus', note: 'Nog jong en nog doorzichtig: de reus zit er nog in. Over vijftig jaar misschien niet meer.' },
+            { k: 'reuze', out: 'van reus', note: 'Nog doorzichtig: de reus zit er nog in. Over vijftig jaar misschien niet meer.' },
           ],
         },
         deep: {
@@ -40,7 +44,7 @@ export const ONDERZOEK_D18: StepInput[] = [
         },
       },
       {
-        text: 'Ook aan de kant van de luisteraar bewegen woorden. Een woord voor iets gevoeligs raakt besmet door waar het naar verwijst, en sprekers vervangen het door een nieuw, netter woord. Dat woord raakt op zijn beurt besmet. Steven Pinker noemde dit de *eufemismetredmolen*: *privaat* werd *wc* werd *toilet*; *invalide* werd *gehandicapt* werd *persoon met een beperking*. De les van Pinker: niet het woord is het probleem, maar de houding erachter. Zolang die niet verandert, draait de molen door. Voor een schrijver betekent dat: kies het woord dat je lezers nú als neutraal ervaren, en weet dat het over twintig jaar anders kan liggen.',
+        text: 'Ook aan de kant van de luisteraar bewegen woorden. Een woord voor iets gevoeligs raakt besmet door waar het naar verwijst, en sprekers vervangen het door een nieuw, netter woord. Dat woord raakt op zijn beurt besmet. Steven Pinker noemde dit de *eufemismetredmolen*. Zijn Engelse voorbeeld: *water closet* werd *toilet*, toen *bathroom*, toen *restroom*. In het Nederlands werd *invalide* *gehandicapt*, en toen *persoon met een beperking*. De les van Pinker: niet het woord is het probleem, maar de houding erachter. Zolang die niet verandert, draait de molen door. Voor een schrijver betekent dat: kies het woord dat je lezers nú als neutraal ervaren, en weet dat het over twintig jaar anders kan liggen.',
         rule: 'Eufemismetredmolen: het nette woord neemt de lading van het oude over, en moet zelf weer vervangen worden.',
         swap: {
           goal: 'Zet de woorden in de volgorde waarin ze elkaar afwisselden',
@@ -54,7 +58,7 @@ export const ONDERZOEK_D18: StepInput[] = [
         },
       },
       {
-        text: 'Hoe oud zijn de woorden die je gebruikt? De woordenschat is gelaagd als een boomstam. In het hart zitten de *erfwoorden*: Germaans, al duizenden jaren in de familie (*huis*, *ei*, *vis*). Daaromheen de oude leenwoorden uit het Latijn, meegekomen met de Romeinen (*munt* van *moneta*, *straat* van *strata*, *wijn* van *vinum*), en later de laag uit het Frans. De jongste ring is Engels (*computer*, en dus *computermuis*). Nicoline van der Sijs bracht in haar *Leenwoordenboek* (1996) en *Chronologisch woordenboek* (2001) per woord in kaart wanneer het binnenkwam. Een leenwoord is pas echt geland als de grammatica het inlijft: *computers*, *computertje*, *gedownload*.',
+        text: 'Hoe oud zijn de woorden die je gebruikt? De woordenschat is gelaagd als een boomstam. In het hart zitten de *erfwoorden*: Germaans, al duizenden jaren in de familie (*huis*, *ei*, *vis*). Daaromheen de oude leenwoorden uit het Latijn, meegekomen met de Romeinen (*munt* van *moneta*, *tegel* van *tegula*, *keuken* van *coquina*), en later de laag uit het Frans. De jongste ring is Engels (*computer*, en dus *computermuis*). Nicoline van der Sijs bracht in haar *Leenwoordenboek* (1996) en *Chronologisch woordenboek* (2001) per woord in kaart wanneer het binnenkwam. Een leenwoord is pas echt geland als de grammatica het inlijft: *computers*, *computertje*, *gedownload*.',
         rule: 'De woordenschat heeft lagen: erfwoorden in de kern, oude leenwoorden eromheen, Engels aan de rand.',
         bins: {
           q: 'Zet elk ding in de laag waar zijn naam vandaan komt',
@@ -86,7 +90,7 @@ export const ONDERZOEK_D18: StepInput[] = [
             {
               thing: 'computermuis',
               bin: 2,
-              note: 'Computer kwam na 1950 uit het Engels; muis is een erfwoord. Een samenstelling kan uit twee lagen bestaan.',
+              note: 'Computer kwam in de twintigste eeuw uit het Engels; muis is een erfwoord. Een samenstelling kan uit twee lagen bestaan.',
               hint: 'Uit welke taal komt computer?',
             },
           ],
@@ -126,7 +130,7 @@ export const ONDERZOEK_D18: StepInput[] = [
     startHint: 'Begin bij het woord uit de jaren zestig, toen men dacht dat de arbeiders te gast waren.',
     done: {
       title: 'Drie keer vervangen',
-      text: 'gastarbeider (jaren zestig), allochtoon (vanaf de jaren zeventig, lang in het beleid), persoon met een migratieachtergrond (het CBS koos die term in 2016). Elk woord raakte besmet door de discussie eromheen en werd vervangen: de tredmolen van Pinker in drie stappen.',
+      text: 'gastarbeider (jaren zestig), allochtoon (lang de term in het beleid), persoon met een migratieachtergrond (het CBS koos die term in 2016). Elk woord kreeg een lading door de discussie eromheen en werd vervangen: de tredmolen van Pinker in drie stappen.',
     },
   },
   {
@@ -178,7 +182,12 @@ export const ONDERZOEK_D18: StepInput[] = [
         ok: true,
         why: 'De versterker heeft geen n; een echte reus geeft een gewone samenstelling met tussen-n.',
       },
-      { t: 'Hartstikke betekende oorspronkelijk heel.', ok: false, fix: 'Door het hart gestoken', why: 'Pas na verbleking bleef alleen heel over.' },
+      {
+        t: 'Hartstikke betekende oorspronkelijk heel.',
+        ok: false,
+        fix: 'Het komt van hartsteek: een steek in het hart',
+        why: 'Pas na verbleking bleef alleen heel over.',
+      },
       {
         t: 'Volgens Pinker lost een nieuw woord het probleem van een besmet woord blijvend op.',
         ok: false,

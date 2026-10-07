@@ -8,7 +8,7 @@ export const ONDERZOEK_D14: StepInput[] = [
     title: 'De paradox in de vorm, de lagen op de proef',
     panels: [
       {
-        text: 'De haakjesparadox laat sporen na in de grammatica. Vergelijk *een technische tekenaar* met *een technisch tekenaar*. Met *-e* is het een tekenaar die technisch goed is. Zonder *-e* is het iemand die technisch tekent: bouwtekeningen maakt. De ANS beschrijft dit patroon: in *beeldend kunstenaar*, *sociaal werker* en *wetenschappelijk medewerker* blijft het bijvoeglijk naamwoord onverbogen, omdat het niet de persoon beschrijft maar het werk. De vorm zegt dus zelf dat *technisch* bij *tekenen* hoort, en niet bij *tekenaar*. Bouw de betekenisboom.',
+        text: 'De haakjesparadox laat sporen na in de grammatica. Vergelijk *een technische tekenaar* met *een technisch tekenaar*. Met *-e* kan het over de tekenaar zelf gaan: een tekenaar die technisch is. Zonder *-e* gaat het over het werk: iemand die technisch tekent, zoals bouwtekeningen. De ANS beschrijft dit patroon: het bijvoeglijk naamwoord kan onverbogen blijven als het niet de persoon beschrijft maar de handeling of het werk. Zo ook *beeldend kunstenaar* en *sociaal werker*. De vorm zegt dus zelf dat *technisch* bij *tekenen* hoort, en niet bij *tekenaar*. Bouw de betekenisboom.',
         rule: 'Onverbogen bijvoeglijk naamwoord voor een persoonsnaam: het hoort bij de handeling, niet bij de persoon (*een technisch tekenaar* tekent technisch).',
         bracket: {
           q: 'Bouw de betekenis: iemand die technisch tekent',
@@ -31,7 +31,7 @@ export const ONDERZOEK_D14: StepInput[] = [
           traps: [
             { w: 'teken aar', note: 'Dat is de vorm, niet de betekenis. Zou technisch bij tekenaar horen, dan moest het technische tekenaar zijn, met -e.' },
           ],
-          note: 'De onverbogen vorm is het bewijs: technisch hoort bij het werk. Zo ook een beeldend kunstenaar (iemand van de beeldende kunst) en een sociaal werker.',
+          note: 'De onverbogen vorm is het bewijs: technisch hoort bij het werk. Zo ook een beeldend kunstenaar en een sociaal werker.',
         },
         deep: {
           q: 'Hoe lossen taalkundigen de paradox op?',
@@ -133,12 +133,12 @@ export const ONDERZOEK_D14: StepInput[] = [
   },
   {
     kind: 'fix',
-    id: 'sociaal-werker',
+    id: 'fotografisch',
     prompt: 'Tik het foute woord aan en verbeter het.',
-    sentence: 'Mijn zus werkt als sociale werker bij de gemeente.',
-    wrong: 4,
-    answer: 'sociaal',
-    why: 'Een sociaal werker doet sociaal werk: het bijvoeglijk naamwoord hoort bij het werk en blijft onverbogen. Een sociale werker zou een werker zijn die sociaal is.',
+    sentence: 'Ze heeft een fotograafisch geheugen voor gezichten.',
+    wrong: 3,
+    answer: 'fotografisch',
+    why: '-isch trekt de klemtoon naar de lettergreep ervoor: fotoGRAfisch. Die lettergreep is open, dus één a. Zo verhuist de spelling mee met de familie.',
   },
   {
     kind: 'bet',
@@ -154,7 +154,7 @@ export const ONDERZOEK_D14: StepInput[] = [
     prompt: 'Luister en typ de zin.',
     sentence: 'De beeldend kunstenaar beging een stommiteit.',
     right: 'Goed: beeldend blijft onverbogen, want het hoort bij de kunst, niet bij de persoon. En stommiteit: Latijns -iteit op een inheemse stam.',
-    wrong: 'Let op: beeldend kunstenaar zonder -e (iemand van de beeldende kunst), en stommiteit met -iteit op de inheemse stam stom.',
+    wrong: 'Let op: beeldend kunstenaar zonder -e (het gaat om de beeldende kunst), en stommiteit met -iteit op de inheemse stam stom.',
   },
   {
     kind: 'swipe',
@@ -167,10 +167,10 @@ export const ONDERZOEK_D14: StepInput[] = [
         why: 'Daarom blijft het onverbogen: iemand die technisch tekent.',
       },
       {
-        t: 'Een technische tekenaar en een technisch tekenaar betekenen hetzelfde.',
+        t: 'Volgens de ANS blijft het bijvoeglijk naamwoord onverbogen als het de persoon zelf beschrijft.',
         ok: false,
-        fix: 'met -e is het een tekenaar die technisch goed is',
-        why: 'De buiging verraadt de boom.',
+        fix: 'Onverbogen blijft het juist als het de handeling of het werk beschrijft',
+        why: 'Een sociaal werker doet sociaal werk. De buiging verraadt de boom.',
       },
       {
         t: 'Stommiteit bewijst dat -iteit alleen aan geleerde stammen plakt.',

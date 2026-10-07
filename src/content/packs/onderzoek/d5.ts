@@ -22,24 +22,28 @@ export const ONDERZOEK_D5: StepInput[] = [
         },
       },
       {
-        text: 'Hoe vind je morfemen zonder woordenboek? Zellig Harris (1955) telde, letter voor letter, hoeveel verschillende vervolgen de taal toelaat. Na *on* kan bijna alles komen; na *onlee* vrijwel alleen een *s*. Waar het aantal mogelijkheden ineens piekt, ligt een grens. Zo vind je *on|lees|baar* zonder één betekenis te kennen. Dezelfde gedachte zit in de tokenizers van taalmodellen: die knippen woorden in veelvoorkomende stukken, puur op frequentie. Die stukken lijken vaak op morfemen, maar vallen er lang niet altijd mee samen.',
+        text: 'Hoe vind je morfemen zonder woordenboek? Zellig Harris (1955) telde, klank voor klank, hoeveel verschillende vervolgen de taal toelaat. Na *on* kan bijna alles komen; na *onl* nog maar een paar letters. Waar het aantal mogelijkheden ineens piekt, ligt een grens. Tel je ook van achteren, dan vind je *on|lees|baar* zonder één betekenis te kennen. Een verwante gedachte zit in de tokenizers van taalmodellen: die knippen woorden in veelvoorkomende stukken, op grond van frequentie. Die stukken lijken vaak op morfemen, maar vallen er lang niet altijd mee samen.',
         rule: 'Een morfeemgrens is een plek waar de taal ineens veel kanten op kan.',
         lab: {
-          label: 'Tik een beginstuk van onleesbaar',
+          label: 'Tik een stuk van onleesbaar',
           chips: [
             { k: 'on·', out: 'veel vervolgen', note: 'onaardig, onbekend, oneerlijk, onleesbaar: na on kan bijna elke letter komen. Een piek, dus een grens.' },
             { k: 'onl·', out: 'weinig vervolgen', note: 'onleesbaar, onlogisch, onlust: na onl komen maar een paar klinkers. Je zit midden in een morfeem.' },
             {
               k: 'onlees·',
-              out: 'veel vervolgen',
-              note: 'Na lees gaat het weer alle kanten op: leest, leesbaar, leesboek, leesbril. Weer een piek, dus weer een grens.',
+              out: 'bijna niets',
+              note: 'Na onlees kan alleen nog baar komen: onleesbaar, onleesbaarheid. Van voren tellend vind je de grens tussen lees en baar dus niet.',
             },
-            { k: 'onleesb·', out: 'bijna niets', note: 'Alleen onleesbaar, onleesbaarheid. Je zit midden in -baar.' },
+            {
+              k: '·baar',
+              out: 'veel voorgangers',
+              note: 'Tel nu van achteren: vóór baar staat van alles, zoals in eetbaar, leesbaar, draagbaar, deelbaar. Weer een piek, dus toch een grens.',
+            },
           ],
         },
         deep: {
           q: 'Werkt dat altijd?',
-          a: 'Nee. De telling kijkt alleen naar vorm, dus ze knipt ook *kam|er* en *ham|er*, al betekent *kam* niets in *kamer*. Een tokenizer die op frequentie knipt, maakt dezelfde fouten: een zeldzaam woord valt in rare stukken uiteen. Daarom bouwen onderzoekers voor talen met veel woordbouw tokenizers die wél iets van morfemen weten.',
+          a: 'Nee. De telling kijkt alleen naar vorm, dus ze knipt ook *kam|er* en *ham|er*, al betekent *kam* niets in *kamer*. Een tokenizer die op frequentie knipt, maakt dezelfde fouten: een zeldzaam woord valt in rare stukken uiteen. Daarom proberen onderzoekers, vooral voor talen met veel woordbouw, tokenizers te maken die wél iets van morfemen weten.',
         },
       },
       {
@@ -56,15 +60,15 @@ export const ONDERZOEK_D5: StepInput[] = [
             { label: 'kutub', cells: [{ fill: 'boeken', hint: 'Het meervoud zit in de klinkers, niet aan het eind.' }] },
           ],
           extra: ['hij las', 'school'],
-          note: 'Vijf woorden, één wortel k-t-b. De medeklinkers dragen de kernbetekenis, de klinkers eromheen de rest: doener, plek, meervoud. Een morfeem als skelet.',
+          note: 'Vijf woorden, één wortel k-t-b. De medeklinkers dragen de kernbetekenis, het patroon eromheen de rest: doener, plek, meervoud. Een morfeem als skelet.',
         },
         deep: {
           q: 'Is zing, zong dan ook een patroon?',
-          a: 'Het lijkt erop: *drink*, *dronk*, *bind*, *bond* en *spring*, *sprong* volgen allemaal *i* naar *o*. Toch is het Nederlands geen patroontaal. De wissel geldt voor een beperkte groep oude werkwoorden, en nieuwe werkwoorden krijgen gewoon *-te* of *-de*: *appen*, *apte*. In het Arabisch is het patroon de gewone manier om woorden te maken. Hoe je zo’n wissel in een model zet, is de vraag van de master (*Morfeem, proces of paradigma?*).',
+          a: 'Het lijkt erop: *drink*, *dronk*, *bind*, *bond* en *spring*, *sprong* volgen allemaal *i* naar *o*. Toch is het Nederlands geen patroontaal. De wissel geldt voor een beperkte groep oude werkwoorden, en nieuwe werkwoorden krijgen gewoon *-te* of *-de*: *appen*, *appte*. In het Arabisch is het patroon de gewone manier om woorden te maken. Hoe je zo’n wissel in een model zet, is de vraag van de master (Morfeem, proces of paradigma?).',
         },
       },
       {
-        text: 'Voor het schrijven telt dit: de spelling laat morfeemgrenzen zien die je niet hoort. In *onmiddellijk* hoor je één *l*, maar *middel* en *lijk* houden allebei hun letter. Zo ook *hoofddoek*, *nachttrein* en *stadsschouwburg*: op de grens botsen twee gelijke letters en je schrijft ze allebei. Wie *onmiddelijk* schrijft, heeft de grens niet gezien. Andersom zetten mensen soms een letter te veel waar geen grens ligt: *eigenlijk* is *eigen* plus *lijk*, zonder dubbele *n*.',
+        text: 'Voor het schrijven telt dit: de spelling laat morfeemgrenzen zien die je niet hoort. In *onmiddellijk* hoor je één *l*, maar *middel* en *lijk* houden allebei hun letter. Zo ook *hoofddoek*, *nachttrein* en *stadsschouwburg*: op de grens botsen twee gelijke letters en je schrijft ze allebei. Wie *onmiddelijk* schrijft, heeft de grens niet gezien. Staan er op de grens twee verschillende letters, dan verdubbel je niets: *eigen* + *lijk* wordt *eigenlijk*, *in* + *eens* wordt *ineens*.',
         rule: 'Op een morfeemgrens schrijf je beide letters, ook als je er maar één hoort: *onmiddellijk*, *hoofddoek*.',
         mark: {
           q: 'Tik de woorden waar op de morfeemgrens twee gelijke letters botsen',
@@ -168,7 +172,7 @@ export const ONDERZOEK_D5: StepInput[] = [
       {
         t: 'Een tokenizer van een taalmodel knipt altijd precies op morfeemgrenzen.',
         ok: false,
-        fix: 'Hij knipt op frequentie; de stukken vallen vaak niet samen met morfemen',
+        fix: 'Hij knipt op frequentie; de stukken vallen lang niet altijd samen met morfemen',
         why: 'Daarom zoeken onderzoekers naar tokenizers die iets van woordbouw weten.',
       },
       {

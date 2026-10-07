@@ -8,7 +8,7 @@ export const ONDERZOEK_D6: StepInput[] = [
     title: 'De randen van de buiging',
     panels: [
       {
-        text: 'Waarom staat afleiding binnen en buiging buiten? Joan Bybee (1985) vergeleek vijftig talen en vond een schaal van *relevantie*. Hoe meer een categorie de handeling zelf verandert, hoe dichter ze bij de stam staat: aspect en tijd dichtbij, persoon en getal het verst weg. Afleiding verandert het meest aan de betekenis en zit daarom het diepst. Het Nederlands volgt de schaal: in *werkten* plakt de tijd (*-te*) direct aan de stam, het getal (*-n*) pas daarna. Bybee zag nog iets: zeer relevante categorieën versmelten vaak met de stam. De tijd kan in de klinker kruipen (*zong*); persoon en getal blijven vrijwel altijd een los stukje.',
+        text: 'Waarom staat afleiding binnen en buiging buiten? Joan Bybee (1985) vergeleek vijftig talen en vond een schaal van *relevantie*. Hoe meer een categorie de handeling zelf verandert, hoe dichter ze bij de stam staat: aspect en tijd dichtbij, persoon en getal het verst weg. Afleiding verandert het meest aan de betekenis en zit daarom het diepst. Het Nederlands volgt de schaal: in *werkten* plakt de tijd (*-te*) direct aan de stam, het getal (*-n*) pas daarna. Bybee zag nog iets: zeer relevante categorieën versmelten vaak met de stam. De tijd kan in de klinker kruipen (*zong*); persoon en getal blijven meestal een los stukje.',
         rule: 'Hoe meer een stukje de handeling zelf verandert, hoe dichter het bij de stam staat: eerst tijd, dan getal.',
         bracket: {
           q: 'Bouw werkten van binnen naar buiten',
@@ -30,7 +30,7 @@ export const ONDERZOEK_D6: StepInput[] = [
         },
         deep: {
           q: 'Kruipt het getal nooit in de stam?',
-          a: 'Bijna nooit, maar *was* en *waren* zijn een fossiel: de *s* en de *r* wisselen met het getal. Dat is een rest van een oude klankwet, geen levend patroon. Nieuwe werkwoorden krijgen altijd een los stukje: *wij appten*. Zo voorspelt de schaal van Bybee ook wat een taal het eerst opruimt.',
+          a: 'Soms, maar alleen in oude vormen. In *was* en *waren* wisselen de *s* en de *r* met het getal, en in *gaf*, *gaven* en *sprak*, *spraken* is de klinker in het meervoud lang. Dat zijn resten van oude klankwetten, geen levend patroon. Nieuwe werkwoorden krijgen altijd een los stukje: *wij appten*. Zo voorspelt de schaal van Bybee ook wat een taal het eerst opruimt.',
         },
       },
       {
@@ -48,7 +48,7 @@ export const ONDERZOEK_D6: StepInput[] = [
             {
               k: 'geschikt',
               out: 'al bijvoeglijk naamwoord',
-              note: 'Heel geschikt, geschikter, geschiktheid: alle toetsen slagen. Van schikken is weinig meer te voelen.',
+              note: 'In de betekenis ‘passend’: heel geschikt, geschikter, geschiktheid. Alle toetsen slagen, en van schikken is weinig meer te voelen.',
             },
             {
               k: 'gesloten',
@@ -59,7 +59,7 @@ export const ONDERZOEK_D6: StepInput[] = [
         },
         deep: {
           q: 'Waarom is dat een probleem voor de theorie?',
-          a: 'Omdat de netste toets voor afleiding (nieuwe woordsoort) hier faalt. Haspelmath concludeerde dat buiging en afleiding geen twee hokjes zijn maar twee uiteinden van een schaal. Een deelwoord als *geschikt* is langs die schaal opgeschoven: van vorm van een werkwoord naar een eigen woord in het woordenboek.',
+          a: 'Omdat de netste toets voor afleiding (nieuwe woordsoort) hier faalt. Haspelmath ziet buiging en afleiding daarom eerder als twee uiteinden van een schaal dan als twee hokjes. Een deelwoord als *geschikt* is langs die schaal opgeschoven: van vorm van een werkwoord naar een eigen woord in het woordenboek.',
         },
       },
       {
@@ -77,13 +77,13 @@ export const ONDERZOEK_D6: StepInput[] = [
         },
       },
       {
-        text: 'Is de *-s* in *Jans fiets* nog buiging? Het Engelse *’s* hangt aan een hele groep: *the king of England’s hat*. Het Nederlandse *-s* kan dat niet: *de koning van Engelands hoed* is onmogelijk. Het hangt alleen aan eigennamen, aan verwantschapsnamen zoals *moeder* en *opa*, en aan *iemand* en *niemand*: *moeders fiets*, *iemands jas*. Zo kieskeurig is een affix, niet een klitiek (vergelijk de toetsen van Zwicky en Pullum in de master van Het woord). De bezits-s is dus een laatste levende rest van de tweede naamval. Wil je meer, dan gebruik je een groep: *de fiets van de buurman*, of informeel *de buurman z’n fiets*.',
-        rule: 'De bezits-s is een kieskeurig affix: alleen bij namen, verwanten en *iemand*. Nooit aan een hele groep.',
+        text: 'Is de *-s* in *Jans fiets* nog buiging? Het Engelse *’s* hangt aan een hele groep: *the king of England’s hat*. Het Nederlandse *-s* kan dat niet: *de koning van Engelands hoed* is onmogelijk. Het hangt vooral aan eigennamen, aan woorden die als naam werken, zoals *moeder* en *opa*, en aan een paar voornaamwoorden: *moeders fiets*, *iemands jas*, *elkaars hulp*. Zo kieskeurig gedraagt zich eerder een affix dan een klitiek (vergelijk de toetsen van Zwicky en Pullum in de master van Het woord). Historisch is de bezits-s een van de laatste levende resten van de tweede naamval. Wil je meer, dan gebruik je een groep: *de fiets van de buurman*, of informeel *de buurman z’n fiets*.',
+        rule: 'De bezits-s is kieskeurig: vooral bij namen, woorden die als naam werken en *iemand*. Aan een willekeurige woordgroep kan hij niet.',
         quiz: {
           q: 'Welke vorm kan in verzorgd Nederlands?',
           options: ['Jans fiets', 'de leraars fiets', 'de koning van Engelands hoed'],
           answer: 'Jans fiets',
-          why: 'Alleen een eigennaam, een verwant of iemand krijgt de -s. Bij de leraar en bij een hele groep moet je omschrijven: de fiets van de leraar, de hoed van de koning van Engeland.',
+          why: 'Vooral een eigennaam, een woord dat als naam werkt of iemand krijgt de -s. Bij de leraar en bij een hele groep moet je omschrijven: de fiets van de leraar, de hoed van de koning van Engeland.',
         },
         deep: {
           q: 'En de apostrof?',
@@ -98,7 +98,7 @@ export const ONDERZOEK_D6: StepInput[] = [
     prompt: 'Fins: talo = huis, i = meervoud, ssa = in, ni = mijn. Anders dan het Turks zet het Fins het bezit ná de naamval. Bouw ‘in mijn huizen’.',
     tiles: ['ssa', 'talo', 'ni', 'i'],
     answer: 'talo i ssa ni',
-    why: 'talo-i-ssa-ni: het meervoud zit het dichtst bij de stam, want het zegt iets over de huizen zelf. Dan de naamval, dan het bezit. Het Turks (ev-ler-im-de) zet het bezit vóór de naamval: welke categorie na het meervoud komt, verschilt per taal, maar het meervoud zit altijd binnen.',
+    why: 'talo-i-ssa-ni: het meervoud zit het dichtst bij de stam, want het zegt iets over de huizen zelf. Dan de naamval, dan het bezit. Het Turks (ev-ler-im-de) zet het bezit vóór de naamval: welke categorie na het meervoud komt, verschilt per taal, maar het meervoud staat bijna altijd dichter bij de stam dan de naamval.',
   },
   {
     kind: 'chat',
@@ -119,14 +119,14 @@ export const ONDERZOEK_D6: StepInput[] = [
         options: ['Jans aantekeningen, hij schrijft alles op.', 'Jan’s aantekeningen, hij schrijft alles op.'],
         right: 0,
         fix: 'Jan’s → Jans',
-        why: 'De bezits-s plakt gewoon aan de naam. Een apostrof komt alleen na een lange klinker (Anna’s) of een s-klank (Hans’).',
+        why: 'De bezits-s plakt gewoon aan de naam. Een apostrof komt alleen na een lange klinker die je met één letter schrijft (Anna’s) of na een s-klank (Hans’).',
       },
       {
         say: 'Was de zaal nog open na afloop?',
         options: ['Nee, de deur was al gesloten.', 'Nee, de deur was heel gesloten.'],
         right: 0,
         fix: 'heel gesloten → al gesloten',
-        why: 'Over een deur is gesloten een deelwoord: dicht. Heel gesloten kan alleen bij een persoon, als bijvoeglijk naamwoord.',
+        why: 'Over een deur is gesloten een deelwoord: dicht. Heel gesloten kan alleen in de bijvoeglijke betekenis: een heel gesloten type.',
       },
       {
         say: 'Kan ik je morgen bellen?',
@@ -143,8 +143,8 @@ export const ONDERZOEK_D6: StepInput[] = [
     id: 'allen-tijde',
     prompt: 'Verbeter de versteende uitdrukking.',
     source: 'Je kunt ons ten alle tijden bellen.',
-    accept: ['Je kunt ons te allen tijde bellen.'],
-    why: 'te allen tijde: een oude derde naamval in het enkelvoud. De vorm ten alle tijden mengt twee uitdrukkingen door elkaar en bestaat niet.',
+    accept: ['Je kunt ons te allen tijde bellen.', 'Te allen tijde kun je ons bellen.'],
+    why: 'te allen tijde: een oude derde naamval in het enkelvoud. Ten is te den, maar vóór allen staat geen lidwoord. De vorm ten alle tijden is dus fout.',
   },
   {
     kind: 'sort',
@@ -188,7 +188,7 @@ export const ONDERZOEK_D6: StepInput[] = [
         why: 'Daarom is de woordsoorttoets voor afleiding niet waterdicht.',
       },
       {
-        t: 'Geschikt is een deelwoord dat helemaal bijvoeglijk naamwoord is geworden.',
+        t: 'In een geschikte kandidaat is het deelwoord geschikt helemaal bijvoeglijk naamwoord geworden.',
         ok: true,
         why: 'Heel geschikt, geschikter, geschiktheid: alle toetsen slagen.',
       },
@@ -201,8 +201,8 @@ export const ONDERZOEK_D6: StepInput[] = [
       {
         t: 'De Nederlandse bezits-s kan aan een hele woordgroep hangen, net als het Engelse ’s.',
         ok: false,
-        fix: 'Alleen aan eigennamen, verwantschapsnamen en iemand',
-        why: 'Dat kieskeurige gedrag maakt hem een affix, geen klitiek.',
+        fix: 'Vooral aan namen, woorden die als naam werken en iemand',
+        why: 'Dat kieskeurige gedrag past eerder bij een affix dan bij een klitiek.',
       },
       { t: 'In het Fins staat het meervoud dichter bij de stam dan het bezit.', ok: true, why: 'talo-i-ssa-ni: meervoud, naamval, bezit.' },
     ],

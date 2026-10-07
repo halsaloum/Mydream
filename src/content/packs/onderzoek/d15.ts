@@ -18,7 +18,6 @@ export const ONDERZOEK_D15: StepInput[] = [
             { label: 'de eigenschap vlak te zijn', cells: [{ fill: 'vlakheid', hint: 'Het levende -heid noemt de eigenschap.' }] },
             { label: 'een eetbare plant', cells: [{ fill: 'groente', hint: 'Oud -te, maar de betekenis is een ding geworden.' }] },
             { label: 'een lange periode zonder regen', cells: [{ fill: 'droogte' }] },
-            { label: 'de eigenschap droog te zijn, van een wijn', cells: [{ fill: 'droogheid' }] },
             { label: 'een aandoening, je kunt er drie van hebben', cells: [{ fill: 'ziekte' }] },
           ],
           extra: ['vlakkigheid', 'groenheid', 'ziekheid'],
@@ -30,7 +29,7 @@ export const ONDERZOEK_D15: StepInput[] = [
         },
       },
       {
-        text: 'Productief waar? Ingo Plag, Christiane Dalton-Puffer en Harald Baayen (1999) maten Engelse achtervoegsels apart in gesproken en geschreven taal uit het British National Corpus. Hetzelfde achtervoegsel bleek in de ene tekstsoort productief en in de andere nauwelijks. Een P-waarde is dus geen eigenschap van de taal, maar van een taal in een bepaald soort tekst. Wie *-iteit* in chatberichten telt en *-heid* in wetenschappelijke artikelen, vergelijkt appels met peren, zelfs bij dezelfde N.',
+        text: 'Productief waar? Ingo Plag, Christiane Dalton-Puffer en Harald Baayen (1999) maten Engelse achtervoegsels apart in gesproken en geschreven taal uit het British National Corpus. Hetzelfde achtervoegsel bleek in de ene tekstsoort veel productiever dan in de andere. Een P-waarde is dus geen eigenschap van de taal, maar van een taal in een bepaald soort tekst. Wie *-iteit* in chatberichten telt en *-heid* in wetenschappelijke artikelen, vergelijkt appels met peren, zelfs bij dezelfde N.',
         rule: 'Productiviteit hangt af van de tekstsoort: meet twee affixen in hetzelfde soort corpus.',
         quiz: {
           q: 'Een student meet P van -heid in chatberichten en P van -iteit in juridische teksten, bij dezelfde N. Wat is het probleem?',
@@ -56,12 +55,12 @@ export const ONDERZOEK_D15: StepInput[] = [
             {
               k: 'strijpen (verzonnen)',
               out: 'streep? strijpte?',
-              note: 'Het patroon ij/ee heeft tientallen leden: kijken, rijden, blijven, schrijven. Veel sprekers voelen streep. De zwakke vorm kan altijd.',
+              note: 'Het patroon ij/ee heeft tientallen leden: kijken, rijden, blijven, schrijven. Streep klinkt dan niet gek. De zwakke vorm kan altijd.',
             },
             { k: 'ploezen (verzonnen)', out: 'ploesde', note: 'Geen sterk patroon met veel leden op oe. De zwakke regel wint zonder moeite.' },
             {
-              k: 'spruiken (verzonnen)',
-              out: 'sprook? spruikte?',
+              k: 'bluiken (verzonnen)',
+              out: 'blook? bluikte?',
               note: 'ui/oo heeft wel leden (buigen, sluiten, kruipen), maar minder dan ij/ee. De aantrekkingskracht is zwakker.',
             },
             {
@@ -87,7 +86,7 @@ export const ONDERZOEK_D15: StepInput[] = [
         },
         deep: {
           q: 'En een woord dat ooit één keer voorkwam en daarna een hit werd?',
-          a: 'Dat is de omgekeerde valkuil. *Ontzorgen* was ooit een hapax; in een krantencorpus van vandaag komt het honderden keren voor en telt het niet meer mee als bewijs. P meet de kans op iets nieuws nu, niet de geschiedenis van een affix. Wie wil weten wanneer een patroon leefde, heeft corpora uit verschillende jaren nodig.',
+          a: 'Dat is de omgekeerde valkuil. *Ontzorgen* was ooit nieuw en zeldzaam; in een krantencorpus van vandaag komt het vaak voor en telt het niet meer mee als bewijs. P meet de kans op iets nieuws nu, niet de geschiedenis van een affix. Wie wil weten wanneer een patroon leefde, heeft corpora uit verschillende jaren nodig.',
         },
       },
     ],
@@ -118,7 +117,7 @@ export const ONDERZOEK_D15: StepInput[] = [
         options: ['Nee: oude woorden met een verschoven betekenis.', 'Ja, want ze komen vaak voor.'],
         right: 0,
         fix: 'oude woorden tellen niet als aanwas',
-        why: 'Vaak voorkomen is V, niet P. Vlakte en groente zijn gelexicaliseerd: ze bewijzen dat -te ooit leefde.',
+        why: 'Vaak voorkomen zegt niets over aanwas. Vlakte en groente zijn gelexicaliseerd: ze bewijzen dat -te ooit leefde.',
       },
       {
         say: 'Laatste: ij/ee-werkwoorden zijn er veel. Dus dat patroon is productief?',
@@ -188,7 +187,7 @@ export const ONDERZOEK_D15: StepInput[] = [
         fix: 'typefrequentie maakt productief; tokenfrequentie beschermt juist een onregelmatige vorm',
         why: 'Veel leden trekken aan; één heel frequent woord wordt een eiland.',
       },
-      { t: 'Vroeg was ooit een zwakke verleden tijd: vraagde.', ok: true, why: 'Het sterke patroon van dragen, droeg trok vragen naar zich toe.' },
+      { t: 'De verleden tijd van vragen was ooit zwak: vraagde.', ok: true, why: 'Het sterke patroon van dragen, droeg trok vragen naar zich toe.' },
       {
         t: 'Elke hapax in een corpus is een nieuw woord.',
         ok: false,
@@ -201,10 +200,10 @@ export const ONDERZOEK_D15: StepInput[] = [
         why: 'P meet de kans op iets nieuws nu, niet de geschiedenis.',
       },
       {
-        t: 'Een groot V betekent altijd een hoge P.',
+        t: 'Typefrequentie en P meten hetzelfde.',
         ok: false,
-        fix: '-te heeft veel leden en toch geen aanwas',
-        why: 'Omvang van het patroon en kans op nieuwe woorden zijn twee verschillende maten.',
+        fix: 'typefrequentie meet de omvang van het patroon, P de kans op iets nieuws',
+        why: '-te heeft veel leden en toch geen aanwas: twee verschillende maten.',
       },
     ],
   },

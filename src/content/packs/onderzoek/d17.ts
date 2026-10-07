@@ -76,13 +76,13 @@ export const ONDERZOEK_D17: StepInput[] = [
             {
               k: 'de kat uitlaten en de hond voeren',
               out: 'woordwissel',
-              note: 'Bedoeld: de hond uitlaten en de kat voeren. Hele woorden ruilden, met hun lidwoord.',
+              note: 'Bedoeld: de hond uitlaten en de kat voeren. Hele woorden ruilden van plek.',
             },
           ],
         },
         deep: {
           q: 'Wat doet een gestrand stukje met zijn nieuwe buur?',
-          a: 'Het past zich aan. Wie *het dak van de schuur* wil zeggen en *de schuur van het dak* produceert, zet de lidwoorden netjes om: niet *de dak* of *het schuur*. Garrett leidde daaruit af dat zulke stukjes pas ná de ruil hun vorm krijgen. Eerst staat er een abstract ‘lidwoord’ of ‘meervoud’, dan pas *de*, *het*, *-en* of *-s*. Dat is dezelfde volgorde als in Morfeem, proces of paradigma?: eerst de betekenis, daarna de vorm.',
+          a: 'Het past zich aan. Wie *het dak van de schuur* wil zeggen en *de schuur van het dak* produceert, zet de lidwoorden netjes om: niet *de dak* of *het schuur*. Garrett leidde daaruit af dat zulke stukjes pas ná de ruil hun vorm krijgen. Eerst staat er een abstract ‘lidwoord’ of ‘meervoud’, dan pas *de*, *het*, *-en* of *-s*. Dat is dezelfde volgorde als in Morfeem, proces of paradigma?: eerst de kenmerken, daarna de vorm.',
         },
       },
       {
@@ -104,8 +104,8 @@ export const ONDERZOEK_D17: StepInput[] = [
         },
       },
       {
-        text: 'Terug naar de schrijver. Homofoondominantie werkt in twee richtingen. Bij *vinden* is *vind* heel frequent (*ik vind dat…*), dus sluipt *hij vind* erin. Bij *worden* is het andersom: *wordt* komt veel vaker voor dan *word* (*het wordt*, *hij wordt*, de lijdende vorm), dus schrijven mensen *ik wordt*. Het onderzoek van Dominiek Sandra en collega’s laat zien dat de fout toeneemt onder tijdsdruk en bij een grotere afstand tot het onderwerp, en dat ook goede spellers hem maken. Het is geen kennisprobleem maar een geheugenprobleem. De remedie is dus niet nóg een keer de regel leren, maar een controlemoment inbouwen op precies de plekken waar een homofoon op de loer ligt: werkwoorden met een stam op *d*.',
-        rule: 'Controleer gericht: elke persoonsvorm van een werkwoord met een stam op *d* heeft een even klinkende tweeling.',
+        text: 'Terug naar de schrijver. Homofoondominantie werkt in twee richtingen. Bij *vinden* is *vind* heel frequent (*ik vind dat…*), dus sluipt *hij vind* erin. Bij *worden* is het andersom: *wordt* komt veel vaker voor dan *word* (*het wordt*, *hij wordt*, de lijdende vorm), dus schrijven mensen *ik wordt*. Het onderzoek van Dominiek Sandra en collega’s laat zien dat de fout toeneemt onder tijdsdruk en bij een grotere afstand tot het onderwerp, en dat ook goede spellers hem maken. Het is geen kennisprobleem maar een geheugenprobleem. De remedie is dus niet nóg een keer de regel leren, maar een controlemoment inbouwen op precies de plekken waar een homofoon op de loer ligt, zoals werkwoorden met een stam op *d*.',
+        rule: 'Controleer gericht: in de tegenwoordige tijd enkelvoud heeft een werkwoord met een stam op *d* een even klinkende tweeling (*word*, *wordt*).',
         mark: {
           q: 'Tik de persoonsvormen waar een homofoon op de loer ligt',
           sentence: 'Ik word steeds moe, hij vindt dat raar, en zij loopt gewoon door.',
@@ -123,7 +123,7 @@ export const ONDERZOEK_D17: StepInput[] = [
     items: [
       { t: 'rode wijn → wode rijn', b: 0 },
       { t: 'lange bomen → bange lomen', b: 0 },
-      { t: 'koude kaas → kaude koos', b: 0 },
+      { t: 'koude kaas → kade kous', b: 0 },
       { t: 'de plantjes water geven → de watertjes plant geven', b: 1 },
       { t: 'een kopje thee → een theetje kop', b: 1 },
       { t: 'hij fietste naar huis → hij huiste naar fiets', b: 1 },
@@ -131,7 +131,7 @@ export const ONDERZOEK_D17: StepInput[] = [
       { t: 'de hond uitlaten en de kat voeren → de kat uitlaten en de hond voeren', b: 2 },
       { t: 'het dak van de schuur → de schuur van het dak', b: 2 },
     ],
-    why: 'Klanken ruilen binnen hun plek in de lettergreep. Stammen ruilen en laten -jes, -te, -er en -t gestrand achter. Hele woorden nemen hun lidwoord mee, en dat past zich aan: het dak, de schuur.',
+    why: 'Klanken ruilen binnen hun plek in de lettergreep. Stammen ruilen en laten -jes, -te, -er en -t gestrand achter. Hele woorden ruilen van plek, en het lidwoord past zich aan de nieuwe buur aan: de schuur, het dak.',
   },
   {
     kind: 'chat',
@@ -172,7 +172,7 @@ export const ONDERZOEK_D17: StepInput[] = [
         ],
         right: 0,
         fix: 'Niets te verbeteren: gericht nalezen.',
-        why: 'Alleen daar bestaat een even klinkende tweeling. Loopt en lopen kun je niet verwarren.',
+        why: 'Alleen daar bestaat een even klinkende tweeling. Loop en loopt kun je niet verwarren.',
       },
     ],
     bye: 'Top, dan zoek ik nu alle d-stammen. Ik vind, hij vindt, jij vindt het vast goed.',

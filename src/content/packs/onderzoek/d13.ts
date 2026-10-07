@@ -47,7 +47,7 @@ export const ONDERZOEK_D13: StepInput[] = [
         },
       },
       {
-        text: 'Een lege cel kan ook gevuld worden door een andere vorm. In de voltooide tijd met een tweede werkwoord gebruikt het Nederlands een infinitief in plaats van het deelwoord: *ik heb het willen zeggen*, niet *gewild*. De ANS noemt dat de *vervangende infinitief* (infinitivus pro participio). Daardoor valt het gat van *zullen* bijna nooit op: *het had zullen gebeuren*. Alleen zonder tweede werkwoord zie je het gat.',
+        text: 'Een lege cel kan ook gevuld worden door een andere vorm. In de voltooide tijd met een tweede werkwoord gebruikt het Nederlands een infinitief in plaats van het deelwoord: *ik heb het willen zeggen*, niet *gewild*. Dat heet de *vervangende infinitief* (infinitivus pro participio). Daardoor valt het gat van *zullen* bijna nooit op: *het had zullen gebeuren*. Alleen zonder tweede werkwoord zie je het gat.',
         mark: {
           q: 'Tik de vervangende infinitief',
           sentence: 'Ik had het je willen vertellen, maar ik heb het niet gekund.',
@@ -65,7 +65,7 @@ export const ONDERZOEK_D13: StepInput[] = [
     buckets: ['syncretisme', 'suppletie', 'lege cel', 'overvloed'],
     items: [
       { t: 'ik liep, hij liep', b: 0 },
-      { t: 'wij, jullie, zij lopen', b: 0 },
+      { t: 'ik loop, loop jij?', b: 0 },
       { t: 'zijn: ben, is', b: 1 },
       { t: 'veel, meer', b: 1 },
       { t: 'zullen: geen voltooid deelwoord', b: 2 },
@@ -107,10 +107,20 @@ export const ONDERZOEK_D13: StepInput[] = [
     prompt: 'Klopt deze zin?',
     cards: [
       { t: 'In een canoniek paradigma heeft elke cel precies één vorm.', ok: true, why: 'Dat is een van de criteria van Corbett.' },
-      { t: 'Joeg en jaagde zijn een voorbeeld van syncretisme.', ok: false, fix: 'Het is overvloed: twee vormen voor één cel', why: 'Syncretisme is andersom: één vorm voor twee cellen.' },
+      {
+        t: 'Joeg en jaagde zijn een voorbeeld van syncretisme.',
+        ok: false,
+        fix: 'Het is overvloed: twee vormen voor één cel',
+        why: 'Syncretisme is andersom: één vorm voor twee cellen.',
+      },
       { t: 'Volgens Onze Taal is jaagde ouder dan joeg.', ok: true, why: 'joeg kwam pas in de zestiende eeuw op.' },
       { t: 'Het Latijnse supinum en het voltooid deelwoord delen dezelfde stam.', ok: true, why: 'De derde stam: amatum en amatus.' },
-      { t: 'Een morfoom is een stukje met een vaste betekenis.', ok: false, fix: 'Een morfoom is een verdeling van vormen zonder gedeelde betekenis', why: 'Zoals het voltooid deelwoord voor voltooid én lijdend.' },
+      {
+        t: 'Een morfoom is een stukje met een vaste betekenis.',
+        ok: false,
+        fix: 'Een morfoom is een verdeling van vormen zonder gedeelde betekenis',
+        why: 'Zoals het voltooid deelwoord voor voltooid én lijdend.',
+      },
       { t: 'In ik heb het willen zeggen staat willen op de plek van een deelwoord.', ok: true, why: 'Dat is de vervangende infinitief.' },
       { t: 'Suppletie is volgens Corbett het uiterste van niet-canonieke buiging.', ok: true, why: 'Er is geen gedeelde stam meer: ben, is, was.' },
     ],
