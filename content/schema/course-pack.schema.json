@@ -794,6 +794,145 @@
                                   "additionalProperties": false,
                                   "description": "Draaitegel in 3D: spiegel, kantel of draai een letter en ontdek welke letter je dan ziet."
                                 },
+                                "model": {
+                                  "type": "object",
+                                  "properties": {
+                                    "q": {
+                                      "type": "string",
+                                      "pattern": "\\S",
+                                      "description": "Opdracht boven het model, bv. \"Tik een stip en schrijf het onderdeel op\"."
+                                    },
+                                    "model": {
+                                      "type": "string",
+                                      "enum": [
+                                        "fiets"
+                                      ],
+                                      "description": "Welk 3D-model (zie content/models.ts)."
+                                    },
+                                    "parts": {
+                                      "minItems": 1,
+                                      "maxItems": 10,
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object",
+                                        "properties": {
+                                          "id": {
+                                            "type": "string",
+                                            "pattern": "^[a-z0-9-]+$",
+                                            "description": "Sleutel van het onderdeel, bv. \"stuur\"."
+                                          },
+                                          "at": {
+                                            "type": "array",
+                                            "prefixItems": [
+                                              {
+                                                "type": "number"
+                                              },
+                                              {
+                                                "type": "number"
+                                              },
+                                              {
+                                                "type": "number"
+                                              }
+                                            ],
+                                            "items": false,
+                                            "minItems": 3,
+                                            "maxItems": 3,
+                                            "description": "Plek van de stip op het model (x, y, z in meters, zoals in het GLB-bestand)."
+                                          },
+                                          "normal": {
+                                            "description": "Richting waarin de stip kijkt; van achteren wordt hij doorzichtig.",
+                                            "type": "array",
+                                            "prefixItems": [
+                                              {
+                                                "type": "number"
+                                              },
+                                              {
+                                                "type": "number"
+                                              },
+                                              {
+                                                "type": "number"
+                                              }
+                                            ],
+                                            "items": false,
+                                            "minItems": 3,
+                                            "maxItems": 3
+                                          },
+                                          "ask": {
+                                            "type": "string",
+                                            "pattern": "\\S",
+                                            "description": "Vraag bij dit onderdeel, bv. \"Hoe heet dit? Met de of het.\""
+                                          },
+                                          "answer": {
+                                            "type": "string",
+                                            "pattern": "\\S",
+                                            "description": "Wat de leerling moet typen, bv. \"het stuur\"."
+                                          },
+                                          "also": {
+                                            "description": "Andere goede antwoorden, bv. \"het pedaal\" naast \"de trapper\".",
+                                            "type": "array",
+                                            "items": {
+                                              "type": "string",
+                                              "pattern": "\\S"
+                                            }
+                                          },
+                                          "hint": {
+                                            "description": "Tip na een fout zonder bekende valkuil, bv. \"fiets + en + rek\".",
+                                            "type": "string",
+                                            "pattern": "\\S"
+                                          },
+                                          "traps": {
+                                            "type": "array",
+                                            "items": {
+                                              "type": "object",
+                                              "properties": {
+                                                "w": {
+                                                  "type": "string",
+                                                  "pattern": "\\S",
+                                                  "description": "Een verleidelijk fout antwoord."
+                                                },
+                                                "note": {
+                                                  "type": "string",
+                                                  "pattern": "\\S",
+                                                  "description": "Waarom het niet klopt."
+                                                }
+                                              },
+                                              "required": [
+                                                "w",
+                                                "note"
+                                              ],
+                                              "additionalProperties": false
+                                            }
+                                          },
+                                          "note": {
+                                            "type": "string",
+                                            "pattern": "\\S",
+                                            "description": "Uitleg zodra het onderdeel goed is."
+                                          }
+                                        },
+                                        "required": [
+                                          "id",
+                                          "at",
+                                          "ask",
+                                          "answer",
+                                          "note"
+                                        ],
+                                        "additionalProperties": false
+                                      }
+                                    },
+                                    "note": {
+                                      "type": "string",
+                                      "pattern": "\\S"
+                                    }
+                                  },
+                                  "required": [
+                                    "q",
+                                    "model",
+                                    "parts",
+                                    "note"
+                                  ],
+                                  "additionalProperties": false,
+                                  "description": "3D-model (gemaakt met Meshy): draai het model, tik een stip op een onderdeel en typ het woord."
+                                },
                                 "grid": {
                                   "type": "object",
                                   "properties": {

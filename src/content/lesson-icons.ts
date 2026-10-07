@@ -3,7 +3,7 @@ import { thingIcon } from './things';
 /**
  * Plaatjes-iconen per les, in dezelfde glanzende speelgoedstijl als de 3D-voorwerpen (gemaakt met
  * Meshy, zie `scripts/meshy-iconen.mjs`). Een les zonder plaatje houdt zijn tekstteken (`icon`).
- * Twee lessen gebruiken het icoon van een bestaand voorwerp, omdat dat precies hun onderwerp is.
+ * Drie lessen gebruiken het icoon van een bestaand 3D-model, omdat dat precies hun onderwerp is.
  */
 const MADE = [
   'd0',
@@ -58,6 +58,7 @@ const MADE = [
 
 const FROM_THINGS: Readonly<Record<string, string>> = {
   d10: thingIcon('pannenkoek'),
+  d20: '/models/fiets.webp',
   w17: thingIcon('pinguin'),
 };
 

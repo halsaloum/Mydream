@@ -25,11 +25,11 @@ const EXTRA_IDS = new Set(Object.values(EXTRA_LESSONS).flatMap((lessons) => less
 const legacyEntries = lessonEntries.filter((entry) => !EXTRA_IDS.has(entry.lesson.id));
 
 describe('bestaande lesinhoud', () => {
-  it('voldoet aan het contract: 9 niveaus, 29 + 103 lessen, 7 vakgebieden waarvan 4 perspectieven', () => {
+  it('voldoet aan het contract: 9 niveaus, 29 + 104 lessen, 7 vakgebieden waarvan 4 perspectieven', () => {
     expect(course.layers).toHaveLength(9);
     expect(legacyEntries).toHaveLength(29);
-    expect(EXTRA_IDS.size).toBe(103);
-    expect(lessonEntries).toHaveLength(132);
+    expect(EXTRA_IDS.size).toBe(104);
+    expect(lessonEntries).toHaveLength(133);
     expect(course.domains.map((domain) => domain.id)).toEqual(['orth', 'fon', 'morf', 'syn', 'sem', 'prag', 'tekst']);
     expect(course.domains.filter((domain) => domain.persp).map((domain) => domain.id)).toEqual(['morf', 'syn', 'sem', 'prag']);
     expect(course.layers.every((layer) => layer.growth && layer.learn && layer.example && layer.fields.length > 0)).toBe(true);
@@ -94,8 +94,8 @@ describe('nieuwe lessen (packs)', () => {
       .flatMap((layer) => layer.lessons)
       .flatMap((lesson) => lesson.steps)
       .flatMap((step) => (step.kind === 'explain' ? step.panels : []))
-      .flatMap((panel) => (['vowels', 'grid', 'tableau', 'sonority', 'tree', 'bracket', 'paradigm', 'phrase'] as const).filter((widget) => panel[widget] !== undefined));
-    expect(new Set(widgets)).toEqual(new Set(['vowels', 'grid', 'tableau', 'sonority', 'tree', 'bracket', 'paradigm', 'phrase']));
+      .flatMap((panel) => (['vowels', 'grid', 'tableau', 'sonority', 'tree', 'bracket', 'paradigm', 'phrase', 'model'] as const).filter((widget) => panel[widget] !== undefined));
+    expect(new Set(widgets)).toEqual(new Set(['vowels', 'grid', 'tableau', 'sonority', 'tree', 'bracket', 'paradigm', 'phrase', 'model']));
   });
 
   it('weigert lessen voor een onbekend niveau', () => {
@@ -257,6 +257,34 @@ describe('contractvalidatie weigert onjuiste inhoud', () => {
     const glued = PanelSchema.safeParse(boom(['rodeboek', 'hetrodeboek']));
     expect(glued.success).toBe(false);
     if (!glued.success) expect(z.prettifyError(glued.error)).toMatch(/Knoop "rode boek" heeft geen uitleg/);
+  });
+
+  it('3D-model: onbekend model, dubbele onderdelen, een val die juist goed is', () => {
+    const fiets = (parts: { id: string; answer: string; also?: string[]; traps?: string[] }[], model = 'fiets') => ({
+      text: 'Draai.',
+      model: {
+        q: 'Schrijf het op.',
+        model,
+        parts: parts.map(({ traps, ...part }) => ({ ...part, at: [0, 0.5, 0], ask: 'Wat is dit?', note: 'n', traps: traps?.map((w) => ({ w, note: 'n' })) })),
+        note: 'n',
+      },
+    });
+    const check = (panel: unknown, message: RegExp) => {
+      const result = PanelSchema.safeParse(panel);
+      expect(result.success).toBe(false);
+      if (!result.success) expect(z.prettifyError(result.error)).toMatch(message);
+    };
+    check(fiets([{ id: 'bel', answer: 'de bel' }], 'auto'), /model/);
+    check(
+      fiets([
+        { id: 'bel', answer: 'de bel' },
+        { id: 'bel', answer: 'de fietsbel' },
+      ]),
+      /Onderdelen staan dubbel/,
+    );
+    check(fiets([{ id: 'trapper', answer: 'de trapper', also: ['De trapper'] }]), /Goede antwoorden staan dubbel/);
+    check(fiets([{ id: 'bel', answer: 'de bel', traps: ['De  bel.'] }]), /juist een goed antwoord/);
+    expect(PanelSchema.safeParse(fiets([{ id: 'bel', answer: 'de bel', traps: ['het bel'] }])).success).toBe(true);
   });
 
   it('groepenjager: groep buiten de zin, kern buiten de groep, dubbele groep, een val die juist een groep is', () => {

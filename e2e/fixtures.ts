@@ -19,8 +19,11 @@ export async function seedOnboarded(page: Page) {
 
 /** Op de startpagina staan de stappen van een niveau ingeklapt, behalve die waar je nu bent: klap ze open. */
 export async function openStages(page: Page, stages: readonly string[]) {
+  // Na een tabwissel blijft het vorige niveau staan tot zijn animatie klaar is: wacht tot alleen het gekozen niveau er is.
+  const panel = page.getByRole('tabpanel');
+  await expect(panel).toHaveCount(1);
   for (const stage of stages) {
-    const triggers = page.getByRole('button', { name: new RegExp(`^Stap: ${stage}\\b`) });
+    const triggers = panel.getByRole('button', { name: new RegExp(`^Stap: ${stage}\\b`) });
     await expect(triggers.first()).toBeVisible();
     for (const trigger of await triggers.all()) {
       if ((await trigger.getAttribute('aria-expanded')) !== 'true') await trigger.click();
