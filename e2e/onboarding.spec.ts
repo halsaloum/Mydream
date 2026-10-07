@@ -20,7 +20,7 @@ test('kennismaking: keuzes blijven bewaard en terug werkt', async ({ page }) => 
   await page.getByRole('button', { name: 'Klaar, laten we beginnen' }).click();
 
   await expect(page).toHaveURL(/\/$/);
-  await expect(page.getByRole('link', { name: /Verder met jouw les/ })).toBeVisible();
+  await expect(page.getByRole('link', { name: /Begin met schrijven/ })).toBeVisible();
 
   await page.reload();
   await expect(page).toHaveURL(/\/$/);
