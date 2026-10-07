@@ -12,11 +12,6 @@ describe('les-iconen', () => {
     for (const url of Object.values(LESSON_ICONS)) expect(existsSync(path.join(PUBLIC, url)), url).toBe(true);
   });
 
-  it('horen bij een bestaande les', () => {
-    const ids = new Set(course.layers.flatMap((layer) => layer.lessons.map((lesson) => lesson.id)));
-    for (const id of Object.keys(LESSON_ICONS)) expect(ids.has(id), id).toBe(true);
-  });
-
   it('dekken elke les van Het betekenisvolle woorddeel en Het woord', () => {
     const lessons = course.layers.filter((layer) => layer.id === 'deel' || layer.id === 'woord').flatMap((layer) => layer.lessons);
     expect(lessons.filter((lesson) => !LESSON_ICONS[lesson.id]).map((lesson) => lesson.id)).toEqual([]);

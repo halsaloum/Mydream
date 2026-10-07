@@ -19,7 +19,7 @@ import { join } from 'node:path';
 const STYLE =
   '3D icon in a playful glossy toy style: soft rounded chunky shapes, smooth clean surfaces with a subtle glossy sheen, saturated but soft colors, soft studio lighting, centered, three-quarter view from slightly above, the whole object fully visible, isolated on a plain white background, no text, no letters, no numbers, no logo';
 
-/** Per les: het voorwerp op het icoon. */
+/** Per les: het voorwerp op het icoon. Lessen die nog niet in de app staan, hebben hun icoon al. */
 export const ICONEN = {
   // Het betekenisvolle woorddeel
   d0: 'a pair of orange-handled scissors cutting a short ribbon in two',
