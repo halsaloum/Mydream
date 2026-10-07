@@ -9,7 +9,7 @@ export const ONDERZOEK_W13: StepInput[] = [
     panels: [
       {
         text: 'Hoe vind je hyponiemen in miljoenen zinnen? Marti Hearst (1992) liet een computer zoeken naar vaste patronen: *Y zoals X*, *X en andere Y*, *Y, waaronder X*. Uit *roofvogels zoals de buizerd* haalt de computer: een buizerd is een roofvogel. Maar het patroon is niet kieskeurig: *honden en andere huisdieren* levert ook een paar op, terwijl *huisdier* een functionele categorie is (zie de verdieping). Het patroon vindt dus ‘soort van’ in brede zin, niet alleen echte taxonymie.',
-        rule: 'Taal wijst zijn eigen stamboom aan: zoals, en andere en waaronder staan tussen hyponiem en hyperoniem.',
+        rule: 'De taal wijst de stamboom zelf aan: *zoals*, *en andere* en *waaronder* staan tussen hyponiem en hyperoniem.',
         mark: {
           q: 'Tik de drie hyponiemen die een patroon van Hearst in deze zin vindt',
           sentence: 'Roofvogels zoals de buizerd en de sperwer jagen op muizen en andere knaagdieren.',
@@ -31,7 +31,7 @@ export const ONDERZOEK_W13: StepInput[] = [
         },
       },
       {
-        text: 'Deel-geheel is niet één relatie, maar een familie. Morton Winston, Roger Chaffin en Douglas Herrmann (1987) onderscheidden er zes, onder meer *onderdeel* (wiel, fiets), *lid* (boom, bos), *portie* (plak, kaas) en *stof* (staal, fiets). Dat verklaart waarom meronymie niet altijd doorloopt. *De arm hoort bij de violist* en *de violist hoort bij het orkest*, maar de arm is geen deel van het orkest. De eerste stap is onderdeel, de tweede lid: twee soorten, en dan breekt de keten.',
+        text: 'Deel-geheel is niet één relatie, maar een familie. Morton Winston, Roger Chaffin en Douglas Herrmann (1987) onderscheidden er zes, onder meer *onderdeel* (wiel, fiets), *lid* (boom, bos), *portie* (plak, kaas) en *stof* (staal, fiets). Dat verklaart waarom meronymie niet altijd doorloopt. *De arm hoort bij de violist* en *de violist hoort bij het orkest*, maar de arm is geen deel van het orkest. De eerste stap is onderdeel, de tweede lid: twee soorten, en dan breekt de keten. Eén soort is wel nodig, maar geen garantie: denk aan de klink uit de eerste uitleg.',
         rule: 'Deel van loopt alleen door binnen één soort deel-geheel.',
         quiz: {
           q: 'Het wiel hoort bij de fiets, de fiets hoort bij de verhuurvloot. Is het wiel een deel van de vloot?',

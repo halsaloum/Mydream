@@ -51,16 +51,20 @@ export const ONDERZOEK_W18: StepInput[] = [
         },
         deep: {
           q: 'Is dat niet gewoon luiheid?',
-          a: 'Nee, het is efficiëntie. Een brok die als geheel klaarligt, kost minder werkgeheugen dan dezelfde woorden stuk voor stuk bouwen. Daarom klinkt een tekst met goede brokken natuurlijk, en een tekst met alleen vrije keuzes vreemd, ook als elke zin grammaticaal klopt. Het verschil tussen *een besluit nemen* en *een besluit maken* is precies zo’n brok.',
+          a: 'Nee, het is efficiëntie. Een brok die als geheel klaarligt, kost minder werkgeheugen dan dezelfde woorden stuk voor stuk bouwen. Daarom klinkt een tekst met goede brokken natuurlijk, en een tekst met alleen vrije keuzes vreemd, ook als elke zin grammaticaal klopt. Het verschil tussen *een besluit nemen* en *een besluit maken* zit precies in zo’n brok.',
         },
       },
       {
-        text: 'Sommige woorden hebben een kleur die je pas in het corpus ziet. Het Engelse *set in* komt bijna alleen voor met narigheid: *rot set in*, *decay set in*. Bill Louw (1993) noemde dat *semantische prosodie*: een woord neemt de gevoelswaarde over van zijn vaste buren. Michael Stubbs (1995) liet hetzelfde zien voor *cause*, dat bijna altijd ellende veroorzaakt. Het Nederlands heeft zulke woorden ook. *Aanrichten* kan alleen schade, ravage en een bloedbad; *veroorzaken* neigt sterk naar problemen; *bevorderen* en *stimuleren* kleuren positief. Een tweedetaalleerder kent de betekenis maar niet de kleur, en schrijft dan *veel verbeteringen aangericht*.',
-        rule: 'Semantische prosodie: de gevoelswaarde van een woord zit in zijn vaste buren. Aanrichten is altijd narigheid.',
+        text: 'Sommige woorden hebben een kleur die je pas in het corpus ziet. Het Engelse *set in* komt bijna alleen voor met narigheid: *rot set in*, *decay set in*. Bill Louw (1993) noemde dat *semantische prosodie*: een woord neemt de gevoelswaarde over van zijn vaste buren. Michael Stubbs (1995) liet hetzelfde zien voor *cause*, dat bijna altijd ellende veroorzaakt. Het Nederlands heeft zulke woorden ook. *Aanrichten* gaat bijna alleen samen met schade, ravage of een bloedbad; *veroorzaken* neigt sterk naar problemen; *bevorderen* en *stimuleren* kleuren positief. Een tweedetaalleerder kent de betekenis maar niet de kleur, en schrijft dan *veel verbeteringen aangericht*.',
+        rule: 'Semantische prosodie: de gevoelswaarde van een woord zit in zijn vaste buren. Aanrichten is bijna altijd narigheid.',
         lab: {
           label: 'Tik een werkwoord en zie zijn buren',
           chips: [
-            { k: 'aanrichten', out: 'schade · ravage · een bloedbad · verwoestingen', note: 'Alleen narigheid. Een feest aanrichten bestaat niet.' },
+            {
+              k: 'aanrichten',
+              out: 'schade · ravage · een bloedbad · verwoestingen',
+              note: 'Bijna alleen narigheid. Eén ouderwetse uitzondering: een feestmaal aanrichten.',
+            },
             {
               k: 'veroorzaken',
               out: 'problemen · vertraging · schade · een file',
@@ -70,38 +74,44 @@ export const ONDERZOEK_W18: StepInput[] = [
             {
               k: 'bevorderen',
               out: 'de gezondheid · de samenwerking · de doorstroming',
-              note: 'Positief: je bevordert wat je wilt. Fraude bevorderen klinkt als een grap.',
+              note: 'Meestal positief: je bevordert wat je graag ziet groeien.',
             },
           ],
         },
         deep: {
           q: 'Is prosodie echt betekenis, of alleen statistiek?',
-          a: 'Daar wordt over gestreden. Critici zoals Sam Whitsitt betwijfelen of een telling van buren een eigenschap van het woord zelf is; misschien beschrijft ze alleen waar mensen over praten. Voor een schrijver maakt dat weinig uit: *verbeteringen aanrichten* botst, wat de verklaring ook is. Een collocatiewoordenboek of een corpuszoekmachine laat de kleur in één oogopslag zien.',
+          a: 'Daar wordt over gestreden. Critici zoals Sam Whitsitt (2005) betwijfelen of een telling van buren een eigenschap van het woord zelf is; misschien beschrijft ze alleen waar mensen over praten. Voor een schrijver maakt dat weinig uit: *verbeteringen aanrichten* botst, wat de verklaring ook is. Een collocatiewoordenboek of een corpuszoekmachine laat de kleur in één oogopslag zien.',
         },
       },
       {
-        text: 'Hoe zit een idioom in je hoofd? David Swinney en Anne Cutler (1979) vonden dat mensen een idioom sneller begrijpen dan dezelfde woorden in letterlijke zin: het ligt klaar als één lang woord, naast de gewone zinsbouw. Cristina Cacciari en Patrizia Tabossi (1988) verfijnden dat: het idioom springt pas tevoorschijn bij de *sleutel*, het woord waarna geen andere afloop meer waarschijnlijk is. Tot die sleutel bouw je gewoon zinsbouw. Beide waarheden zie je in de boom van *de pijp uitgaan*: de delen zijn gewone woordgroepen, het geheel is één opgeslagen eenheid met een eigen betekenis.',
+        text: 'Hoe zit een idioom in je hoofd? David Swinney en Anne Cutler (1979) vonden dat mensen een idioom sneller begrijpen dan dezelfde woorden in letterlijke zin: het ligt klaar als één lang woord, naast de gewone zinsbouw. Cristina Cacciari en Patrizia Tabossi (1988) verfijnden dat: het idioom springt pas tevoorschijn bij de *sleutel*, het woord waarna geen andere afloop meer waarschijnlijk is. Tot die sleutel bouw je gewoon zinsbouw. Beide waarheden zie je in de boom van *de pijp uit gaan*: de delen zijn gewone woordgroepen, het geheel is één opgeslagen eenheid met een eigen betekenis.',
         rule: 'Een idioom is syntactisch gebouwd maar lexicaal opgeslagen: een woordgroep die als één woord in je geheugen ligt.',
         bracket: {
-          q: 'Bouw de pijp uitgaan van binnen naar buiten',
-          tree: '[[de pijp] [uit gaan]]',
+          q: 'Bouw de pijp uit gaan van binnen naar buiten',
+          tree: '[[[de pijp] uit] gaan]',
           words: true,
           nodes: [
             {
               w: 'de pijp',
               cat: 'naamwoordgroep',
-              note: 'Lidwoord plus naamwoord: gewone zinsbouw. Letterlijk een pijp, maar in het idioom staat de pijp nergens voor.',
+              note: 'Lidwoord plus naamwoord: gewone zinsbouw. Bij jagers was een pijp de gang van een konijnenhol, maar in het idioom staat de pijp nergens meer voor.',
             },
-            { w: 'uit gaan', form: 'uitgaan', cat: 'scheidbaar werkwoord', note: 'Partikel plus werkwoord: hij gaat uit, uitgaan. Ook dit is gewone bouw.' },
+            {
+              w: 'de pijp uit',
+              cat: 'voorzetselgroep met achterzetsel',
+              note: 'Uit staat achter de pijp, net als in de deur uit en de trap op. Dat dit één groep is, hoor je in Die is de pijp uit: het kan zonder gaan.',
+            },
             {
               w: 'de pijp uit gaan',
-              form: 'de pijp uitgaan',
               cat: 'idioom (één lexicale eenheid)',
               note: 'Pas hier ontstaat de betekenis doodgaan. Volgens Swinney en Cutler ligt dit geheel als één lang woord in je geheugen.',
             },
           ],
-          traps: [{ w: 'pijp uit', note: 'Uit hoort bij gaan, niet bij pijp: uitgaan is een scheidbaar werkwoord.' }],
-          note: 'Twee gewone groepen, één opgeslagen geheel. Omdat pijp nergens voor staat, kun je het idioom niet ombouwen: de pijp werd uitgegaan bestaat niet (zie de eerste uitleg).',
+          traps: [
+            { w: 'uit gaan', note: 'Verleidelijk, want uitgaan bestaat. Maar hier hoort uit bij de pijp: Die is de pijp uit kan ook zonder gaan.' },
+            { w: 'pijp uit', note: 'Eerst hoort de bij pijp: de pijp is samen één naamwoordgroep.' },
+          ],
+          note: 'Gewone bouwstenen, één opgeslagen geheel. Omdat pijp nergens voor staat, kun je het idioom niet ombouwen tot een lijdende vorm (zie de eerste uitleg).',
         },
       },
     ],
@@ -124,14 +134,14 @@ export const ONDERZOEK_W18: StepInput[] = [
       { t: 'veroorzaken', b: 0 },
       { t: 'in de hand werken', b: 0 },
       { t: 'oplopen (een boete, vertraging)', b: 0 },
-      { t: 'uitlokken', b: 0 },
+      { t: 'berokkenen', b: 0 },
       { t: 'bevorderen', b: 1 },
       { t: 'stimuleren', b: 1 },
       { t: 'teweegbrengen', b: 1 },
       { t: 'bewerkstelligen', b: 1 },
       { t: 'leiden tot', b: 1 },
     ],
-    why: 'Aanrichten, veroorzaken, in de hand werken, oplopen en uitlokken trekken narigheid aan: schade, fraude, een boete, kritiek. Bevorderen en stimuleren kleuren positief. Teweegbrengen, bewerkstelligen en leiden tot zijn neutraal en nemen de kleur van hun voorwerp over. Het is een neiging in het corpus, geen wet.',
+    why: 'Aanrichten, veroorzaken, in de hand werken, oplopen en berokkenen trekken narigheid aan: schade, fraude, een boete, leed. Bevorderen en stimuleren kleuren positief. Teweegbrengen, bewerkstelligen en leiden tot zijn neutraal en nemen de kleur van hun voorwerp over. Het is een neiging in het corpus, geen wet.',
   },
   {
     kind: 'choice',
@@ -139,9 +149,9 @@ export const ONDERZOEK_W18: StepInput[] = [
     prompt: 'Kies het werkwoord dat bij de kleur van de zin past.',
     before: 'De nieuwe regeling heeft veel verbeteringen',
     after: '.',
-    options: ['opgeleverd', 'aangericht', 'veroorzaakt'],
+    options: ['opgeleverd', 'aangericht', 'berokkend'],
     answer: 'opgeleverd',
-    why: 'Aanrichten kan alleen narigheid en veroorzaken neigt daar sterk naar. Opleveren is neutraal en past bij verbeteringen. Elk woord apart is goed Nederlands; de combinatie beslist.',
+    why: 'Aanrichten en berokkenen trekken narigheid aan: schade, leed. Opleveren is neutraal en past bij verbeteringen. Elk woord apart is goed Nederlands; de combinatie beslist.',
   },
   {
     kind: 'highlight',
@@ -176,7 +186,7 @@ export const ONDERZOEK_W18: StepInput[] = [
     ],
     done: {
       title: 'Veertien van de twintig woorden voorgevormd',
-      text: 'Een uitdrukking (om een lang verhaal kort te maken), een idioom (de knoop doorhakken) en een collocatie (afscheid nemen van). Vrij gekozen waren alleen de directie, en, en de oude software. Zo ziet ruim de helft eruit.',
+      text: 'Een uitdrukking (om een lang verhaal kort te maken), een idioom (de knoop doorhakken) en een collocatie (afscheid nemen van). Vrij gekozen waren alleen de directie, het woordje en, en de oude software. Erman en Warren vonden ruim de helft; hier is het zelfs meer.',
     },
   },
   {
@@ -198,7 +208,7 @@ export const ONDERZOEK_W18: StepInput[] = [
         t: 'Volgens Erman en Warren bestaat maar een klein deel van gewone tekst uit vaste brokken.',
         ok: false,
         fix: 'Ruim de helft',
-        why: 'Het idioomprincipe van Sinclair verklaart het grootste deel van een gewone tekst.',
+        why: 'Ze vonden ruim de helft. Het idioomprincipe van Sinclair is dus geen uitzondering, maar de regel.',
       },
       {
         t: 'Conklin en Schmitt vonden dat alleen moedertaalsprekers vaste brokken sneller lezen.',
@@ -206,7 +216,11 @@ export const ONDERZOEK_W18: StepInput[] = [
         fix: 'Ook tweedetaalleerders lezen ze sneller',
         why: 'Het voordeel gold voor beide groepen. Brokken leren loont dus ook voor wie Nederlands leert.',
       },
-      { t: 'Aanrichten combineer je alleen met narigheid.', ok: true, why: 'Schade, ravage, een bloedbad: dat is zijn semantische prosodie.' },
+      {
+        t: 'Aanrichten combineer je tegenwoordig bijna alleen met narigheid.',
+        ok: true,
+        why: 'Schade, ravage, een bloedbad: dat is zijn semantische prosodie.',
+      },
       {
         t: 'Swinney en Cutler vonden dat idiomen langzamer verwerkt worden dan letterlijke zinnen.',
         ok: false,

@@ -48,19 +48,19 @@ export const LES_D24: LessonInput = {
           },
         },
         {
-          text: 'Welke plek mag het eerste deel vullen? Thomas Roeper en Muffy Siegel (1978) gaven voor het Engels het *First Sister Principle*: wat in de zin direct naast het werkwoord staat, zijn eerste zuster, mag de samenstelling in. Het lijdend voorwerp dus (*truck driver*), of een bepaling (*thuiswerker*). Het onderwerp van een overgankelijk werkwoord niet: een *menseneter* eet mensen en is nooit een mens die eet. Bij *-er* kan dat ook niet anders, want de dader is de *-er* zelf. Heeft het werkwoord geen lijdend voorwerp, dan mag zijn enige argument wél vooraan: *vogelgezang* is het zingen van vogels.',
+          text: 'Welke plek mag het eerste deel vullen? Thomas Roeper en Muffy Siegel (1978) gaven voor het Engels het *First Sister Principle*: wat in de zin direct naast het werkwoord staat, zijn eerste zuster, mag de samenstelling in. Het lijdend voorwerp dus (*truck driver*), of een bepaling (*thuiswerker*). Het onderwerp van een overgankelijk werkwoord niet: in *menseneter* is *mens* altijd wie er gegeten wordt, nooit wie er eet. Bij *-er* kan dat ook niet anders, want de eter is de *-er* zelf. Zonder *-er* en zonder lijdend voorwerp kan het onderwerp soms wél vooraan: *vogelgezang* is het zingen van vogels. Of zulke woorden nog synthetisch zijn of gewone samenstellingen, is omstreden.',
           rule: 'Het eerste deel is de eerste zuster van het werkwoord: het lijdend voorwerp of een bepaling. De dader van een overgankelijk werkwoord nooit.',
           lab: {
             label: 'Tik een woord',
             chips: [
               {
                 k: 'menseneter',
-                out: 'iets dat mensen eet',
-                note: 'Mensen is het lijdend voorwerp van eten. De eter, de dader, is de -er en staat niet apart in het woord.',
+                out: 'iets wat mensen eet',
+                note: 'Mensen is het lijdend voorwerp van eten. De eter zit in de -er, niet in mens. Een kannibaal is zelf wel een mens, maar dat zegt het woord niet.',
               },
               {
                 k: 'muizenvanger',
-                out: 'iets dat muizen vangt',
+                out: 'iets wat muizen vangt',
                 note: 'Een kat of een val. Nooit een muis die vangt: de dader van vangen mag het eerste deel niet zijn.',
               },
               {
@@ -76,7 +76,7 @@ export const LES_D24: LessonInput = {
               {
                 k: 'vrachtwagenchauffeur',
                 out: 'chauffeur van een vrachtwagen',
-                note: 'Chauffeur is een Frans leenwoord; een werkwoord erbij gebruiken we nauwelijks. Toch heeft chauffeur een open plek, chauffeur van iets, en die vult vrachtwagen. Argumentvererving zonder werkwoord.',
+                note: 'Chauffeur is een Frans leenwoord; een werkwoord erbij gebruiken we nauwelijks. Er valt dus niets te erven. Maar chauffeur heeft zelf een open plek, chauffeur van iets, en die vult vrachtwagen. Het lijkt op een synthetische samenstelling, zonder er een te zijn.',
               },
             ],
           },
@@ -96,20 +96,20 @@ export const LES_D24: LessonInput = {
                 ask: 'Tik wat er verkocht wordt',
                 cast: ['vis', 'visser', 'boot', 'munten'],
                 answer: ['vis'],
-                then: { q: 'Wie verkoopt?', options: ['iemand buiten het woord: de -er', 'de vis', 'de munten'], answer: 'iemand buiten het woord: de -er' },
-                note: 'Vis is het lijdend voorwerp van verkopen. De verkoper zelf staat niet als apart deel in het woord: dat is de -er.',
+                then: { q: 'Wie verkoopt?', options: ['wie de -er aanwijst', 'de vis', 'de munten'], answer: 'wie de -er aanwijst' },
+                note: 'Vis is het lijdend voorwerp van verkopen. Wie verkoopt, staat niet als apart deel in het woord: de -er wijst die persoon aan.',
               },
               {
-                text: 'eierkoker',
-                ask: 'Tik wat er gekookt wordt',
-                cast: ['ei', 'pan', 'kip', 'glas'],
-                answer: ['ei'],
+                text: 'glassnijder',
+                ask: 'Tik wat er gesneden wordt',
+                cast: ['glas', 'mes', 'ster', 'boek'],
+                answer: ['glas'],
                 then: {
-                  q: 'Wat is de eierkoker zelf?',
-                  options: ['het apparaat dat kookt', 'het ei', 'de kip die het ei legde'],
-                  answer: 'het apparaat dat kookt',
+                  q: 'Wat kan een glassnijder zelf zijn?',
+                  options: ['een vakman of een stuk gereedschap', 'het glas', 'de scherven'],
+                  answer: 'een vakman of een stuk gereedschap',
                 },
-                note: 'Een -er hoeft geen mens te zijn: een eierkoker is een apparaat. Ook een ding kan de daderplek vullen.',
+                note: 'Het mes snijdt ook, maar het wordt niet gesneden. En een -er hoeft geen mens te zijn: een glassnijder is ook het gereedschap waarmee je glas snijdt. Mens of ding, de -er vult de daderplek.',
               },
               {
                 text: 'vissersboot',
@@ -142,7 +142,7 @@ export const LES_D24: LessonInput = {
           },
         },
         {
-          text: '*-ing* doet hetzelfde als *-er*, maar het naamwoord is dan geen dader: het is de handeling zelf, of wat eruit komt. *Boekbespreking*: een bespreking van een boek. Nu het raadsel uit Samenstellingen zonder einde. Bij *boekverkoper* bestaan zowel *boekverkoop* als *verkoper*; welke boom is goed? Argumentvererving geeft het antwoord: *-er* plakt aan werkwoorden, niet aan het naamwoord *boekverkoop*. Dus [boek [verkoop er]], en *boekverkoop* is een andere samenstelling, met het naamwoord *verkoop* als hoofd. Bouw *boekbespreking* op dezelfde manier.',
+          text: '*-ing* doet hetzelfde als *-er*, maar het naamwoord is dan geen dader: het is de handeling zelf, of wat eruit komt. *Boekbespreking*: een bespreking van een boek. Nu het raadsel uit Samenstellingen zonder einde. Bij *boekverkoper* bestaan zowel *boekverkoop* als *verkoper*; welke boom is goed? Argumentvererving geeft het antwoord: de *-er* van de dader plakt aan werkwoorden, niet aan het naamwoord *boekverkoop*. Dus [boek [verkoop er]], en *boekverkoop* is een andere samenstelling, met het naamwoord *verkoop* als hoofd. Bouw *boekbespreking* op dezelfde manier.',
           rule: 'Eerst wordt het werkwoord een naamwoord met een open plek (*-er*, *-ing*); dan vult het eerste deel die plek.',
           bracket: {
             q: 'Bouw: een bespreking van een boek',
@@ -166,7 +166,7 @@ export const LES_D24: LessonInput = {
           },
           deep: {
             q: 'Bestaan er dan nooit werkwoorden met een lijdend voorwerp erin?',
-            a: 'Een handvol, en die ontstonden achteraf. *Stofzuigen* is een *terugvorming* uit *stofzuiger*: het naamwoord was er eerder dan het werkwoord. Zo ook *ademhalen* uit *ademhaling*. Daarom klinkt *ik aardappelschil* onmogelijk en *ik stofzuig* gewoon. Hoe zulke werkwoorden zich in de zin gedragen, zag je bij Waar houdt het woord op?.',
+            a: 'Een handvol, en die ontstonden achteraf. *Stofzuigen* is een *terugvorming* uit *stofzuiger*: het naamwoord was er eerder dan het werkwoord. Zo ook *beeldhouwen* uit *beeldhouwer*. Daarom klinkt *ik aardappelschil* onmogelijk en *ik stofzuig* gewoon. Hoe zulke werkwoorden zich in de zin gedragen, zag je in de les Waar houdt het woord op?',
           },
         },
       ],
@@ -204,7 +204,7 @@ export const LES_D24: LessonInput = {
       prompt: 'Zeg het met één synthetische samenstelling.',
       source: 'een apparaat dat eieren kookt',
       accept: ['een eierkoker', 'eierkoker'],
-      why: 'ei + er + koker: het lijdend voorwerp vooraan, de -er voor het apparaat dat kookt. De tussenklank volgt het meervoud eieren, net als in eierdoos.',
+      why: 'ei + er + koker: het lijdend voorwerp vooraan, de -er voor het apparaat dat kookt. Het -er- na ei is een oud meervoud, net als in eierdoos.',
     },
     {
       kind: 'type',
@@ -310,7 +310,7 @@ export const LES_D24: LessonInput = {
           },
         },
         {
-          text: 'Nu het gevaarlijke paar. *Een rood wijnglas* is een wijnglas dat rood is: een woordgroep, met het bijvoeglijk naamwoord vóór de samenstelling *wijnglas*. Na *een* buigt *rood* niet, want *glas* is een het-woord. *Een rodewijnglas* is een glas voor rode wijn: de groep *rode wijn* zit in het woord, en *rode* blijft *rode*, ook na *een*. Dat is de *buigingstoets*: wat in een woord zit, buigt niet meer mee met de zin. Hetzelfde geldt voor *een hoge school* tegenover *een hogeschool*. In de uitspraak hoor je het verschil nauwelijks; in de spelling moet je kiezen. Tik hieronder elk woord dat aan zijn buur vast moet.',
+          text: 'Nu het gevaarlijke paar. *Een rood wijnglas* is een wijnglas dat rood is: een woordgroep, met het bijvoeglijk naamwoord vóór de samenstelling *wijnglas*. Na *een* buigt *rood* niet, want *glas* is een het-woord. *Een rodewijnglas* is een glas voor rode wijn: de groep *rode wijn* zit in het woord, en *rode* blijft *rode*, ook na *een*. Dat is de *buigingstoets*: wat in een woord zit, buigt niet meer mee met de zin. Hetzelfde geldt voor *een zwart boek* tegenover *een zwartboek* (zie Woordgroep of samenstelling). In het meervoud helpt de toets niet meer: *rode wijnglazen* en *rodewijnglazen* klinken bijna hetzelfde. Dan moet de spelling kiezen. Tik hieronder elk woord dat aan zijn buur vast moet.',
           rule: 'Buigingstoets: *een rood wijnglas* (woordgroep, *rood* buigt mee) tegenover *een rodewijnglas* (samenstelling, *rode* staat vast).',
           mark: {
             q: 'Tik elk woord dat aan zijn buur vast moet',
@@ -355,17 +355,17 @@ export const LES_D24: LessonInput = {
       kind: 'speed',
       id: 'aaneen',
       prompt: 'Aan elkaar of los?',
-      intro: 'Zit de woordgroep in het woord, of staat het bijvoeglijk naamwoord los vóór een samenstelling?',
+      intro: 'Gaat het bijvoeglijk naamwoord met zijn woordgroep het woord in, of staat het los?',
       seconds: 40,
       items: [
-        { a: 'blote voeten', b: 'pad', joined: true, tip: 'blotevoetenpad: een pad voor blote voeten.' },
+        { a: 'blote', b: 'voetenpad', joined: true, tip: 'blotevoetenpad: een pad voor blote voeten. Een voetenpad dat bloot is, bestaat niet.' },
         { a: 'blote', b: 'voeten', joined: false, tip: 'blote voeten: een gewone woordgroep.' },
-        { a: 'rode wijn', b: 'glas', joined: true, tip: 'rodewijnglas: een glas voor rode wijn.' },
-        { a: 'rood', b: 'wijnglas', joined: false, tip: 'een rood wijnglas: het glas is rood. Rood buigt mee met een.' },
-        { a: 'korte termijn', b: 'geheugen', joined: true, tip: 'kortetermijngeheugen: geheugen voor de korte termijn.' },
+        { a: 'rood', b: 'wijnglas', joined: false, tip: 'een rood wijnglas: het glas is rood. Een glas voor rode wijn is een rodewijnglas.' },
+        { a: 'rode', b: 'wijn', joined: false, tip: 'rode wijn: een vrije woordgroep.' },
+        { a: 'korte', b: 'termijngeheugen', joined: true, tip: 'kortetermijngeheugen: geheugen voor de korte termijn.' },
         { a: 'korte', b: 'termijn', joined: false, tip: 'korte termijn: een woordgroep.' },
-        { a: 'oude mannen', b: 'huis', joined: true, tip: 'oudemannenhuis: een huis voor oude mannen.' },
-        { a: 'lange afstand', b: 'loper', joined: true, tip: 'langeafstandsloper: de groep vult de open plek van loper.' },
+        { a: 'hoge', b: 'snelheidstrein', joined: true, tip: 'hogesnelheidstrein: een trein voor hoge snelheid.' },
+        { a: 'oude', b: 'mannen', joined: false, tip: 'oude mannen: een woordgroep. Als eerste deel wordt het oudemannenhuis.' },
       ],
     },
     {
@@ -452,7 +452,7 @@ export const LES_D24: LessonInput = {
       sentence: 'Ze traint al maanden voor de lange afstandsloop van zondag.',
       wrong: 6,
       answer: 'langeafstandsloop',
-      why: 'De woordgroep lange afstand zit in de samenstelling: aaneen, met tussen-s. Los zou het een afstandsloop zijn die lang is. (Tik het eerste deel.)',
+      why: 'Bedoeld is een loop over de lange afstand. Die woordgroep gaat als geheel het woord in: aaneen, met tussen-s. Met een spatie maak je lange los van afstand. (Tik het eerste deel.)',
     },
     {
       kind: 'explain',
@@ -460,7 +460,7 @@ export const LES_D24: LessonInput = {
       title: 'Het eiland en zijn lekken',
       panels: [
         {
-          text: 'Alles in deze les draait om één vraag: hoe streng is de grens tussen woord en zin? De *Lexicale-integriteitshypothese* zegt: zinsregels kunnen niet in een woord kijken. Anna-Maria Di Sciullo en Edwin Williams (1987) noemden woorden *syntactische atomen*; Joan Bresnan en Sam Mchombo (1995) formuleerden de hypothese scherp en toetsten haar aan Bantoetalen. De buigingstoets uit de verdieping hoort erbij: in *een rodewijnglas* buigt *rode* niet mee met *een*, want de zin komt het woord niet in. Ook het meervoud blijft buiten: *rodewijnglazen*, niet *rodewijnenglas*. En de eilandtoets (*een zeer hoogleraar* kan niet) en de verwijzingstoets van Postal (zie Het woord) horen bij dezelfde hypothese.',
+          text: 'Alles in deze les draait om één vraag: hoe streng is de grens tussen woord en zin? De *Lexicale-integriteitshypothese* zegt: zinsregels kunnen niet in een woord kijken. Anna-Maria Di Sciullo en Edwin Williams (1987) noemden woorden *syntactische atomen*; Joan Bresnan en Sam Mchombo (1995) formuleerden de hypothese scherp en toetsten haar aan Bantoetalen. De buigingstoets uit de verdieping hoort erbij: in *een rodewijnglas* buigt *rode* niet mee met *een*, want de zin komt het woord niet in. Ook het meervoud van het hele woord komt alleen achteraan: *rodewijnglazen*, niet *rodewijnenglas*. En de eilandtoets (*een zeer hoogleraar* kan niet) en de verwijzingstoets van Postal (zie Het woord) horen bij dezelfde hypothese.',
           rule: 'Lexicale integriteit: de zin kan niet in het woord; buiging, meervoud en bepalingen hechten aan het hele woord.',
           quiz: {
             q: 'Na welk lidwoord zie je dat rode in rodewijnglas niet meebuigt met de zin?',
@@ -488,7 +488,7 @@ export const LES_D24: LessonInput = {
               {
                 k: 'blijf-van-mijn-lijfhuis',
                 out: 'een zin in een woord, maar bevroren',
-                note: 'Zodra het woord af is, kan mijn niet meer wisselen: een blijf-van-haar-lijfhuis voor háár huis bestaat niet. Het eiland sluit zodra het woord af is.',
+                note: 'De zin zit erin, maar ligt vast: mijn wisselt niet mee. Je zegt niet: ze vluchtte naar een blijf-van-haar-lijfhuis. Het eiland sluit zodra het woord af is.',
               },
               {
                 k: 'ik stofzuig',
@@ -506,7 +506,7 @@ export const LES_D24: LessonInput = {
           text: 'Waar komen de bouwstenen vandaan? Uit de zin. Kijk naar de bijzin *dat ze op blote voeten de lange afstand loopt*. Daar staan de groepen al klaar: *blote voeten*, een naamwoordgroep met buiging en meervoud, en *de lange afstand* als lijdend voorwerp, vlak vóór het werkwoord (in de bijzin staat het lijdend voorwerp immers vóór het werkwoord, zie De woordgroep). *Blotevoetenpad* en *langeafstandsloper* nemen die groepen over zoals ze zijn, op één ding na: het lidwoord. *De* uit *de lange afstand* valt weg, en het woord krijgt zijn eigen lidwoord van het hoofd: *de langeafstandsloper*, want *de loper*. Zoek de groepen in de bijzin.',
           rule: 'De zin levert de groep, het woord laat het lidwoord buiten en zet er een hoofd achter.',
           phrase: {
-            q: 'Vind de twee naamwoordgroepen en de voorzetselgroep',
+            q: 'Vind de voorzetselgroep en de twee naamwoordgroepen met een zelfstandig naamwoord als kern',
             sentence: 'dat ze op blote voeten de lange afstand loopt',
             groups: [
               { span: [3, 4], cat: 'naamwoordgroep', head: 4, note: 'blote voeten: met -e en meervoud. Zo gaat de groep het woord blotevoetenpad in.' },
@@ -534,7 +534,7 @@ export const LES_D24: LessonInput = {
           },
         },
         {
-          text: 'Wat betekent dit voor je schrijven? Een gebeurtenisnominalisatie erft de argumenten van haar werkwoord, en die moeten ergens heen: in *van*- en *door*-groepen. Zo ontstaat de *naamwoordstijl* (zie De woordgroep): *de uitvoering van de controle van de gegevens door de afdeling*. Drie werkwoorden zijn naamwoorden geworden, en elk sleept een *van* of *door* mee. Haal het werkwoord terug, en de argumenten vallen op hun gewone plek: onderwerp en lijdend voorwerp. Let op: niet elke nominalisatie moet weg. Een resultaatnominalisatie als *de melding* is gewoon een ding en mag blijven. Tik de nominalisaties die je beter als werkwoord schrijft.',
+          text: 'Wat betekent dit voor je schrijven? Een gebeurtenisnominalisatie erft de argumenten van haar werkwoord, en die moeten ergens heen: in *van*- en *door*-groepen. Zo ontstaat de *naamwoordstijl* (zie De woordgroep): *de uitvoering van de controle van de gegevens door de afdeling*. Twee werkwoorden zijn naamwoorden geworden, en samen slepen ze twee *van*-groepen en een *door*-groep mee. Haal het werkwoord terug, en de argumenten vallen op hun gewone plek: onderwerp en lijdend voorwerp. Let op: niet elke nominalisatie moet weg. Een resultaatnominalisatie als *de melding* is gewoon een ding en mag blijven. Tik de nominalisaties die je beter als werkwoord schrijft.',
           rule: 'Een gebeurtenisnominalisatie sleept haar argumenten mee in *van* en *door*; een werkwoord zet ze op hun plek.',
           mark: {
             q: 'Tik de drie gebeurtenisnominalisaties',
@@ -553,7 +553,11 @@ export const LES_D24: LessonInput = {
       header: { to: 'de redactie', subject: 'Verslag van de sportdag' },
       tokens: [
         { t: 'Onze' },
-        { t: 'lange afstandsloper', fix: 'langeafstandsloper', why: 'De woordgroep lange afstand zit in de samenstelling: aaneen, met tussen-s.' },
+        {
+          t: 'lange afstandsloper',
+          fix: 'langeafstandsloper',
+          why: 'Een loper van de lange afstand: de groep zit in het woord, dus aaneen, met tussen-s. Met een spatie is het een afstandsloper die lang is.',
+        },
         { t: 'won' },
         { t: 'zondag' },
         { t: 'de' },
@@ -637,17 +641,14 @@ export const LES_D24: LessonInput = {
           options: ['Een kat (of een val) die muizen vangt.', 'Een muis die vangt.'],
           right: 0,
           fix: 'een muis die vangt → een kat die muizen vangt',
-          why: 'Bij -er vult het eerste deel het lijdend voorwerp. De dader is de -er zelf en staat buiten het woord.',
+          why: 'Bij -er vult het eerste deel het lijdend voorwerp. De dader zit in de -er, niet in het eerste deel.',
         },
         {
           say: 'Laatste: "lange-afstandsloper" met een streepje, mag dat?',
-          options: [
-            'Liever langeafstandsloper, aaneen. Een streepje alleen als het woord anders slecht leesbaar is.',
-            'Nee, het moet lange afstandsloper zijn, los.',
-          ],
+          options: ['Nee, schrijf langeafstandsloper. Een streepje midden in de woordgroep hoort er niet.', 'Beter los: lange afstandsloper.'],
           right: 0,
           fix: 'lange-afstandsloper → langeafstandsloper',
-          why: 'De Woordenlijst schrijft een samenstelling met een woordgroep aaneen. Los zou het een afstandsloper zijn die lang is.',
+          why: 'De Woordenlijst schrijft een samenstelling met een woordgroep aaneen. Een streepje voor de leesbaarheid zou op de hoofdnaad staan, vóór loper, en is hier niet nodig. Los zou het een afstandsloper zijn die lang is.',
         },
       ],
       bye: 'Dank je. Nu durf ik de kop te zetten: Langeafstandsloper wint op blotevoetenpad.',
@@ -663,9 +664,9 @@ export const LES_D24: LessonInput = {
           why: 'Een synthetische samenstelling: het eerste deel vult de open plek die -er van het werkwoord erft.',
         },
         {
-          t: 'Een menseneter kan ook een mens zijn die eet.',
+          t: 'In menseneter kan mens ook de eter zijn.',
           ok: false,
-          fix: 'Een menseneter eet mensen',
+          fix: 'Mens is altijd wie er gegeten wordt',
           why: 'De dader van een overgankelijk werkwoord kan niet vooraan: die is de -er zelf.',
         },
         {

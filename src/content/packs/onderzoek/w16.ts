@@ -15,7 +15,11 @@ export const ONDERZOEK_W16: StepInput[] = [
           chips: [
             { k: 'De vaas viel kapot.', out: 'goed', note: 'Onaccusatief: het onderwerp is onderliggend lijdend voorwerp, dus het resultaat mag erop slaan.' },
             { k: 'Ze danste kapot.', out: 'fout', note: 'Onergatief: er is geen lijdend voorwerp dat kapot kan gaan.' },
-            { k: 'Ze danste haar schoenen kapot.', out: 'goed', note: 'Het extra voorwerp draagt het resultaat. Dansen heeft zelf geen lijdend voorwerp: de constructie levert het (zie w18).' },
+            {
+              k: 'Ze danste haar schoenen kapot.',
+              out: 'goed',
+              note: 'Het extra voorwerp draagt het resultaat. Dansen heeft zelf geen lijdend voorwerp: de constructie levert het (zie w18).',
+            },
             { k: 'Hij werkte zich suf.', out: 'goed', note: 'Dit zich heeft geen eigen rol. Het staat er alleen om het resultaat te dragen.' },
             { k: 'De vijver vroor dicht.', out: 'goed', note: 'Onaccusatief, net als vallen. En dichtvriezen kiest zijn: de vijver is dichtgevroren.' },
           ],
@@ -61,7 +65,7 @@ export const ONDERZOEK_W16: StepInput[] = [
         },
       },
       {
-        text: 'Wat betekent de schaal van Sorace voor wie Nederlands leert? Onderzoek naar leerders van het Italiaans en het Frans liet zien dat ze de uitersten van de schaal het eerst goed hebben: verandering van plaats (*komen*) en gecontroleerde activiteit (*werken*). In het midden (*blijven*, *bestaan*, *trillen*) houden ook gevorderde leerders lang twijfels, en daar wisselen moedertaalsprekers zelf ook. Sorace verklaarde dat zo: kernwerkwoorden houden hun hulpwerkwoord altijd vast, werkwoorden aan de rand laten de rest van de zin meebeslissen.',
+        text: 'Wat betekent de schaal van Sorace voor wie Nederlands leert? Onderzoek naar leerders van onder meer het Italiaans liet zien dat ze de uitersten van de schaal het eerst goed hebben: verandering van plaats (*komen*) en gecontroleerde activiteit (*werken*). In het midden (*blijven*, *bestaan*, *trillen*) houden ook gevorderde leerders lang twijfels, en daar wisselen moedertaalsprekers zelf ook. Sorace verklaarde dat zo: kernwerkwoorden houden hun hulpwerkwoord altijd vast, werkwoorden aan de rand laten de rest van de zin meebeslissen.',
         rule: 'Kern van de schaal: vast en vroeg geleerd. Midden van de schaal: gevoelig voor de zin, en lastig voor iedereen.',
         quiz: {
           q: 'Waar maakt een gevorderde leerder volgens dit onderzoek het langst fouten?',
@@ -71,7 +75,7 @@ export const ONDERZOEK_W16: StepInput[] = [
         },
         deep: {
           q: 'Wat doe je ermee als schrijver?',
-          a: 'Leer de werkwoorden uit het midden als vaste paren: *is gebleven*, *heeft bestaan*, *is gelukt*, *heeft getrild*. En kijk bij een bewegingswerkwoord altijd of er een eindpunt bij staat: *heeft gefietst*, maar *is naar huis gefietst*.',
+          a: 'Leer de werkwoorden uit het midden als vaste paren: *is gebleven*, *heeft bestaan*, *heeft getrild*. En kijk bij een bewegingswerkwoord altijd of er een eindpunt bij staat: *heeft gefietst*, maar *is naar huis gefietst*.',
         },
       },
       {
@@ -139,7 +143,11 @@ export const ONDERZOEK_W16: StepInput[] = [
     kind: 'bet',
     id: 'bloeien',
     prompt: 'Een roos heeft gebloeid, maar ‘Er werd gebloeid’ kan niet. Wat laat dat zien?',
-    options: ['Het hulpwerkwoord en het onpersoonlijk passief meten iets anders', 'Bloeien is onaccusatief', 'Een onpersoonlijk passief kan nooit bij één argument'],
+    options: [
+      'Het hulpwerkwoord en het onpersoonlijk passief meten iets anders',
+      'Bloeien is onaccusatief',
+      'Een onpersoonlijk passief kan nooit bij één argument',
+    ],
     answer: 'Het hulpwerkwoord en het onpersoonlijk passief meten iets anders',
     why: 'Hebben, want bloeien heeft geen eindpunt. Geen passief, want er is geen mens die iets doet. Zaenen (1993) koppelde het hulpwerkwoord aan teliciteit. En er werd gedanst laat zien dat één argument wel kan.',
   },

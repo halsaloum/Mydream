@@ -8,7 +8,7 @@ export const ONDERZOEK_W17: StepInput[] = [
     title: 'Namen per taal, begrippen combineren en vage grenzen',
     panels: [
       {
-        text: 'Hoe universeel is een categorie? Barbara Malt en collega’s (1999) lieten sprekers van het Engels, Chinees en Spaans tientallen flessen, potten en bakjes benoemen en op gelijkenis sorteren. De gelijkenis zagen ze vrijwel hetzelfde; de namen verschilden sterk. Wat in de ene taal één woord krijgt, valt in de andere in drie categorieën uiteen. Eef Ameel, Gert Storms, Malt en Steven Sloman (2005) herhaalden dat in België met Nederlands- en Franstaligen: ook daar lagen de grenzen van *fles* en *pot* anders dan die van de Franse woorden. Tweetaligen bleken in beide talen één tussenliggend patroon te gebruiken. Hetzelfde ding, dezelfde ogen, een andere naam.',
+        text: 'Hoe universeel is een categorie? Barbara Malt en collega’s (1999) lieten sprekers van het Engels, Chinees en Spaans tientallen flessen, potten en bakjes benoemen en op gelijkenis sorteren. De gelijkenis zagen ze vrijwel hetzelfde; de namen verschilden sterk. Wat in de ene taal één naam krijgt, verdeelt een andere taal over meerdere namen. Eef Ameel, Gert Storms, Malt en Steven Sloman (2005) herhaalden dat in België met Nederlands- en Franstaligen: ook daar lagen de grenzen tussen de namen voor flessen, kommen en schalen in het Nederlands anders dan in het Frans. Tweetaligen gebruikten in hun twee talen bijna hetzelfde patroon, en dat lag tussen de twee eentalige patronen in. Hetzelfde ding, dezelfde ogen, een andere naam.',
         rule: 'Gelijkenis is gedeeld; waar de naam ophoudt, is per taal een afspraak.',
         lab: {
           label: 'Tik een verpakking',
@@ -21,23 +21,23 @@ export const ONDERZOEK_W17: StepInput[] = [
             {
               k: 'jam, glas, wijde opening, deksel',
               out: 'pot',
-              note: 'Wijd en met deksel: pot. Het Engels heeft daar een eigen woord voor, jar, dat het Nederlands niet apart kent.',
+              note: 'Wijd en met deksel: pot. Het Engels zegt hier jar en houdt pot voor de kookpot; het Nederlands zegt in beide gevallen pot.',
             },
             { k: 'cola, aluminium, 33 cl', out: 'blik', note: 'Metaal: blik. Engels can, Frans canette.' },
             {
               k: 'schoenen, karton',
               out: 'doos',
-              note: 'Karton: doos. Het Frans zegt boîte, en dat gebruikt het ook voor een blik erwten: boîte de conserve. Onze grens tussen doos en blik bestaat daar niet.',
+              note: 'Karton: doos. Het Frans zegt boîte, en dat gebruikt het ook voor een blik erwten: boîte de conserve. Waar wij doos en blik scheiden, gebruikt het Frans vaak één woord.',
             },
           ],
         },
         deep: {
           q: 'Geldt dat ook voor kleuren?',
-          a: 'Deels. Brent Berlin en Paul Kay (1969) vergeleken kleurwoorden in tientallen talen. Talen hebben hoogstens elf *basiskleurtermen*, en die komen in een vaste volgorde: eerst zwart en wit, dan rood, dan groen en geel, dan blauw, dan bruin, en pas daarna paars, roze, oranje en grijs. Het Nederlands heeft alle elf. De grenzen tussen de kleuren verschillen per taal, maar de beste voorbeelden, de *focale kleuren*, bleken over talen heen bijna gelijk. Prototypen reizen dus makkelijker dan grenzen.',
+          a: 'Deels. Brent Berlin en Paul Kay (1969) vergeleken kleurwoorden in tientallen talen. Hun conclusie: een taal heeft hoogstens elf *basiskleurtermen*, en die komen in een vaste volgorde: eerst zwart en wit, dan rood, dan groen en geel, dan blauw, dan bruin, en pas daarna paars, roze, oranje en grijs. Het Nederlands heeft alle elf. De grenzen tussen de kleuren verschillen per taal, maar de beste voorbeelden, de *focale kleuren*, bleken over talen heen bijna gelijk. Prototypen reizen dus makkelijker dan grenzen.',
         },
       },
       {
-        text: 'Hoe combineer je prototypen? Het typische huisdier is een hond, de typische vis zwemt in zee of rivier. Maar de typische *huisdiervis* is een goudvis: een slecht voorbeeld van een huisdier én een slecht voorbeeld van een vis. Daniel Osherson en Edward Smith (1981) gebruikten precies dit Engelse voorbeeld, *pet fish*, om te laten zien dat je het prototype van een samengesteld begrip niet uit de prototypen van de delen kunt berekenen. James Hampton mat later hoe kenmerken van de delen soms wél overerven, en soms niet. Voor het Nederlands, met zijn eindeloze samenstellingen, is dat een dagelijkse kwestie: wat een *zomerjas* of een *nachttrein* precies is, leer je niet door *zomer* en *jas* op te tellen.',
+        text: 'Hoe combineer je prototypen? Het typische huisdier is een hond, de typische vis zwemt in zee of rivier. Maar de typische *huisdiervis* is een goudvis: een slecht voorbeeld van een huisdier én een slecht voorbeeld van een vis. Daniel Osherson en Edward Smith (1981) gebruikten precies dit Engelse voorbeeld, *pet fish*, om te laten zien dat je het prototype van een samengesteld begrip niet uit de prototypen van de delen kunt berekenen. James Hampton mat later hoe kenmerken van de delen soms wél overerven, en soms niet. Hetzelfde voorbeeld staat ook bij Wat bijvoeglijke naamwoorden doen. Voor het Nederlands, met zijn eindeloze samenstellingen, is dat een dagelijkse kwestie: wat een *zomerjas* of een *nachttrein* precies is, leer je niet door *zomer* en *jas* op te tellen.',
         rule: 'Het prototype van een combinatie bereken je niet uit de prototypen van de delen; je leert het uit de wereld.',
         quiz: {
           q: 'Wat laat de goudvis zien?',
@@ -55,17 +55,17 @@ export const ONDERZOEK_W17: StepInput[] = [
         },
       },
       {
-        text: '*Een grote muis is kleiner dan een kleine olifant.* Gradeerbare bijvoeglijke naamwoorden als *groot*, *lang* en *duur* hebben geen vaste maat. Ze meten tegen een *vergelijkingsklasse*, meestal de soort van het naamwoord: groot voor een muis. Hans Kamp (1975) werkte dat formeel uit. Zulke woorden zijn ook *vaag*: er is geen scherpe grens tussen groot en niet groot. De oude paradox van de *sorites* (Eubulides, vierde eeuw voor Christus) speelt daarmee: één korrel is geen hoop; voeg je één korrel toe aan wat geen hoop is, dan is het nog geen hoop; dus bestaat er nooit een hoop. Vaagheid is iets anders dan typicaliteit: *oneven* heeft typische voorbeelden maar geen vage grens; *kaal* heeft allebei.',
+        text: '*Een lange muis is korter dan een korte giraf.* Gradeerbare bijvoeglijke naamwoorden als *groot*, *lang* en *duur* hebben geen vaste maat. Ze meten tegen een *vergelijkingsklasse*, meestal de soort van het naamwoord: lang voor een muis (zie Wat bijvoeglijke naamwoorden doen). Hans Kamp (1975) werkte dat formeel uit. Zulke woorden zijn ook *vaag*: er is geen scherpe grens tussen groot en niet groot. De oude paradox van de *sorites* (Eubulides, vierde eeuw voor Christus) speelt daarmee: één korrel is geen hoop; voeg je één korrel toe aan wat geen hoop is, dan is het nog geen hoop; dus bestaat er nooit een hoop. Vaagheid is iets anders dan typicaliteit: *oneven* heeft typische voorbeelden maar geen vage grens; *kaal* heeft allebei.',
         rule: 'Een gradeerbaar bijvoeglijk naamwoord meet tegen de soort van zijn naamwoord. Doet de maat ertoe, schrijf dan een getal.',
         mark: {
           q: 'Tik de woorden die hun maat van een vergelijkingsklasse krijgen',
-          sentence: 'De grote muis zat naast de kleine olifant op een hoge stoel bij een dure lamp.',
+          sentence: 'De lange muis rende langs de korte giraf naar een hoge stoel bij een dure lamp.',
           targets: [1, 6, 10, 14],
-          note: 'groot, klein, hoog en duur: elk meet tegen zijn eigen soort. Een hoge stoel is lager dan een lage kast, en een dure lamp goedkoper dan een goedkope auto. Daarom zet een schrijver er een maat bij als die telt: een muis van twaalf centimeter.',
+          note: 'lang, kort, hoog en duur: elk meet tegen zijn eigen soort. Een hoge stoel is lager dan een lage flat, en een dure lamp goedkoper dan een goedkope auto. Daarom zet een schrijver er een maat bij als die telt: een muis van twaalf centimeter.',
         },
       },
       {
-        text: 'Waarom hangen vrouwen, vuur en gevaarlijke dingen samen, en waarom hoort een pinguïn er toch bij? Niet door gelijkenis, maar door wat je over de wereld denkt. Gregory Murphy en Douglas Medin (1985) stelden dat een categorie samenhangt door een achtergrondtheorie, niet door een optelsom van kenmerken. Frank Keil (1989) toetste dat bij kinderen: een wasbeer die geverfd en geopereerd is tot hij op een stinkdier lijkt, blijft voor kinderen vanaf een jaar of zeven een wasbeer. Maar een koffiepot die is omgebouwd tot vogelvoederbak, is een vogelvoederbak. Bij dieren beslist het binnenste, bij gemaakte dingen beslist het doel; Paul Bloom (1996) legde dat laatste bij de bedoeling van de maker. Sorteer de dingen.',
+        text: 'Waarom hangen vrouwen, vuur en gevaarlijke dingen in het Dyirbal samen, en waarom is een pinguïn toch een vogel? Niet door gelijkenis, maar door wat je over de wereld denkt. Gregory Murphy en Douglas Medin (1985) stelden dat een categorie samenhangt door een achtergrondtheorie, niet door een optelsom van kenmerken. Frank Keil (1989) toetste dat bij kinderen: een wasbeer die geverfd en geopereerd is tot hij op een stinkdier lijkt, blijft voor oudere basisschoolkinderen een wasbeer; kleuters zeggen nog vaak: nu is het een stinkdier. Maar een koffiepot die is omgebouwd tot vogelvoederbak, is een vogelvoederbak. Bij dieren beslist het binnenste, bij gemaakte dingen beslist het doel; Paul Bloom (1996) legde dat laatste bij de bedoeling van de maker. Sorteer de dingen.',
         rule: 'Natuurlijke soort: het binnenste beslist. Gemaakt ding: het doel beslist. Gelijkenis maakt nog geen lid.',
         bins: {
           q: 'Wat beslist waar dit ding bij hoort?',
@@ -165,11 +165,11 @@ export const ONDERZOEK_W17: StepInput[] = [
         why: 'Groot meet tegen de soort: groot voor een hond. Doet de maat ertoe, dan geef je een getal.',
       },
       {
-        say: 'En in het stuk over Parijs: de jam zat in een … wat precies?',
+        say: 'En in het stuk over Londen: de jam zat in een … wat precies?',
         options: ['In een pot: glas, wijde opening, deksel.', 'In een fles: het is van glas, dus fles.'],
         right: 0,
         fix: 'fles → pot',
-        why: 'Het Nederlands trekt de grens bij de hals: wijd met deksel is een pot. Dat een Franse lezer misschien een ander woord kiest, verandert onze afspraak niet.',
+        why: 'Het Nederlands trekt de grens bij de hals: wijd met deksel is een pot. Dat een Engelsman jar zegt, verandert onze afspraak niet.',
       },
       {
         say: 'Mag ik schrijven dat een pinguïn eigenlijk geen vogel is, omdat hij niet vliegt?',
@@ -200,12 +200,12 @@ export const ONDERZOEK_W17: StepInput[] = [
         why: 'Dat was juist de vondst: gedeelde waarneming, andere grenzen.',
       },
       {
-        t: 'Nederlands-Franse tweetaligen in België gebruikten in beide talen één tussenliggend naamgevingspatroon.',
+        t: 'Nederlands-Franse tweetaligen in België gebruikten in hun twee talen bijna hetzelfde naamgevingspatroon.',
         ok: true,
-        why: 'Ameel, Storms, Malt en Sloman (2005).',
+        why: 'Ameel, Storms, Malt en Sloman (2005): de grenzen van de twee talen schoven naar elkaar toe.',
       },
       {
-        t: 'Berlin en Kay vonden dat talen hoogstens elf basiskleurtermen hebben.',
+        t: 'Berlin en Kay stelden dat een taal hoogstens elf basiskleurtermen heeft.',
         ok: true,
         why: 'En ze komen in een vaste volgorde, van zwart en wit tot grijs.',
       },

@@ -8,13 +8,13 @@ export const ONDERZOEK_W9: StepInput[] = [
     title: 'Wat het nieuwe woord betekent, en welke kant de pijl op wijst',
     panels: [
       {
-        text: 'Wat betekent een werkwoord dat uit een naamwoord komt? Eve Clark en Herbert Clark (1979) bekeken honderden Engelse gevallen en zagen: dat hangt af van de rol die het ding speelt. Bij *hameren* is de hamer het gereedschap. Bij *zouten* doe je zout ergens op. Bij *potten* zet je iets in een pot. Bij *vissen* is de vis wat je wilt vangen. Het werkwoord zelf zegt niet welke rol: dat vult de luisteraar in met wat hij van het ding weet. Een fiets is om op te rijden, dus *fietsen* is rijden op een fiets, niet een fiets slaan.',
+        text: 'Wat betekent een werkwoord dat uit een naamwoord komt? Eve Clark en Herbert Clark (1979) bekeken meer dan duizend nieuwe Engelse gevallen en zagen: dat hangt af van de rol die het ding speelt. Bij *hameren* is de hamer het gereedschap. Bij *zouten* doe je zout ergens op. Bij *potten* zet je iets in een pot. Bij *vissen* is de vis wat je wilt vangen. Het werkwoord zelf zegt niet welke rol: dat vult de luisteraar in met wat hij van het ding weet. Een fiets is om op te rijden, dus *fietsen* is rijden op een fiets, niet een fiets slaan.',
         rule: 'Een werkwoord uit een naamwoord betekent: doen wat je met dat ding gewoonlijk doet. De rol van het ding vul je zelf in.',
         cast: {
           q: 'Tik aan wat de opdracht vraagt',
           rounds: [
             {
-              text: 'vissen · zonnen · boeken · huizen',
+              text: 'naam + -en = werkwoord?',
               ask: 'Tik elk ding waarvan de naam ook een werkwoord is geworden',
               cast: ['vis', 'zon', 'boek', 'huis', 'ster', 'kip'],
               answer: ['vis', 'zon', 'boek', 'huis'],
@@ -55,7 +55,7 @@ export const ONDERZOEK_W9: StepInput[] = [
         },
       },
       {
-        text: 'Van een bijvoeglijk naamwoord maak je op twee manieren een werkwoord. Kaal, door conversie: *wit* → *witten*, *droog* → *drogen*. Of met *ver-* erbij: *geel* → *vergelen*, *grijs* → *vergrijzen*, *groot* → *vergroten*. Opvallend: *gelen* en *grijzen* bestaan niet. Het voorvoegsel en de wisseling van woordsoort gebeuren in één klap. De betekenis verschilt ook: de kale vorm is vaak ‘X maken’ (*witten*), de *ver*-vorm ‘X worden’ (*vergelen*) of ‘X-er maken’ (*vergroten*). *Vergulden* komt van het oude bijvoeglijk naamwoord *gulden*, ‘van goud’, dat je nog kent van de munt. Alle vormen zijn zwak, en dat levert spelwerk op: *witte*, *vergeelde*, *verguldde*.',
+        text: 'Van een bijvoeglijk naamwoord maak je op twee manieren een werkwoord. Kaal, door conversie: *wit* → *witten*, *droog* → *drogen*. Of met *ver-* erbij: *geel* → *vergelen*, *groot* → *vergroten*, *klein* → *verkleinen*. Opvallend: *groten* en *kleinen* bestaan niet. Het voorvoegsel en de wisseling van woordsoort gebeuren in één klap. De betekenis verschilt ook: de kale vorm is vaak ‘X maken’ (*witten*), de *ver*-vorm ‘X worden’ (*vergelen*) of ‘X-er maken’ (*vergroten*). *Vergulden* komt van het oude bijvoeglijk naamwoord *gulden*, ‘van goud’, dat je nog kent van de munt. Alle vormen zijn zwak, en dat levert spelwerk op: *witte*, *vergeelde*, *verguldde*.',
         rule: 'Werkwoord uit een bijvoeglijk naamwoord: kaal (*witten*) of met *ver-* (*vergelen*). Altijd zwak: let op de *dd* in *verguldde*.',
         morph: {
           q: 'Kies de goede vorm en zie het ding van kleur veranderen',
@@ -78,7 +78,7 @@ export const ONDERZOEK_W9: StepInput[] = [
               paint: 'geel',
               options: ['vergeelde', 'vergeelte', 'vergelede'],
               answer: 'vergeelde',
-              note: 'ver- plus geel in één stap: gelen bestaat niet. Stam vergeel + de, want de l zit niet in ’t kofschip.',
+              note: 'ver- plus geel: zo wordt de kleur een werkwoord. Stam vergeel + de, want de l zit niet in ’t kofschip.',
             },
             {
               thing: 'ster',
@@ -99,7 +99,7 @@ export const ONDERZOEK_W9: StepInput[] = [
         },
       },
       {
-        text: 'Soms bedriegt de richting. *Stofzuigen* lijkt een samenstelling van *stof* en *zuigen*, en *stofzuiger* een afleiding daarvan. Historisch is het andersom: eerst was er de *zuiger* (een onderdeel van een pomp), toen de *stofzuiger*, en pas daarna knipten sprekers *-er* eraf en kregen we *stofzuigen*. Dat heet *terugvorming*. Zo ook *beeldhouwen* uit *beeldhouwer* en *koorddansen* uit *koorddanser*. Geert Booij wijst erop dat zulke werkwoorden zich anders gedragen dan scheidbare werkwoorden: *ik stofzuig de kamer*, niet *ik zuig de kamer stof*, en het deelwoord is *gestofzuigd*, met *ge-* vooraan.',
+        text: 'Soms bedriegt de richting. *Stofzuigen* lijkt een samenstelling van *stof* en *zuigen*, en *stofzuiger* een afleiding daarvan. Historisch is het andersom: eerst was er het woord *zuiger*, toen de *stofzuiger*, en pas daarna knipten sprekers *-er* eraf en kregen we *stofzuigen*. Dat heet *terugvorming*. Zo ook *beeldhouwen* uit *beeldhouwer*. Zulke werkwoorden gedragen zich anders dan scheidbare werkwoorden: *ik stofzuig de kamer*, niet *ik zuig de kamer stof*, en het deelwoord is *gestofzuigd*, met *ge-* vooraan.',
         rule: 'Terugvorming: het korte woord is het jongste. *Stofzuiger* kwam vóór *stofzuigen*, en het werkwoord valt niet uit elkaar.',
         bracket: {
           q: 'Bouw stofzuiger zoals het ontstond',
@@ -113,11 +113,11 @@ export const ONDERZOEK_W9: StepInput[] = [
         },
         deep: {
           q: 'Maar een stofzuiger is toch iets wat stof zuigt?',
-          a: 'Precies, en daarom is de boom omstreden. Qua betekenis past *[[stof zuig] er]*: iets wat stof zuigt. Qua geschiedenis past *[stof [zuig er]]*: een zuiger voor stof. Zo’n botsing tussen betekenis en bouw heet een *haakjesparadox*. Dat het werkwoord *stofzuigen* zich als één blok gedraagt, past bij de tweede boom: het is als geheel uit *stofzuiger* gesneden.',
+          a: 'Precies, en daarom is de boom omstreden. Qua betekenis past *[[stof zuig] er]*: iets wat stof zuigt. Qua vorm past *[stof [zuig er]]*: een zuiger voor stof, want het werkwoord *stofzuigen* bestond nog niet. Zo’n botsing tussen betekenis en bouw heet een *haakjesparadox*. Dat het werkwoord *stofzuigen* zich als één blok gedraagt, past bij de tweede boom: het is als geheel uit *stofzuiger* gesneden.',
         },
       },
       {
-        text: 'Voor het schrijven is conversie een valkuil. Wie een werkwoord in een naamwoord verstopt (*het indienen van*, *het verrichten van*), heeft daarna een leeg werkwoord nodig om de zin rond te krijgen: *gebeuren*, *plaatsvinden*, *verrichten*. Jan Renkema noemt dat in de *Schrijfwijzer* *naamwoordstijl*: lange zinnen, veel *van*, en de handelende persoon zakt weg. Zulke zinnen lezen zwaar. Zet het werkwoord terug en zeg wie wat doet. Niet elke naamwoordelijke infinitief is fout: *het lezen* mag, als het over de handeling zelf gaat.',
+        text: 'Voor het schrijven is conversie een valkuil. Wie een werkwoord in een naamwoord verstopt (*het indienen van*, *het beoordelen van*), heeft daarna een leeg werkwoord nodig om de zin rond te krijgen: *gebeuren*, *plaatsvinden*, *verrichten*. Jan Renkema noemt dat in de *Schrijfwijzer* *naamwoordstijl*: lange zinnen, veel *van*, en de handelende persoon zakt weg. Zulke zinnen lezen zwaar. Zet het werkwoord terug en zeg wie wat doet. Niet elke naamwoordelijke infinitief is fout: *het lezen* mag, als het over de handeling zelf gaat.',
         rule: 'Naamwoordstijl: *het indienen van de aanvraag vond plaats* → *de student diende de aanvraag in*.',
         mark: {
           q: 'Tik de twee verstopte werkwoorden',
@@ -136,7 +136,7 @@ export const ONDERZOEK_W9: StepInput[] = [
     kind: 'sort',
     id: 'rollen',
     prompt: 'Welke rol speelt het ding in het werkwoord?',
-    buckets: ['gereedschap', 'erop of erin doen', 'plaats', 'wat je vangt of haalt'],
+    buckets: ['gereedschap', 'je doet het ding ergens op', 'het ding is de plek', 'je vangt of haalt het ding'],
     items: [
       { t: 'hameren', b: 0 },
       { t: 'fietsen', b: 0 },
@@ -147,9 +147,9 @@ export const ONDERZOEK_W9: StepInput[] = [
       { t: 'boeken', b: 2 },
       { t: 'huizen', b: 2 },
       { t: 'vissen', b: 3 },
-      { t: 'melken', b: 3 },
+      { t: 'muizen', b: 3 },
     ],
-    why: 'Steeds doe je wat je met het ding gewoonlijk doet. Hamer en fiets: gereedschap. Zout, verf en zadel: je doet het ergens op. Pot, boek en huis: daar zet je iets in of daar ben je. Vis en melk: dat haal je eruit. Precies de rollen die Clark en Clark beschreven.',
+    why: 'Steeds doe je wat je met het ding gewoonlijk doet. Hamer en fiets: gereedschap. Zout, verf en zadel: je doet het ergens op. Pot, boek en huis: daar zet je iets in of daar ben je. Vis en muis: die vang je (katten die muizen, mauwen niet). Zulke rollen onderscheidden Clark en Clark.',
   },
   {
     kind: 'ambiguity',
@@ -225,14 +225,14 @@ export const ONDERZOEK_W9: StepInput[] = [
     prompt: 'Haal de naamwoordstijl weg: zet het werkwoord terug en de handelende persoon vooraan.',
     source: 'Het controleren van de tekst gebeurde door Anna.',
     accept: ['Anna controleerde de tekst.', 'Anna heeft de tekst gecontroleerd.'],
-    why: 'Het werkwoord komt terug uit het naamwoord, het lege gebeurde verdwijnt, en wie het deed staat vooraan. Van negen woorden naar vier.',
+    why: 'Het werkwoord komt terug uit het naamwoord, het lege gebeurde verdwijnt, en wie het deed staat vooraan. Van acht woorden naar vier.',
   },
   {
     kind: 'swipe',
     id: 'richting',
     prompt: 'Klopt deze zin?',
     cards: [
-      { t: 'Bij fietsen is de fiets het gereedschap, bij vissen is de vis wat je vangt.', ok: true, why: 'Twee rollen uit de lijst van Clark en Clark.' },
+      { t: 'Bij fietsen is de fiets het gereedschap, bij vissen is de vis wat je vangt.', ok: true, why: 'Twee verschillende rollen voor het ding.' },
       {
         t: 'Een werkwoord uit een naamwoord zegt zelf welke rol het ding speelt.',
         ok: false,
@@ -240,10 +240,10 @@ export const ONDERZOEK_W9: StepInput[] = [
         why: 'Een fiets is om op te rijden, dus fietsen is rijden, niet slaan.',
       },
       {
-        t: 'Vergelen is gemaakt van het werkwoord gelen.',
+        t: 'Vergroten is gemaakt van het werkwoord groten.',
         ok: false,
-        fix: 'Gelen bestaat niet: ver- en de woordsoortwissel komen in één stap',
-        why: 'Zo ook vergrijzen en vergroten.',
+        fix: 'Groten bestaat niet: ver- en de woordsoortwissel komen in één stap',
+        why: 'Zo ook verkleinen: kleinen bestaat evenmin.',
       },
       {
         t: 'Stofzuigen is ouder dan stofzuiger.',

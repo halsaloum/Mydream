@@ -21,7 +21,7 @@ export const ONDERZOEK_W21: StepInput[] = [
         },
       },
       {
-        text: 'Daardoor heeft het Nederlands *doubletten*: hetzelfde oude woord twee keer, één keer geërfd en één keer geleend. *Vader* en *pater*, *hart* en *cordiaal*, *tien* en *decimaal*, *voet* en *pedaal*. Soms maakt een woord zelfs een rondreis. *Bank* (om op te zitten) is Germaans. Het Italiaans leende het als *banca*, de tafel van de geldwisselaar, en via het Frans kwam het als *bank* (voor geld) terug. Leg de voorwerpen in de goede bak.',
+        text: 'Daardoor heeft het Nederlands *doubletten*: dezelfde oude wortel twee keer, één keer geërfd en één keer geleend. *Vader* en *pater*, *hart* en *cordiaal*, *tien* en *decimaal*, *voet* en *pedaal*. Soms maakt een woord zelfs een rondreis. *Bank* (om op te zitten) is Germaans. Het Italiaans leende het als *banca*, de tafel van de geldwisselaar, en uit het Italiaans, misschien via het Frans, kwam het als *bank* (voor geld) terug. Leg de voorwerpen in de goede bak.',
         rule: 'Doubletten: één wortel, twee wegen. Het erfwoord ging door de klankverschuiving, het leenwoord niet.',
         bins: {
           q: 'Erfwoord of leenwoord?',
@@ -32,11 +32,11 @@ export const ONDERZOEK_W21: StepInput[] = [
             { thing: 'mes', bin: 0, note: 'Een erfwoord. Het Duitse Messer is familie.', hint: 'Mes is een oud Germaans woord.' },
             { thing: 'ei', bin: 0, note: 'Germaans: Duits Ei.', hint: 'Ei is een van de oudste woorden die we hebben.' },
             { thing: 'munten', bin: 1, note: 'Munt komt van Latijn moneta, al vroeg geleend. Het Engelse mint komt er ook van.', hint: 'Munten leerden de Germanen van de Romeinen kennen, met het woord erbij.' },
-            { thing: 'kasteel', bin: 1, note: 'Uit het Frans castel, van Latijn castellum. Het erfwoord voor zo’n gebouw is slot.', hint: 'Lijkt kasteel op het Latijnse castellum?' },
-            { thing: 'geldbank', bin: 1, note: 'Uit het Italiaans banca, via het Frans. Dat Italiaanse woord kwam zelf uit het Germaans: een woord dat thuiskwam.', hint: 'De bank voor geld kwam via Italiaanse geldwisselaars binnen.' },
+            { thing: 'kasteel', bin: 0, note: 'Dit gebouw heet hier slot: een erfwoord, familie van sluiten. Het leenwoord voor hetzelfde gebouw is kasteel, uit het Frans castel, van Latijn castellum.', hint: 'Kijk naar het woord, niet naar het gebouw: hoort slot bij sluiten?' },
+            { thing: 'geldbank', bin: 1, note: 'Uit het Italiaans banca, misschien via het Frans. Dat Italiaanse woord kwam zelf uit het Germaans: een woord dat thuiskwam.', hint: 'De bank voor geld kwam via Italiaanse geldwisselaars binnen.' },
             { thing: 'pinguin', bin: 1, note: 'Een jong leenwoord uit de tijd van de grote zeereizen. Waar het woord oorspronkelijk vandaan komt, is onzeker.', hint: 'Kenden de Germanen pinguïns?' },
           ],
-          note: 'Twee keer bank, twee keer een andere bak. Dezelfde vorm, maar de geldbank maakte een omweg langs Italië.',
+          note: 'Twee keer bank, twee keer een andere bak: de geldbank maakte een omweg langs Italië. En het slot is een erfwoord; had het kasteel geheten, dan hoorde het in de andere bak.',
         },
       },
       {
@@ -50,14 +50,14 @@ export const ONDERZOEK_W21: StepInput[] = [
         },
       },
       {
-        text: 'Je kunt ook lenen zonder één vreemde klank over te nemen. Een *leenvertaling* vertaalt het bouwplan stuk voor stuk: *wolkenkrabber* uit *skyscraper*, *voetbal* uit *football*. Een *betekenisontlening* geeft een bestaand woord een nieuwe betekenis: *muis* voor het ding naast je toetsenbord, *controleren* in de zin van *beheersen*. En soms wordt een hele uitdrukking vertaald: *Dat maakt geen zin* naar *That makes no sense*. Dat laatste geldt nog als anglicisme; verzorgd is *Dat heeft geen zin* of *Dat is onlogisch*.',
+        text: 'Je kunt ook lenen zonder één vreemde klank over te nemen. Een *leenvertaling* vertaalt het bouwplan stuk voor stuk: *wolkenkrabber* uit *skyscraper*, *voetbal* uit *football*. Een *betekenisontlening* geeft een bestaand woord een nieuwe betekenis: *muis* voor het ding naast je toetsenbord, *controleren* in de zin van *beheersen*. En soms wordt een hele uitdrukking vertaald: *Dat maakt geen zin* naar *That makes no sense*. Dat laatste wordt in verzorgde taal nog vaak afgeraden. Daar schrijf je *Dat slaat nergens op* of *Dat is onlogisch*, en voor ‘het is zinloos’ *Dat heeft geen zin*.',
         lab: {
           label: 'Tik een woord',
           chips: [
             { k: 'deadline', out: 'directe lening', note: 'Vorm en betekenis komen allebei uit het Engels.' },
             { k: 'wolkenkrabber', out: 'leenvertaling', note: 'Nederlandse stukken, Engels bouwplan: sky-scraper.' },
             { k: 'muis', out: 'betekenisontlening', note: 'Het woord is Nederlands, de nieuwe betekenis Engels.' },
-            { k: 'Dat maakt geen zin', out: 'vertaalde uitdrukking', note: 'Uit That makes no sense. In verzorgd Nederlands: Dat heeft geen zin.' },
+            { k: 'Dat maakt geen zin', out: 'vertaalde uitdrukking', note: 'Uit That makes no sense. In verzorgd Nederlands: Dat slaat nergens op.' },
           ],
         },
       },
@@ -146,10 +146,10 @@ export const ONDERZOEK_W21: StepInput[] = [
       },
       {
         say: 'Al dat Engels, dat maakt toch geen zin!',
-        options: ['Haha, dat maakt geen zin is zelf een anglicisme. Verzorgd is: dat heeft geen zin.', 'Helemaal mee eens, dat maakt geen zin.'],
+        options: ['Haha, dat maakt geen zin is zelf vertaald Engels. Verzorgd is: dat slaat nergens op.', 'Helemaal mee eens, dat maakt geen zin.'],
         right: 0,
-        fix: 'Dat maakt geen zin → Dat heeft geen zin.',
-        why: 'Een vertaalde uitdrukking uit That makes no sense. Je oom leent zelf ook.',
+        fix: 'Dat maakt geen zin → Dat slaat nergens op.',
+        why: 'Een vertaalde uitdrukking uit That makes no sense. Bedoelt hij ‘het is zinloos’, dan is het: dat heeft geen zin. Je oom leent zelf ook.',
       },
     ],
     bye: 'Touché. Ik ga koffie zetten. Is dat soms ook geleend?',

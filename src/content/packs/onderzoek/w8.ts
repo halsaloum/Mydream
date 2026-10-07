@@ -8,7 +8,7 @@ export const ONDERZOEK_W8: StepInput[] = [
     title: 'Een glijbaan, een frame en een volgorde van klassen',
     panels: [
       {
-        text: 'John Robert Ross (1972) zette de woordsoorten op een glijbaan, met het naamwoord als eindstation. Het deelwoord staat ergens halverwege: half werkwoord, half bijvoeglijk naamwoord. Hoe ver het is doorgeschoven, meet je met drie toetsen die alleen een bijvoeglijk naamwoord haalt: kan er *zeer* voor, kan er *-er* achter, kan er *on-* voor? *Bezorgd* over de kinderen haalt ze alle drie: *zeer bezorgd*, *bezorgder*, *onbezorgd*. Het pakje dat *bezorgd* is, haalt er geen. *Gelezen* haalt er één: *ongelezen* bestaat, *zeer gelezen* niet. Eén vorm, drie plekken op de glijbaan.',
+        text: 'John Robert Ross (1972) zette de woordsoorten op een glijbaan, met het naamwoord als eindstation. Het deelwoord staat ergens halverwege: half werkwoord, half bijvoeglijk naamwoord. Hoe ver het is doorgeschoven, meet je met drie toetsen die alleen een bijvoeglijk naamwoord haalt: kan er *zeer* voor, kan er *-er* achter, kan er *on-* voor? *Bezorgd* over de kinderen haalt ze alle drie: *zeer bezorgd*, *bezorgder*, *onbezorgd*. Het pakje dat *bezorgd* is, haalt er geen. *Gelezen* haalt er één: *ongelezen* bestaat, *zeer gelezen* niet. Zo staat *bezorgd* op twee plekken van de glijbaan, en *gelezen* op een derde.',
         rule: 'Drie toetsen voor bijvoeglijk naamwoord: *zeer*, *-er*, *on-*. Hoe meer een deelwoord er haalt, hoe verder het van het werkwoord af staat.',
         paradigm: {
           q: 'Haalt het deelwoord de toets? Vul ja of nee in',
@@ -23,7 +23,7 @@ export const ONDERZOEK_W8: StepInput[] = [
               cells: [
                 { fill: 'nee', hint: 'Een zeer bezorgd pakje? Nee. Het pakje is bezorgd door de postbode: een werkwoord.' },
                 'nee',
-                { fill: 'nee', hint: 'Een onbezorgd pakje bestaat niet; het is nog niet bezorgd.' },
+                { fill: 'nee', hint: 'Onbezorgd betekent zonder zorgen. Een pakje dat nog niet is afgeleverd, heet niet onbezorgd.' },
               ],
             },
             {
@@ -34,13 +34,20 @@ export const ONDERZOEK_W8: StepInput[] = [
                 { fill: 'ja', hint: 'Ongelezen bestaat: een stapel ongelezen post.' },
               ],
             },
-            { label: 'verliefd', cells: [{ fill: 'ja' }, { fill: 'ja', hint: 'Verliefder: dat kan.' }, { fill: 'nee', hint: 'Onverliefd bestaat niet.' }] },
+            {
+              label: 'verbaasd',
+              cells: [
+                { fill: 'ja', hint: 'Zeer verbaasd: dat kan.' },
+                { fill: 'ja', hint: 'Nog verbaasder: dat kan.' },
+                { fill: 'nee', hint: 'Onverbaasd bestaat niet.' },
+              ],
+            },
           ],
-          note: 'Bezorgd haalt drie toetsen of geen, afhankelijk van de betekenis. Gelezen haalt er één, verliefd twee. De grens tussen deelwoord en bijvoeglijk naamwoord is geen lijn maar een helling.',
+          note: 'Bezorgd haalt drie toetsen of geen, afhankelijk van de betekenis. Gelezen haalt er één, verbaasd twee. De grens tussen deelwoord en bijvoeglijk naamwoord is geen lijn maar een helling.',
         },
         deep: {
           q: 'Wat deed Ross precies?',
-          a: 'Hij liet zien dat zinsregels niet ja-of-nee werken: hoe verder een woord richting naamwoord schuift, hoe slechter een regel voor werkwoorden erop past. Zijn titel, *Endstation Hauptwort*, is een knipoog naar *Endstation Sehnsucht*, de Duitse naam van een beroemd toneelstuk. Bas Aarts (2007) werkte het idee uit tot *gradiëntie*: gradaties tussen klassen (*intersectief*) en binnen één klasse (*subsectief*). Een deelwoord als *bezorgd* zit tussen twee klassen in.',
+          a: 'Hij liet zien dat zinsregels niet ja-of-nee werken: hoe verder een woord richting naamwoord schuift, hoe slechter een regel voor werkwoorden erop past. Zijn titel, *Endstation Hauptwort*, is een knipoog naar *Endstation Sehnsucht*, de Duitse naam van een beroemd toneelstuk. Bas Aarts (2007) onderscheidt twee soorten *gradiëntie*: binnen één klasse (*subsectief*) en tussen twee klassen (*intersectief*). Hij houdt de grenzen tussen de klassen wel scherp: een woord met kenmerken van twee klassen hoort bij de klasse waarvan het de meeste kenmerken heeft.',
         },
       },
       {
@@ -48,9 +55,9 @@ export const ONDERZOEK_W8: StepInput[] = [
         rule: 'Een frame (*de … is*, *ik … het*) sorteert woorden in klassen, nog voor je weet wat ze betekenen.',
         mark: {
           q: 'Tik de woorden die het frame de … is als naamwoord aanwijst',
-          sentence: 'de wup is lief, ik tam het even, de flim is weg, ik gorp het nu',
+          sentence: 'de wup is lief, ik mip het even, de flim is weg, ik gorp het nu',
           targets: [1, 9],
-          note: 'wup en flim staan tussen de en is: naamwoorden. tam en gorp staan tussen ik en het: werkwoorden. Zonder één betekenis te kennen heb je vier onzinwoorden gesorteerd.',
+          note: 'wup en flim staan tussen de en is: naamwoorden. mip en gorp staan tussen ik en het: werkwoorden. Zonder één betekenis te kennen heb je vier onzinwoorden gesorteerd.',
         },
         deep: {
           q: 'Werkt dat ook in het Nederlands?',
@@ -80,8 +87,8 @@ export const ONDERZOEK_W8: StepInput[] = [
             },
             {
               k: 'even',
-              out: 'Even getallen. (bijvoeglijk naamwoord) · Doe de deur even dicht. (partikel)',
-              note: 'Het bijvoeglijk naamwoord staat voor een naamwoord en betekent deelbaar door twee. Het partikel maakt het verzoek kleiner en klinkt zonder klemtoon.',
+              out: 'Even dacht ik dat hij boos was. (bijwoord: een moment) · Doe de deur even dicht. (partikel)',
+              note: 'Als bijwoord betekent even een kort moment, draagt het klemtoon en kan het vooraan. Als partikel maakt het een verzoek kleiner en klinkt het zonder klemtoon.',
             },
           ],
         },
@@ -91,7 +98,7 @@ export const ONDERZOEK_W8: StepInput[] = [
         },
       },
       {
-        text: 'Kees Hengeveld (1992) vergeleek de woordsoortsystemen van talen en vond een vaste volgorde: werkwoord > zelfstandig naamwoord > bijvoeglijk naamwoord > bijwoord van wijze. Heeft een taal een aparte klasse voor een stap rechts, dan heeft ze alle stappen links ook. Het Engels gaat helemaal naar rechts: *beautiful* tegenover *beautifully*. Het Nederlands stopt een stap eerder: *mooi* doet allebei. In zijn termen is het Nederlands daar *flexibel*: één klasse voor twee taken. Dat is precies wat de ANS bedoelt met ‘bijvoeglijk naamwoord, bijwoordelijk gebruikt’. En de talen met een handvol bijvoeglijke naamwoorden, die Dixon beschreef, hebben zeker geen aparte bijwoorden van wijze.',
+        text: 'Kees Hengeveld (1992) vergeleek de woordsoortsystemen van talen en vond een vaste volgorde: werkwoord > zelfstandig naamwoord > bijvoeglijk naamwoord > bijwoord van wijze. Heeft een taal een aparte klasse voor een stap rechts, dan heeft ze alle stappen links ook. Het Engels gaat helemaal naar rechts: *beautiful* tegenover *beautifully*. Het Nederlands stopt een stap eerder: *mooi* doet allebei. In zijn termen is het Nederlands daar *flexibel*: één klasse voor twee taken. Dat is precies wat de ANS bedoelt met ‘bijvoeglijk naamwoord, bijwoordelijk gebruikt’. De talen van Dixon, met maar een handvol bijvoeglijke naamwoorden, staan aan de andere kant: daar houdt de reeks bijna al bij het naamwoord op.',
         rule: 'Hengevelds volgorde: werkwoord > naamwoord > bijvoeglijk naamwoord > bijwoord van wijze. Het Nederlands stopt bij het bijvoeglijk naamwoord.',
         quiz: {
           q: 'Een taal heeft een aparte klasse bijwoorden van wijze. Wat volgt daaruit volgens Hengeveld?',
@@ -105,7 +112,7 @@ export const ONDERZOEK_W8: StepInput[] = [
         },
         deep: {
           q: 'Wat heb je hieraan bij het schrijven?',
-          a: 'Veel fouten zijn een Engels systeem in een Nederlandse zin: een extra uitgang of een *-e* bij bijwoordelijk gebruik, zoals *Hij rijdt snelle*. Wie weet dat het Nederlands hier één klasse heeft, weet ook dat de vorm bij een werkwoord altijd kaal is: *mooi*, *snel*, *zacht*. Alleen vóór een naamwoord buigt het woord.',
+          a: 'Een bekende fout is een eigen vorm voor het bijwoordelijk gebruik, alsof het Nederlands vier klassen had: *Hij rijdt snelle*. Wie weet dat het Nederlands hier één klasse heeft, weet ook dat de vorm bij een werkwoord altijd kaal is: *mooi*, *snel*, *zacht*. Alleen vóór een naamwoord buigt het woord.',
         },
       },
     ],
@@ -114,7 +121,7 @@ export const ONDERZOEK_W8: StepInput[] = [
     kind: 'highlight',
     id: 'onzin',
     prompt: 'Kleur de woordsoorten in de onzinzin',
-    intro: 'Je kent geen enkel inhoudswoord. Gebruik vorm, plek en de partikeltoets. Lidwoorden en dan blijven wit.',
+    intro: 'Je kent geen enkel inhoudswoord. Gebruik vorm, plek en de partikeltoets. De, die en dan blijven wit.',
     pens: [
       { id: 'zn', label: 'zelfst. nw.', tag: 'zn', ask: 'Staat het na de, die of een?', accent: 'blue' },
       { id: 'ww', label: 'werkwoord', tag: 'ww', ask: 'Staat het vooraan als bevel, of op plek 2 met een -t?', accent: 'red' },
@@ -151,12 +158,12 @@ export const ONDERZOEK_W8: StepInput[] = [
       { t: 'vermoeid', b: 0 },
       { t: 'gelezen', b: 1 },
       { t: 'gekookt', b: 1 },
-      { t: 'verliefd', b: 1 },
+      { t: 'verbaasd', b: 1 },
       { t: 'bezorgd (het pakje)', b: 2 },
       { t: 'verhuisd', b: 2 },
       { t: 'gegeven', b: 2 },
     ],
-    why: 'Zeer bekend, bekender, onbekend; zeer geschikt, geschikter, ongeschikt; zeer vermoeid, vermoeider, onvermoeid: helemaal bijvoeglijk. Gelezen en gekookt halen alleen on- (ongelezen, ongekookt), verliefd alleen zeer en -er. Het bezorgde pakje, verhuisd en gegeven halen niets: pure deelwoorden.',
+    why: 'Zeer bekend, bekender, onbekend; zeer geschikt, geschikter, ongeschikt; zeer vermoeid, vermoeider, onvermoeid: helemaal bijvoeglijk. Gelezen en gekookt halen alleen on- (ongelezen, ongekookt), verbaasd alleen zeer en -er. Het bezorgde pakje, verhuisd en gegeven halen niets: pure deelwoorden.',
   },
   {
     kind: 'ambiguity',
