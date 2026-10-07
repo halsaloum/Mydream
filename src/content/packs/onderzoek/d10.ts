@@ -1,0 +1,166 @@
+import type { StepInput } from '../../schema';
+
+/** Onderzoek bij d10: een derde uitlegronde op onderzoeksniveau, daarna zwaardere oefeningen. */
+export const ONDERZOEK_D10: StepInput[] = [
+  {
+    kind: 'explain',
+    id: 'onderzoek',
+    title: 'Wat een tussenklank eigenlijk is',
+    panels: [
+      {
+        text: 'In de verdieping las je dat de tussen-s een rest is van de oude tweede naamval: *des konings*. Maar kijk naar *regeringsleider* en *liefdesbrief*. *Regering* en *liefde* zijn vrouwelijke woorden, en vrouwelijke woorden kregen in de tweede naamval nooit een *-s*. Dat hoor je nog in vaste uitdrukkingen: *de macht der gewoonte*, niet *der gewoontes*. Toch hebben ze nu een tussen-s. De *s* is dus losgekomen van de naamval en verder gekropen door *analogie*.',
+        rule: 'De tussen-s begon als naamval, maar leeft nu als bindmorfeem met een eigen verspreiding.',
+        quiz: {
+          q: 'Waarom kan de s in ‘regeringsleider’ geen oude naamvals-s zijn?',
+          options: ['Regering is vrouwelijk, en vrouwelijke woorden kregen geen naamvals-s', 'Regering heeft een meervoud op -en', 'Je hoort de s niet'],
+          answer: 'Regering is vrouwelijk, en vrouwelijke woorden kregen geen naamvals-s',
+          why: 'Vergelijk de macht der gewoonte: vrouwelijk, zonder s. De s na -ing is er later door analogie bij gekomen.',
+        },
+        deep: {
+          q: 'Laat het Duits hetzelfde zien?',
+          a: 'Ja. *Liebe* is vrouwelijk en heeft in geen enkele naamval een vorm *Liebes*. Toch zegt elke Duitser *Liebesbrief*. Ook *-ung* en *-heit* waren vrouwelijk, en juist zij trekken nu de *s* het sterkst: *Regierungschef*, *Freiheitskampf*. In beide talen staat de nieuwe *s* precies op een plek waar de oude naamval hem nooit zette.',
+        },
+      },
+      {
+        text: 'Hoort de tussen-s bij het eerste deel, bij het tweede, of zweeft hij ertussen? De weglatingstest uit Woordbomen beslist. Je schrijft *vrijheids- en onafhankelijkheidsstrijd*: als je *strijd* weglaat, blijft de *s* bij het eerste deel. Ook in de klank hangt hij links: in *vrij-heids-strijd* sluit de *s* de lettergreep van *heid* af. Daarom nemen veel morfologen aan dat de tussenklank vormelijk bij het eerste deel hoort. Dat wringt wel: *vrijheids-* is geen los woord, maar een bouwsteen die alleen in samenstellingen bestaat.',
+        rule: 'Een tussenklank hoort qua vorm bij het eerste deel: *vrijheids- en onafhankelijkheidsstrijd*.',
+        bracket: {
+          q: 'Bouw de boom van vrijheidsstrijd',
+          tree: '[[[vrij heid] s] strijd]',
+          nodes: [
+            { w: 'vrijheid', cat: 'zn', note: 'vrij + heid: een zelfstandig naamwoord. En -heid trekt een s.' },
+            { w: 'vrijheids', cat: 'eerste deel', note: 'De s hecht aan vrijheid. Geen los woord, wel een vaste bouwsteen: vrijheids-.' },
+            { w: 'vrijheidsstrijd', cat: 'zn', note: 'Twee s’en achter elkaar: de tussen-s en de s van strijd. Laat je er een weg, dan schrijf je het fout.' },
+          ],
+          traps: [
+            { w: 'sstrijd', note: 'De s hoort niet bij strijd: in vrijheids- en onafhankelijkheidsstrijd blijft hij bij het eerste deel staan.' },
+            { w: 'heids', note: '-heid is gebonden. Eerst moet er een woord staan: vrijheid.' },
+          ],
+          note: '[[[vrij heid] s] strijd]: de tussenklank plakt eerst aan het eerste deel, en pas dan komt het hoofd erbij.',
+        },
+      },
+      {
+        text: 'Andrea Krott en collega’s lieten zien dat de familie van het eerste deel de keuze stuurt. Maar een familie geeft een kans, geen zekerheid. *Huis* gaat bijna altijd zonder tussenklank (*huiskamer*, *huisarts*, *huiswerk*), en toch zeg je *huizenmarkt*: daar gaat het echt om veel huizen. De betekenis kan de familie dus overstemmen. Zet elk voorwerp in de bak die zijn familie het vaakst kiest.',
+        rule: 'De familie wijst de weg, maar een echt bedoeld meervoud kan *-en-* afdwingen: *huiskamer*, maar *huizenmarkt*.',
+        bins: {
+          q: 'Welke tussenklank kiest de familie meestal?',
+          bins: ['meestal -en-', 'meestal -s-', 'meestal niets'],
+          items: [
+            { thing: 'kip', bin: 0, note: 'kippensoep, kippenhok, kippenvel. Een uitzondering is kipfilet.' },
+            { thing: 'ster', bin: 0, note: 'sterrenhemel, sterrenbeeld, sterrenkunde: de familie is bijna eensgezind.' },
+            { thing: 'pan', bin: 0, note: 'pannenkoek, pannenlap, pannenset. Ook als er maar één pan bedoeld is.' },
+            { thing: 'visser', bin: 1, note: 'vissersboot, vissersdorp, vissershaven. Persoonsnamen op -er kiezen vaak een s: bakkerswinkel, lezersbrief.' },
+            {
+              thing: 'huis',
+              bin: 2,
+              note: 'huiskamer, huisarts, huiswerk. Maar huizenmarkt en huizenprijzen: als het meervoud echt bedoeld is, wint -en-.',
+              hint: 'Denk aan huiskamer, huisarts en huiswerk.',
+            },
+            { thing: 'kasteel', bin: 2, note: 'kasteeltuin, kasteelheer, kasteelmuur: nooit iets ertussen.' },
+            {
+              thing: 'glas',
+              bin: 2,
+              note: 'glasbak, glaswerk, glasvezel. Maar glazenwasser: wie ramen lapt, lapt er veel. Let op de z van het meervoud glazen.',
+              hint: 'Denk aan glasbak en glaswerk.',
+            },
+          ],
+          note: 'De familie geeft de richting, de betekenis kan hem omgooien: huiskamer maar huizenmarkt, glasbak maar glazenwasser.',
+        },
+      },
+      {
+        text: 'Niet elke *e* tussen twee delen is dezelfde. In *huilebalk* en *brekebeen* staat een tussen-e achter een werkwoordstam: *huil*, *breek*. Een werkwoord heeft geen meervoud, dus de regel voor *-en-* doet niet mee: er komt nooit een *n*. In *rodekool* en *hogeschool* is de *e* geen tussenklank, maar de buigings-e van het bijvoeglijk naamwoord: *de rode kool*. Tik de woorden met een echte tussenklank.',
+        rule: 'Na een werkwoordstam: *-e-* zonder n (*huilebalk*). Een buigings-e is geen tussenklank (*rodekool*).',
+        mark: {
+          q: 'Tik de woorden met een echte tussenklank',
+          sentence: 'huilebalk rodekool brekebeen hogeschool boekenkast zonnebloem',
+          targets: [0, 2, 4, 5],
+          note: 'huil-e-balk, brek-e-been, boek-en-kast en zonn-e-bloem hebben een tussenklank. In rodekool en hogeschool is de e de buiging van rood en hoog.',
+        },
+        deep: {
+          q: 'Waarom is dat onderscheid handig bij het schrijven?',
+          a: 'Omdat de regel voor de tussen-n alleen kijkt naar zelfstandige naamwoorden met een meervoud op *-en*. Bij *huilebalk* lijkt *huilen* een *-en* te hebben, maar dat is de infinitief, geen meervoud. En bij *rodekool* is er niets in te voegen: *rodenkool* is gewoon fout.',
+        },
+      },
+    ],
+  },
+  {
+    kind: 'sort',
+    id: 'vier-bakken',
+    prompt: 'Welke tussenklank? Let op de woordsoort van het eerste deel.',
+    buckets: ['-en-', '-e-', '-s-', 'geen'],
+    items: [
+      { t: 'bij + korf', b: 0 },
+      { t: 'geit + kaas', b: 0 },
+      { t: 'huil + balk', b: 1 },
+      { t: 'lach + bek', b: 1 },
+      { t: 'zon + stelsel', b: 1 },
+      { t: 'liefde + brief', b: 2 },
+      { t: 'regering + crisis', b: 2 },
+      { t: 'woning + bouw', b: 3 },
+      { t: 'leiding + water', b: 3 },
+      { t: 'huis + arts', b: 3 },
+    ],
+    why: 'bijenkorf en geitenkaas: meervoud op -en. huilebalk en lachebek: een werkwoordstam, dus -e- zonder n. zonnestelsel: er is één zon. liefdesbrief en regeringscrisis: de analogie-s. woningbouw, leidingwater en huisarts: niets, ook al trekt -ing meestal een s.',
+  },
+  {
+    kind: 'proofread',
+    id: 'redactie',
+    prompt: 'Lees de tekst na',
+    intro: 'Er staan vier fouten in de tussenklanken. Tik ze aan.',
+    tokens: [
+      { t: 'Na' },
+      { t: 'zijn' },
+      { t: 'toespraak' },
+      { t: 'over' },
+      { t: 'de' },
+      { t: 'vrijheidstrijd', fix: 'vrijheidsstrijd', why: 'Twee s’en: de tussen-s van vrijheids- en de s van strijd.' },
+      { t: 'at' },
+      { t: 'de' },
+      { t: 'regeringleider', fix: 'regeringsleider', why: '-ing trekt een s: regeringsleider.' },
+      { t: 'in' },
+      { t: 'een' },
+      { t: 'pannekoekenhuis', fix: 'pannenkoekenhuis', why: 'pan heeft alleen het meervoud pannen: -en-, ook als je de n niet hoort.' },
+      { t: 'een' },
+      { t: 'bord' },
+      { t: 'rodenkool.', fix: 'rodekool.', why: 'De e is de buiging van rood, geen tussenklank. Er komt geen n bij.' },
+    ],
+    done: {
+      title: 'Vier tussenklanken gered',
+      text: 'vrijheidsstrijd en regeringsleider met s, pannenkoekenhuis met n, en rodekool zonder: daar was nooit een tussenklank.',
+    },
+  },
+  {
+    kind: 'bet',
+    id: 'kniebel',
+    prompt: 'Een verzonnen werkwoord: ‘kniebelen’. Iemand die alles van kniebeling weet, is een…',
+    options: ['kniebelingsexpert', 'kniebelingexpert', 'kniebelingenexpert'],
+    answer: 'kniebelingsexpert',
+    why: 'Je kent het woord niet, maar je kent de familie van -ing: regeringsleider, verzekeringsmaatschappij. Die familie trekt een s. Precies die analogie beschrijven Krott en collega’s.',
+  },
+  {
+    kind: 'rewrite',
+    id: 'weglaat-s',
+    prompt: 'Schrijf korter: laat het gedeelde laatste deel één keer weg.',
+    source: 'regeringspartijen en oppositiepartijen',
+    accept: ['regerings- en oppositiepartijen'],
+    why: 'De tussen-s blijft bij regering staan: hij hoort bij het eerste deel. Daarom staat het streepje pas achter de s.',
+  },
+  {
+    kind: 'swipe',
+    id: 'bind-waar',
+    prompt: 'Klopt deze zin?',
+    cards: [
+      {
+        t: 'De s in liefdesbrief is een rest van de tweede naamval van liefde.',
+        ok: false,
+        fix: 'liefde is vrouwelijk en kreeg nooit een naamvals-s; de s kwam door analogie',
+        why: 'Vergelijk de macht der gewoonte: een vrouwelijk woord zonder s.',
+      },
+      { t: 'In vrijheids- en onafhankelijkheidsstrijd blijft de tussen-s bij het eerste deel.', ok: true, why: 'Dat laat zien dat de tussenklank qua vorm bij het eerste deel hoort.' },
+      { t: 'Huilebalk krijgt geen n omdat huil een werkwoordstam is.', ok: true, why: 'Een werkwoord heeft geen meervoud; de -en-regel geldt alleen voor zelfstandige naamwoorden.' },
+      { t: 'In rodekool is de e een tussenklank.', ok: false, fix: 'het is de buigings-e van rood', why: 'de rode kool: het bijvoeglijk naamwoord is gebogen.' },
+      { t: 'De familie van huis kiest meestal niets, maar huizenmarkt heeft toch -en-.', ok: true, why: 'Als het meervoud echt bedoeld is, wint -en-.' },
+      { t: 'De familie van het eerste deel legt de tussenklank altijd helemaal vast.', ok: false, fix: 'een familie geeft een kans, geen zekerheid', why: 'kippensoep naast kipfilet, huiskamer naast huizenmarkt.' },
+    ],
+  },
+];

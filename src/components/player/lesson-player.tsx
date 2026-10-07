@@ -35,7 +35,7 @@ export type PlayerMeta = {
   exit: { href: Route; label: string };
   finish: { title: string; context?: string; primary: FinishAction; secondary?: FinishAction; learned: string[] };
   /** Niveau en vakgebied, getoond bij de eerste stap. */
-  tag?: { layer: Layer; layerIndex: number; domain: Domain; stage?: Stage | undefined };
+  tag?: { layer: Layer; layerIndex: number; domain: Domain; stage?: Stage | undefined; icon?: string | undefined };
 };
 
 const PRAISE = ['Precies!', 'Klopt!', 'Mooi zo!', 'Helemaal goed!'];
