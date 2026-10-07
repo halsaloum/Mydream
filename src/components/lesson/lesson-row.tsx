@@ -4,6 +4,7 @@ import { ArrowRight, Check } from 'lucide-react';
 import type { Route } from 'next';
 import Link from 'next/link';
 import { exerciseCountLabel, type LessonEntry } from '@/content/catalog';
+import { lessonIcon } from '@/content/lesson-icons';
 import type { SessionState } from '@/engine/session';
 import { cn } from '@/lib/cn';
 import type { ProgressData } from '@/state/progress';
@@ -32,6 +33,7 @@ type LessonRowProps = {
 /** Een les als regel in een lijst: icoon, titel, status. Leidt direct naar de les. */
 export function LessonRow({ entry, progress, sessions, isNext, showAlso = true, showStage = true }: LessonRowProps) {
   const done = Boolean(progress.lessons[entry.lesson.id]);
+  const picture = lessonIcon(entry.lesson.id);
   return (
     <Link
       href={`/les/${entry.lesson.id}` as Route}
@@ -43,16 +45,36 @@ export function LessonRow({ entry, progress, sessions, isNext, showAlso = true, 
           : 'border-line bg-surface hover:border-accent-line',
       )}
     >
-      <span
-        className={cn(
-          'grid size-10 shrink-0 place-items-center rounded-control font-serif text-[0.95rem] font-semibold transition-transform duration-300 ease-[var(--ease-spring)] group-hover:-rotate-6 group-hover:scale-110',
-          done || isNext
-            ? 'bg-accent icon-tile'
-            : 'border border-line bg-linear-to-b from-white to-sunken text-ink-muted shadow-[inset_0_-3px_0_var(--color-line)] group-hover:text-accent-ink',
-        )}
-      >
-        {done ? <Check aria-hidden className="size-5 animate-bounce-in" strokeWidth={3} /> : <span aria-hidden>{entry.lesson.icon}</span>}
-      </span>
+      {picture ? (
+        <span className="relative grid size-12 shrink-0 place-items-center transition-transform duration-300 ease-[var(--ease-spring)] group-hover:-rotate-6 group-hover:scale-110">
+          {/* eslint-disable-next-line @next/next/no-img-element -- kleine iconen uit /public, geen optimalisatie nodig */}
+          <img
+            src={picture}
+            alt=""
+            width={48}
+            height={48}
+            loading="lazy"
+            decoding="async"
+            className="size-12 object-contain drop-shadow-[0_4px_6px_rgb(60_40_10/0.22)]"
+          />
+          {done && (
+            <span className="absolute -right-1 -bottom-1 grid size-5 place-items-center rounded-full bg-accent icon-tile ring-2 ring-surface">
+              <Check aria-hidden className="size-3.5 animate-bounce-in" strokeWidth={3.5} />
+            </span>
+          )}
+        </span>
+      ) : (
+        <span
+          className={cn(
+            'grid size-10 shrink-0 place-items-center rounded-control font-serif text-[0.95rem] font-semibold transition-transform duration-300 ease-[var(--ease-spring)] group-hover:-rotate-6 group-hover:scale-110',
+            done || isNext
+              ? 'bg-accent icon-tile'
+              : 'border border-line bg-linear-to-b from-white to-sunken text-ink-muted shadow-[inset_0_-3px_0_var(--color-line)] group-hover:text-accent-ink',
+          )}
+        >
+          {done ? <Check aria-hidden className="size-5 animate-bounce-in" strokeWidth={3} /> : <span aria-hidden>{entry.lesson.icon}</span>}
+        </span>
+      )}
       <span className="min-w-0 flex-1">
         <span className="block leading-snug font-bold text-ink">
           {entry.lesson.title}

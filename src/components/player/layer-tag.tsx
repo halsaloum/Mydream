@@ -9,10 +9,43 @@ import { STAGE_ACCENTS, STAGE_LABELS } from '@/components/lesson/stage-badge';
 import { transition, useCalmMotion } from '@/lib/motion';
 
 /** Bij de eerste stap: op welk niveau en in welk vakgebied deze les zit, en hoe diep hij gaat. */
-export function LayerTag({ layer, layerIndex, domain, stage }: { layer: Layer; layerIndex: number; domain: Domain; stage?: Stage | undefined }) {
+export function LayerTag({
+  layer,
+  layerIndex,
+  domain,
+  stage,
+  icon,
+}: {
+  layer: Layer;
+  layerIndex: number;
+  domain: Domain;
+  stage?: Stage | undefined;
+  /** Plaatje-icoon van de les, als die er een heeft. */
+  icon?: string | undefined;
+}) {
   const calm = useCalmMotion();
   return (
     <div className="mb-8 flex flex-wrap items-stretch gap-2.5">
+      {icon && (
+        <motion.span
+          aria-hidden
+          data-testid="les-icoon"
+          className="grid w-full place-items-center pb-1 sm:w-auto sm:pr-2 sm:pb-0"
+          initial={calm ? false : { opacity: 0, scale: 0.6, rotate: -8, y: 10 }}
+          animate={{ opacity: 1, scale: 1, rotate: 0, y: 0 }}
+          transition={calm ? transition.slow : { type: 'spring', stiffness: 260, damping: 14, delay: 0.08 }}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element -- kleine iconen uit /public, geen optimalisatie nodig */}
+          <img
+            src={icon}
+            alt=""
+            width={96}
+            height={96}
+            decoding="async"
+            className="size-24 object-contain drop-shadow-[0_10px_14px_rgb(60_40_10/0.25)] sm:size-[4.25rem]"
+          />
+        </motion.span>
+      )}
       <div className="flex items-center gap-3 rounded-tile border-2 border-line bg-surface px-3.5 py-2 shadow-slab-sm">
         <span aria-hidden className="flex h-9 items-end gap-[3px]">
           {course.layers.map((item, i) => (
