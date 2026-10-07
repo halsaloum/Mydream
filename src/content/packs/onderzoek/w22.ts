@@ -8,15 +8,19 @@ export const ONDERZOEK_W22: StepInput[] = [
     title: 'Buren, cohorten en twee talen in één hoofd',
     panels: [
       {
-        text: 'Waarom zeg je zo traag nee tegen *plirt*? Omdat het *buren* heeft: *flirt* en *plint* verschillen er maar één letter van. Max Coltheart en collega’s (1977) telden zulke buren. Dat getal heet sindsdien *Coltheart’s N*. Hun bekendste vondst: een nepwoord met veel buren wijs je trager af. Je lexicon loopt eerst alle buren langs voordat het nee zegt. *Plrnt* heeft geen enkele buur en is meteen weg.',
+        text: 'Waarom zeg je zo traag nee tegen *plirt*? Omdat het *buren* heeft: *flirt* en *plint* verschillen er maar één letter van. Max Coltheart en collega’s (1977) telden zulke buren. Dat getal heet sindsdien *Coltheart’s N*. Hun bekendste vondst: een nepwoord met veel buren wijs je trager af. Al die buren worden een beetje actief, en dan duurt het langer voordat je zeker weet dat er niets past. *Bltr* heeft geen enkele buur en is niet eens uit te spreken: meteen weg.',
         rule: 'Buren: woorden die één letter verschillen. Hoe meer buren een nepwoord heeft, hoe trager je nee zegt.',
         lab: {
           label: 'Tik een letterreeks',
           chips: [
             { k: 'hart', out: 'een echt woord met veel buren', note: 'hard, hert, haat, hark, harp, hars, part: steeds één letter anders.' },
             { k: 'plirt', out: 'nepwoord, twee buren', note: 'flirt en plint liggen vlakbij: traag nee.' },
-            { k: 'plrnt', out: 'nepwoord, geen buren', note: 'Niets in de buurt en niet uit te spreken: snel nee.' },
-            { k: 'blat', out: 'nepwoord, met buren én de klank van blad', note: 'Door de verscherping klinkt blat precies als blad. Zo’n nepwoord wijs je extra traag af.' },
+            { k: 'bltr', out: 'nepwoord, geen buren', note: 'Geen enkel woord op één letter afstand, en geen klinker: snel nee.' },
+            {
+              k: 'blat',
+              out: 'nepwoord, met buren én de klank van blad',
+              note: 'Door de verscherping klinkt blat precies als blad. Zo’n nepwoord wijs je extra traag af.',
+            },
           ],
         },
         deep: {
@@ -25,7 +29,7 @@ export const ONDERZOEK_W22: StepInput[] = [
         },
       },
       {
-        text: 'Gesproken woorden komen klank voor klank binnen. William Marslen-Wilson en Alan Welsh (1978) stelden daarom het *cohortmodel* voor. Bij de eerste klanken gaan alle woorden aan die zo beginnen: het *cohort*. Elke nieuwe klank strikt er een paar weg. Het punt waarop er nog maar één over is, heet het *uniciteitspunt*. Na *krok* zijn er nog vier over: *krokus*, *kroket*, *krokant* en *krokodil*. De volgende klank beslist.',
+        text: 'Gesproken woorden komen klank voor klank binnen. William Marslen-Wilson en Alan Welsh (1978) stelden daarom het *cohortmodel* voor. Bij de eerste klanken gaan alle woorden aan die zo beginnen: het *cohort*. Elke nieuwe klank streept er een paar weg. Het punt waarop er nog maar één over is, heet het *uniciteitspunt*. Na *krok* blijven onder meer *krokus*, *kroket*, *krokant* en *krokodil* over. De volgende klank beslist.',
         rule: 'Cohort: alle woorden die passen bij wat je tot nu toe hoorde. Uniciteitspunt: daar blijft er één over.',
         split: {
           q: 'Knip krokodil op het uniciteitspunt',
@@ -55,12 +59,27 @@ export const ONDERZOEK_W22: StepInput[] = [
           q: 'Cognaat of valse vriend in het Engels?',
           bins: ['in het Engels hetzelfde', 'valse vriend'],
           items: [
-            { thing: 'pan', bin: 0, note: 'Engels pan: zelfde vorm, zelfde ding. Zo’n cognaat herken je als tweetalige sneller.', hint: 'Hoe heet een koekenpan in het Engels?' },
+            {
+              thing: 'pan',
+              bin: 0,
+              note: 'Engels pan: zelfde vorm, zelfde ding. Zo’n cognaat herken je als tweetalige sneller.',
+              hint: 'Hoe heet een koekenpan in het Engels?',
+            },
             { thing: 'pot', bin: 0, note: 'Engels pot: ook een pot voor planten.', hint: 'Een flowerpot is in het Engels ook een pot.' },
             { thing: 'geldbank', bin: 0, note: 'Engels bank: precies dezelfde geldinstelling.', hint: 'Waar breng je in Engeland je geld naartoe?' },
-            { thing: 'zitbank', bin: 1, note: 'Een Engelse bank is geen zitbank, maar een geldbank of een oever. Om op te zitten zeg je bench.', hint: 'Zit je in het Engels op een bank?' },
+            {
+              thing: 'zitbank',
+              bin: 1,
+              note: 'Een Engelse bank is geen zitbank, maar een geldbank of een oever. Om op te zitten zeg je bench.',
+              hint: 'Zit je in het Engels op een bank?',
+            },
             { thing: 'boot', bin: 1, note: 'Engels boot is een laars. Een boot is a boat.', hint: 'Wat trek je in het Engels aan als je boots draagt?' },
-            { thing: 'hangslot', bin: 1, note: 'Engels slot is een gleuf, zoals in een automaat. Een slot op de deur is a lock.', hint: 'Wat is een slot machine?' },
+            {
+              thing: 'hangslot',
+              bin: 1,
+              note: 'Engels slot is een gleuf, zoals in een automaat. Een slot op de deur is a lock.',
+              hint: 'Wat is een slot machine?',
+            },
             { thing: 'kasteel', bin: 1, note: 'Ook dit slot is in het Engels geen slot, maar a castle.', hint: 'Een sprookjesslot heet in het Engels anders.' },
           ],
           note: 'Drie cognaten, vier valse vrienden. Let op de twee banken: dezelfde Nederlandse vorm, en toch in verschillende bakken. Een tweetalige moet bij elke bank kiezen.',
@@ -113,7 +132,7 @@ export const ONDERZOEK_W22: StepInput[] = [
         options: ['Ja hoor, room is hier gewoon goed Nederlands.', 'Je bedoelt melk: room is een kamer.'],
         right: 0,
         fix: 'Niets te verbeteren: koffie met room.',
-        why: 'In het Engels is room een kamer, maar in het Nederlands de vette laag van melk. Emma gebruikt het precies goed. Valse vrienden werken in twee richtingen.',
+        why: 'In het Engels is room een kamer, maar in het Nederlands de vette laag van melk. Emma gebruikt het precies goed. Niet elk woord dat Engels lijkt, is een valse vriend.',
       },
       {
         say: 'Ik ben deze zomer heel slim geworden: tien kilo afgevallen!',
@@ -156,18 +175,30 @@ export const ONDERZOEK_W22: StepInput[] = [
       {
         t: 'Een nepwoord met veel buren wijs je sneller af.',
         ok: false,
-        fix: 'Trager, want je lexicon moet eerst alle buren afwijzen',
+        fix: 'Trager: de buren worden mee actief, en dat maakt nee zeggen lastiger',
         why: 'Coltheart en collega’s (1977).',
       },
-      { t: 'Volgens het cohortmodel herken je een woord soms al voordat het af is.', ok: true, why: 'Op het uniciteitspunt is er nog maar één kandidaat over.' },
-      { t: 'Bij beaker keken luisteraars ook even naar een speaker.', ok: true, why: 'Allopenna, Magnuson en Tanenhaus (1998): ook rijmwoorden doen een beetje mee.' },
+      {
+        t: 'Volgens het cohortmodel herken je een woord soms al voordat het af is.',
+        ok: true,
+        why: 'Op het uniciteitspunt is er nog maar één kandidaat over.',
+      },
+      {
+        t: 'Bij beaker keken luisteraars ook even naar een speaker.',
+        ok: true,
+        why: 'Allopenna, Magnuson en Tanenhaus (1998): ook rijmwoorden doen een beetje mee.',
+      },
       {
         t: 'Bij een tweetalige staat elke taal in een eigen, afgesloten deel van het lexicon.',
         ok: false,
         fix: 'De kandidaten uit beide talen gaan tegelijk aan',
         why: 'Dat is de kern van het BIA+-model van Dijkstra en Van Heuven (2002).',
       },
-      { t: 'Een cognaat zoals pan herken je als tweetalige sneller dan een woord dat maar in één taal bestaat.', ok: true, why: 'Twee talen duwen dezelfde vorm tegelijk aan.' },
+      {
+        t: 'Een cognaat zoals pan herken je als tweetalige sneller dan een woord dat maar in één taal bestaat.',
+        ok: true,
+        why: 'Twee talen duwen dezelfde vorm tegelijk aan.',
+      },
       {
         t: 'Leeuw helpt via tijger ook strepen, bij elke taak even sterk.',
         ok: false,
