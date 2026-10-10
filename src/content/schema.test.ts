@@ -7,6 +7,7 @@ import { adaptLegacyCourse } from './adapters/legacy';
 import { course, lessonEntries, lessonOverview } from './catalog';
 import { LESSONS } from './legacy/build';
 import { EXTRA_LESSONS, withExtraLessons } from './packs';
+import { panelWidgets } from '../engine/plan';
 import { CoursePackSchema, PanelSchema, STAGES, StepSchema, type CoursePackInput } from './schema';
 
 const SCHEMA_FILE = path.resolve(import.meta.dirname, '../../content/schema/course-pack.schema.json');
@@ -25,11 +26,11 @@ const EXTRA_IDS = new Set(Object.values(EXTRA_LESSONS).flatMap((lessons) => less
 const legacyEntries = lessonEntries.filter((entry) => !EXTRA_IDS.has(entry.lesson.id));
 
 describe('bestaande lesinhoud', () => {
-  it('voldoet aan het contract: 9 niveaus, 29 + 110 lessen, 7 vakgebieden waarvan 4 perspectieven', () => {
+  it('voldoet aan het contract: 9 niveaus, 29 + 84 lessen, 7 vakgebieden waarvan 4 perspectieven', () => {
     expect(course.layers).toHaveLength(9);
     expect(legacyEntries).toHaveLength(29);
-    expect(EXTRA_IDS.size).toBe(110);
-    expect(lessonEntries).toHaveLength(139);
+    expect(EXTRA_IDS.size).toBe(84);
+    expect(lessonEntries).toHaveLength(113);
     expect(course.domains.map((domain) => domain.id)).toEqual(['orth', 'fon', 'morf', 'syn', 'sem', 'prag', 'tekst']);
     expect(course.domains.filter((domain) => domain.persp).map((domain) => domain.id)).toEqual(['morf', 'syn', 'sem', 'prag']);
     expect(course.layers.every((layer) => layer.growth && layer.learn && layer.example && layer.fields.length > 0)).toBe(true);
@@ -89,13 +90,13 @@ describe('nieuwe lessen (packs)', () => {
     expect([...stages].toSorted()).toEqual([...STAGES].toSorted());
   });
 
-  it('gebruiken de nieuwe klankexperimenten', () => {
+  it('gebruiken de praktische en de 3D-oefeningen in de uitleg', () => {
     const widgets = course.layers
       .flatMap((layer) => layer.lessons)
       .flatMap((lesson) => lesson.steps)
       .flatMap((step) => (step.kind === 'explain' ? step.panels : []))
-      .flatMap((panel) => (['vowels', 'grid', 'tableau', 'sonority', 'tree', 'bracket', 'paradigm', 'phrase', 'model'] as const).filter((widget) => panel[widget] !== undefined));
-    expect(new Set(widgets)).toEqual(new Set(['vowels', 'grid', 'tableau', 'sonority', 'tree', 'bracket', 'paradigm', 'phrase', 'model']));
+      .flatMap((panel) => panelWidgets(panel));
+    for (const widget of ['split', 'mark', 'build', 'vowels', 'bracket', 'paradigm', 'phrase', 'model', 'compound', 'bins', 'morph', 'cast'] as const) expect(widgets).toContain(widget);
   });
 
   it('weigert lessen voor een onbekend niveau', () => {

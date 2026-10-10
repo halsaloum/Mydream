@@ -55,61 +55,42 @@ test('onbekende les toont een verzorgde melding', async ({ page }) => {
   await expect(page.getByRole('link', { name: 'Naar alle lessen' })).toBeVisible();
 });
 
-test('de letter: de lessen staan per stap, van basis tot master', async ({ page }) => {
+test('de letter: de praktijklessen staan per stap, eerst de regels en dan de toets', async ({ page }) => {
   await page.goto('/');
   await page.getByRole('tab', { name: /^Niveau 1: De letter/ }).click();
-  await openStages(page, ['Basis', 'Bachelor', 'Master']);
-  await expect(page.getByRole('link', { name: /Hoofdletters: naam of soort/ })).toBeVisible();
-  await expect(page.getByRole('link', { name: /Letters in je hoofd/ })).toBeVisible();
+  await openStages(page, ['Regels', 'Toets']);
+  await expect(page.getByRole('link', { name: /Hoofdletters: de zin en namen/ })).toBeVisible();
+  await expect(page.getByRole('link', { name: /Toets: De letter/ })).toBeVisible();
 });
 
-test('klank en letter: de lessen staan per stap, van basis tot master', async ({ page }) => {
+test('klank en letter: de praktijklessen staan per stap, eerst de regels en dan de toets', async ({ page }) => {
   await page.goto('/');
   await page.getByRole('tab', { name: /^Niveau 2: Klank en letter/ }).click();
-  await openStages(page, ['Basis', 'Bachelor', 'Master']);
-  await expect(page.getByRole('link', { name: /Taal als wedstrijd/ })).toBeVisible();
+  await openStages(page, ['Regels', 'Toets']);
+  await expect(page.getByRole('link', { name: /ei of ij\?/ })).toBeVisible();
+  await expect(page.getByRole('link', { name: /Toets: klank en letter/ })).toBeVisible();
 });
 
-test('OT-tableau: met het toetsenbord twee eisen wisselen tot de goede kandidaat wint', async ({ page }) => {
-  await page.goto('/les/k23');
-  await expect(page.getByRole('heading', { name: 'De fonoloog als detective' })).toBeVisible();
-  const primary = page.getByRole('contentinfo').getByRole('button').last();
-  await expect(primary).toBeDisabled();
-  await expect(page.getByRole('rowheader', { name: /^\[zɑkduk\] ?, wint$/ })).toBeVisible();
-
-  await page.getByRole('button', { name: 'AGREE(voice), plek 2 in de rangorde' }).focus();
-  await page.keyboard.press('Enter');
-  await page.getByRole('button', { name: 'IDENT(voice), plek 1 in de rangorde' }).focus();
-  await page.keyboard.press('Enter');
-
-  await expect(page.getByRole('rowheader', { name: /^\[zɑgduk\] ?, wint$/ })).toBeVisible();
-  await expect(page.getByRole('button', { name: 'AGREE(voice), plek 1 in de rangorde' })).toBeVisible();
-  await expect(primary).toHaveText(/Volgende deel/);
-  await expect(primary).toBeEnabled();
-});
-
-test('de lettergreep: de nieuwe lessen staan per stap, bachelor en master', async ({ page }) => {
+test('de lettergreep: de praktijklessen staan per stap, eerst de regels en dan de toets', async ({ page }) => {
   await page.goto('/');
   await page.getByRole('tab', { name: /^Niveau 3: De lettergreep/ }).click();
-  await openStages(page, ['Bachelor', 'Master']);
-  await expect(page.getByRole('link', { name: /ONSET tegen NOCODA/ })).toBeVisible();
+  await openStages(page, ['Regels', 'Toets']);
+  await expect(page.getByRole('link', { name: /Medeklinker verdubbelen/ })).toBeVisible();
+  await expect(page.getByRole('link', { name: /Toets: De lettergreep/ })).toBeVisible();
 });
 
-test('lettergreepboom: elke klank aan zijn tak hangen opent het volgende deel', async ({ page }) => {
-  await page.goto('/les/g5');
-  await expect(page.getByRole('heading', { name: 'De bouwtekening van een lettergreep' })).toBeVisible();
+test('afbreken: een verkeerde knip blijft open, de goede knip opent het volgende deel', async ({ page }) => {
+  await page.goto('/les/g27');
+  await expect(page.getByRole('heading', { name: 'Waar mag het streepje?' })).toBeVisible();
   const primary = page.getByRole('contentinfo').getByRole('button').last();
   await expect(primary).toBeDisabled();
 
-  await page.getByRole('button', { name: 'p', exact: true }).click();
-  await page.getByRole('button', { name: 'l', exact: true }).click();
-  await page.getByRole('button', { name: 'Kern', exact: true }).click();
-  await page.getByRole('button', { name: 'a', exact: true }).click();
-  await page.getByRole('button', { name: 'Coda', exact: true }).click();
-  await page.getByRole('button', { name: 'n', exact: true }).click();
-  await page.getByRole('button', { name: 't', exact: true }).click();
+  await page.getByRole('button', { name: 'Knip tussen m en a' }).click();
+  await expect(primary).toBeDisabled();
+  await page.getByRole('button', { name: 'Knip tussen m en a' }).click();
+  await page.getByRole('button', { name: 'Knip tussen a en k' }).click();
 
-  await expect(page.getByRole('status').filter({ hasText: 'pl is de onset' })).toBeVisible();
+  await expect(page.getByRole('status').filter({ hasText: 'ma-ken' })).toBeVisible();
   await expect(primary).toHaveText(/Volgende deel/);
   await expect(primary).toBeEnabled();
 });

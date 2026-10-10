@@ -96,6 +96,9 @@ describe('gecontroleerde nieuwe vormen', () => {
     expect(evaluate(step, { kind: 'dictation', value: '  Mijn vrouw  draagt een blauwe jas. ', plays: 1, shown: false }).correct).toBe(true);
     expect(evaluate(step, { kind: 'dictation', value: 'mijn vrouw draagt een blauwe jas', plays: 1, shown: false }).correct).toBe(false);
     expect(dictationDiff(step.sentence, 'Mijn vrouw draagt een blouwe jas.').filter((word) => !word.ok).map((word) => word.word)).toEqual(['blauwe']);
+    const apostrof = { ...step, sentence: "We gaan 's avonds met de auto's." };
+    expect(evaluate(apostrof, { kind: 'dictation', value: 'We gaan ’s avonds met de auto’s.', plays: 1, shown: false }).correct).toBe(true);
+    expect(dictationDiff(apostrof.sentence, 'We gaan ’s avonds met de autos.').filter((word) => !word.ok).map((word) => word.word)).toEqual(["auto's."]);
   });
 
   it('beginantwoorden passen bij hun stap', () => {

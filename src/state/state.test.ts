@@ -92,16 +92,16 @@ describe('sessies en voortgang', () => {
 
 describe('les veranderd tijdens een update', () => {
   it('gaat verder bij de eerste open stap in plaats van opnieuw te beginnen', async () => {
-    const plan = planFor('l5')!;
+    const plan = planFor('l20')!;
     const keys = plan.map((item) => item.key);
     expect(keys.length).toBeGreaterThan(3);
-    const session = useSessions.getState().start('l5', 'lesson', plan);
+    const session = useSessions.getState().start('l20', 'lesson', plan);
     // Een oude versie van de les: één stap die nu niet meer bestaat, en drie stappen al gedaan.
-    const old = { ...session, plan: [keys[0]!, 'l5:weg#oud', keys[1]!, keys[2]!], queue: [keys[0]!, 'l5:weg#oud', keys[1]!, keys[2]!], pos: 3, firstTry: { [keys[1]!]: 1, 'l5:weg#oud': 0 } };
+    const old = { ...session, plan: [keys[0]!, 'l20:weg#oud', keys[1]!, keys[2]!], queue: [keys[0]!, 'l20:weg#oud', keys[1]!, keys[2]!], pos: 3, firstTry: { [keys[1]!]: 1, 'l20:weg#oud': 0 } };
     useSessions.setState({ byId: {} });
-    window.localStorage.setItem(SESSIONS_KEY, JSON.stringify({ state: { byId: { l5: old } }, version: 1 }));
+    window.localStorage.setItem(SESSIONS_KEY, JSON.stringify({ state: { byId: { l20: old } }, version: 1 }));
     await useSessions.persist.rehydrate();
-    const resumed = useSessions.getState().byId.l5!;
+    const resumed = useSessions.getState().byId.l20!;
     expect(resumed.plan).toEqual(keys);
     expect(resumed.pos).toBe(2);
     expect(resumed.phase).toBe('answering');
@@ -111,7 +111,7 @@ describe('les veranderd tijdens een update', () => {
   it('begint opnieuw als er nog niets gedaan was of de les al af was', () => {
     const plan = planFor('w2')!;
     const session = useSessions.getState().start('w2', 'lesson', plan);
-    const changed = { ...session, plan: ['l5:weg#oud'], queue: ['l5:weg#oud'] };
+    const changed = { ...session, plan: ['l20:weg#oud'], queue: ['l20:weg#oud'] };
     expect(carryOver('w2', changed)).toBeUndefined();
     expect(carryOver('w2', { ...changed, pos: 0, phase: 'done' as const })).toBeUndefined();
   });

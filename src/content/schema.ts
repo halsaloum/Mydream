@@ -28,8 +28,12 @@ export const SCHEMA_VERSION = 1 as const;
 
 export const SKILLS = ['Spelling', 'Woorden', 'Zinsbouw', 'Complex', 'Alinea'] as const;
 
-/** Hoe diep een les gaat: van de basis tot het niveau van een masteropleiding taalwetenschap. */
-export const STAGES = ['basis', 'bachelor', 'master'] as const;
+/**
+ * In welke stap van een niveau een les hoort. De eerste drie niveaus zijn praktisch: eerst de
+ * regels leren en toepassen, dan een toets die alles door elkaar vraagt. Vanaf het woorddeel
+ * lopen de lessen op van bachelor- naar masterniveau.
+ */
+export const STAGES = ['regels', 'toets', 'bachelor', 'master'] as const;
 
 const Text = z.string().regex(/\S/, 'Mag niet leeg zijn');
 const Rich = Text.refine(hasBalancedEmphasis, 'Markeringen met * moeten in paren voorkomen').describe(
@@ -814,7 +818,7 @@ export const StepSchema = z
     }
   });
 
-export const StageSchema = z.enum(STAGES).describe('Diepte: basis, bachelor of master. Lessen zonder stap tonen geen label.');
+export const StageSchema = z.enum(STAGES).describe('Stap: regels, toets, bachelor of master. Lessen zonder stap tonen geen label.');
 
 export const LessonSchema = z.object({
   id: Id,

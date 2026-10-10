@@ -1,11 +1,11 @@
 import type { Accent, Stage } from '@/content/schema';
 import { cn } from '@/lib/cn';
 
-export const STAGE_LABELS: Record<Stage, string> = { basis: 'Basis', bachelor: 'Bachelor', master: 'Master' };
+export const STAGE_LABELS: Record<Stage, string> = { regels: 'Regels', toets: 'Toets', bachelor: 'Bachelor', master: 'Master' };
 
-export const STAGE_ACCENTS: Record<Stage, Accent> = { basis: 'teal', bachelor: 'blue', master: 'purple' };
+export const STAGE_ACCENTS: Record<Stage, Accent> = { regels: 'teal', toets: 'orange', bachelor: 'blue', master: 'purple' };
 
-/** Hoe diep een les gaat: basis, bachelor of master. */
+/** In welke stap een les hoort: regels, toets, bachelor of master. */
 export function StageBadge({ stage, className }: { stage: Stage; className?: string }) {
   return (
     <span

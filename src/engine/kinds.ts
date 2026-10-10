@@ -161,10 +161,13 @@ export function highlightTargets(step: StepOf<'highlight'>): number[] {
 
 export const normalizeSpaces = (text: string) => text.replace(/\s+/g, ' ').trim();
 
+/** Een telefoon maakt van ' vaak ’ (en van " vaak “ of ”): in een dictee telt dat niet als fout. */
+const normalizeQuotes = (text: string) => text.replace(/[‘’]/g, "'").replace(/[“”]/g, '"');
+
 /** Per woord van de dicteezin: goed of niet (op positie, zoals in de mock). */
 export function dictationDiff(sentence: string, typed: string) {
-  const mine = normalizeSpaces(typed).split(' ');
-  return tokenize(normalizeSpaces(sentence)).map((word, i) => ({ word, ok: (mine[i] ?? '') === word }));
+  const mine = normalizeSpaces(normalizeQuotes(typed)).split(' ');
+  return tokenize(normalizeSpaces(sentence)).map((word, i) => ({ word, ok: (mine[i] ?? '') === normalizeQuotes(word) }));
 }
 
 /** Punten in het snelrondje: 10 per goed antwoord, 20 vanaf de derde op rij. */
@@ -367,7 +370,7 @@ export function extraEvaluate(step: Step, r: ExtraResponse): Outcome {
     }
     case 'dictation': {
       if (step.kind !== 'dictation') break;
-      const correct = normalizeSpaces(r.value) === normalizeSpaces(step.sentence);
+      const correct = normalizeSpaces(normalizeQuotes(r.value)) === normalizeSpaces(normalizeQuotes(step.sentence));
       return { score: correct ? 1 : 0, correct, requeue: !correct, review: correct ? 'clear' : 'miss' };
     }
   }
