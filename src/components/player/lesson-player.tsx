@@ -63,6 +63,9 @@ function waitingHint(step: Step, response: Response): string {
       return 'Sorteer alle kaartjes';
     case 'write':
       return 'Haal alle taakeisen';
+    case 'cloze':
+    case 'passage':
+      return extraProgress(step, response as ExtraResponse) ?? 'Typ je antwoord';
     default:
       return '';
   }

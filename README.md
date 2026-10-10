@@ -120,6 +120,16 @@ geen tegenstrijdige inhoud naast elkaar bestaat.
 
 De eerste drie niveaus zijn praktisch: de spellingregels kennen en toepassen, zonder taalwetenschap, geschiedenis of
 vergelijking met andere talen (`packs/praktijk/praktijk.test.ts` bewaakt lengte, afwisseling en interactiviteit).
+Ze moeten ook uitdagen: geen beginletters als hint, geen opdrachten met twee keuzes, en elke les eindigt met lang werk
+in vier oefenvormen uit `kinds-spelling.ts` en `kinds.ts`:
+
+- **Reeks** (`drill`): twintig of meer woorden achter elkaar, zelf getypt; wat fout gaat, komt achteraan terug
+  (hoogstens twee keer). Een opdracht kan een woord laten voorlezen (`say`).
+- **Invultekst** (`cloze`): een hele tekst met gaten in de vorm `{antwoord|aanwijzing|uitleg}` (zie `content/cloze.ts`).
+- **Tekstdictee** (`passage`): zin voor zin luisteren en typen, per woord nagekeken; zonder stem staat een zin een
+  paar seconden in beeld en typ je hem uit je hoofd.
+- **Nakijken zonder hulp** (`proofread` met `blind: true`): het aantal fouten blijft geheim, je typt elke verbetering
+  zelf, woorden die fout lijken maar goed zijn (`trap`) kosten een misser, en je zegt zelf wanneer je klaar bent.
 
 Een les kan een `stage` hebben (`regels`, `toets`, `bachelor` of `master`). Die verschijnt als label op de les en als
 uitklapbare groep in de lijst van het niveau (alleen de stap met je volgende les staat open); lessen zonder `stage`

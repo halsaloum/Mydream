@@ -406,6 +406,14 @@ export const StackStep = z
     if (!unique(step.layers.map((layer) => layer.text))) issue(ctx, ['layers'], 'Zinnen moeten uniek zijn');
   });
 
+const ProofreadError = z.object({
+  t: Text,
+  fix: Text.describe('De verbetering, met dezelfde leestekens als het woord in de tekst.'),
+  also: z.array(Text).optional().describe('Andere goede verbeteringen (alleen nodig bij "blind").'),
+  why: Text,
+});
+const ProofreadTrap = z.strictObject({ t: Text, trap: Text.describe('Waarom dit woord, dat fout lijkt, toch goed is.') });
+
 export const ProofreadStep = z
   .object({
     kind: z.literal('proofread'),
@@ -413,7 +421,13 @@ export const ProofreadStep = z
     prompt,
     intro,
     header: z.object({ to: z.string().optional(), subject: z.string().optional() }).optional(),
-    tokens: z.array(z.union([z.object({ t: Text, fix: Text, why: Text }), z.object({ t: Text })])).min(3),
+    greeting: z.string().optional().describe('Aanhef boven de tekst, bv. "Beste Karin,", als die niet in de tekst zelf staat.'),
+    signoff: z.string().optional().describe('Afsluiting onder de tekst, bv. "Groet, Sam"; een regeleinde mag.'),
+    blind: z
+      .boolean()
+      .optional()
+      .describe('Zonder hulp: het aantal fouten blijft geheim, je typt elke verbetering zelf en je zegt zelf wanneer je klaar bent.'),
+    tokens: z.array(z.union([ProofreadError, ProofreadTrap, z.strictObject({ t: Text })])).min(3),
     done: Done.optional(),
   })
   .describe('Eindredactie: vind alle fouten in de tekst.')
@@ -421,7 +435,9 @@ export const ProofreadStep = z
     const errors = step.tokens.filter((token) => 'fix' in token);
     if (errors.length === 0) issue(ctx, ['tokens'], 'De tekst bevat geen fout om te vinden');
     step.tokens.forEach((token, i) => {
-      if ('fix' in token && token.fix === token.t) issue(ctx, ['tokens', i, 'fix'], 'De verbetering is gelijk aan het origineel');
+      if (!('fix' in token)) return;
+      if (token.fix === token.t) issue(ctx, ['tokens', i, 'fix'], 'De verbetering is gelijk aan het origineel');
+      if (token.also?.includes(token.t)) issue(ctx, ['tokens', i, 'also'], 'Een andere verbetering is gelijk aan het origineel');
     });
   });
 

@@ -107,6 +107,9 @@ export const EXERCISE_LABELS: Record<StepKind, string> = {
   slope: 'Hellend vlak',
   dilemma: 'Vals dilemma',
   inspect: 'Keuring',
+  cloze: 'Invultekst',
+  drill: 'Reeks',
+  passage: 'Tekstdictee',
 };
 
 /** Vakgebieden die als perspectief op elk niveau gelden. */

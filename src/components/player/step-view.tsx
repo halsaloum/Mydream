@@ -36,6 +36,9 @@ import { FixStep } from './steps/fix-step';
 import { OrderStep, ParagraphStep } from './steps/order-steps';
 import type { StepProps } from './steps/shared';
 import { SortStep } from './steps/sort-step';
+import { ClozeStep } from './steps/spelling/cloze';
+import { DrillStep } from './steps/spelling/drill';
+import { PassageStep } from './steps/spelling/passage';
 import { LearnStep, RewriteStep, TypeStep, WriteStep } from './steps/text-steps';
 
 /**
@@ -81,6 +84,9 @@ const STEP_COMPONENTS: { [K in StepKind]: ComponentType<StepProps<K>> } = {
   slope: SlopeStep,
   dilemma: DilemmaStep,
   inspect: InspectStep,
+  cloze: ClozeStep,
+  drill: DrillStep,
+  passage: PassageStep,
 };
 
 type StepViewProps = {
