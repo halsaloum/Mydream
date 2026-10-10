@@ -6,9 +6,10 @@ import { Pim } from '@/components/brand/pim';
 import { ToyCanvas } from '@/lib/toy3d/toy-canvas';
 import { play } from '@/lib/sound';
 import { speak } from '@/lib/speech';
+import { HERO_LETTERS } from '@/lib/voice/fixed';
 import { cn } from '@/lib/cn';
 
-const LETTERS = ['b', 'o', 'e', 'k'] as const;
+const LETTERS = HERO_LETTERS;
 const loadHero = () => import('@/lib/toy3d/scenes/hero').then((module) => module.heroScene);
 
 /**

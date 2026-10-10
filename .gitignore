@@ -48,3 +48,4 @@ next-env.d.ts
 
 # lokale cache van de ontwerpcontrole (impeccable)
 /.impeccable/
+scripts/stem/teksten.json

@@ -3,16 +3,15 @@
 import { Radio } from '@base-ui/react/radio';
 import { RadioGroup } from '@base-ui/react/radio-group';
 import { AudioLines, Info, TriangleAlert } from 'lucide-react';
-import { useId } from 'react';
+import { useId, useSyncExternalStore } from 'react';
 import { Button } from '@/components/ui/button';
 import { ToggleRow } from '@/components/ui/controls';
 import { Disclosure } from '@/components/ui/disclosure';
 import { cn } from '@/lib/cn';
-import { canSpeak, pickVoice, rankVoices, speak, useVoices, voiceLabel, type VoiceQuality } from '@/lib/speech';
+import { pickVoice, rankVoices, speak, useCanSpeak, useVoices, voiceLabel, type VoiceQuality } from '@/lib/speech';
+import { canPlayClips } from '@/lib/voice/clips';
+import { STEM_HELLO, STEM_SAMPLE } from '@/lib/voice/fixed';
 import { SPEECH_RATES, useSettings, type SpeechRateId } from '@/state/settings';
-
-/** Een zin vol lastige Nederlandse klanken: ui, uu, eu, ij, de g en de sch. */
-const SAMPLE = 'Hoi! Zo klinkt je Nederlandse stem. Luister: huis, muur, neus, wijn, gracht, Scheveningen.';
 
 const QUALITY: Record<VoiceQuality, { label: string; className: string }> = {
   top: { label: 'Natuurlijk', className: 'bg-green-soft text-green-ink' },
@@ -28,9 +27,11 @@ export function VoiceSettings() {
   const setSpeech = useSettings((state) => state.setSpeech);
   const voices = useVoices();
   const ranked = rankVoices(voices);
-  const active = pickVoice(voices, speech.voice);
-  const activeRank = ranked.find((entry) => entry.voice === active);
-  const available = canSpeak(voices);
+  const pennig = useClipsPlayable();
+  const deviceChosen = ranked.find((entry) => entry.voice.voiceURI === speech.voice);
+  // Zonder eigen keuze leest de pennig-stem voor; zonder pennig-stem de beste stem van het apparaat.
+  const activeRank = deviceChosen ?? (pennig ? undefined : ranked.find((entry) => entry.voice === pickVoice(voices, null)));
+  const available = useCanSpeak();
   const label = useId();
   const rateLabel = useId();
 
@@ -48,23 +49,28 @@ export function VoiceSettings() {
         </Notice>
       ) : null}
 
-      {ranked.length > 0 && (
+      {(pennig || ranked.length > 0) && (
         <div>
           <p id={label} className="mb-2.5 text-small font-bold text-ink">
             Stem
           </p>
           <RadioGroup
             aria-labelledby={label}
-            value={speech.voice && ranked.some((entry) => entry.voice.voiceURI === speech.voice) ? speech.voice : AUTO}
+            value={deviceChosen ? deviceChosen.voice.voiceURI : AUTO}
             onValueChange={(next) => {
               const voice = next === AUTO ? null : String(next);
               setSpeech({ voice });
+              if (voice === null && pennig) return void speak(STEM_HELLO);
               const chosen = pickVoice(voices, voice);
               if (chosen) speak(`Hoi, ik ben ${voiceLabel(chosen)}.`);
             }}
             className="flex flex-col gap-2"
           >
-            <VoiceOption value={AUTO} title="Automatisch" detail={ranked[0] ? `Nu: ${voiceLabel(ranked[0].voice)}` : undefined} />
+            {pennig ? (
+              <VoiceOption value={AUTO} title="pennig-stem" detail="Altijd Nederlands, op elk apparaat" quality="top" qualityLabel="Aanbevolen" />
+            ) : (
+              <VoiceOption value={AUTO} title="Automatisch" detail={ranked[0] ? `Nu: ${voiceLabel(ranked[0].voice)}` : undefined} />
+            )}
             {ranked.map((entry) => (
               <VoiceOption
                 key={entry.voice.voiceURI}
@@ -97,7 +103,7 @@ export function VoiceSettings() {
       </div>
 
       <div>
-        <Button variant="secondary" disabled={!available} onClick={() => speak(SAMPLE)}>
+        <Button variant="secondary" disabled={!available} onClick={() => speak(STEM_SAMPLE)}>
           <AudioLines aria-hidden className="size-[1.1rem]" strokeWidth={2.5} />
           Hoor de stem
         </Button>
@@ -112,7 +118,10 @@ export function VoiceSettings() {
         />
       </div>
 
-      <Disclosure summary="Een mooiere Nederlandse stem krijgen" icon={<Info aria-hidden className="size-5" strokeWidth={2.4} />}>
+      <Disclosure summary="Een stem van je eigen apparaat gebruiken" icon={<Info aria-hidden className="size-5" strokeWidth={2.4} />}>
+        <p className="mb-3 text-small text-ink-soft">
+          De pennig-stem werkt overal. Liever een stem van je apparaat? Zo voeg je er gratis een toe; kies hem daarna hierboven.
+        </p>
         <ul className="list-disc space-y-2 pl-5 text-small text-ink-soft">
           <li>
             <b>Windows of elke computer:</b> open pennig in Microsoft Edge. Die heeft natuurlijke Nederlandse stemmen (Fenna, Maarten, Colette).
@@ -131,7 +140,7 @@ export function VoiceSettings() {
             <b>Android:</b> Instellingen › Systeem › Talen › Tekst-naar-spraak › Spraakservices van Google › Nederlands installeren.
           </li>
         </ul>
-        <p className="mt-3 text-small text-ink-muted">Herlaad pennig daarna; de nieuwe stem staat dan in de lijst en wordt vanzelf gekozen als hij de beste is.</p>
+        <p className="mt-3 text-small text-ink-muted">Herlaad pennig daarna; de nieuwe stem staat dan in de lijst.</p>
       </Disclosure>
     </div>
   );
@@ -143,14 +152,26 @@ const PILL = cn(
   'data-[checked]:border-green data-[checked]:bg-green-soft data-[checked]:text-green-ink data-[checked]:shadow-[0_2px_0_var(--color-green-line)]',
 );
 
-function VoiceOption({ value, title, detail, quality }: { value: string; title: string; detail?: string | undefined; quality?: VoiceQuality }) {
+function VoiceOption({
+  value,
+  title,
+  detail,
+  quality,
+  qualityLabel,
+}: {
+  value: string;
+  title: string;
+  detail?: string | undefined;
+  quality?: VoiceQuality;
+  qualityLabel?: string;
+}) {
   return (
     <Radio.Root value={value} className={cn(PILL, 'min-h-12 w-full justify-between gap-3 rounded-tile px-4 py-2 text-left')}>
       <span className="min-w-0">
         <span className="block truncate">{title}</span>
         {detail && <span className="block text-caption font-semibold text-ink-muted">{detail}</span>}
       </span>
-      {quality && <span className={cn('shrink-0 rounded-full px-2.5 py-0.5 text-caption font-extrabold', QUALITY[quality].className)}>{QUALITY[quality].label}</span>}
+      {quality && <span className={cn('shrink-0 rounded-full px-2.5 py-0.5 text-caption font-extrabold', QUALITY[quality].className)}>{qualityLabel ?? QUALITY[quality].label}</span>}
     </Radio.Root>
   );
 }
@@ -169,3 +190,10 @@ function Notice({ tone, children }: { tone: 'warn' | 'info'; children: React.Rea
     </p>
   );
 }
+
+/** Kan deze browser de pennig-stem afspelen? Pas na het laden bekend (op de server: nee). */
+function useClipsPlayable(): boolean {
+  return useSyncExternalStore(noSubscribe, canPlayClips, () => false);
+}
+
+const noSubscribe = () => () => {};

@@ -1,14 +1,19 @@
 import { useSyncExternalStore } from 'react';
 import { SPEECH_RATES, useSettings } from '@/state/settings';
+import { canPlayClips, playClips, stopClips } from './voice/clips';
 
 /**
- * Voorlezen in het Nederlands met de spraak van de browser (Web Speech API).
+ * Voorlezen in het Nederlands.
+ *
+ * Standaard leest de pennig-stem voor: vooraf gemaakte Nederlandse geluidsbestanden (zie
+ * `voice/clips.ts`), zodat het op elk apparaat Nederlands klinkt. Wat geen bestand heeft, of wie
+ * in de instellingen een stem van het apparaat kiest, hoort de spraak van de browser (Web Speech API).
  *
  * De browser heeft vaak meerdere Nederlandse stemmen, van robotachtig tot heel natuurlijk.
  * pennig kiest de beste: neurale stemmen ("Natural", "Premium", "Verbeterd") boven Google
- * boven de oude basisstemmen, en Nederlands uit Nederland boven Vlaams. Wie zelf een stem
- * kiest in de instellingen, krijgt die. Is er géén Nederlandse stem, dan zwijgt pennig:
- * een Engelse stem die *huis* voorleest, leert je de verkeerde klanken.
+ * boven de oude basisstemmen, en Nederlands uit Nederland boven Vlaams. Is er géén Nederlandse
+ * stem en geen bestand, dan zwijgt pennig: een Engelse stem die *huis* voorleest, leert je de
+ * verkeerde klanken.
  */
 type SpeechWindow = Window &
   typeof globalThis & {
@@ -133,14 +138,29 @@ function voiceSnapshot(): SpeechSynthesisVoice[] {
 /* ------------------------------------------------------------------ spreken */
 
 /**
- * Kan pennig Nederlands spreken? Ja als er een Nederlandse stem is, of als de browser (nog)
- * geen stemmen noemt maar wel spraak heeft: dan zegt `lang = nl-NL` welke taal het moet zijn.
+ * Heeft het apparaat zelf Nederlandse spraak? Ja als er een Nederlandse stem is, of als de browser
+ * (nog) geen stemmen noemt maar wel spraak heeft: dan zegt `lang = nl-NL` welke taal het moet zijn.
  * Nee als er alleen anderstalige stemmen zijn.
  */
-export function canSpeak(voices: readonly SpeechSynthesisVoice[] = currentVoices()): boolean {
+export function deviceCanSpeak(voices: readonly SpeechSynthesisVoice[] = currentVoices()): boolean {
   if (!synth()) return false;
   return voices.length === 0 || voices.some(isDutch);
 }
+
+/** Kan pennig Nederlands voorlezen: met de pennig-stem, of met een Nederlandse stem van het apparaat. */
+export function canSpeak(voices: readonly SpeechSynthesisVoice[] = currentVoices()): boolean {
+  return canPlayClips() || deviceCanSpeak(voices);
+}
+
+/** De stem van het apparaat die iemand zelf koos in de instellingen, als die er nog is. Anders: de pennig-stem. */
+function chosenDeviceVoice(voices: readonly SpeechSynthesisVoice[]): SpeechSynthesisVoice | null {
+  const chosen = useSettings.getState().speech.voice;
+  if (!chosen) return null;
+  return rankVoices(voices).find((entry) => entry.voice.voiceURI === chosen)?.voice ?? null;
+}
+
+/** Het tempo "Rustig": daarop staan de bestanden van de pennig-stem. */
+const CLIP_BASE_RATE = 0.85;
 
 type SpeakOptions = {
   /** Vaste snelheid; zonder deze waarde geldt het tempo uit de instellingen. */
@@ -171,13 +191,42 @@ function settingsRate(): number {
  * in het Nederlands gesproken kan worden.
  */
 export function speakAll(texts: readonly string[], { gap = 0, ...options }: SpeakOptions & { gap?: number } = {}): boolean {
+  const voices = currentVoices();
+  const rate = Math.min(1.5, Math.max(0.4, options.rate ?? settingsRate() * (options.slower ?? 1)));
+  if (!chosenDeviceVoice(voices)) {
+    cancelDevice();
+    const clipped = playClips(texts, {
+      rate: rate / CLIP_BASE_RATE,
+      gap,
+      onEnd: options.onEnd,
+      // Bestand niet te laden (bijv. offline): dan de stem van het apparaat, als die er is.
+      onError: () => {
+        if (!speakWithDevice(texts, gap, rate, options)) options.onError?.();
+      },
+    });
+    if (clipped) return true;
+  }
+  return speakWithDevice(texts, gap, rate, options);
+}
+
+function cancelDevice() {
+  generation++;
+  try {
+    synth()?.engine.cancel();
+  } catch {
+    // Geen spraak: niets te stoppen.
+  }
+}
+
+/** Leest voor met de spraak van de browser; `false` als die geen Nederlands kan. */
+function speakWithDevice(texts: readonly string[], gap: number, rate: number, options: SpeakOptions): boolean {
   const speech = synth();
   const voices = currentVoices();
-  if (!speech || !canSpeak(voices)) return false;
+  if (!speech || !deviceCanSpeak(voices)) return false;
   const parts = texts.flatMap(chunks);
   if (parts.length === 0) return false;
+  stopClips();
   const voice = pickVoice(voices, useSettings.getState().speech.voice);
-  const rate = Math.min(1.5, Math.max(0.4, options.rate ?? settingsRate() * (options.slower ?? 1)));
   const run = ++generation;
 
   const say = (index: number) => {
@@ -219,12 +268,8 @@ export function speak(text: string, options: SpeakOptions = {}): boolean {
 
 /** Stopt wat er nu wordt voorgelezen. */
 export function stopSpeaking() {
-  generation++;
-  try {
-    synth()?.engine.cancel();
-  } catch {
-    // Geen spraak: niets te stoppen.
-  }
+  stopClips();
+  cancelDevice();
 }
 
 /** Of er een luisterknop kan komen. Op de server en bij de eerste weergave: nee. */
