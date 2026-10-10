@@ -204,11 +204,12 @@
                 "stage": {
                   "type": "string",
                   "enum": [
-                    "basis",
+                    "regels",
+                    "toets",
                     "bachelor",
                     "master"
                   ],
-                  "description": "Diepte: basis, bachelor of master. Lessen zonder stap tonen geen label."
+                  "description": "Stap: regels, toets, bachelor of master. Lessen zonder stap tonen geen label."
                 },
                 "icon": {
                   "type": "string",

@@ -29,6 +29,11 @@ export function normalizeStrict(text: string): string {
     .trim();
 }
 
+/** Een getypt woord: hoofdletters en extra spaties tellen niet, een gekrulde apostrof is gewoon een apostrof. */
+export function normalizeTyped(text: string): string {
+  return text.replace(/[‘’]/g, "'").trim().replace(/\s+/g, ' ').toLowerCase();
+}
+
 /**
  * Een herschrijfopdracht is een vormopdracht als de goede antwoorden alleen in hoofdletters of
  * leestekens van de bron verschillen (bv. "Zet de komma goed"). Dan telt de vorm wél mee;
@@ -179,7 +184,7 @@ export function isCorrect(step: Step, response: Response): boolean {
     case 'combine':
       return (response.kind === 'choice' || response.kind === 'combine') && response.value === step.answer;
     case 'type':
-      return response.kind === 'type' && response.value.trim().replace(/\s+/g, ' ').toLowerCase() === step.answer.toLowerCase();
+      return response.kind === 'type' && normalizeTyped(response.value) === normalizeTyped(step.answer);
     case 'order':
       return response.kind === 'order' && orderedText(step, response) === step.answer;
     case 'paragraph':

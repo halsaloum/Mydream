@@ -105,7 +105,7 @@ function Ring({ ratio, label }: { ratio: number; label: string }) {
   );
 }
 
-/** Opeenvolgende lessen met dezelfde stap (basis, bachelor, master) als één groep. */
+/** Opeenvolgende lessen met dezelfde stap (regels, toets, bachelor, master) als één groep. */
 function stageRuns(entries: readonly LessonEntry[]): { stage: Stage | undefined; entries: LessonEntry[] }[] {
   const runs: { stage: Stage | undefined; entries: LessonEntry[] }[] = [];
   for (const entry of entries) {
@@ -126,7 +126,7 @@ function openRun(runs: readonly Run[], progress: ProgressData, sessions: Record<
 }
 
 /**
- * Eén stap (basis, bachelor, master) als uitklapbare groep. Alleen de stap waar je nu bent staat
+ * Eén stap (regels, toets, bachelor, master) als uitklapbare groep. Alleen de stap waar je nu bent staat
  * open, zodat een niveau met twintig lessen niet één lange lijst wordt. Lessen zonder stap staan altijd open.
  */
 function StageRun({

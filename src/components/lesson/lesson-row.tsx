@@ -26,7 +26,7 @@ type LessonRowProps = {
   isNext: boolean;
   /** Toon de andere vakgebieden die meespelen. */
   showAlso?: boolean;
-  /** Toon de stap (basis, bachelor, master) als label; uit als de lijst al per stap is ingedeeld. */
+  /** Toon de stap (regels, toets, bachelor, master) als label; uit als de lijst al per stap is ingedeeld. */
   showStage?: boolean;
 };
 

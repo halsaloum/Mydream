@@ -3,18 +3,10 @@ import { DEEL_LESSONS } from './deel';
 import { DEEL_3D_LESSONS } from './deel-3d';
 import { DEEL_EXTRA_LESSONS } from './deel-extra';
 import { DEEL_MASTER_LESSONS } from './deel-master';
-import { GREEP_LESSONS } from './greep';
 import { GROEP_LESSONS } from './groep';
 import { GROEP_BOUW_LESSONS } from './groep-bouw';
 import { GROEP_EXTRA_LESSONS, GROEP_MASTER_LESSONS } from './groep-master';
 import { GROEP_THEORIE_LESSONS } from './groep-theorie';
-import { GREEP_MASTER_LESSONS } from './greep-master';
-import { GREEP_EXTRA_LESSONS } from './greep-extra';
-import { KLANK_LESSONS } from './klank';
-import { KLANK_EXTRA_MASTER_LESSONS, KLANK_VARIATIE_LESSONS } from './klank-extra';
-import { KLANK_MASTER_LESSONS } from './klank-master';
-import { LETTER_LESSONS } from './letter';
-import { LETTER_MASTER_LESSONS } from './letter-master';
 import { WOORD_LESSONS } from './woord';
 import { WOORD_EXTRA_LESSONS, WOORD_EXTRA_MASTER_LESSONS } from './woord-extra';
 import { WOORD_MASTER_LESSONS } from './woord-master';
@@ -27,15 +19,17 @@ import { LES_W24 } from './nieuw/w24';
 import { LES_W25 } from './nieuw/w25';
 import { LES_W26 } from './nieuw/w26';
 import { withResearch } from './onderzoek';
+import { GREEP_PRAKTIJK, KLANK_PRAKTIJK, LETTER_PRAKTIJK } from './praktijk';
 
 /**
  * Lessen die later bij de oorspronkelijke niveaus zijn geschreven, per niveau-id. Ze komen achter
- * de bestaande lessen van dat niveau en lopen op in diepte: basis, bachelor, master.
+ * de bestaande lessen van dat niveau: in de eerste drie niveaus praktisch (regels, toets), daarna
+ * oplopend in diepte (bachelor, master).
  */
 export const EXTRA_LESSONS: Readonly<Record<string, readonly LessonInput[]>> = {
-  letter: [...LETTER_LESSONS, ...LETTER_MASTER_LESSONS],
-  klank: [...KLANK_LESSONS, ...KLANK_VARIATIE_LESSONS, ...KLANK_MASTER_LESSONS, ...KLANK_EXTRA_MASTER_LESSONS],
-  greep: [...GREEP_LESSONS, ...GREEP_EXTRA_LESSONS, ...GREEP_MASTER_LESSONS],
+  letter: LETTER_PRAKTIJK,
+  klank: KLANK_PRAKTIJK,
+  greep: GREEP_PRAKTIJK,
   deel: withResearch([...DEEL_LESSONS, ...DEEL_EXTRA_LESSONS, ...DEEL_3D_LESSONS, LES_D21, LES_D22, LES_D23, ...DEEL_MASTER_LESSONS, LES_D24]),
   woord: withResearch([...WOORD_LESSONS, ...WOORD_EXTRA_LESSONS, LES_W23, LES_W24, ...WOORD_MASTER_LESSONS, ...WOORD_EXTRA_MASTER_LESSONS, LES_W25, LES_W26]),
   groep: [...GROEP_LESSONS, ...GROEP_BOUW_LESSONS, ...GROEP_EXTRA_LESSONS, ...GROEP_MASTER_LESSONS, ...GROEP_THEORIE_LESSONS],

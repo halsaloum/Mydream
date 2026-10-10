@@ -5,7 +5,7 @@ Nederlands op moedertaalniveau lezen en verstaan, en de schrijftaal willen behee
 
 Deze versie is **de interface en de oefenengine**. De lessen worden later apart uit PDF's gemaakt; de bestaande
 lesinhoud draait ongewijzigd mee als referentie en testmateriaal. Voor "De letter", "Klank en letter", "De lettergreep",
-"Het betekenisvolle woorddeel", "Het woord" en "De woordgroep" staan er al nieuwe lessen bij, tot masterniveau (zie [Eén inhoudsbron](#één-inhoudsbron)).
+"Het betekenisvolle woorddeel", "Het woord" en "De woordgroep" staan er al nieuwe lessen bij: praktische spellinglessen in de eerste drie niveaus, daarna tot masterniveau (zie [Eén inhoudsbron](#één-inhoudsbron)).
 
 ```bash
 npm install
@@ -97,18 +97,13 @@ de bron) via `adapters/legacy.ts`, voegt de nieuwe lessen uit `packs/` toe en va
 `legacy/course.ts` bevat alleen de typen: de tweede cursus (`COURSE`) en `BOOKS` zijn bewust weggelaten, zodat er
 geen tegenstrijdige inhoud naast elkaar bestaat.
 
-`packs/` bevat 110 nieuwe lessen voor zes niveaus, achter de bestaande lessen van dat niveau (`withExtraLessons`):
+`packs/` bevat 84 nieuwe lessen voor zes niveaus, achter de bestaande lessen van dat niveau (`withExtraLessons`):
 
 | Bestand | Niveau | Lessen |
 | --- | --- | --- |
-| `packs/letter.ts` | De letter | 8 — basis: alfabet en woordenboekregels, ij en ei, accent, apostrof, trema en koppelteken · bachelor: afbreken, hoofdletters (eigennaam en soortnaam), schriftgeschiedenis van Proto-Sinaïtisch tot J, U en W, van kapitaal tot onderkast, spellingdiepte in twee richtingen |
-| `packs/letter-master.ts` | De letter | 4 — master: grafeem en allograaf (vrije en positionele allografie), twee eeuwen spellinggeschiedenis, oogbewegingen en het tweerouteleesmodel, letterfrequentie en informatie |
-| `packs/klank.ts` | Klank en letter | 15 — basis: foneem, articulatie, klinkerkaart, gespannen en ongespannen, tweeklanken, sjwa · bachelor: medeklinkertabel, allofonen, verscherping, assimilatie, ’t kofschip, epenthese en deletie, klemtoon, ij en ei, de vier spellingprincipes |
-| `packs/klank-master.ts` | Klank en letter | 9 — master: kenmerken en natuurlijke klassen, sonoriteit, ambisyllabiciteit, klemtoon en lettergreepgewicht, regelordening, Optimaliteitstheorie (twee lessen), categoriale perceptie, klankverandering |
-| `packs/klank-extra.ts` | Klank en letter | 3 — bachelor: variatie in de uitspraak (r, g, w, stemloos worden) · master: bron en filter, formanten en spectrogram, VOT · zinsaccent, focus en intonatie |
-| `packs/greep.ts` | De lettergreep | 8 — bachelor: bewijs voor de lettergreep, onset-kern-coda, grenzen en fonotaxis, de rijm van drie plekken en de appendix, hiaat en glottisslag, schwa-epenthese, verkleinwoord en meervoud, lettergreepschriften |
-| `packs/greep-master.ts` | De lettergreep | 6 — master: moras en het minimale woord, typologie en verwerving, ONSET en NOCODA in OT, het prosodische woord, ritmeklassen, de lettergreep in spraakproductie |
-| `packs/greep-extra.ts` | De lettergreep | 1 — bachelor: rijm en metrum (eindrijm, alliteratie, assonantie, versvoeten, de alexandrijn) |
+| `packs/praktijk/l20–l27.ts` | De letter | 8 — regels: het alfabet en spellen, hoofdletters (zin en namen; talen, dagen en feesten), accenten, het trema, de apostrof, het koppelteken · toets: alles door elkaar |
+| `packs/praktijk/k30–k40.ts` | Klank en letter | 11 — regels: korte en lange klanken, ei of ij, au of ou, ng/nk en aai/ooi/oei/eeuw/ieuw/uw, g/ch/cht, langer maken (d/t, b/p), s/z en f/v, de doffe e, leenwoorden, ’t kofschip · toets |
+| `packs/praktijk/g20–g28.ts` | De lettergreep | 9 — regels: lettergrepen vinden, open of gesloten, verdubbelen, meervoud, verkleinwoorden, de stam van een werkwoord, het bijvoeglijk naamwoord met -e, afbreken · toets |
 | `packs/deel.ts` | Het betekenisvolle woorddeel | 8 — bachelor: morfeem en allomorf, buiging tegenover afleiding, de rechterhoofdregel, woordbomen, samenstellingen, tussenklanken, eisen van affixen en blokkering, stamwisseling en suppletie |
 | `packs/deel-master.ts` | Het betekenisvolle woorddeel | 6 — master: morfeem, proces of paradigma, inheemse en geleerde lagen met de haakjesparadox, productiviteit meten, prosodische morfologie, het mentale lexicon en de d/t-fout, woordvorming in beweging |
 | `packs/deel-extra.ts` | Het betekenisvolle woorddeel | 1 — bachelor: afkappingen, letterwoorden en mengwoorden (woordvorming zonder morfemen) |
@@ -123,10 +118,13 @@ geen tegenstrijdige inhoud naast elkaar bestaat.
 | `packs/groep-master.ts` | De woordgroep | 4 — bachelor: nevenschikking en samentrekking · master: X-bar-theorie, structurele ambiguïteit en tuinpadzinnen, de DP-hypothese |
 | `packs/groep-theorie.ts` | De woordgroep | 4 — master: kwantoren en bereik, de betekenis van bijvoeglijke naamwoorden, woordgroep of samenstelling, zwaarte, volgorde en typologie |
 
-Een les kan een `stage` hebben (`basis`, `bachelor` of `master`). Die verschijnt als label op de les en als
+De eerste drie niveaus zijn praktisch: de spellingregels kennen en toepassen, zonder taalwetenschap, geschiedenis of
+vergelijking met andere talen (`packs/praktijk/praktijk.test.ts` bewaakt lengte, afwisseling en interactiviteit).
+
+Een les kan een `stage` hebben (`regels`, `toets`, `bachelor` of `master`). Die verschijnt als label op de les en als
 uitklapbare groep in de lijst van het niveau (alleen de stap met je volgende les staat open); lessen zonder `stage`
-zien eruit als voorheen. De klanktabel staat één keer in
-`packs/tables.ts` en wordt per les met een eigen opdracht gebruikt.
+zien eruit als voorheen. De uitlegwidgets klanktabel, OT-tableau, sonoriteitsberg, lettergreepboom, 3D-klinkerruimte
+en draaitegel staan nog in de app, maar geen les gebruikt ze nu; `packs/tables.ts` bewaart de klanktabel als voorbeeld.
 
 De demoset op `/oefenvormen` (`content/demo/`) is de voorbeeldinhoud uit "Interactieve lessen – ideeën", letterlijk
 overgenomen. Die is geen cursusinhoud: losse sessies, niet bewaard, telt niet mee voor voortgang of herhaling.

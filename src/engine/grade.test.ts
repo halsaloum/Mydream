@@ -56,6 +56,13 @@ describe('beoordeling', () => {
     expect(isCorrect(type, { kind: 'type', value: 'laanen' })).toBe(false);
   });
 
+  it('invullen: een gekrulde apostrof van de telefoon is gewoon een apostrof', () => {
+    const step: Step = { kind: 'type', prompt: 'Typ het meervoud.', before: 'twee', after: '', hint: 'auto', answer: "auto's", why: 'Na een o: apostrof.' };
+    expect(isCorrect(step, { kind: 'type', value: 'auto’s' })).toBe(true);
+    expect(isCorrect(step, { kind: 'type', value: "Auto's " })).toBe(true);
+    expect(isCorrect(step, { kind: 'type', value: 'autos' })).toBe(false);
+  });
+
   it('woorden ordenen en alinea ordenen', () => {
     const order = stepFrom('p1', (s) => s.kind === 'order') as StepOf<'order'>;
     const right = ['Mijn broer', 'heeft', 'de rode fiets', 'gekocht'].map((tile) => order.tiles.indexOf(tile));
