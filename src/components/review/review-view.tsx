@@ -22,7 +22,7 @@ import { REVIEW_SESSION_ID, useSessions } from '@/state/sessions';
 
 /** Korte omschrijving van een opdracht: de opdrachtzin, of de titel bij uitleg. */
 function stepSummary(step: Step): { prompt: string; sample: string | null } {
-  const prompt = 'prompt' in step && step.prompt ? step.prompt : 'title' in step ? step.title : EXERCISE_LABELS[step.kind];
+  const prompt = 'prompt' in step && step.prompt ? step.prompt : 'title' in step && step.title ? step.title : EXERCISE_LABELS[step.kind];
   const sample =
     (step.kind === 'choice' || step.kind === 'type') && (step.before || step.after) ? `${step.before} … ${step.after}`.trim() : step.kind === 'fix' ? step.sentence : step.kind === 'rewrite' ? step.source : null;
   return { prompt, sample };

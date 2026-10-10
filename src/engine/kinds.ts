@@ -1,6 +1,5 @@
 import { z } from 'zod';
 import type { Step, StepKind, StepOf } from '@/content/schema';
-import { tokenize } from '@/content/text';
 import {
   ARGUMENT_RESPONSE_SCHEMAS,
   argumentEvaluate,
@@ -13,6 +12,20 @@ import {
   type ArgumentResponse,
 } from './argument';
 import { plural, taskOutcome, taskScore, type Feedback, type Outcome } from './outcome';
+import {
+  isSpellingKind,
+  normalizeQuotes,
+  normalizeSpaces,
+  SPELLING_RESPONSE_SCHEMAS,
+  spellingEvaluate,
+  spellingFeedback,
+  spellingFits,
+  spellingInitialResponse,
+  spellingIsComplete,
+  spellingProgress,
+  wordDiff,
+  type SpellingResponse,
+} from './spelling';
 
 export type { Feedback, Outcome } from './outcome';
 
@@ -69,6 +82,9 @@ export const STEP_MODES: Record<StepKind, StepMode> = {
   slope: 'task',
   dilemma: 'task',
   inspect: 'task',
+  cloze: 'graded',
+  drill: 'task',
+  passage: 'graded',
 };
 
 /** Ontdekvormen zonder goed of fout: ze tellen niet mee in "in één keer goed". */
@@ -109,10 +125,17 @@ export const EXTRA_RESPONSE_SCHEMAS = [
   z.object({ kind: z.literal('intent'), round: index, done: z.array(index), mistakes: count }),
   z.object({ kind: z.literal('scale'), on: z.array(z.string()), mistakes: count }),
   z.object({ kind: z.literal('stack'), placed: count, mistakes: count }),
-  z.object({ kind: z.literal('proofread'), found: z.array(index), slips: count }),
+  z.object({
+    kind: z.literal('proofread'),
+    found: z.array(index),
+    slips: count,
+    /** Zonder hulp ("blind"): de leerling heeft gezegd dat hij klaar is. */
+    finished: z.boolean().optional(),
+  }),
   z.object({ kind: z.literal('bet'), value: z.string().nullable(), bet: z.union([z.literal(1), z.literal(2), z.literal(3)]).nullable() }),
   z.object({ kind: z.literal('dictation'), value: z.string(), plays: count, shown: z.boolean() }),
   ...ARGUMENT_RESPONSE_SCHEMAS,
+  ...SPELLING_RESPONSE_SCHEMAS,
 ] as const;
 
 export type ExtraResponse = z.infer<(typeof EXTRA_RESPONSE_SCHEMAS)[number]>;
@@ -120,6 +143,7 @@ export type ExtraKind = ExtraResponse['kind'];
 export type ExtraResponseOf<K extends ExtraKind> = Extract<ExtraResponse, { kind: K }>;
 
 const isArgument = (r: ExtraResponse): r is ArgumentResponse => isArgumentKind(r.kind);
+const isSpelling = (r: ExtraResponse): r is SpellingResponse => isSpellingKind(r.kind);
 
 const EXTRA_KINDS = new Set<string>(EXTRA_RESPONSE_SCHEMAS.map((schema) => schema.shape.kind.value));
 
@@ -159,15 +183,56 @@ export function highlightTargets(step: StepOf<'highlight'>): number[] {
   return step.words.flatMap((word, i) => (word.role ? [i] : []));
 }
 
-export const normalizeSpaces = (text: string) => text.replace(/\s+/g, ' ').trim();
+export { normalizeSpaces } from './spelling';
 
-/** Een telefoon maakt van ' vaak ’ (en van " vaak “ of ”): in een dictee telt dat niet als fout. */
-const normalizeQuotes = (text: string) => text.replace(/[‘’]/g, "'").replace(/[“”]/g, '"');
-
-/** Per woord van de dicteezin: goed of niet (op positie, zoals in de mock). */
+/** Per woord van de dicteezin: goed of niet, en wat de leerling op die plek typte. */
 export function dictationDiff(sentence: string, typed: string) {
-  const mine = normalizeSpaces(normalizeQuotes(typed)).split(' ');
-  return tokenize(normalizeSpaces(sentence)).map((word, i) => ({ word, ok: (mine[i] ?? '') === normalizeQuotes(word) }));
+  return wordDiff(sentence, typed).marks;
+}
+
+type ProofreadError = Extract<StepOf<'proofread'>['tokens'][number], { fix: string }>;
+
+/**
+ * Het woord zonder de leestekens eromheen: punt, komma enz. aan het eind, haakjes en dubbele
+ * aanhalingstekens aan beide kanten, en enkele aanhalingstekens alleen als paar (‘zo’). Een
+ * apostrof die bij het woord hoort (’s, Max’) blijft staan.
+ */
+function stripPunctuation(text: string): string {
+  let rest = text;
+  for (;;) {
+    const next = rest
+      .replace(/[.,!?;:]+$/, '')
+      .replace(/^[("]+/, '')
+      .replace(/[)"]+$/, '')
+      .replace(/^'(.+)'$/, '$1');
+    if (next === rest) return rest;
+    rest = next;
+  }
+}
+
+const proofreadNorm = (text: string) => normalizeQuotes(normalizeSpaces(text));
+
+/**
+ * Is de getypte verbetering goed? Spaties en gekrulde aanhalingstekens tellen niet. Leestekens om
+ * het woord heen tellen alleen als daar de fout zat. Hoofdletters tellen altijd: de leerling typt
+ * het woord zoals het in de tekst moet komen.
+ */
+export function proofreadAccepts(token: ProofreadError, typed: string): boolean {
+  const mine = proofreadNorm(typed);
+  const original = proofreadNorm(token.t);
+  const fixes = [token.fix, ...(token.also ?? [])].map(proofreadNorm);
+  return fixes.some((fix) => {
+    if (fix === mine) return true;
+    const punctuationCounts = stripPunctuation(fix) === stripPunctuation(original);
+    return !punctuationCounts && stripPunctuation(mine) === stripPunctuation(fix);
+  });
+}
+
+/** Typte de leerling het woord gewoon over (eventueel zonder de leestekens eromheen)? Dan liet hij het staan. */
+export function proofreadUnchanged(token: StepOf<'proofread'>['tokens'][number], typed: string): boolean {
+  const mine = proofreadNorm(typed);
+  const original = proofreadNorm(token.t);
+  return mine === original || stripPunctuation(mine) === stripPunctuation(original);
 }
 
 /** Punten in het snelrondje: 10 per goed antwoord, 20 vanaf de derde op rij. */
@@ -228,13 +293,14 @@ export function extraInitialResponse(step: Step): ExtraResponse | null {
     case 'dictation':
       return { kind: 'dictation', value: '', plays: 0, shown: false };
     default:
-      return argumentInitialResponse(step);
+      return spellingInitialResponse(step) ?? argumentInitialResponse(step);
   }
 }
 
 export function extraIsComplete(step: Step, r: ExtraResponse): boolean {
   if (step.kind !== r.kind) return false;
   if (isArgument(r)) return argumentIsComplete(step, r);
+  if (isSpelling(r)) return spellingIsComplete(step, r);
   switch (r.kind) {
     case 'swipe':
       return step.kind === 'swipe' && r.answers.length >= step.cards.length;
@@ -269,7 +335,8 @@ export function extraIsComplete(step: Step, r: ExtraResponse): boolean {
     case 'stack':
       return step.kind === 'stack' && r.placed >= step.layers.length;
     case 'proofread':
-      return step.kind === 'proofread' && proofreadErrors(step).every((i) => r.found.includes(i));
+      if (step.kind !== 'proofread') return false;
+      return step.blind ? r.finished === true : proofreadErrors(step).every((i) => r.found.includes(i));
     case 'bet':
       return r.value !== null && r.bet !== null;
     case 'dictation':
@@ -281,6 +348,7 @@ export function extraIsComplete(step: Step, r: ExtraResponse): boolean {
 export function extraFits(step: Step, r: ExtraResponse): boolean {
   if (step.kind !== r.kind) return false;
   if (isArgument(r)) return argumentFits(step, r);
+  if (isSpelling(r)) return spellingFits(step, r);
   switch (r.kind) {
     case 'swipe':
       return step.kind === 'swipe' && r.answers.length <= step.cards.length;
@@ -307,7 +375,13 @@ export function extraFits(step: Step, r: ExtraResponse): boolean {
     case 'stack':
       return step.kind === 'stack' && r.placed <= step.layers.length;
     case 'proofread':
-      return step.kind === 'proofread' && r.found.every((i) => i < step.tokens.length);
+      return (
+        step.kind === 'proofread' &&
+        r.found.every((i) => {
+          const token = step.tokens[i];
+          return token !== undefined && 'fix' in token;
+        })
+      );
     case 'bet':
       return step.kind === 'bet' && (r.value === null || step.options.includes(r.value));
     default:
@@ -318,6 +392,7 @@ export function extraFits(step: Step, r: ExtraResponse): boolean {
 export function extraEvaluate(step: Step, r: ExtraResponse): Outcome {
   if (step.kind !== r.kind) return { score: 0, correct: false, requeue: true, review: 'miss' };
   if (isArgument(r)) return argumentEvaluate(step, r);
+  if (isSpelling(r)) return spellingEvaluate(step, r);
   switch (r.kind) {
     case 'swipe': {
       if (step.kind !== 'swipe') break;
@@ -347,8 +422,12 @@ export function extraEvaluate(step: Step, r: ExtraResponse): Outcome {
       return step.kind === 'intent' ? taskOutcome(taskScore(step.rounds.length, r.mistakes)) : taskOutcome(0);
     case 'stack':
       return step.kind === 'stack' ? taskOutcome(taskScore(step.layers.length, r.mistakes)) : taskOutcome(0);
-    case 'proofread':
-      return step.kind === 'proofread' ? taskOutcome(taskScore(proofreadErrors(step).length, r.slips)) : taskOutcome(0);
+    case 'proofread': {
+      if (step.kind !== 'proofread') return taskOutcome(0);
+      const errors = proofreadErrors(step).length;
+      // Zonder hulp telt een gemiste fout ook: gevonden ÷ (fouten + mis getikt).
+      return taskOutcome(step.blind ? r.found.length / (errors + r.slips) : taskScore(errors, r.slips));
+    }
     case 'tone': {
       if (step.kind !== 'tone') break;
       const misses = r.sent.filter((level) => !step.levels[level]?.ok).length;
@@ -381,6 +460,7 @@ export function extraEvaluate(step: Step, r: ExtraResponse): Outcome {
 /** Afsluitende feedback voor de voettekst. Teksten uit de inhoud gaan voor. */
 export function extraFeedback(step: Step, r: ExtraResponse, outcome: Outcome): Feedback {
   if (isArgument(r)) return argumentFeedback(step, r, outcome);
+  if (isSpelling(r)) return spellingFeedback(step, r, outcome);
   const done = 'done' in step && step.done ? { title: step.done.title, body: step.done.text } : null;
   switch (r.kind) {
     case 'swipe': {
@@ -404,7 +484,14 @@ export function extraFeedback(step: Step, r: ExtraResponse, outcome: Outcome): F
     case 'proofread': {
       if (step.kind !== 'proofread') break;
       const n = proofreadErrors(step).length;
-      const slips = r.slips === 0 ? 'zonder één keer mis te tikken' : `met ${r.slips} keer misgetikt`;
+      const slips = r.slips === 0 ? 'zonder één keer mis te tikken' : `met ${r.slips} keer mis`;
+      const missed = n - r.found.length;
+      if (step.blind && missed > 0) {
+        return {
+          title: `${missed} ${plural(missed, 'fout', 'fouten')} over het hoofd gezien`,
+          body: `${r.found.length} van de ${n} fouten verbeterd, ${slips}. De gemiste ${plural(missed, 'fout staat', 'fouten staan')} nu rood in de tekst.`,
+        };
+      }
       return { title: done?.title ?? 'Deze tekst kan weg', body: `${n} ${plural(n, 'fout', 'fouten')} eruit, ${slips}.` };
     }
     case 'bet': {
@@ -425,6 +512,7 @@ export function extraFeedback(step: Step, r: ExtraResponse, outcome: Outcome): F
 /** Voortgangstekst in de voettekst terwijl de leerling bezig is (teksten uit de mock-ups). */
 export function extraProgress(step: Step, r: ExtraResponse): string | null {
   if (isArgument(r)) return argumentProgress(step, r);
+  if (isSpelling(r)) return spellingProgress(step, r);
   const nog = (n: number, one: string, many: string) => `Nog ${n} ${n === 1 ? one : many}`;
   switch (r.kind) {
     case 'swipe':
@@ -466,7 +554,9 @@ export function extraProgress(step: Step, r: ExtraResponse): string | null {
     case 'stack':
       return step.kind === 'stack' ? nog(step.layers.length - r.placed, 'zin te plaatsen', 'zinnen te plaatsen') : null;
     case 'proofread':
-      return step.kind === 'proofread' ? nog(proofreadErrors(step).length - r.found.length, 'fout te vinden', 'fouten te vinden') : null;
+      if (step.kind !== 'proofread') return null;
+      if (step.blind) return r.found.length === 0 ? 'Tik een fout woord aan en verbeter het' : `${r.found.length} verbeterd. Klaar? Tik op ‘Ik ben klaar’.`;
+      return nog(proofreadErrors(step).length - r.found.length, 'fout te vinden', 'fouten te vinden');
     case 'bet':
       return r.value === null ? 'Kies een antwoord' : r.bet === null ? 'Hoe zeker ben je?' : 'Zet in om te controleren';
     case 'dictation':

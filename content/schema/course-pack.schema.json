@@ -4829,6 +4829,18 @@
                             },
                             "additionalProperties": false
                           },
+                          "greeting": {
+                            "description": "Aanhef boven de tekst, bv. \"Beste Karin,\", als die niet in de tekst zelf staat.",
+                            "type": "string"
+                          },
+                          "signoff": {
+                            "description": "Afsluiting onder de tekst, bv. \"Groet, Sam\"; een regeleinde mag.",
+                            "type": "string"
+                          },
+                          "blind": {
+                            "description": "Zonder hulp: het aantal fouten blijft geheim, je typt elke verbetering zelf en je zegt zelf wanneer je klaar bent.",
+                            "type": "boolean"
+                          },
                           "tokens": {
                             "minItems": 3,
                             "type": "array",
@@ -4843,7 +4855,16 @@
                                     },
                                     "fix": {
                                       "type": "string",
-                                      "pattern": "\\S"
+                                      "pattern": "\\S",
+                                      "description": "De verbetering, met dezelfde leestekens als het woord in de tekst."
+                                    },
+                                    "also": {
+                                      "description": "Andere goede verbeteringen (alleen nodig bij \"blind\").",
+                                      "type": "array",
+                                      "items": {
+                                        "type": "string",
+                                        "pattern": "\\S"
+                                      }
                                     },
                                     "why": {
                                       "type": "string",
@@ -4854,6 +4875,25 @@
                                     "t",
                                     "fix",
                                     "why"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "t": {
+                                      "type": "string",
+                                      "pattern": "\\S"
+                                    },
+                                    "trap": {
+                                      "type": "string",
+                                      "pattern": "\\S",
+                                      "description": "Waarom dit woord, dat fout lijkt, toch goed is."
+                                    }
+                                  },
+                                  "required": [
+                                    "t",
+                                    "trap"
                                   ],
                                   "additionalProperties": false
                                 },
@@ -6451,6 +6491,216 @@
                         ],
                         "additionalProperties": false,
                         "description": "Keuring: beoordeel elke zin en vervang de drogredenen door een eerlijke zin."
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "const": "cloze"
+                          },
+                          "id": {
+                            "type": "string",
+                            "pattern": "^[a-z0-9][a-z0-9-]*$"
+                          },
+                          "prompt": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Opdracht boven de oefening."
+                          },
+                          "intro": {
+                            "description": "Toelichting onder de opdracht.",
+                            "type": "string"
+                          },
+                          "title": {
+                            "description": "Kop boven de tekst, bv. \"Mail aan de huisbaas\".",
+                            "type": "string"
+                          },
+                          "text": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Tekst met gaten: {antwoord}, {antwoord|aanwijzing} of {antwoord|aanwijzing|uitleg}. Meer goede antwoorden met ~. Een lege regel begint een nieuwe alinea."
+                          },
+                          "caps": {
+                            "description": "Hoofdletters tellen mee (bij lessen over hoofdletters).",
+                            "type": "boolean"
+                          },
+                          "why": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Uitleg die na het nakijken onder de tekst staat."
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "prompt",
+                          "text",
+                          "why"
+                        ],
+                        "additionalProperties": false,
+                        "description": "Invultekst: een hele tekst met gaten. Elk gat typ je zelf; na het controleren zie je per gat wat goed is."
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "const": "drill"
+                          },
+                          "id": {
+                            "type": "string",
+                            "pattern": "^[a-z0-9][a-z0-9-]*$"
+                          },
+                          "prompt": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Opdracht boven de oefening."
+                          },
+                          "intro": {
+                            "description": "Toelichting onder de opdracht.",
+                            "type": "string"
+                          },
+                          "items": {
+                            "minItems": 4,
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "q": {
+                                  "type": "string",
+                                  "pattern": "\\S",
+                                  "description": "De opdracht bij dit woord, bv. \"Meervoud van stad\" of \"Schrijf het getal\"."
+                                },
+                                "before": {
+                                  "description": "Zinsdeel vóór het invulvak.",
+                                  "type": "string"
+                                },
+                                "after": {
+                                  "description": "Zinsdeel na het invulvak.",
+                                  "type": "string"
+                                },
+                                "say": {
+                                  "description": "Wordt voorgelezen met een luisterknop, bv. het woord dat je moet schrijven. De opdracht moet ook zonder geluid te doen zijn.",
+                                  "type": "string",
+                                  "pattern": "\\S"
+                                },
+                                "a": {
+                                  "type": "string",
+                                  "pattern": "\\S",
+                                  "description": "Het goede antwoord."
+                                },
+                                "also": {
+                                  "description": "Andere goede antwoorden.",
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string",
+                                    "pattern": "\\S"
+                                  }
+                                },
+                                "why": {
+                                  "type": "string",
+                                  "pattern": "\\S",
+                                  "description": "Uitleg, direct na het antwoord."
+                                }
+                              },
+                              "required": [
+                                "q",
+                                "a",
+                                "why"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "caps": {
+                            "description": "Hoofdletters tellen mee.",
+                            "type": "boolean"
+                          },
+                          "done": {
+                            "type": "object",
+                            "properties": {
+                              "title": {
+                                "type": "string",
+                                "pattern": "\\S"
+                              },
+                              "text": {
+                                "type": "string",
+                                "pattern": "\\S"
+                              },
+                              "note": {
+                                "description": "Slotopmerking in de oefening zelf.",
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "title",
+                              "text"
+                            ],
+                            "additionalProperties": false,
+                            "description": "Afsluitende feedback zodra de oefening klaar is."
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "prompt",
+                          "items"
+                        ],
+                        "additionalProperties": false,
+                        "description": "Reeks: veel korte opdrachten achter elkaar. Je typt elk antwoord zelf; wat fout gaat, komt achteraan terug tot het goed is."
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "const": "passage"
+                          },
+                          "id": {
+                            "type": "string",
+                            "pattern": "^[a-z0-9][a-z0-9-]*$"
+                          },
+                          "prompt": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Opdracht boven de oefening."
+                          },
+                          "intro": {
+                            "description": "Toelichting onder de opdracht.",
+                            "type": "string"
+                          },
+                          "title": {
+                            "description": "Kop boven het dictee, bv. \"Een mail aan je buurman\".",
+                            "type": "string"
+                          },
+                          "sentences": {
+                            "minItems": 2,
+                            "maxItems": 12,
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "pattern": "\\S"
+                            },
+                            "description": "De zinnen die één voor één worden voorgelezen; hoofdletters en leestekens tellen mee."
+                          },
+                          "right": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Uitleg als alles goed is."
+                          },
+                          "wrong": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Uitleg als er fouten in staan."
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "prompt",
+                          "sentences",
+                          "right",
+                          "wrong"
+                        ],
+                        "additionalProperties": false,
+                        "description": "Tekstdictee: luister zin voor zin en typ precies wat je hoort. Elk woord wordt nagekeken."
                       }
                     ]
                   }

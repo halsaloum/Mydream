@@ -24,7 +24,7 @@ describe('demoset oefenvormen', () => {
   it('bevat voor elke nieuwe oefenvorm een gevalideerd voorbeeld', () => {
     const kinds = new Set(demoEntries.map((entry) => entry.step.kind));
     for (const schema of EXTRA_RESPONSE_SCHEMAS) expect(kinds.has(schema.shape.kind.value)).toBe(true);
-    expect(demoEntries).toHaveLength(28);
+    expect(demoEntries).toHaveLength(32);
   });
 
   it('elke vorm heeft een modus', () => {
