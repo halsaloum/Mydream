@@ -1,0 +1,46 @@
+import type { CoursePackInput, LessonInput } from '../schema';
+import { DEEL_LESSONS } from './deel';
+import { DEEL_3D_LESSONS } from './deel-3d';
+import { DEEL_EXTRA_LESSONS } from './deel-extra';
+import { DEEL_MASTER_LESSONS } from './deel-master';
+import { GROEP_LESSONS } from './groep';
+import { GROEP_BOUW_LESSONS } from './groep-bouw';
+import { GROEP_EXTRA_LESSONS, GROEP_MASTER_LESSONS } from './groep-master';
+import { GROEP_THEORIE_LESSONS } from './groep-theorie';
+import { WOORD_LESSONS } from './woord';
+import { WOORD_EXTRA_LESSONS, WOORD_EXTRA_MASTER_LESSONS } from './woord-extra';
+import { WOORD_MASTER_LESSONS } from './woord-master';
+import { LES_D21 } from './nieuw/d21';
+import { LES_D22 } from './nieuw/d22';
+import { LES_D23 } from './nieuw/d23';
+import { LES_D24 } from './nieuw/d24';
+import { LES_W23 } from './nieuw/w23';
+import { LES_W24 } from './nieuw/w24';
+import { LES_W25 } from './nieuw/w25';
+import { LES_W26 } from './nieuw/w26';
+import { withResearch } from './onderzoek';
+import { GREEP_PRAKTIJK, KLANK_PRAKTIJK, LETTER_PRAKTIJK } from './praktijk';
+
+/**
+ * Lessen die later bij de oorspronkelijke niveaus zijn geschreven, per niveau-id. Ze komen achter
+ * de bestaande lessen van dat niveau: in de eerste drie niveaus praktisch (regels, toets), daarna
+ * oplopend in diepte (bachelor, master).
+ */
+export const EXTRA_LESSONS: Readonly<Record<string, readonly LessonInput[]>> = {
+  letter: LETTER_PRAKTIJK,
+  klank: KLANK_PRAKTIJK,
+  greep: GREEP_PRAKTIJK,
+  deel: withResearch([...DEEL_LESSONS, ...DEEL_EXTRA_LESSONS, ...DEEL_3D_LESSONS, LES_D21, LES_D22, LES_D23, ...DEEL_MASTER_LESSONS, LES_D24]),
+  woord: withResearch([...WOORD_LESSONS, ...WOORD_EXTRA_LESSONS, LES_W23, LES_W24, ...WOORD_MASTER_LESSONS, ...WOORD_EXTRA_MASTER_LESSONS, LES_W25, LES_W26]),
+  groep: [...GROEP_LESSONS, ...GROEP_BOUW_LESSONS, ...GROEP_EXTRA_LESSONS, ...GROEP_MASTER_LESSONS, ...GROEP_THEORIE_LESSONS],
+};
+
+/** Voegt de extra lessen toe aan hun niveau. Een onbekend niveau is een fout in de inhoud. */
+export function withExtraLessons(pack: CoursePackInput, extra: Readonly<Record<string, readonly LessonInput[]>> = EXTRA_LESSONS): CoursePackInput {
+  const unknown = Object.keys(extra).filter((id) => !pack.layers.some((layer) => layer.id === id));
+  if (unknown.length > 0) throw new Error(`Extra lessen voor onbekend niveau: ${unknown.join(', ')}`);
+  return {
+    ...pack,
+    layers: pack.layers.map((layer) => ({ ...layer, lessons: [...layer.lessons, ...(extra[layer.id] ?? [])] })),
+  };
+}

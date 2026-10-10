@@ -1,0 +1,55 @@
+{
+  "name": "pennig",
+  "version": "0.1.0",
+  "private": true,
+  "description": "pennig – Nederlands schrijven, van letter tot alinea. Leerapp met Pim het potlood.",
+  "engines": {
+    "node": ">=20.9.0"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "typecheck": "next typegen && tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "content:check": "vitest run src/content",
+    "content:schema": "UPDATE_CONTENT_SCHEMA=1 vitest run src/content/schema.test.ts",
+    "check": "npm run typecheck && npm run lint && npm run test"
+  },
+  "dependencies": {
+    "@base-ui/react": "1.8.0",
+    "@dnd-kit/core": "6.3.1",
+    "@google/model-viewer": "4.3.1",
+    "canvas-confetti": "1.9.4",
+    "lucide-react": "1.52.0",
+    "motion": "14.0.0",
+    "next": "16.3.8",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "three": "0.183.2",
+    "zod": "4.6.5",
+    "zustand": "5.0.15"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0",
+    "@tailwindcss/postcss": "4.3.3",
+    "@testing-library/dom": "10.4.2",
+    "@testing-library/jest-dom": "7.0.1",
+    "@testing-library/react": "16.3.3",
+    "@testing-library/user-event": "14.6.7",
+    "@types/canvas-confetti": "1.9.0",
+    "@types/node": "24.19.1",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@types/three": "0.183.1",
+    "eslint": "9.39.5",
+    "eslint-config-next": "16.3.8",
+    "jsdom": "30.1.2",
+    "tailwindcss": "4.3.3",
+    "typescript": "5.9.3",
+    "vitest": "5.0.3"
+  }
+}
