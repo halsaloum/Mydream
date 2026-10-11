@@ -263,6 +263,7 @@ export function LessonPlayer({ controller, meta }: { controller: PlayerControlle
                 locked={locked}
                 correct={locked ? session.lastCorrect : null}
                 stepKey={item.key}
+                seed={`${session.startedAt}:${pos}:${item.key}`}
                 onSubmit={() => {
                   if (primaryRun.current.enabled && phase === 'answering') primaryRun.current.run();
                 }}

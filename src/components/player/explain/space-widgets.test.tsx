@@ -37,7 +37,7 @@ const DRAAI: WidgetProps<'flip'>['data'] = {
 describe('klinkerruimte', () => {
   it('telt alleen de gevraagde klinkers en meldt opgelost', async () => {
     const user = userEvent.setup();
-    const onSolved = show((solved, done) => <VowelSpaceWidget data={VERSTOPT} solved={solved} onSolved={done} />);
+    const onSolved = show((solved, done) => <VowelSpaceWidget seed="test" data={VERSTOPT} solved={solved} onSolved={done} />);
     await user.click(screen.getByRole('button', { name: /^\/i\/ zoals in piet/ }));
     expect(screen.getByText(/\/i\/ hoort er niet bij/)).toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: /^\/y\/ zoals in fuut, ronde lippen/ }));
@@ -49,7 +49,7 @@ describe('klinkerruimte', () => {
 
   it('kiest een vaste stand en is met pijltjestoetsen te draaien', async () => {
     const user = userEvent.setup();
-    show((solved, done) => <VowelSpaceWidget data={VERSTOPT} solved={solved} onSolved={done} />);
+    show((solved, done) => <VowelSpaceWidget seed="test" data={VERSTOPT} solved={solved} onSolved={done} />);
     const view = screen.getByRole('button', { name: 'Van opzij' });
     await user.click(view);
     expect(view).toHaveAttribute('aria-pressed', 'true');
@@ -62,7 +62,7 @@ describe('klinkerruimte', () => {
 describe('draaitegel', () => {
   it('spiegelen, kantelen en draaien geven de juiste letter', async () => {
     const user = userEvent.setup();
-    const onSolved = show((solved, done) => <FlipWidget data={DRAAI} solved={solved} onSolved={done} />);
+    const onSolved = show((solved, done) => <FlipWidget seed="test" data={DRAAI} solved={solved} onSolved={done} />);
     await user.click(screen.getByRole('button', { name: /Spiegel/ }));
     expect(screen.getByText('Na spiegelen lees je nu').nextSibling).toHaveTextContent('d');
     await user.click(screen.getByRole('button', { name: /Kantel/ }));

@@ -3,7 +3,7 @@
 import { ArrowDown, ArrowUp, GripVertical } from 'lucide-react';
 import { LayoutGroup, motion } from 'motion/react';
 import { useLayoutEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react';
-import { shuffledIndices } from '@/engine/hash';
+import { permutation } from '@/engine/hash';
 import { cn } from '@/lib/cn';
 import { spring } from '@/lib/motion';
 import { play } from '@/lib/sound';
@@ -29,6 +29,10 @@ type SequenceBuilderProps = {
   notes?: (index: number, position: number) => string | null;
   variant: 'inline' | 'block';
   stepKey: string;
+  /** Sleutel om de kaartjes te schudden (zie `StepProps.seed`). */
+  seed: string;
+  /** Of de kaartjes in deze volgorde al goed liggen; zo begint de stapel nooit opgelost. */
+  solved: (order: readonly number[]) => boolean;
   lineLabel: string;
   emptyText: string;
 };
@@ -38,8 +42,8 @@ type SequenceBuilderProps = {
  * Motion laat het zichtbaar naar zijn plek bewegen. Slepen herschikt live; met het
  * toetsenbord: Alt + pijltjes verplaatst, Delete legt terug.
  */
-export function SequenceBuilder({ items, placed, onChange, locked, verdicts, notes, variant, stepKey, lineLabel, emptyText }: SequenceBuilderProps) {
-  const pool = useMemo(() => shuffledIndices(stepKey, items.length), [stepKey, items.length]);
+export function SequenceBuilder({ items, placed, onChange, locked, verdicts, notes, variant, stepKey, seed, solved, lineLabel, emptyText }: SequenceBuilderProps) {
+  const pool = useMemo(() => startOrder(seed, items.length, solved), [seed, items.length, solved]);
   const [dropped, setDropped] = useState<number | null>(null);
   const guard = useClickGuard();
   const nodes = useRef(new Map<string, HTMLElement>());
@@ -194,6 +198,24 @@ export function SequenceBuilder({ items, placed, onChange, locked, verdicts, not
       )}
     </LayoutGroup>
   );
+}
+
+/**
+ * Geschudde beginvolgorde van de stapel. Nooit al de oplossing (dan tik je hem zo van links
+ * naar rechts af); elke andere volgorde is even waarschijnlijk. Alleen als elke volgorde
+ * goed is (bv. allemaal dezelfde kaartjes), kan het niet anders.
+ */
+export function startOrder(seed: string, n: number, solved: (order: readonly number[]) => boolean): number[] {
+  for (let attempt = 0; attempt < 24; attempt++) {
+    const order = permutation(attempt === 0 ? seed : `${seed}:${attempt}`, n);
+    if (!solved(order)) return order;
+  }
+  const order = permutation(seed, n);
+  for (let turn = 1; turn < n; turn++) {
+    const rotated = [...order.slice(turn), ...order.slice(0, turn)];
+    if (!solved(rotated)) return rotated;
+  }
+  return order;
 }
 
 function Line({ children, block, label, disabled, empty, emptyText }: { children: React.ReactNode; block: boolean; label: string; disabled: boolean; empty: boolean; emptyText: string }) {

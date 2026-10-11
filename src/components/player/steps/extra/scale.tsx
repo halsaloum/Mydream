@@ -2,7 +2,8 @@
 
 import { Scale as ScaleIcon } from 'lucide-react';
 import { motion } from 'motion/react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
+import { shuffle } from '@/engine/hash';
 import { scaleSum } from '@/engine/kinds';
 import { cn } from '@/lib/cn';
 import { spring, transition, useCalmMotion } from '@/lib/motion';
@@ -11,8 +12,10 @@ import { InlineFeedback, StepIntro, type StepProps } from '../shared';
 
 type Feedback = { id: string; tone: 'right' | 'wrong' | 'info'; text: string };
 
-export function ScaleStep({ step, response, onChange, locked }: StepProps<'scale'>) {
+/** Weegschaal. De argumenten staan elke keer in een andere volgorde; het antwoord zijn de id's op de schaal. */
+export function ScaleStep({ step, response, onChange, locked, seed }: StepProps<'scale'>) {
   const calm = useCalmMotion();
+  const args = useMemo(() => shuffle(seed, step.args), [seed, step.args]);
   const [feedback, setFeedback] = useState<Feedback | null>(null);
   const [bad, setBad] = useState<string | null>(null);
   const sum = scaleSum(step, response.on);
@@ -65,7 +68,7 @@ export function ScaleStep({ step, response, onChange, locked }: StepProps<'scale
       </InlineFeedback>
 
       <div className="mt-5 grid gap-3 sm:grid-cols-2">
-        {step.args.map((arg) => {
+        {args.map((arg) => {
           const on = response.on.includes(arg.id);
           return (
             <motion.button

@@ -3,7 +3,8 @@
 import Image from 'next/image';
 import { Check, Eye, Link2 } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
+import { permutation } from '@/engine/hash';
 import { cn } from '@/lib/cn';
 import { transition, useCalmMotion } from '@/lib/motion';
 import { play } from '@/lib/sound';
@@ -12,8 +13,13 @@ import { InlineFeedback, Stage, StepIntro, type StepProps } from '../shared';
 
 type Feedback = { id: string; tone: 'right' | 'wrong' | 'info'; text: string };
 
-export function AmbiguityStep({ step, response, onChange, locked }: StepProps<'ambiguity'>) {
+/**
+ * Twee betekenissen. De zinsvarianten staan elke keer in een andere volgorde, zodat de passende
+ * zin niet op een vaste plek staat; `solved` bewaart de plek in de inhoud.
+ */
+export function AmbiguityStep({ step, response, onChange, locked, seed }: StepProps<'ambiguity'>) {
   const calm = useCalmMotion();
+  const order = useMemo(() => permutation(seed, step.options.length), [seed, step.options]);
   const [feedback, setFeedback] = useState<Feedback | null>(null);
   const [bad, setBad] = useState<number | null>(null);
   const selected = step.meanings.find((meaning) => meaning.id === response.selected) ?? step.meanings[0];
@@ -101,7 +107,9 @@ export function AmbiguityStep({ step, response, onChange, locked }: StepProps<'a
       <section className="mt-6" aria-label="Zinsvarianten">
         <h2 className="font-display text-title-sm font-extrabold text-ink">Welke zin kan alleen dit plaatje betekenen?</h2>
         <div className="mt-3 grid gap-3">
-          {step.options.map((option, index) => {
+          {order.map((index) => {
+            const option = step.options[index];
+            if (!option) return null;
             const optionUsed = used.has(index);
             const correctForSelected = selected && response.solved[selected.id] === index;
             return (

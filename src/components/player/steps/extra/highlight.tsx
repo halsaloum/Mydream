@@ -4,8 +4,9 @@ import { Toggle } from '@base-ui/react/toggle';
 import { ToggleGroup } from '@base-ui/react/toggle-group';
 import { Check, Highlighter } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
+import { permutation } from '@/engine/hash';
 import { cn } from '@/lib/cn';
 import { transition, useCalmMotion } from '@/lib/motion';
 import { play } from '@/lib/sound';
@@ -13,17 +14,33 @@ import { InlineFeedback, isTypingTarget, Kbd, Stage, StepIntro, type StepProps }
 
 const tagFor = (step: StepProps<'highlight'>['step'], role: string | undefined) => step.pens.find((pen) => pen.id === role);
 
+/**
+ * Losse woorden om in te delen, geen zin: die staan in de inhoud vaak per stift om en om, dus
+ * schudden we ze. Een zin, tekst, woordgroep of woord in stukken blijft in leesvolgorde. Losse
+ * woorden: elk woord wordt gekleurd, komt één keer voor, heeft geen spatie of leesteken, het
+ * eerste begint klein, en samen staan ze niet in de opdracht (zoals de stukken van ‘onleesbaarheden’).
+ */
+export function isWordList(step: StepProps<'highlight'>['step']): boolean {
+  const words = step.words.map((word) => word.t);
+  if (!step.words.every((word) => word.role) || new Set(words).size !== words.length) return false;
+  if (words.some((t) => /\s|[.,;:!?…)"'’]$/u.test(t)) || /^\p{Lu}/u.test(words[0] ?? '')) return false;
+  const task = `${step.prompt} ${step.intro ?? ''}`.toLowerCase();
+  return ['', ' '].every((glue) => !task.includes(words.join(glue).toLowerCase()));
+}
+
 function nextPen(step: StepProps<'highlight'>['step'], painted: readonly number[], current: string) {
   const currentLeft = step.words.some((word, i) => word.role === current && !painted.includes(i));
   if (currentLeft) return current;
   return step.pens.find((pen) => step.words.some((word, i) => word.role === pen.id && !painted.includes(i)))?.id ?? current;
 }
 
-export function HighlightStep({ step, response, onChange, locked }: StepProps<'highlight'>) {
+export function HighlightStep({ step, response, onChange, locked, seed }: StepProps<'highlight'>) {
   const calm = useCalmMotion();
   const [bad, setBad] = useState<number | null>(null);
   const [message, setMessage] = useState<string>('');
   const activePen = step.pens.find((pen) => pen.id === response.pen) ?? step.pens[0];
+  /** Volgorde op het scherm, als indexen in de inhoud. */
+  const order = useMemo(() => (isWordList(step) ? permutation(seed, step.words.length) : step.words.map((_, i) => i)), [step, seed]);
 
   const selectPen = (pen: string) => {
     if (locked || !step.pens.some((p) => p.id === pen)) return;
@@ -99,7 +116,9 @@ export function HighlightStep({ step, response, onChange, locked }: StepProps<'h
 
       <Stage className="mt-6">
         <div className="flex flex-wrap justify-center gap-x-1.5 gap-y-4">
-          {step.words.map((word, index) => {
+          {order.map((index) => {
+            const word = step.words[index];
+            if (!word) return null;
             const pen = tagFor(step, word.role);
             const painted = response.painted.includes(index);
             return (

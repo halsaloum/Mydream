@@ -3,6 +3,7 @@
 import { Table2 } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useMemo, useState } from 'react';
+import { shuffle } from '@/engine/hash';
 import { cn } from '@/lib/cn';
 import { useCalmMotion } from '@/lib/motion';
 import { play } from '@/lib/sound';
@@ -12,7 +13,7 @@ import { ICON, SHAKE, useFlash, useSolve, type WidgetProps } from './widgets';
 /**
  * Experiment voor het niveau "Het woord": het paradigma. Een woord is een hele rij vormen
  * (rijden, reed, gereden). De leerling kiest een leeg vakje en zet er de goede vorm in; de
- * keuzes staan op alfabet, zodat hun volgorde niets verraadt.
+ * keuzes liggen elke keer anders geschud, zodat hun volgorde niets verraadt.
  */
 
 type Data = WidgetProps<'paradigm'>['data'];
@@ -25,12 +26,10 @@ function blanksOf(data: Data): Blank[] {
 }
 
 /** Vul alle lege vakjes. Opgelost als de hele tabel klopt. */
-export function ParadigmWidget({ data, solved, onSolved }: WidgetProps<'paradigm'>) {
+export function ParadigmWidget({ data, solved, onSolved, seed }: WidgetProps<'paradigm'>) {
   const blanks = useMemo(() => blanksOf(data), [data]);
-  const pool = useMemo(
-    () => [...new Set([...blanks.map((blank) => blank.fill), ...(data.extra ?? [])])].sort((a, b) => a.localeCompare(b, 'nl')),
-    [blanks, data.extra],
-  );
+  // In de inhoud staan de antwoorden in de volgorde van de tabel en de valkuilen achteraan.
+  const pool = useMemo(() => shuffle(seed, [...new Set([...blanks.map((blank) => blank.fill), ...(data.extra ?? [])])]), [seed, blanks, data.extra]);
   const [filled, setFilled] = useState<string[]>([]);
   const [current, setCurrent] = useState<string | null>(blanks[0]?.key ?? null);
   const [message, setMessage] = useState<string | null>(null);

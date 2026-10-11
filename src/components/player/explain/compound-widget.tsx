@@ -2,10 +2,10 @@
 
 import { ArrowRight, Blocks, Check, Plus } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import type { Panel } from '@/content/schema';
 import { THINGS, thingIcon, type ThingId } from '@/content/things';
-import { fingerprint } from '@/engine/hash';
+import { shuffle } from '@/engine/hash';
 import { cn } from '@/lib/cn';
 import { transition, useCalmMotion } from '@/lib/motion';
 import { play } from '@/lib/sound';
@@ -26,20 +26,16 @@ type Round = NonNullable<Panel['compound']>['rounds'][number];
 
 const loadBench = () => import('@/lib/toy3d/scenes/compound').then((module) => module.compoundScene);
 
-/** Vaste volgorde per ronde (geen toeval: zo ziet iedereen hetzelfde en blijft het testbaar). */
-function shuffled<T>(items: readonly T[], seed: string): T[] {
-  return items
-    .map((item, i) => ({ item, key: fingerprint(`${seed}:${i}`) }))
-    .sort((a, b) => a.key.localeCompare(b.key))
-    .map(({ item }) => item);
-}
-
-/** De voorwerpen op tafel: de twee delen en twee delen uit andere rondes als afleiders. */
-export function shelfFor(rounds: readonly Round[], index: number): ThingId[] {
+/**
+ * De voorwerpen op tafel: de twee delen en twee delen uit andere rondes als afleiders. Welke
+ * afleiders en de volgorde op tafel hangen af van `seed`: vast zolang de opdracht open is,
+ * elke keer anders als hij terugkomt.
+ */
+export function shelfFor(rounds: readonly Round[], index: number, seed: string): ThingId[] {
   const round = rounds[index]!;
   const others = rounds.flatMap((other, i) => (i === index ? [] : other.parts)).filter((id) => !round.parts.includes(id) && id !== round.result);
-  const extra = shuffled([...new Set(others)], round.answer).slice(0, 2);
-  return shuffled([...round.parts, ...extra], `${round.answer}:tafel`);
+  const extra = shuffle(`${seed}:afleiders:${index}`, [...new Set(others)]).slice(0, 2);
+  return shuffle(`${seed}:tafel:${index}`, [...round.parts, ...extra]);
 }
 
 /** Wat een gekozen paar betekent. */
@@ -59,7 +55,7 @@ function ThingIcon({ id, className }: { id: ThingId; className?: string }) {
 
 type Phase = 'pick' | 'spell' | 'merged';
 
-export function CompoundWidget({ data, solved, onSolved }: WidgetProps<'compound'>) {
+export function CompoundWidget({ data, solved, onSolved, seed }: WidgetProps<'compound'>) {
   const calm = useCalmMotion();
   const last = data.rounds.length - 1;
   const [index, setIndex] = useState(solved ? last : 0);
@@ -73,7 +69,8 @@ export function CompoundWidget({ data, solved, onSolved }: WidgetProps<'compound
   const table = useRef<HTMLDivElement>(null);
   const reveal = useRef(false);
   const round = data.rounds[index]!;
-  const shelf = shelfFor(data.rounds, index);
+  const shelf = useMemo(() => shelfFor(data.rounds, index, seed), [data.rounds, index, seed]);
+  const options = useMemo(() => shuffle(`${seed}:spelling:${index}`, round.options), [seed, index, round.options]);
 
   // Op de telefoon staat de tafel na het spellen vaak boven beeld: schuif terug, zodat je de twee delen ziet samensmelten.
   useEffect(() => {
@@ -242,7 +239,7 @@ export function CompoundWidget({ data, solved, onSolved }: WidgetProps<'compound
 
         {phase === 'spell' && (
           <div role="group" aria-label="Kies de spelling" className="mt-4 flex flex-wrap justify-center gap-2">
-            {round.options.map((option) => (
+            {options.map((option) => (
               <Tile key={`${spellFlash.flashKey}:${option}`} state={spellFlash.flash === option ? 'wrong' : 'idle'} onClick={() => spell(option)}>
                 <span lang="nl">{option}</span>
               </Tile>

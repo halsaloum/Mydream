@@ -2,8 +2,9 @@
 
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { AnimatePresence, motion, type PanInfo } from 'motion/react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { permutation } from '@/engine/hash';
 import { cn } from '@/lib/cn';
 import { transition, useCalmMotion } from '@/lib/motion';
 import { play } from '@/lib/sound';
@@ -17,13 +18,26 @@ const feedbackText = (card: StepProps<'swipe'>['step']['cards'][number], saysGoo
   return { ok, text: `${ok ? 'Raak.' : 'Mis.'} ${detail}` };
 };
 
-export function SwipeStep({ step, response, onChange, locked }: StepProps<'swipe'>) {
+/**
+ * Het antwoord voor beurt `index`. De engine vergelijkt antwoord i met kaart i uit de inhoud, maar
+ * de stapel is geschud. Daarom bewaren we het oordeel over kaart `index` dat even goed of fout is
+ * als het oordeel over de getoonde kaart: de score klopt, en wie alles goed heeft, heeft precies
+ * de antwoorden uit de inhoud.
+ */
+const storedAnswer = (step: StepProps<'swipe'>['step'], index: number, ok: boolean) => {
+  const truth = step.cards[index]?.ok ?? true;
+  return ok ? truth : !truth;
+};
+
+export function SwipeStep({ step, response, onChange, locked, seed }: StepProps<'swipe'>) {
   const calm = useCalmMotion();
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [pending, setPending] = useState<Last | null>(null);
   const [last, setLast] = useState<Last | null>(null);
+  // Goede en foute zinnen staan in de inhoud vaak om en om: schud de stapel.
+  const order = useMemo(() => permutation(seed, step.cards.length), [seed, step.cards]);
   const index = Math.min(response.answers.length, step.cards.length);
-  const card = step.cards[index];
+  const card = step.cards[order[index] ?? index];
   const done = response.answers.length >= step.cards.length;
   const busy = locked || pending !== null || done;
   const score = response.answers.filter((answer, i) => answer === step.cards[i]?.ok).length;
@@ -42,7 +56,7 @@ export function SwipeStep({ step, response, onChange, locked }: StepProps<'swipe
     timer.current = setTimeout(() => {
       timer.current = null;
       setPending(null);
-      onChange({ kind: 'swipe', answers: [...response.answers, saysGood] });
+      onChange({ kind: 'swipe', answers: [...response.answers, storedAnswer(step, index, result.ok)] });
     }, calm ? 80 : 360);
   };
 
@@ -146,6 +160,7 @@ export function SwipeStep({ step, response, onChange, locked }: StepProps<'swipe
 
         <div aria-hidden className="mt-4 flex justify-center gap-2">
           {step.cards.map((item, i) => {
+            // Bolletje i is beurt i: goed als antwoord i klopt met kaart i (zie `storedAnswer`).
             const answer = response.answers[i];
             const state = answer === undefined ? 'open' : answer === item.ok ? 'right' : 'wrong';
             return (

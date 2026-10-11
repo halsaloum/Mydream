@@ -3,7 +3,8 @@ import userEvent from '@testing-library/user-event';
 import { useState, type ReactNode } from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { CONSONANT_TABLE } from '@/content/packs/tables';
-import { GridWidget, TableauWidget, VowelsWidget } from './sound-widgets';
+import { winsAlone } from '@/content/tableau';
+import { GridWidget, TableauWidget, tableauStart, VowelsWidget } from './sound-widgets';
 import type { WidgetProps } from './widgets';
 
 // jsdom heeft geen canvas; de confetti doet hier niet ter zake.
@@ -51,7 +52,7 @@ const HOND: WidgetProps<'tableau'>['data'] = {
 describe('klankexperimenten', () => {
   it('klinkerkaart: een foute klinker telt niet, alle gevraagde klinkers lossen op', async () => {
     const user = userEvent.setup();
-    const onSolved = show((solved, done) => <VowelsWidget data={HOOG} solved={solved} onSolved={done} />);
+    const onSolved = show((solved, done) => <VowelsWidget seed="test" data={HOOG} solved={solved} onSolved={done} />);
 
     await user.click(screen.getByRole('button', { name: '/aː/ zoals in baan' }));
     expect(screen.getByRole('status')).toHaveTextContent('/aː/ hoort er niet bij. 0 van 2 gevonden.');
@@ -67,10 +68,10 @@ describe('klankexperimenten', () => {
   });
 
   it('klinkerkaart: tweeklanken staan er alleen bij als de les dat vraagt', () => {
-    show((solved, done) => <VowelsWidget data={HOOG} solved={solved} onSolved={done} />);
+    show((solved, done) => <VowelsWidget seed="test" data={HOOG} solved={solved} onSolved={done} />);
     expect(screen.queryByRole('group', { name: 'Tweeklanken' })).not.toBeInTheDocument();
 
-    show((solved, done) => <VowelsWidget data={{ ...HOOG, targets: ['œy'], glides: true }} solved={solved} onSolved={done} />);
+    show((solved, done) => <VowelsWidget seed="test" data={{ ...HOOG, targets: ['œy'], glides: true }} solved={solved} onSolved={done} />);
     expect(screen.getByRole('group', { name: 'Tweeklanken' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: '/œy/ zoals in huis' })).toBeInTheDocument();
   });
@@ -90,7 +91,7 @@ describe('klankexperimenten', () => {
       },
     );
     const user = userEvent.setup();
-    show((solved, done) => <VowelsWidget data={HOOG} solved={solved} onSolved={done} />);
+    show((solved, done) => <VowelsWidget seed="test" data={HOOG} solved={solved} onSolved={done} />);
 
     await user.click(screen.getByRole('button', { name: '/i/ zoals in piet' }));
     await user.click(await screen.findByRole('button', { name: 'Luister naar piet' }));
@@ -106,7 +107,7 @@ describe('klankexperimenten', () => {
     vi.stubGlobal('speechSynthesis', { speak: vi.fn(), cancel: vi.fn(), getVoices: () => [{ name: 'English', lang: 'en-US', voiceURI: 'en' }] });
     vi.stubGlobal('SpeechSynthesisUtterance', class {});
     const user = userEvent.setup();
-    show((solved, done) => <VowelsWidget data={HOOG} solved={solved} onSolved={done} />);
+    show((solved, done) => <VowelsWidget seed="test" data={HOOG} solved={solved} onSolved={done} />);
 
     await user.click(screen.getByRole('button', { name: '/i/ zoals in piet' }));
     expect(screen.queryByRole('button', { name: 'Luister naar piet' })).not.toBeInTheDocument();
@@ -115,7 +116,7 @@ describe('klankexperimenten', () => {
   it('klanktabel: zegt waar een klank staat en lost op met alle lipklanken', async () => {
     const user = userEvent.setup();
     const onSolved = show((solved, done) => (
-      <GridWidget
+      <GridWidget seed="test"
         data={{ ...CONSONANT_TABLE, q: 'Tik alle klanken die je met twee lippen maakt', targets: ['p', 'b', 'm'], note: 'Twee lippen: p, b en m.' }}
         solved={solved}
         onSolved={done}
@@ -136,7 +137,7 @@ describe('klankexperimenten', () => {
 
   it('OT-tableau: twee eisen wisselen laat de andere kandidaat winnen', async () => {
     const user = userEvent.setup();
-    const onSolved = show((solved, done) => <TableauWidget data={HOND} solved={solved} onSolved={done} />);
+    const onSolved = show((solved, done) => <TableauWidget seed="test" data={HOND} solved={solved} onSolved={done} />);
 
     expect(screen.getByRole('status')).toHaveTextContent('Nu wint [hɔnd]. Laat [hɔnt] winnen');
     expect(screen.getByRole('rowheader', { name: '[hɔnd], wint' })).toBeInTheDocument();
@@ -152,5 +153,61 @@ describe('klankexperimenten', () => {
     expect(screen.getByRole('button', { name: '∗VOICED-CODA, plek 1 in de rangorde' })).toBeInTheDocument();
     expect(screen.getByRole('rowheader', { name: '[hɔnt], wint' })).toBeInTheDocument();
     expect(screen.getByRole('status')).toHaveTextContent(HOND.note);
+  });
+});
+
+/** Drie eisen: alleen met C bovenaan wint [c]; de andere vier rangordes zijn een goede start. */
+const DRIE: WidgetProps<'tableau'>['data'] = {
+  input: '/abc/',
+  constraints: [
+    { name: 'A', note: 'Eis A.' },
+    { name: 'B', note: 'Eis B.' },
+    { name: 'C', note: 'Eis C.' },
+  ],
+  candidates: [
+    { form: '[a]', marks: [0, 1, 1] },
+    { form: '[b]', marks: [1, 0, 1] },
+    { form: '[c]', marks: [1, 1, 0] },
+  ],
+  winner: 2,
+  goal: 'Laat [c] winnen',
+  note: 'C staat bovenaan.',
+};
+
+describe('OT-tableau: beginrangorde', () => {
+  const marks = DRIE.candidates.map((candidate) => candidate.marks);
+  const seeds = Array.from({ length: 40 }, (_, i) => `ronde-${i}`);
+
+  it('is per schudsleutel anders, maar nooit al de oplossing', () => {
+    const starts = seeds.map((seed) => tableauStart(seed, marks, 3, DRIE.winner));
+    for (const start of starts) {
+      expect([...start].sort()).toEqual([0, 1, 2]);
+      expect(winsAlone(marks, start, DRIE.winner)).toBe(false);
+    }
+    expect(new Set(starts.map((start) => start.join())).size).toBe(4);
+    expect(tableauStart('ronde-7', marks, 3, DRIE.winner)).toEqual(starts[7]);
+  });
+
+  it('bij twee eisen blijft de volgorde van de inhoud staan, want omwisselen is al de oplossing', () => {
+    const two = HOND.candidates.map((candidate) => candidate.marks);
+    for (const seed of seeds) expect(tableauStart(seed, two, 2, HOND.winner)).toEqual([0, 1]);
+  });
+
+  it('toont de eisen in de geschudde rangorde, met de plek op het scherm in het label', async () => {
+    const user = userEvent.setup();
+    const seed = seeds.find((candidate) => tableauStart(candidate, marks, 3, DRIE.winner)[0] !== 0)!;
+    const start = tableauStart(seed, marks, 3, DRIE.winner);
+    const onSolved = show((solved, done) => <TableauWidget seed={seed} data={DRIE} solved={solved} onSolved={done} />);
+
+    const names = start.map((constraint, position) => `${DRIE.constraints[constraint]!.name}, plek ${position + 1} in de rangorde`);
+    expect(screen.getAllByRole('button', { name: /in de rangorde$/ }).map((button) => button.getAttribute('aria-label'))).toEqual(names);
+    expect(onSolved).not.toHaveBeenCalled();
+
+    // C naar plek 1 wisselen laat [c] winnen.
+    const c = start.indexOf(2);
+    await user.click(screen.getByRole('button', { name: `C, plek ${c + 1} in de rangorde` }));
+    await user.click(screen.getByRole('button', { name: names[0] }));
+    expect(screen.getByRole('button', { name: 'C, plek 1 in de rangorde' })).toBeInTheDocument();
+    expect(onSolved).toHaveBeenCalledTimes(1);
   });
 });

@@ -96,6 +96,7 @@ type StepViewProps = {
   locked: boolean;
   correct: boolean | null;
   stepKey: string;
+  seed: string;
   onSubmit: () => void;
 };
 

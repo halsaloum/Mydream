@@ -19,8 +19,13 @@ export type StepProps<K extends StepKind> = {
   locked: boolean;
   /** Uitkomst tijdens feedback. */
   correct: boolean | null;
-  /** Stabiele sleutel van de stap (voor schudden en gedeelde animaties). */
+  /** Stabiele sleutel van de stap (voor gedeelde animaties). */
   stepKey: string;
+  /**
+   * Sleutel om te schudden: anders bij elke keer dat de stap getoond wordt (nieuwe ronde,
+   * herhaling achteraan), maar vast zolang je de stap maakt en na verversen.
+   */
+  seed: string;
   /** Zelfde als de hoofdknop (bijv. Enter in een invulveld). */
   onSubmit: () => void;
 };

@@ -22,7 +22,7 @@ const BUURMAN: WidgetProps<'phrase'>['data'] = {
 function Harness({ onSolved }: { onSolved: () => void }) {
   const [solved, setSolved] = useState(false);
   return (
-    <PhraseWidget
+    <PhraseWidget seed="test"
       data={BUURMAN}
       solved={solved}
       onSolved={() => {

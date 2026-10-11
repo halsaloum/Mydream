@@ -1,9 +1,10 @@
 'use client';
 
 import { ArrowRight, Check, Drama, FlaskConical, Inbox, RotateCw } from 'lucide-react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import type { Panel } from '@/content/schema';
 import { THINGS, thingIcon, type ThingId } from '@/content/things';
+import { permutation, shuffle } from '@/engine/hash';
 import { cn } from '@/lib/cn';
 import { play } from '@/lib/sound';
 import { speak } from '@/lib/speech';
@@ -18,6 +19,8 @@ import { ICON, useFlash, useSolve, type WidgetProps } from './widgets';
  * (een morfeem doet wat het betekent) en het toneel (een kring die je ronddraait en waarin je
  * aantikt wat de zin vraagt). Het 3D-beeld is een tweede manier om te spelen: alles werkt ook
  * met de knoppen eronder, en zonder WebGL staan daar de iconen.
+ * Voorwerpen en keuzes staan elke keer in een andere volgorde (met `seed`): in de inhoud staat
+ * het antwoord meestal vooraan, of staan de voorwerpen per bak.
  */
 
 const loadBins = () => import('@/lib/toy3d/scenes/bins').then((module) => module.binsScene);
@@ -60,7 +63,9 @@ const DRAG_HINT = 'Sleep opzij om rond te kijken.';
 
 /* ---------------------------------------------------------------- sorteertafel */
 
-export function BinsWidget({ data, solved, onSolved }: WidgetProps<'bins'>) {
+export function BinsWidget({ data, solved, onSolved, seed }: WidgetProps<'bins'>) {
+  /** Plek op tafel → voorwerp in de inhoud (die zet ze vaak per bak). De staat hieronder telt in voorwerpen uit de inhoud. */
+  const order = useMemo(() => permutation(`${seed}:items`, data.items.length), [seed, data.items]);
   const [placed, setPlaced] = useState<(number | null)[]>(() => data.items.map((item) => (solved ? item.bin : null)));
   const [selected, setSelected] = useState<number | null>(null);
   const [message, setMessage] = useState<string | null>(null);
@@ -111,23 +116,31 @@ export function BinsWidget({ data, solved, onSolved }: WidgetProps<'bins'>) {
         </div>
         <ToyCanvas
           load={loadBins}
-          props={{ items: data.items.map((item) => item.thing), bins: data.bins, rings: data.rings ?? false, placed, selected, wrong }}
+          props={{
+            items: order.map((i) => data.items[i]!.thing),
+            bins: data.bins,
+            rings: data.rings ?? false,
+            placed: order.map((i) => placed[i]!),
+            selected: selected === null ? null : order.indexOf(selected),
+            wrong: wrong && { item: order.indexOf(wrong.item), n: wrong.n },
+          }}
           onTap={(id) => {
             const [kind, value] = id.split(':');
-            if (kind === 'item') choose(Number(value));
+            if (kind === 'item') choose(order[Number(value)]!);
             if (kind === 'bin') drop(Number(value));
           }}
-          label={`Een tafel met ${data.items.map((item) => THINGS[item.thing].label).join(', ')}, en ${data.rings ? 'ringen' : 'bakken'}: ${data.bins.join(', ')}.`}
+          label={`Een tafel met ${order.map((i) => THINGS[data.items[i]!.thing].label).join(', ')}, en ${data.rings ? 'ringen' : 'bakken'}: ${data.bins.join(', ')}.`}
           className={cn('-mx-2 mt-2', data.rings ? 'h-72 sm:h-96' : 'h-64 sm:h-80')}
           fallback={
             <div className="grid size-full place-items-center">
-              <ThingIcon id={data.items[selected ?? Math.max(0, placed.indexOf(null))]!.thing} className="size-32 opacity-80" />
+              <ThingIcon id={data.items[selected ?? order.find((i) => placed[i] === null) ?? order[0]!]!.thing} className="size-32 opacity-80" />
             </div>
           }
         />
 
         <div role="group" aria-label="Voorwerpen" className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-3">
-          {data.items.map((item, i) => {
+          {order.map((i) => {
+            const item = data.items[i]!;
             const bin = placed[i];
             return (
               <Tile
@@ -163,7 +176,7 @@ export function BinsWidget({ data, solved, onSolved }: WidgetProps<'bins'>) {
 
 /* ---------------------------------------------------------------- vormmachine */
 
-export function MorphWidget({ data, solved, onSolved }: WidgetProps<'morph'>) {
+export function MorphWidget({ data, solved, onSolved, seed }: WidgetProps<'morph'>) {
   const last = data.rounds.length - 1;
   const [index, setIndex] = useState(solved ? last : 0);
   const [done, setDone] = useState(solved);
@@ -172,6 +185,7 @@ export function MorphWidget({ data, solved, onSolved }: WidgetProps<'morph'>) {
   const flash = useFlash<string>();
   const { box, solve } = useSolve(onSolved);
   const round = data.rounds[index]!;
+  const options = useMemo(() => shuffle(`${seed}:round:${index}`, round.options), [seed, index, round.options]);
 
   const pick = (option: string) => {
     if (done) return;
@@ -222,7 +236,7 @@ export function MorphWidget({ data, solved, onSolved }: WidgetProps<'morph'>) {
           }
         />
         <div role="group" aria-label="Kies de vorm" className="mt-3 flex flex-wrap justify-center gap-2">
-          {round.options.map((option) => (
+          {options.map((option) => (
             <Tile
               key={`${index}:${flash.flashKey}:${option}`}
               disabled={done}
@@ -258,7 +272,7 @@ type Phase = 'tap' | 'then' | 'done';
 
 const sameSet = (a: readonly string[], b: readonly string[]) => a.length === b.length && a.every((value) => b.includes(value));
 
-export function CastWidget({ data, solved, onSolved }: WidgetProps<'cast'>) {
+export function CastWidget({ data, solved, onSolved, seed }: WidgetProps<'cast'>) {
   const last = data.rounds.length - 1;
   const [index, setIndex] = useState(solved ? last : 0);
   const [selected, setSelected] = useState<ThingId[]>(solved ? [...data.rounds[last]!.answer] : []);
@@ -269,6 +283,9 @@ export function CastWidget({ data, solved, onSolved }: WidgetProps<'cast'>) {
   const { box, solve } = useSolve(onSolved);
   const round = data.rounds[index]!;
   const single = round.answer.length === 1;
+  /** De kring in een andere volgorde: in de inhoud staat het antwoord meestal vooraan, en vooraan staat ook naar je toe. */
+  const cast = useMemo(() => shuffle(`${seed}:cast:${index}`, round.cast), [seed, index, round.cast]);
+  const thenOptions = useMemo(() => (round.then ? shuffle(`${seed}:then:${index}`, round.then.options) : []), [seed, index, round.then]);
 
   const finish = () => {
     setMessage(null);
@@ -362,13 +379,13 @@ export function CastWidget({ data, solved, onSolved }: WidgetProps<'cast'>) {
         <p className="mt-1 text-small font-bold text-accent-ink">{round.ask}</p>
         <ToyCanvas
           load={loadCast}
-          props={{ round: index, cast: round.cast, selected, solved: shown, focus, wrong }}
+          props={{ round: index, cast, selected, solved: shown, focus, wrong }}
           onTap={(id) => tap(id.slice('cast:'.length) as ThingId)}
-          label={`Een draaiende kring met ${round.cast.map((id) => THINGS[id].label).join(', ')}.`}
+          label={`Een draaiende kring met ${cast.map((id) => THINGS[id].label).join(', ')}.`}
           className="-mx-2 mt-2 h-60 sm:h-80"
           fallback={
             <div className="grid size-full place-items-center">
-              <ThingIcon id={focus ?? round.cast[0]!} className="size-32 opacity-80" />
+              <ThingIcon id={focus ?? cast[0]!} className="size-32 opacity-80" />
             </div>
           }
         />
@@ -378,7 +395,7 @@ export function CastWidget({ data, solved, onSolved }: WidgetProps<'cast'>) {
         </p>
 
         <div role="group" aria-label="Voorwerpen in de kring" className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-3">
-          {round.cast.map((id) => {
+          {cast.map((id) => {
             const on = selected.includes(id);
             return (
               <Tile
@@ -411,7 +428,7 @@ export function CastWidget({ data, solved, onSolved }: WidgetProps<'cast'>) {
 
         {phase === 'then' && round.then && (
           <div role="group" aria-label={round.then.q} className="mt-4 flex flex-wrap justify-center gap-2">
-            {round.then.options.map((option) => (
+            {thenOptions.map((option) => (
               <Tile key={`${thenFlash.flashKey}:${option}`} state={thenFlash.flash === option ? 'wrong' : 'idle'} onClick={() => answerThen(option)}>
                 <span lang="nl">{option}</span>
               </Tile>

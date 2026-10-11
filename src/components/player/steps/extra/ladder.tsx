@@ -3,7 +3,8 @@
 /* eslint-disable react-hooks/refs */
 
 import { motion } from 'motion/react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
+import { shuffledIndices } from '@/engine/hash';
 import { cn } from '@/lib/cn';
 import { spring } from '@/lib/motion';
 import { play } from '@/lib/sound';
@@ -13,11 +14,21 @@ import { InlineFeedback, Stage, StepIntro, type StepProps } from '../shared';
 
 const DAYS = ['ma', 'di', 'wo', 'do', 'vr', 'za', 'zo'];
 
-export function LadderStep({ step, response, onChange, locked }: StepProps<'ladder'>) {
+/**
+ * De woordkaartjes: de volgorde uit `tray`, of anders geschud (alfabetisch lag soms al goed).
+ * Nooit al in ladder-volgorde, want dan tik je ze gewoon van links naar rechts aan.
+ */
+function trayOrder(step: StepProps<'ladder'>['step'], seed: string): string[] {
+  const ladder = step.steps.map((s) => s.t);
+  if (step.tray && step.tray.some((word, i) => word !== ladder[i])) return step.tray;
+  return shuffledIndices(seed, ladder.length).map((i) => ladder[i]!);
+}
+
+export function LadderStep({ step, response, onChange, locked, seed }: StepProps<'ladder'>) {
   const [bad, setBad] = useState<string | null>(null);
   const [hint, setHint] = useState('');
   const guard = useClickGuard();
-  const tray = step.tray ?? [...step.steps.map((s) => s.t)].sort();
+  const tray = useMemo(() => trayOrder(step, seed), [step, seed]);
   const done = response.placed >= step.steps.length;
   const last = response.placed > 0 ? step.steps[response.placed - 1] : null;
 

@@ -2,8 +2,9 @@
 
 import { Clock, TimerReset } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { permutation } from '@/engine/hash';
 import { speedScore } from '@/engine/kinds';
 import { cn } from '@/lib/cn';
 import { transition, useCalmMotion } from '@/lib/motion';
@@ -12,14 +13,38 @@ import { InlineFeedback, isTypingTarget, Kbd, StepIntro, type StepProps } from '
 
 type Flash = { ok: boolean; text: string; answer: string; item: number };
 
-export function SpeedStep({ step, response, onChange, locked }: StepProps<'speed'>) {
+/**
+ * Volgorde van de items in ronde `round`: elke ronde opnieuw geschud (in de inhoud wisselen
+ * aan elkaar en los vaak om en om), en nooit twee keer hetzelfde item achter elkaar.
+ */
+export function speedOrder(seed: string, n: number, round: number): number[] {
+  let order = permutation(`${seed}:ronde:0`, n);
+  for (let r = 1; r <= round; r++) {
+    const previous = order[n - 1];
+    order = permutation(`${seed}:ronde:${r}`, n);
+    if (n > 1 && order[0] === previous) order.push(order.shift()!);
+  }
+  return order;
+}
+
+export function SpeedStep({ step, response, onChange, locked, seed }: StepProps<'speed'>) {
   const calm = useCalmMotion();
   const finishSent = useRef(false);
   const [now, setNow] = useState(() => Date.now());
   const [flash, setFlash] = useState<Flash | null>(null);
   const [blocked, setBlocked] = useState(false);
   const active = !response.finished && (!response.clock || response.endsAt !== null);
-  const currentIndex = response.answers.length % step.items.length;
+  const n = step.items.length;
+  const round = Math.floor(response.answers.length / n);
+  const order = useMemo(() => speedOrder(seed, n, round), [seed, n, round]);
+  /**
+   * Index in de inhoud van het item dat nu aan de beurt is: het eerste uit deze ronde dat nog
+   * niet beantwoord is. Zo vraagt ook een antwoord van vóór het schudden geen item dubbel.
+   */
+  const currentIndex = useMemo(() => {
+    const asked = new Set(response.answers.slice(round * n).map((answer) => answer.item));
+    return order.find((i) => !asked.has(i)) ?? order[response.answers.length % n] ?? 0;
+  }, [order, response.answers, round, n]);
   const current = step.items[currentIndex] ?? step.items[0];
   const stats = speedScore(response.answers);
   const remaining = response.clock && response.endsAt ? Math.max(0, response.endsAt - now) : null;

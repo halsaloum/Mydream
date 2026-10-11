@@ -1,13 +1,14 @@
 'use client';
 
-import { useMemo } from 'react';
-import { orderSolution } from '@/engine/grade';
+import { useCallback, useMemo } from 'react';
+import { orderedText, orderSolution } from '@/engine/grade';
 import { SequenceBuilder } from './sequence';
 import { Stage, StepHeading, type StepProps } from './shared';
 
 /** Woorden of blokken in de goede volgorde leggen. */
-export function OrderStep({ step, response, onChange, locked, stepKey }: StepProps<'order'>) {
+export function OrderStep({ step, response, onChange, locked, stepKey, seed }: StepProps<'order'>) {
   const solution = useMemo(() => orderSolution(step.tiles, step.answer), [step.tiles, step.answer]);
+  const solved = useCallback((order: readonly number[]) => orderedText(step, { kind: 'order', placed: [...order] }) === step.answer, [step]);
   const verdicts = locked
     ? response.placed.map((index, position) => {
         const expected = solution?.[position];
@@ -26,6 +27,8 @@ export function OrderStep({ step, response, onChange, locked, stepKey }: StepPro
           verdicts={verdicts}
           variant="inline"
           stepKey={stepKey}
+          seed={seed}
+          solved={solved}
           lineLabel="Jouw zin"
           emptyText="Tik de kaartjes in de goede volgorde aan."
         />
@@ -34,8 +37,11 @@ export function OrderStep({ step, response, onChange, locked, stepKey }: StepPro
   );
 }
 
+/** De zinnen staan in de inhoud al in de goede volgorde. */
+const inOrder = (order: readonly number[]) => order.every((index, position) => index === position);
+
 /** Zinnen tot een alinea ordenen. Na controleren staat bij elke zin zijn rol. */
-export function ParagraphStep({ step, response, onChange, locked, stepKey }: StepProps<'paragraph'>) {
+export function ParagraphStep({ step, response, onChange, locked, stepKey, seed }: StepProps<'paragraph'>) {
   const verdicts = locked ? response.placed.map((index, position) => index === position) : null;
   return (
     <div>
@@ -53,6 +59,8 @@ export function ParagraphStep({ step, response, onChange, locked, stepKey }: Ste
           }}
           variant="block"
           stepKey={stepKey}
+          seed={seed}
+          solved={inOrder}
           lineLabel="Jouw alinea"
           emptyText="Tik de zinnen in de goede volgorde aan."
         />

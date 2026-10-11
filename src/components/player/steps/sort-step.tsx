@@ -1,8 +1,9 @@
 'use client';
 
 import { LayoutGroup } from 'motion/react';
-import { useLayoutEffect, useRef, useState, type KeyboardEvent } from 'react';
+import { useLayoutEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react';
 import type { Accent } from '@/content/schema';
+import { permutation } from '@/engine/hash';
 import { cn } from '@/lib/cn';
 import { play } from '@/lib/sound';
 import { PracticeDnd, useClickGuard, useDragTarget, useDropZone } from '../dnd';
@@ -13,9 +14,12 @@ const BUCKET_ACCENTS: Accent[] = ['blue', 'purple', 'orange', 'pink'];
 
 /**
  * Sorteren in categorieën. Kies een kaartje en daarna een bak, sleep het erheen,
- * of druk op 1–4 terwijl het kaartje focus heeft.
+ * of druk op 1–4 terwijl het kaartje focus heeft. De kaartjes liggen elke keer anders
+ * geschud: in de inhoud staan ze vaak per bak op een rij. Het antwoord blijft per kaartje
+ * in de volgorde van de inhoud.
  */
-export function SortStep({ step, response, onChange, locked, stepKey }: StepProps<'sort'>) {
+export function SortStep({ step, response, onChange, locked, stepKey, seed }: StepProps<'sort'>) {
+  const order = useMemo(() => permutation(seed, step.items.length), [seed, step.items]);
   const [held, setHeld] = useState<number | null>(null);
   const [dropped, setDropped] = useState<number | null>(null);
   const guard = useClickGuard();
@@ -42,8 +46,8 @@ export function SortStep({ step, response, onChange, locked, stepKey }: StepProp
     onChange({ kind: 'sort', assign: next });
     play(bucket === null ? 'remove' : 'place');
     if (via === 'click') {
-      const nextOpen = next.findIndex((value, i) => value === null && i !== item);
-      pendingFocus.current = bucket === null ? `item-${item}` : nextOpen >= 0 ? `item-${nextOpen}` : `bucket-${bucket}`;
+      const nextOpen = order.find((i) => next[i] === null && i !== item);
+      pendingFocus.current = bucket === null ? `item-${item}` : nextOpen !== undefined ? `item-${nextOpen}` : `bucket-${bucket}`;
     }
   };
 
@@ -67,7 +71,7 @@ export function SortStep({ step, response, onChange, locked, stepKey }: StepProp
     return held === item ? 'held' : 'idle';
   };
 
-  const open = step.items.map((_, i) => i).filter((i) => assign[i] === null);
+  const open = order.filter((i) => assign[i] === null);
 
   return (
     <div>
@@ -126,8 +130,9 @@ export function SortStep({ step, response, onChange, locked, stepKey }: StepProp
                 register={register(`bucket-${bucket}`)}
                 onReceive={() => held !== null && put(held, bucket, 'click')}
               >
-                {step.items.map((item, i) =>
-                  assign[i] === bucket ? (
+                {order.map((i) => {
+                  const item = step.items[i];
+                  return item && assign[i] === bucket ? (
                     <SortItem
                       key={i}
                       item={i}
@@ -143,8 +148,8 @@ export function SortStep({ step, response, onChange, locked, stepKey }: StepProp
                       hint={locked && assign[i] !== item.b ? `hoort bij ${step.buckets[item.b]}` : null}
                       placedIn={name}
                     />
-                  ) : null,
-                )}
+                  ) : null;
+                })}
               </Bucket>
             ))}
           </div>

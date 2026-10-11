@@ -4,7 +4,8 @@ import { Radio } from '@base-ui/react/radio';
 import { RadioGroup } from '@base-ui/react/radio-group';
 import { Check, Plus, X } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
-import { useEffect, useId } from 'react';
+import { useEffect, useId, useMemo } from 'react';
+import { shuffle } from '@/engine/hash';
 import { cn } from '@/lib/cn';
 import { transition, useCalmMotion } from '@/lib/motion';
 import { play } from '@/lib/sound';
@@ -12,9 +13,14 @@ import { isTypingTarget, Kbd, Stage, StepHeading, type StepProps } from './share
 
 type ChoiceProps = StepProps<'choice'> | StepProps<'combine'>;
 
-/** Meerkeuze en zinnen combineren, op Base UI RadioGroup. Cijfertoetsen kiezen direct. */
+/**
+ * Meerkeuze en zinnen combineren, op Base UI RadioGroup. Cijfertoetsen kiezen direct.
+ * De keuzes staan elke keer in een andere volgorde, zodat het goede antwoord niet altijd
+ * op dezelfde plek staat; het antwoord zelf is de tekst van de keuze, niet de plek.
+ */
 export function ChoiceStep(props: ChoiceProps) {
-  const { step, response, locked, correct } = props;
+  const { step, response, locked, correct, seed } = props;
+  const options = useMemo(() => shuffle(seed, step.options), [seed, step.options]);
   const calm = useCalmMotion();
   const headingId = useId();
   const value = response.value;
@@ -31,15 +37,15 @@ export function ChoiceStep(props: ChoiceProps) {
       if (event.metaKey || event.ctrlKey || event.altKey || isTypingTarget(event.target)) return;
       if (document.querySelector('[role="dialog"]')) return;
       const n = Number(event.key);
-      const option = Number.isInteger(n) && n >= 1 ? step.options[n - 1] : undefined;
+      const option = Number.isInteger(n) && n >= 1 ? options[n - 1] : undefined;
       if (option) select(option);
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   });
 
-  const long = step.options.some((option) => option.length > 22);
-  const columns = long ? '' : step.options.length === 2 ? 'sm:grid-cols-2' : 'sm:grid-cols-3';
+  const long = options.some((option) => option.length > 22);
+  const columns = long ? '' : options.length === 2 ? 'sm:grid-cols-2' : 'sm:grid-cols-3';
   const blankState = locked ? (correct ? 'correct' : 'wrong') : value ? 'filled' : 'empty';
 
   return (
@@ -94,7 +100,7 @@ export function ChoiceStep(props: ChoiceProps) {
         readOnly={locked}
         className={cn('stagger mt-8 grid gap-3', columns)}
       >
-        {step.options.map((option, i) => {
+        {options.map((option, i) => {
           const isAnswer = option === step.answer;
           const chosen = option === value;
           const feedback = locked ? (isAnswer ? 'right' : chosen ? 'wrong' : 'other') : null;
@@ -131,7 +137,7 @@ export function ChoiceStep(props: ChoiceProps) {
       </RadioGroup>
       {!locked && (
         <p className="mt-4 hidden items-center gap-1.5 text-caption font-semibold text-ink-muted sm:flex">
-          Kies met <Kbd>1</Kbd>–<Kbd>{step.options.length}</Kbd> of met de pijltjes, en controleer met <Kbd>Enter</Kbd>.
+          Kies met <Kbd>1</Kbd>–<Kbd>{options.length}</Kbd> of met de pijltjes, en controleer met <Kbd>Enter</Kbd>.
         </p>
       )}
     </div>

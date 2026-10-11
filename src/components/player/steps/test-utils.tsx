@@ -10,9 +10,10 @@ import type { StepProps } from './shared';
  * Rendert één oefenvorm zoals de player dat doet, zonder de rest van de app:
  * - het antwoord leeft hier (zoals in de sessie);
  * - zelfcontrolerende vormen (task) zetten zichzelf vast zodra ze klaar zijn;
- * - gecontroleerde vormen (graded) zetten vast bij `onSubmit` als ze compleet zijn.
+ * - gecontroleerde vormen (graded) zetten vast bij `onSubmit` als ze compleet zijn;
+ * - `seed` bepaalt hoe keuzes en kaartjes geschud worden (zoals één keer tonen in de player).
  */
-export function renderStep<K extends StepKind>(Component: ComponentType<StepProps<K>>, step: StepOf<K>, start?: ResponseOf<K>) {
+export function renderStep<K extends StepKind>(Component: ComponentType<StepProps<K>>, step: StepOf<K>, start?: ResponseOf<K>, seed = 'test:seed') {
   const state = {
     response: (start ?? initialResponse(step as Step)) as ResponseOf<K>,
     locked: false,
@@ -46,6 +47,7 @@ export function renderStep<K extends StepKind>(Component: ComponentType<StepProp
           locked={locked}
           correct={correct}
           stepKey="test:s0#0"
+          seed={seed}
           onChange={(next) => {
             if (state.locked) return;
             state.response = next;
