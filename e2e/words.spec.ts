@@ -13,10 +13,13 @@ test('woorden: de ronde van vandaag begint met raden, en hervat na verversen', a
   await expect(page.getByText('Nieuw woord', { exact: true })).toBeVisible();
   const options = page.getByRole('radio');
   await expect(options).toHaveCount(4);
-  await options.first().click();
-  const primary = page.getByRole('contentinfo').getByRole('button', { name: /Doorgaan/ });
-  await expect(primary).toBeEnabled();
-  await primary.click();
+  // Met de pijltjes kiezen legt de gok nog niet vast; Controleer wel.
+  await options.first().focus();
+  await page.keyboard.press('ArrowDown');
+  const footer = page.getByRole('contentinfo');
+  await expect(footer.getByRole('button', { name: /Controleer/ })).toBeEnabled();
+  await footer.getByRole('button', { name: /Controleer/ }).click();
+  await footer.getByRole('button', { name: /Doorgaan/ }).click();
 
   // De woordkaart: het woord en hardop zeggen.
   await expect(page.getByRole('contentinfo').getByRole('button', { name: /Begrepen/ })).toBeEnabled();

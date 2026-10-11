@@ -70,7 +70,7 @@ export const DELEGEREN: WordEntry = {
   level: 'B2',
   forms: ['delegeren', 'delegeer', 'delegeert', 'delegeerde', 'delegeerden', 'gedelegeerd'],
   grammar: 'delegeerde, heeft gedelegeerd · iets delegeren aan iemand',
-  meaning: 'Een taak en de verantwoordelijkheid ervoor aan iemand anders geven.',
+  meaning: 'Een taak en de verantwoordelijkheid ervoor bij iemand anders neerleggen.',
   examples: ['Een goede leider *delegeert* taken, zodat ze tijd heeft voor de grote lijn.', 'Ik heb de planning *gedelegeerd* aan Mehmet.'],
   collocations: ['taken delegeren aan iemand', 'verantwoordelijkheid delegeren', 'leren delegeren', 'goed kunnen delegeren'],
   family: ['de delegatie', 'de gedelegeerde'],

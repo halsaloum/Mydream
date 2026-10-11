@@ -120,6 +120,8 @@ export const WordEntrySchema = z
       if (!finds(solution)) issue(['gaps', i], 'Ingevuld bevat de zin geen vorm uit forms');
       const rest = gapRest(text);
       if (parsed.gaps[0]!.answers.some((answer) => wholeWord(answer).test(rest))) issue(['gaps', i], 'Het antwoord staat al in de zin');
+      // Het gat moet op het woord zelf staan: zonder het gat is het woord niet compleet.
+      else if (formPattern(entry).test(rest.normalize('NFC'))) issue(['gaps', i], 'Het woord staat al buiten het gat');
     });
     if (new Set(entry.gaps.map(gapSolution)).size !== entry.gaps.length) issue(['gaps'], 'Invulzinnen staan dubbel');
 
@@ -162,16 +164,22 @@ function formSource(form: string): string {
     .replace(/'/g, "['’]");
 }
 
-/** Herkent elke vorm van het woord in een tekst (voor eigen zinnen en voor de controle van de inhoud). */
-export function formPattern(entry: Pick<WordEntry, 'forms'>): RegExp {
+/** Een buigingsuitgang die een leerling achter een vorm mag zetten (de gedelegeerde taken, plannen's). */
+const INFLECTION = "(?:e|en|n|s|['’]s)?";
+
+/**
+ * Herkent elke vorm van het woord in een tekst (voor eigen zinnen en voor de controle van de
+ * inhoud). `loose` laat ook een buigingsuitgang toe, voor de eigen zinnen van de leerling.
+ */
+export function formPattern(entry: Pick<WordEntry, 'forms'>, loose = false): RegExp {
   const sources = [...entry.forms].sort((a, b) => b.length - a.length).map(formSource);
-  return new RegExp(`${LETTER_BEFORE}(?:${sources.join('|')})${LETTER_AFTER}`, 'iu');
+  return new RegExp(`${LETTER_BEFORE}(?:${sources.join('|')})${loose ? INFLECTION : ''}${LETTER_AFTER}`, 'iu');
 }
 
 /** Staat het woord in de tekst? Een vorm uit `forms`, of alle woorddelen uit `detect`. */
-export function containsWord(entry: Pick<WordEntry, 'forms' | 'detect'>, text: string): boolean {
+export function containsWord(entry: Pick<WordEntry, 'forms' | 'detect'>, text: string, loose = false): boolean {
   const clean = text.normalize('NFC');
-  if (formPattern(entry).test(clean)) return true;
+  if (formPattern(entry, loose).test(clean)) return true;
   if (!entry.detect) return false;
   const lower = clean.toLocaleLowerCase('nl');
   return entry.detect.every((part) => lower.includes(part.toLocaleLowerCase('nl')));

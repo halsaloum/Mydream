@@ -7,9 +7,10 @@ import { LessonPlayer, type PlayerMeta } from '@/components/player/lesson-player
 import { ButtonLink } from '@/components/ui/button';
 import { EmptyState } from '@/components/ui/empty-state';
 import { dayKey } from '@/lib/dates';
-import { pruneWords, settleRound, startRound, useWordController } from '@/lib/words/round';
+import { scrollToTop } from '@/lib/motion';
+import { planRound, pruneWords, settleRound, startRound, useWordController } from '@/lib/words/round';
 import { useHydrated } from '@/state/hydration';
-import { useWordRound } from '@/state/words';
+import { useWordRound, useWords } from '@/state/words';
 
 /**
  * De ronde van de tab "Woorden" in de lesplayer. Open je deze pagina zonder lopende ronde (een
@@ -21,6 +22,11 @@ export function WordRoundRoute() {
   const current = useWordRound((state) => state.current);
   const checked = useWordRound((state) => state.checked);
   const base = useWordController();
+  const perDay = useWords((state) => state.perDay);
+  const focus = useWords((state) => state.focus);
+  const next = useWords((state) => state.next);
+  const cards = useWords((state) => state.cards);
+  const days = useWords((state) => state.days);
   const today = dayKey();
 
   useEffect(() => {
@@ -33,7 +39,15 @@ export function WordRoundRoute() {
   }, [hydrated]);
 
   const restart = useCallback(() => {
-    if (!startRound('extra')) router.push('/woorden');
+    if (!startRound('extra')) {
+      router.push('/woorden');
+      return;
+    }
+    // De lesplayer begint opnieuw: zet de nieuwe eerste opdracht in beeld en de focus op de kop.
+    scrollToTop();
+    requestAnimationFrame(() =>
+      requestAnimationFrame(() => document.querySelector<HTMLElement>('[data-step-pos="0"] [data-step-heading]')?.focus({ preventScroll: true })),
+    );
   }, [router]);
 
   if (hydrated && checked === today && (!current || current.day !== today)) {
@@ -48,7 +62,9 @@ export function WordRoundRoute() {
             </ButtonLink>
           }
         >
-          Er staan geen herhalingen klaar en er zijn geen nieuwe woorden meer om te leren. Morgen komen je woorden terug.
+          {days[today]?.done
+            ? 'Je woorden van vandaag zijn af. Wil je meer? Op je woordenpagina start je een extra ronde.'
+            : 'Er staan geen herhalingen klaar en er zijn geen nieuwe woorden meer om te leren. Morgen komen je woorden terug.'}
         </EmptyState>
       </main>
     );
@@ -58,6 +74,8 @@ export function WordRoundRoute() {
   const themes = (current?.themes ?? []).map((id) => getTheme(id)?.name).filter((name) => name !== undefined);
   const extra = (current?.round ?? 0) > 0;
   const reviews = current?.reviewIds.length ?? 0;
+  // Na de ronde alleen "nog een ronde" aanbieden als er nog nieuwe woorden zijn.
+  const again = current?.session.phase === 'done' ? planRound({ perDay, focus, next, cards, days }, current, 'extra', today).newIds.length > 0 : true;
   const summary = [fresh.length && `${fresh.length} ${fresh.length === 1 ? 'nieuw woord' : 'nieuwe woorden'}`, reviews && `${reviews} herhaald`].filter(Boolean).join(' · ');
 
   const meta: PlayerMeta = {
@@ -72,6 +90,7 @@ export function WordRoundRoute() {
       learned: fresh.map((word) => headword(word)),
       primary: { label: 'Naar je woorden', href: '/woorden' },
       secondary: { label: 'Naar Leren', href: '/' },
+      again,
     },
   };
 

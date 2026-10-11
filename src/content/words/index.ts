@@ -3,7 +3,7 @@ import type { WordEntry } from './schema';
 import { getTheme, THEMES, type Theme } from './themes';
 
 export { THEMES, THEME_GROUP_LABELS, getTheme, type Theme, type ThemeGroup } from './themes';
-export { POS_LABELS, containsWord, formPattern, gapSolution, headword, splitGap, type WordEntry } from './schema';
+export { POS_LABELS, containsWord, formPattern, gapSolution, headword, splitGap, wholeWord, type WordEntry } from './schema';
 
 /**
  * De woordenbank: alle thema's met hun woorden. Een woord staat in precies één thema. De app

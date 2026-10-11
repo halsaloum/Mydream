@@ -97,7 +97,8 @@ export const STEP_MODES: Record<StepKind, StepMode> = {
   drill: 'task',
   passage: 'graded',
   word: 'teach',
-  guess: 'task',
+  // Met Controleer: kiezen met de pijltjestoetsen mag je gok nog niet vastleggen.
+  guess: 'graded',
   recall: 'graded',
   scene: 'graded',
   use: 'task',

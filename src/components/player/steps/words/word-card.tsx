@@ -156,7 +156,7 @@ export function WordCardView({
           </Section>
         )}
 
-        {(card.family?.length || card.synonyms?.length || card.opposites?.length) && (
+        {Boolean(card.family?.length || card.synonyms?.length || card.opposites?.length) && (
           <div className="mt-6 grid gap-5 sm:grid-cols-3">
             {card.family?.length ? (
               <Section title="Familie">

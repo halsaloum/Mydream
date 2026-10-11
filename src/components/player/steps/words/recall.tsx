@@ -3,13 +3,14 @@
 import { Input } from '@base-ui/react/input';
 import { KeyRound } from 'lucide-react';
 import { useId } from 'react';
+import { recallNearMiss } from '@/engine/words';
 import { cn } from '@/lib/cn';
 import { Hint, Kbd, Stage, StepHeading, type StepProps } from '../shared';
 
 /** Ophalen: typ het woord in de goede vorm in een nieuwe zin. Enter controleert. */
 export function RecallStep({ step, response, onChange, locked, correct, onSubmit }: StepProps<'recall'>) {
   const id = useId();
-  const answer = step.answers[0] ?? '';
+  const answer = (locked && !correct && recallNearMiss(step, response.value)) || (step.answers[0] ?? '');
   const cue = step.cue ?? '';
   const size = Math.max(6, response.value.length, cue.length, answer.length * 0.8) + 2;
   const state = locked ? (correct ? 'correct' : 'wrong') : 'idle';

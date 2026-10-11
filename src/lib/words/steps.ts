@@ -1,6 +1,6 @@
 import type { Step, StepOf } from '@/content/schema';
 import { plainText } from '@/content/text';
-import { getTheme, getWord, gapSolution, headword, POS_LABELS, splitGap, type BankWord } from '@/content/words';
+import { getTheme, getWord, gapSolution, headword, POS_LABELS, splitGap, wholeWord, type BankWord } from '@/content/words';
 import { fingerprint } from '@/engine/hash';
 import type { PlanStep } from '@/engine/plan';
 
@@ -53,13 +53,20 @@ function recallStep(word: BankWord, index: 0 | 1 | 2, cued: boolean): StepOf<'re
   };
 }
 
+/** Wat in een eigen zin als het woord telt: elke vorm uit de bank, en ook het woord zoals op het kaartje. */
+function writeTarget(word: BankWord) {
+  const lemma = word.word.trim();
+  const forms = word.forms.some((form) => form.toLocaleLowerCase('nl') === lemma.toLocaleLowerCase('nl')) ? word.forms : [...word.forms, lemma];
+  return { word: headword(word), forms, ...(word.detect ? { detect: word.detect } : {}) };
+}
+
 function writeStep(word: BankWord, index: 0 | 1): StepOf<'use'> {
   const use = word.use[index] ?? word.use[0]!;
   return {
     kind: 'use',
     prompt: 'Gebruik het in je eigen zin',
     situation: use.situation,
-    targets: [{ word: headword(word), forms: word.forms, ...(word.detect ? { detect: word.detect } : {}) }],
+    targets: [writeTarget(word)],
     minWords: 7,
     models: [use.model],
     checks: [
@@ -129,11 +136,13 @@ export function wordTaskStep(word: BankWord, task: Task): Step {
       // Zelf de vaste combinatie maken, niet kiezen uit foute combinaties: wie foute combinaties
       // ziet, onthoudt die soms in plaats van de goede.
       const { before, after, answers } = splitGap(word.colloc.text);
+      // Staat het antwoord (vaak een voorzetsel) in de betekenis, dan alleen het woord als steuntje.
+      const gives = answers.some((answer) => wholeWord(answer).test(word.meaning));
       return {
         kind: 'recall',
         prompt: 'Wat hoort hier vast bij?',
         clueLabel: 'Het woord',
-        clue: `${shown}: ${word.meaning}`,
+        clue: gives ? shown : `${shown}: ${word.meaning}`,
         cue: recallCue(answers[0] ?? ''),
         before,
         after,
@@ -173,7 +182,7 @@ export function composeStep(words: readonly BankWord[], situation: string): Step
     kind: 'use',
     prompt: 'Gebruik ze samen',
     situation,
-    targets: words.map((word) => ({ word: headword(word), forms: word.forms, ...(word.detect ? { detect: word.detect } : {}) })),
+    targets: words.map(writeTarget),
     minWords: 25 + words.length * 5,
     models: words.map((word) => gapSolution(word.gaps[1] ?? word.gaps[0]!)),
     checks: [

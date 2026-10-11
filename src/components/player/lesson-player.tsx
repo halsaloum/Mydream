@@ -33,7 +33,8 @@ export type PlayerMeta = {
   context?: string;
   accent: Accent;
   exit: { href: Route; label: string };
-  finish: { title: string; context?: string; primary: FinishAction; secondary?: FinishAction; learned: string[] };
+  /** `again: false` verbergt de knop om opnieuw te beginnen (bijv. als er geen nieuwe woorden meer zijn). */
+  finish: { title: string; context?: string; primary: FinishAction; secondary?: FinishAction; learned: string[]; again?: boolean };
   /** Niveau en vakgebied, getoond bij de eerste stap. */
   tag?: { layer: Layer; layerIndex: number; domain: Domain; stage?: Stage | undefined; icon?: string | undefined };
 };
@@ -52,6 +53,8 @@ function waitingHint(step: Step, response: Response): string {
     case 'bet':
     case 'scene':
       return 'Kies je antwoord';
+    case 'guess':
+      return 'Kies wat het woord volgens jou betekent';
     case 'recall':
       return 'Typ het woord';
     case 'type':
@@ -206,7 +209,7 @@ export function LessonPlayer({ controller, meta }: { controller: PlayerControlle
             celebrate={firstPhase !== null && firstPhase !== 'done'}
             primary={meta.finish.primary}
             secondary={meta.finish.secondary}
-            onRestart={controller.restart}
+            onRestart={meta.finish.again === false ? undefined : controller.restart}
           />
         </main>
       </div>

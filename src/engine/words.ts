@@ -66,15 +66,21 @@ export function recallCorrect(step: StepOf<'recall'>, value: string): boolean {
   return mine.length > 0 && step.answers.some((answer) => typed(answer) === mine);
 }
 
-/** Bijna goed: één of twee letters verschil (bij korte woorden één). Telt wel als fout. */
-export function recallNearMiss(step: StepOf<'recall'>, value: string): boolean {
+/**
+ * Bijna goed: één of twee letters verschil (bij korte woorden één). Telt wel als fout. Geeft het
+ * antwoord waar je dicht bij zat. Bij heel korte antwoorden (meestal een voorzetsel: aan of van,
+ * voor of door) is één letter verschil een ander woord, geen spelfout.
+ */
+export function recallNearMiss(step: StepOf<'recall'>, value: string): string | null {
   const mine = typed(value);
-  if (!mine || recallCorrect(step, value)) return false;
-  return step.answers.some((answer) => {
+  if (!mine || recallCorrect(step, value)) return null;
+  const near = step.answers.find((answer) => {
     const want = typed(answer);
+    if (want.length <= 4) return false;
     const allowed = want.length >= 8 ? 2 : 1;
     return editDistance(mine, want) <= allowed;
   });
+  return near ?? null;
 }
 
 /* ------------------------------------------------------------------ gebruiken */
@@ -82,7 +88,7 @@ export function recallNearMiss(step: StepOf<'recall'>, value: string): boolean {
 export function writeStatus(step: StepOf<'use'>, text: string) {
   const trimmed = text.trim();
   const words = trimmed ? trimmed.split(/\s+/).length : 0;
-  const targets = step.targets.map((target) => ({ word: target.word, found: containsWord(target, text) }));
+  const targets = step.targets.map((target) => ({ word: target.word, found: containsWord(target, text, true) }));
   return { words, enoughWords: words >= step.minWords, targets, ready: words >= step.minWords && targets.every((target) => target.found) };
 }
 
@@ -160,9 +166,9 @@ export function wordFeedback(step: Step, r: WordResponse, outcome: Outcome): Fee
   }
   if (step.kind === 'recall' && r.kind === 'recall') {
     if (outcome.correct) return { title: 'Precies!', body: step.why };
-    const answer = step.answers[0] ?? '';
-    if (recallNearMiss(step, r.value)) return { title: 'Bijna: kijk naar de spelling', body: `Het is ‘${answer}’. ${step.why}` };
-    return { title: 'Niet helemaal', body: `Het is ‘${answer}’. ${step.why}` };
+    const near = recallNearMiss(step, r.value);
+    if (near) return { title: 'Bijna: kijk naar de spelling', body: `Het is ‘${near}’. ${step.why}` };
+    return { title: 'Niet helemaal', body: `Het is ‘${step.answers[0] ?? ''}’. ${step.why}` };
   }
   if (step.kind === 'scene' && r.kind === 'scene') {
     return outcome.correct ? { title: 'Goed gedacht!', body: step.why } : { title: 'Niet helemaal', body: `Het is ‘${step.answer}’. ${step.why}` };

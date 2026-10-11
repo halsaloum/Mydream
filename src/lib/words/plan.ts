@@ -76,7 +76,7 @@ export function clash(a: BankWord, b: BankWord): boolean {
   return near(a, b) || near(b, a);
 }
 
-function pickFrom(group: readonly string[], start: string | null, count: number, taken: Set<string>, picked: BankWord[]): string[] {
+function pickFrom(group: readonly string[], start: string | null, count: number, taken: Set<string>, picked: BankWord[], avoid: readonly BankWord[]): string[] {
   const used: string[] = [];
   if (count <= 0 || group.length === 0) return used;
   const first = start && group.includes(start) ? group.indexOf(start) : 0;
@@ -85,7 +85,7 @@ function pickFrom(group: readonly string[], start: string | null, count: number,
     let took = false;
     for (const word of themeWords(themeId)) {
       if (count <= 0) break;
-      if (taken.has(word.id) || picked.some((other) => clash(word, other))) continue;
+      if (taken.has(word.id) || picked.some((other) => clash(word, other)) || avoid.some((other) => clash(word, other))) continue;
       picked.push(word);
       taken.add(word.id);
       count--;
@@ -101,20 +101,31 @@ const nextIn = (group: readonly string[], last: string | null) => (last === null
 /**
  * De nieuwe woorden voor een ronde. Elke dag een ander vakthema en een ander algemeen thema (zo
  * blijft het afwisselend), binnen het thema de belangrijkste woorden eerst, en nooit twee woorden
- * die je makkelijk verwart op dezelfde dag.
+ * die je makkelijk verwart op dezelfde dag: ook niet met de woorden die je vandaag al leerde
+ * (`avoid`).
  */
-export function chooseNewWords(data: WordsData, count: number, exclude: readonly string[] = []): { words: BankWord[]; themes: string[] } {
+export function chooseNewWords(
+  data: WordsData,
+  count: number,
+  exclude: readonly string[] = [],
+  avoid: readonly BankWord[] = [],
+): { words: BankWord[]; themes: string[] } {
   const taken = new Set([...Object.keys(data.cards), ...exclude]);
-  const vakCount = data.focus === 'vak' ? count : data.focus === 'algemeen' ? 0 : Math.ceil(count * 0.6);
   const picked: BankWord[] = [];
+  const themes: string[] = [];
   const preferred = data.next && VAK.includes(data.next) ? data.next : null;
   const preferredGeneral = data.next && ALGEMEEN.includes(data.next) ? data.next : null;
+  // Een thema dat je zelf koos, gaat voor, ook uit de groep die je instelling overslaat.
+  const offFocus = (data.focus === 'algemeen' && preferred) || (data.focus === 'vak' && preferredGeneral);
+  if (offFocus) themes.push(...pickFrom([offFocus], offFocus, count, taken, picked, avoid));
+  const left = count - picked.length;
+  const vakCount = data.focus === 'vak' ? left : data.focus === 'algemeen' ? 0 : Math.ceil(left * 0.6);
   const vakStart = preferred ?? nextIn(VAK, lastTheme(data.days, VAK));
   const algStart = preferredGeneral ?? nextIn(ALGEMEEN, lastTheme(data.days, ALGEMEEN));
-  const themes = [...pickFrom(VAK, vakStart, vakCount, taken, picked)];
-  themes.push(...pickFrom(ALGEMEEN, algStart, count - picked.length, taken, picked));
+  themes.push(...pickFrom(VAK, vakStart, vakCount, taken, picked, avoid));
+  themes.push(...pickFrom(ALGEMEEN, algStart, count - picked.length, taken, picked, avoid));
   // Is één groep op, dan vult de andere aan.
-  if (picked.length < count) themes.push(...pickFrom(VAK, vakStart, count - picked.length, taken, picked));
+  if (picked.length < count) themes.push(...pickFrom(VAK, vakStart, count - picked.length, taken, picked, avoid));
   return { words: picked, themes: [...new Set(themes)] };
 }
 
@@ -178,7 +189,8 @@ function composeWords(words: readonly BankWord[]): BankWord[] {
 
 export function buildRound(data: WordsData, day: string, round: number, exclude: readonly string[] = []): WordRound {
   const reviewIds = round === 0 ? dueIds(data.cards, day).filter((id) => getWord(id)).slice(0, MAX_REVIEWS) : [];
-  const { words, themes } = chooseNewWords(data, data.perDay, exclude);
+  const learnedToday = (data.days[day]?.added ?? []).map(getWord).filter((word) => word !== undefined);
+  const { words, themes } = chooseNewWords(data, data.perDay, exclude, learnedToday);
   const reviews = shuffle(
     `${day}:${round}`,
     reviewIds.map((id) => wordTaskItem(getWord(id)!, reviewTask(data.cards[id]!))),
@@ -264,8 +276,8 @@ export function commitRound(
   const kept: string[] = [];
   for (const id of round.newIds) {
     const list = results.get(id) ?? [];
-    // Pas een nieuw woord als je de kaart gezien hebt.
-    if (!list.some((result) => result.task === 'card') || cards[id]) continue;
+    // Pas een nieuw woord als je de kaart gezien hebt (en als het nog in de bank staat).
+    if (!getWord(id) || !list.some((result) => result.task === 'card') || cards[id]) continue;
     const first = list.find((result) => result.task === 'recall0');
     const end = newWordGrade(list);
     cards[id] = first && first.score !== null ? learnCard(first.score >= 1 ? 3 : 1, round.day, end) : learnCard(end, round.day);
@@ -274,7 +286,7 @@ export function commitRound(
   for (const id of round.reviewIds) {
     const card = cards[id];
     const list = results.get(id);
-    if (!card || !list || card.last === round.day) continue;
+    if (!card || !list || !getWord(id) || card.last === round.day) continue;
     let grade = reviewGrade(list);
     if (grade === null) continue;
     const bet = bets[id];
@@ -284,17 +296,19 @@ export function commitRound(
     reviewed.push(id);
     if (grade > 1) kept.push(id);
   }
+  // Alleen de thema's waar je echt woorden uit leerde, tellen (voor de afwisseling en je gekozen thema).
+  const addedThemes = new Set(added.map((id) => getWord(id)?.theme).filter((theme) => theme !== undefined));
   const before = data.days[round.day];
   const finished = session.phase === 'done';
   const day: DayLog = {
     added: [...new Set([...(before?.added ?? []), ...added])],
     reviewed: [...new Set([...(before?.reviewed ?? []), ...reviewed])],
     kept: [...new Set([...(before?.kept ?? []), ...kept])],
-    themes: [...new Set([...(before?.themes ?? []), ...(added.length ? round.themes : [])])],
+    themes: [...new Set([...(before?.themes ?? []), ...round.themes.filter((theme) => addedThemes.has(theme))])],
     done: (before?.done ?? false) || (finished && round.round === 0),
     ms: (before?.ms ?? 0) + session.activeMs,
   };
-  const next = data.next && round.themes.includes(data.next) && added.length > 0 ? null : data.next;
+  const next = data.next && addedThemes.has(data.next) ? null : data.next;
   return { ...data, next, cards, days: { ...data.days, [round.day]: day } };
 }
 

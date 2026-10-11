@@ -77,6 +77,8 @@ export function startRound(kind: 'today' | 'extra', now = Date.now()): StoredRou
   const open = openRound(now);
   if (open && kind === 'today') return open;
   if (open) commit(open);
+  // Is vandaag al af, dan begint "vandaag" geen extra ronde vanzelf: daar kies je zelf voor.
+  if (kind === 'today' && useWords.getState().days[dayKey(now)]?.done) return null;
   const plan = previewRound(kind, now);
   if (plan.plan.length === 0) return null;
   const stored: StoredRound = {

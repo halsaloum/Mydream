@@ -5,7 +5,7 @@ import { BOVENDIEN, DELEGEREN, DRAAGVLAK, KNOOP_DOORHAKKEN } from '@/content/wor
 import { createSession, type SessionState } from '@/engine/session';
 import { addDays } from '@/lib/dates';
 import { EMPTY_WORDS, learnCard, longestStreak, retention, reviewCard, wordStreak, type DayLog, type WordsData } from './memory';
-import { buildRound, clash, commitRound, interleave, reviewTask } from './plan';
+import { buildRound, chooseNewWords, clash, commitRound, interleave, reviewTask } from './plan';
 import { parseWordKey, wordTaskItem } from './steps';
 
 const TODAY = '2026-10-11';
@@ -101,6 +101,45 @@ describe('de ronde van de dag', () => {
     const strong = { ...learnCard(4, '2026-01-01'), s: 40, reps: 4, log: [4, 3, 3, 3] };
     expect(['free0', 'free1', 'free2', 'name', 'chat', 'meaning', 'use1', 'colloc']).toContain(reviewTask(strong));
     expect(reviewTask({ ...strong, reps: 4, lapses: 0 })).toBe('free0');
+  });
+});
+
+describe('thema’s en woorden kiezen', () => {
+  it('een afgebroken ronde: alleen thema’s waaruit je echt leerde tellen, en je gekozen thema blijft staan', () => {
+    const data: WordsData = { ...EMPTY_WORDS, perDay: 3, next: 'verbanden' };
+    const round = buildRound(data, TODAY, 0);
+    const cardAt = round.plan.findIndex((item) => {
+      const parsed = parseWordKey(item.key);
+      return parsed?.kind === 'task' && parsed.task === 'card' && getWord(parsed.wordId)?.theme === 'verbanden';
+    });
+    expect(cardAt).toBeGreaterThanOrEqual(0);
+    // Gestopt vlak voor de kaart van het woord uit "verbanden".
+    const session = { ...createSession('test', 'lesson', round.plan, 0), pos: cardAt };
+    const after = commitRound(data, round, session);
+    expect(Object.keys(after.cards).some((id) => getWord(id)?.theme === 'verbanden')).toBe(false);
+    expect(after.next).toBe('verbanden');
+    expect(after.days[TODAY]?.themes ?? []).not.toContain('verbanden');
+  });
+
+  it('een thema dat je zelf koos, komt ook als je instelling die groep overslaat', () => {
+    const { words, themes } = chooseNewWords({ ...EMPTY_WORDS, focus: 'vak', next: 'verbanden' }, 2);
+    expect(themes).toContain('verbanden');
+    expect(words.some((entry) => entry.theme === 'verbanden')).toBe(true);
+  });
+
+  it('een extra ronde kiest geen woord dat lijkt op een woord van eerder vandaag', () => {
+    for (const earlier of WORDS4) {
+      const { words } = chooseNewWords({ ...EMPTY_WORDS, cards: { [earlier.id]: learnCard(3, TODAY) } }, 12, [], [earlier]);
+      expect(words.filter((entry) => clash(entry, earlier)).map((entry) => entry.id)).toEqual([]);
+    }
+  });
+
+  it('een woord dat niet meer in de bank staat, krijgt geen kaart', () => {
+    const item = wordTaskItem(WORDS4[0]!, 'card');
+    const ghost = { ...item, key: item.key.replace(`:${WORDS4[0]!.id}:`, ':bestaat-niet:') };
+    const session = { ...createSession('test', 'lesson', [ghost], 0), phase: 'done' as const };
+    const after = commitRound(EMPTY_WORDS, { day: TODAY, round: 0, newIds: ['bestaat-niet'], reviewIds: [], themes: [] }, session);
+    expect(after.cards).toEqual({});
   });
 });
 
