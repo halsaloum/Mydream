@@ -17,6 +17,7 @@ export const DEMO_GROUPS = [
   'Overtuigen in één alinea',
   'Drogredenen herkennen',
   'Voor elk deel',
+  'Woorden leren',
 ] as const;
 export type DemoGroup = (typeof DEMO_GROUPS)[number];
 

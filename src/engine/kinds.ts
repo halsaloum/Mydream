@@ -26,6 +26,17 @@ import {
   wordDiff,
   type SpellingResponse,
 } from './spelling';
+import {
+  isWordKind,
+  WORD_RESPONSE_SCHEMAS,
+  wordEvaluate,
+  wordFeedback,
+  wordFits,
+  wordInitialResponse,
+  wordIsComplete,
+  wordProgress,
+  type WordResponse,
+} from './words';
 
 export type { Feedback, Outcome } from './outcome';
 
@@ -85,10 +96,15 @@ export const STEP_MODES: Record<StepKind, StepMode> = {
   cloze: 'graded',
   drill: 'task',
   passage: 'graded',
+  word: 'teach',
+  guess: 'task',
+  recall: 'graded',
+  scene: 'graded',
+  use: 'task',
 };
 
 /** Ontdekvormen zonder goed of fout: ze tellen niet mee in "in één keer goed". */
-const UNSCORED = new Set<StepKind>(['morph', 'timeline', 'train', 'clamp', 'evidence']);
+const UNSCORED = new Set<StepKind>(['morph', 'timeline', 'train', 'clamp', 'evidence', 'guess', 'use']);
 
 export function stepMode(step: Step): StepMode {
   return STEP_MODES[step.kind];
@@ -136,6 +152,7 @@ export const EXTRA_RESPONSE_SCHEMAS = [
   z.object({ kind: z.literal('dictation'), value: z.string(), plays: count, shown: z.boolean() }),
   ...ARGUMENT_RESPONSE_SCHEMAS,
   ...SPELLING_RESPONSE_SCHEMAS,
+  ...WORD_RESPONSE_SCHEMAS,
 ] as const;
 
 export type ExtraResponse = z.infer<(typeof EXTRA_RESPONSE_SCHEMAS)[number]>;
@@ -144,6 +161,7 @@ export type ExtraResponseOf<K extends ExtraKind> = Extract<ExtraResponse, { kind
 
 const isArgument = (r: ExtraResponse): r is ArgumentResponse => isArgumentKind(r.kind);
 const isSpelling = (r: ExtraResponse): r is SpellingResponse => isSpellingKind(r.kind);
+const isWord = (r: ExtraResponse): r is WordResponse => isWordKind(r.kind);
 
 const EXTRA_KINDS = new Set<string>(EXTRA_RESPONSE_SCHEMAS.map((schema) => schema.shape.kind.value));
 
@@ -293,7 +311,7 @@ export function extraInitialResponse(step: Step): ExtraResponse | null {
     case 'dictation':
       return { kind: 'dictation', value: '', plays: 0, shown: false };
     default:
-      return spellingInitialResponse(step) ?? argumentInitialResponse(step);
+      return spellingInitialResponse(step) ?? wordInitialResponse(step) ?? argumentInitialResponse(step);
   }
 }
 
@@ -301,6 +319,7 @@ export function extraIsComplete(step: Step, r: ExtraResponse): boolean {
   if (step.kind !== r.kind) return false;
   if (isArgument(r)) return argumentIsComplete(step, r);
   if (isSpelling(r)) return spellingIsComplete(step, r);
+  if (isWord(r)) return wordIsComplete(step, r);
   switch (r.kind) {
     case 'swipe':
       return step.kind === 'swipe' && r.answers.length >= step.cards.length;
@@ -349,6 +368,7 @@ export function extraFits(step: Step, r: ExtraResponse): boolean {
   if (step.kind !== r.kind) return false;
   if (isArgument(r)) return argumentFits(step, r);
   if (isSpelling(r)) return spellingFits(step, r);
+  if (isWord(r)) return wordFits(step, r);
   switch (r.kind) {
     case 'swipe':
       return step.kind === 'swipe' && r.answers.length <= step.cards.length;
@@ -393,6 +413,7 @@ export function extraEvaluate(step: Step, r: ExtraResponse): Outcome {
   if (step.kind !== r.kind) return { score: 0, correct: false, requeue: true, review: 'miss' };
   if (isArgument(r)) return argumentEvaluate(step, r);
   if (isSpelling(r)) return spellingEvaluate(step, r);
+  if (isWord(r)) return wordEvaluate(step, r);
   switch (r.kind) {
     case 'swipe': {
       if (step.kind !== 'swipe') break;
@@ -461,6 +482,7 @@ export function extraEvaluate(step: Step, r: ExtraResponse): Outcome {
 export function extraFeedback(step: Step, r: ExtraResponse, outcome: Outcome): Feedback {
   if (isArgument(r)) return argumentFeedback(step, r, outcome);
   if (isSpelling(r)) return spellingFeedback(step, r, outcome);
+  if (isWord(r)) return wordFeedback(step, r, outcome);
   const done = 'done' in step && step.done ? { title: step.done.title, body: step.done.text } : null;
   switch (r.kind) {
     case 'swipe': {
@@ -513,6 +535,7 @@ export function extraFeedback(step: Step, r: ExtraResponse, outcome: Outcome): F
 export function extraProgress(step: Step, r: ExtraResponse): string | null {
   if (isArgument(r)) return argumentProgress(step, r);
   if (isSpelling(r)) return spellingProgress(step, r);
+  if (isWord(r)) return wordProgress(step, r);
   const nog = (n: number, one: string, many: string) => `Nog ${n} ${n === 1 ? one : many}`;
   switch (r.kind) {
     case 'swipe':

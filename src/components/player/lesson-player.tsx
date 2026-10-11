@@ -27,7 +27,7 @@ import { Kbd } from './steps/shared';
 import type { PlayerController } from './use-session';
 
 export type PlayerMeta = {
-  mode: 'lesson' | 'review' | 'demo';
+  mode: 'lesson' | 'review' | 'demo' | 'words';
   title: string;
   /** Korte context boven de titel in de kop, bv. het vakgebied. */
   context?: string;
@@ -50,7 +50,10 @@ function waitingHint(step: Step, response: Response): string {
     case 'choice':
     case 'combine':
     case 'bet':
+    case 'scene':
       return 'Kies je antwoord';
+    case 'recall':
+      return 'Typ het woord';
     case 'type':
     case 'fix':
     case 'rewrite':

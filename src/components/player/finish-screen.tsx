@@ -19,7 +19,7 @@ const loadReward = () => import('@/lib/toy3d/scenes/reward').then((module) => mo
 export type FinishAction = { label: string; href: Route; onNavigate?: () => void };
 
 type FinishScreenProps = {
-  mode: 'lesson' | 'review' | 'demo';
+  mode: 'lesson' | 'review' | 'demo' | 'words';
   title: string;
   context?: string;
   summary: SessionSummary;
@@ -35,6 +35,11 @@ function message(mode: FinishScreenProps['mode'], accuracy: number, graded: numb
   if (mode === 'demo') return 'Dit was een voorbeeld; het telt niet mee voor je voortgang.';
   if (graded === 0) return 'Uitleg gelezen en uitgeprobeerd.';
   if (mode === 'review') return accuracy >= 90 ? 'Je oefenpunten zitten erin.' : 'Wat nog niet lukte, komt later nog eens terug.';
+  if (mode === 'words') {
+    if (accuracy >= 90) return 'Sterk. Je woorden komen terug net voordat je ze zou vergeten.';
+    if (accuracy >= 60) return 'Goed gedaan. Wat nog lastig was, komt eerder terug.';
+    return 'Lastige woorden komen morgen terug. Juist dat terughalen zet ze vast.';
+  }
   if (accuracy >= 90) return 'Dit zit erin.';
   if (accuracy >= 60) return 'Goed gedaan. Nog een keer maakt het vast.';
   return 'Je fouten komen straks terug in de herhaling. Zo leer je het.';
@@ -137,7 +142,17 @@ export function FinishScreen({ mode, title, context, summary, learned, celebrate
         </Stat>
       </motion.dl>
 
-      {mode !== 'demo' && summary.missed.length > 0 && (
+      {mode === 'words' && summary.missed.length > 0 && (
+        <motion.p {...rise(2)} className="mt-4 rounded-tile border-2 border-orange-line bg-orange-soft px-4 py-3 text-left text-small font-semibold text-orange-ink">
+          {summary.missed.length === 1 ? 'Eén opdracht ging' : `${summary.missed.length} opdrachten gingen`} niet in één keer goed. Die woorden komen sneller terug in je{' '}
+          <Link href="/woorden" className="underline decoration-2 underline-offset-4 hover:text-ink">
+            woordenlijst
+          </Link>
+          .
+        </motion.p>
+      )}
+
+      {mode !== 'demo' && mode !== 'words' && summary.missed.length > 0 && (
         <motion.p {...rise(2)} className="mt-4 rounded-tile border-2 border-orange-line bg-orange-soft px-4 py-3 text-left text-small font-semibold text-orange-ink">
           {summary.missed.length === 1 ? 'Eén opdracht staat' : `${summary.missed.length} opdrachten staan`} klaar in je{' '}
           <Link href="/herhalen" className="underline decoration-2 underline-offset-4 hover:text-ink">
@@ -183,7 +198,7 @@ export function FinishScreen({ mode, title, context, summary, learned, celebrate
       {onRestart && (
         <Button variant="ghost" size="sm" className="mt-4" onClick={onRestart}>
           <RotateCcw aria-hidden className="size-4" strokeWidth={2.5} />
-          {mode === 'review' ? 'Nog een ronde' : 'Les opnieuw doen'}
+          {mode === 'words' ? 'Nog een ronde nieuwe woorden' : mode === 'review' ? 'Nog een ronde' : 'Les opnieuw doen'}
         </Button>
       )}
     </div>

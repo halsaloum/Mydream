@@ -15,6 +15,7 @@ import { ContinueCard } from './continue-card';
 import { HeroScene } from './hero-scene';
 import { LayerMachine } from './layer-machine';
 import { RecentProgress } from './recent-progress';
+import { WordsCard } from './words-card';
 
 function TodayGoal({ goal, activeMs, streak }: { goal: number; activeMs: number; streak: number }) {
   const done = minutes(activeMs);
@@ -75,6 +76,7 @@ export function HomeView() {
         <HeroScene className="order-last h-60 sm:h-72 lg:order-none lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:h-full lg:min-h-[26rem] lg:max-h-[36rem]" />
         <div className="lg:self-start">
           <ContinueCard target={target} firstTime={firstTime} />
+          <WordsCard />
         </div>
       </div>
 

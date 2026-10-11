@@ -6701,6 +6701,392 @@
                         ],
                         "additionalProperties": false,
                         "description": "Tekstdictee: luister zin voor zin en typ precies wat je hoort. Elk woord wordt nagekeken."
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "const": "word"
+                          },
+                          "id": {
+                            "type": "string",
+                            "pattern": "^[a-z0-9][a-z0-9-]*$"
+                          },
+                          "word": {
+                            "type": "string",
+                            "pattern": "\\S"
+                          },
+                          "article": {
+                            "type": "string",
+                            "enum": [
+                              "de",
+                              "het"
+                            ]
+                          },
+                          "pos": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Woordsoort, uitgeschreven."
+                          },
+                          "level": {
+                            "type": "string",
+                            "pattern": "\\S"
+                          },
+                          "register": {
+                            "type": "string"
+                          },
+                          "theme": {
+                            "type": "string",
+                            "pattern": "\\S"
+                          },
+                          "grammar": {
+                            "type": "string"
+                          },
+                          "meaning": {
+                            "type": "string",
+                            "pattern": "\\S"
+                          },
+                          "examples": {
+                            "minItems": 1,
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "pattern": "\\S"
+                            }
+                          },
+                          "collocations": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "pattern": "\\S"
+                            }
+                          },
+                          "family": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "pattern": "\\S"
+                            }
+                          },
+                          "synonyms": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "pattern": "\\S"
+                            }
+                          },
+                          "opposites": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "pattern": "\\S"
+                            }
+                          },
+                          "contrast": {
+                            "type": "object",
+                            "properties": {
+                              "word": {
+                                "type": "string",
+                                "pattern": "\\S"
+                              },
+                              "note": {
+                                "type": "string",
+                                "pattern": "\\S"
+                              }
+                            },
+                            "required": [
+                              "word",
+                              "note"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "tip": {
+                            "type": "string"
+                          },
+                          "think": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "word",
+                          "pos",
+                          "level",
+                          "theme",
+                          "meaning",
+                          "examples",
+                          "collocations"
+                        ],
+                        "additionalProperties": false,
+                        "description": "Woordkaart: het woord, de betekenis, de vormen, vaste combinaties en verschillen met verwante woorden."
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "const": "guess"
+                          },
+                          "id": {
+                            "type": "string",
+                            "pattern": "^[a-z0-9][a-z0-9-]*$"
+                          },
+                          "prompt": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Opdracht boven de oefening."
+                          },
+                          "sentence": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "De zin met het nieuwe woord gemarkeerd met *…*."
+                          },
+                          "word": {
+                            "type": "string",
+                            "pattern": "\\S"
+                          },
+                          "options": {
+                            "minItems": 2,
+                            "maxItems": 5,
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "pattern": "\\S"
+                            },
+                            "description": "Mogelijke betekenissen."
+                          },
+                          "answer": {
+                            "type": "string",
+                            "pattern": "\\S"
+                          },
+                          "why": {
+                            "type": "string",
+                            "pattern": "\\S"
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "prompt",
+                          "sentence",
+                          "word",
+                          "options",
+                          "answer",
+                          "why"
+                        ],
+                        "additionalProperties": false,
+                        "description": "Raad eerst: kies de betekenis die je uit de zin afleidt. Telt niet mee voor je score."
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "const": "recall"
+                          },
+                          "id": {
+                            "type": "string",
+                            "pattern": "^[a-z0-9][a-z0-9-]*$"
+                          },
+                          "prompt": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Opdracht boven de oefening."
+                          },
+                          "clue": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Wat het woord betekent, als aanwijzing."
+                          },
+                          "clueLabel": {
+                            "description": "Kop boven de aanwijzing; leeg = \"Betekenis\".",
+                            "type": "string"
+                          },
+                          "cue": {
+                            "description": "Steuntje in het lege vak, bv. de beginletters. Leeg = geen steuntje.",
+                            "type": "string"
+                          },
+                          "before": {
+                            "type": "string"
+                          },
+                          "after": {
+                            "type": "string"
+                          },
+                          "answers": {
+                            "minItems": 1,
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "pattern": "\\S"
+                            },
+                            "description": "De goede vormen voor dit gat; de eerste wordt getoond."
+                          },
+                          "word": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Het woord zoals op de kaart."
+                          },
+                          "why": {
+                            "type": "string",
+                            "pattern": "\\S"
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "prompt",
+                          "clue",
+                          "before",
+                          "after",
+                          "answers",
+                          "word",
+                          "why"
+                        ],
+                        "additionalProperties": false,
+                        "description": "Ophalen: typ het woord in de goede vorm in een zin. Hoofdletters tellen niet mee."
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "const": "scene"
+                          },
+                          "id": {
+                            "type": "string",
+                            "pattern": "^[a-z0-9][a-z0-9-]*$"
+                          },
+                          "prompt": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Opdracht boven de oefening."
+                          },
+                          "situation": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "De situatie op het werk."
+                          },
+                          "options": {
+                            "minItems": 2,
+                            "maxItems": 5,
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "pattern": "\\S"
+                            }
+                          },
+                          "answer": {
+                            "type": "string",
+                            "pattern": "\\S"
+                          },
+                          "why": {
+                            "type": "string",
+                            "pattern": "\\S"
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "prompt",
+                          "situation",
+                          "options",
+                          "answer",
+                          "why"
+                        ],
+                        "additionalProperties": false,
+                        "description": "Denk na: lees de situatie en kies het woord dat precies past."
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "const": "use"
+                          },
+                          "id": {
+                            "type": "string",
+                            "pattern": "^[a-z0-9][a-z0-9-]*$"
+                          },
+                          "prompt": {
+                            "type": "string",
+                            "pattern": "\\S",
+                            "description": "Opdracht boven de oefening."
+                          },
+                          "situation": {
+                            "type": "string",
+                            "pattern": "\\S"
+                          },
+                          "targets": {
+                            "minItems": 1,
+                            "maxItems": 5,
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "word": {
+                                  "type": "string",
+                                  "pattern": "\\S",
+                                  "description": "Het woord zoals het getoond wordt."
+                                },
+                                "forms": {
+                                  "minItems": 1,
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string",
+                                    "pattern": "\\S"
+                                  },
+                                  "description": "Vormen die als gebruik van het woord gelden (… = woorden ertussen)."
+                                },
+                                "detect": {
+                                  "description": "Of: woorddelen die allemaal in de tekst moeten staan.",
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string",
+                                    "pattern": "\\S"
+                                  }
+                                }
+                              },
+                              "required": [
+                                "word",
+                                "forms"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "minWords": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 9007199254740991
+                          },
+                          "models": {
+                            "maxItems": 3,
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "pattern": "\\S"
+                            },
+                            "description": "Voorbeelden die de leerling na het schrijven ziet."
+                          },
+                          "checks": {
+                            "minItems": 1,
+                            "maxItems": 4,
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "pattern": "\\S"
+                            },
+                            "description": "Vragen om je eigen tekst mee na te kijken."
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "prompt",
+                          "situation",
+                          "targets",
+                          "minWords",
+                          "models",
+                          "checks"
+                        ],
+                        "additionalProperties": false,
+                        "description": "Gebruik het: schrijf een eigen zin of tekst met de woorden, vergelijk hem met een voorbeeld en beoordeel jezelf."
                       }
                     ]
                   }
