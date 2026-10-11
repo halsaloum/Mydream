@@ -23,18 +23,33 @@ function mulberry32(seed: number) {
 }
 
 /**
- * Een vaste, geschudde volgorde van de indexen 0..n-1 voor een gegeven sleutel.
- * Dezelfde sleutel geeft altijd dezelfde volgorde (nodig voor hervatten na verversen)
- * en de volgorde is nooit al de goede volgorde.
+ * Een willekeurige maar vaste volgorde van de indexen 0..n-1 voor een gegeven sleutel: elke
+ * volgorde is even waarschijnlijk, ook de oorspronkelijke. Voor keuzes en kaartjes, zodat het
+ * goede antwoord niet altijd op dezelfde plek staat.
  */
-export function shuffledIndices(seedKey: string, n: number): number[] {
+export function permutation(seedKey: string, n: number): number[] {
   const order = Array.from({ length: n }, (_, i) => i);
-  if (n < 2) return order;
   const random = mulberry32(parseInt(fingerprint(seedKey), 36));
   for (let i = n - 1; i > 0; i--) {
     const j = Math.floor(random() * (i + 1));
     [order[i], order[j]] = [order[j]!, order[i]!];
   }
+  return order;
+}
+
+/** De items in een willekeurige maar vaste volgorde (zie `permutation`). */
+export function shuffle<T>(seedKey: string, items: readonly T[]): T[] {
+  return permutation(seedKey, items.length).map((i) => items[i]!);
+}
+
+/**
+ * Een vaste, geschudde volgorde van de indexen 0..n-1 voor een gegeven sleutel.
+ * Dezelfde sleutel geeft altijd dezelfde volgorde (nodig voor hervatten na verversen)
+ * en de volgorde is nooit al de goede volgorde.
+ */
+export function shuffledIndices(seedKey: string, n: number): number[] {
+  const order = permutation(seedKey, n);
+  if (n < 2) return order;
   if (order.every((value, i) => value === i)) order.push(order.shift()!);
   return order;
 }

@@ -15,6 +15,16 @@ function demo<K extends StepKind>(slug: string, kind: K): StepOf<K> {
   return step as StepOf<K>;
 }
 
+const SEEDS = Array.from({ length: 16 }, (_, i) => `sessie:${i}`);
+
+/** De teksten in de volgorde waarin ze met deze rol op het scherm staan. */
+function shownOrder(role: 'button' | 'radio', texts: readonly string[]) {
+  return screen
+    .getAllByRole(role)
+    .map((element) => texts.find((text) => element.textContent?.includes(text)))
+    .filter((text): text is string => text !== undefined);
+}
+
 describe('groep D extra oefenvormen', () => {
   it('bouwt de alinea-stapel en telt een verkeerde laag', async () => {
     const user = userEvent.setup();
@@ -82,5 +92,62 @@ describe('groep D extra oefenvormen', () => {
     expect(view.state.locked).toBe(true);
     expect(view.state.correct).toBe(true);
     expect(screen.getByRole('status', { name: 'Dictee nagekeken' })).toBeInTheDocument();
+  });
+});
+
+describe('groep D: keuzes staan niet op een vaste plek', () => {
+  it('Durf je schudt de antwoorden per keer; de inzet blijft van weinig naar veel', async () => {
+    const user = userEvent.setup();
+    const step = { ...demo('durf-je', 'bet'), options: ['Ik ben ziek.', 'Ik zijn ziek.', 'Ik bent ziek.', 'Ik is ziek.'], answer: 'Ik ben ziek.' };
+    const answerAt = new Set<number>();
+    for (const seed of SEEDS) {
+      const view = renderStep(BetStep, step, undefined, seed);
+      const order = shownOrder('radio', step.options);
+      expect([...order].sort()).toEqual([...step.options].sort());
+      answerAt.add(order.indexOf(step.answer));
+      expect(shownOrder('radio', ['Ik gok', 'Vrij zeker', 'Heel zeker'])).toEqual(['Ik gok', 'Vrij zeker', 'Heel zeker']);
+
+      await user.click(screen.getByRole('radio', { name: step.answer }));
+      expect(view.state.response.value).toBe(step.answer);
+      view.unmount();
+    }
+    expect(answerAt.size).toBeGreaterThan(2);
+  });
+
+  it('Durf je houdt dezelfde volgorde bij dezelfde sleutel (verversen)', () => {
+    const step = demo('durf-je', 'bet');
+    const orders = new Set<string>();
+    for (const seed of SEEDS) {
+      const first = renderStep(BetStep, step, undefined, seed);
+      const before = shownOrder('radio', step.options);
+      first.unmount();
+      const again = renderStep(BetStep, step, undefined, seed);
+      expect(shownOrder('radio', step.options)).toEqual(before);
+      again.unmount();
+      orders.add(before.join('|'));
+    }
+    expect(orders.size).toBe(2);
+  });
+
+  it('alinea-stapel: de zin voor de volgende laag staat niet altijd bovenaan', async () => {
+    const user = userEvent.setup();
+    const step = demo('alinea-stapel', 'stack');
+    const texts = step.layers.map((layer) => layer.text);
+    const nextAt = new Set<string>();
+    for (const seed of SEEDS.slice(0, 8)) {
+      const view = renderStep(StackStep, step, undefined, seed);
+      for (const [placed, text] of texts.entries()) {
+        const left = shownOrder('button', texts.slice(placed));
+        expect([...left].sort()).toEqual(texts.slice(placed).sort());
+        nextAt.add(`${placed}:${left.indexOf(text)}`);
+        await user.click(screen.getByRole('button', { name: (name) => name.startsWith(text) }));
+      }
+      expect(view.state.locked).toBe(true);
+      expect(view.state.response).toMatchObject({ placed: step.layers.length, mistakes: 0 });
+      view.unmount();
+    }
+    // De eerste en de tweede laag staan bij verschillende sleutels op verschillende plekken.
+    expect([...nextAt].filter((key) => key.startsWith('0:')).length).toBeGreaterThan(1);
+    expect([...nextAt].filter((key) => key.startsWith('1:')).length).toBeGreaterThan(1);
   });
 });

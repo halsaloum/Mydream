@@ -21,7 +21,7 @@ const ONLEESBAAR: WidgetProps<'bracket'>['data'] = {
 function Harness({ onSolved }: { onSolved: () => void }) {
   const [solved, setSolved] = useState(false);
   return (
-    <BracketWidget
+    <BracketWidget seed="test"
       data={ONLEESBAAR}
       solved={solved}
       onSolved={() => {

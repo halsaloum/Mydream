@@ -20,6 +20,16 @@ function demoStep<K extends StepKind>(slug: string, kind: K): StepOf<K> {
   return step as StepOf<K>;
 }
 
+const SEEDS = Array.from({ length: 16 }, (_, i) => `sessie:${i}`);
+
+/** De teksten in de volgorde waarin ze als knop op het scherm staan. */
+function shownOrder(texts: readonly string[]) {
+  return screen
+    .getAllByRole('button')
+    .map((button) => texts.find((text) => button.textContent?.includes(text)))
+    .filter((text): text is string => text !== undefined);
+}
+
 describe('groep C extra oefenvormen', () => {
   test('AmbiguityStep telt een misser en koppelt beide betekenissen', async () => {
     const user = userEvent.setup();
@@ -106,5 +116,120 @@ describe('groep C extra oefenvormen', () => {
 
     expect(view.state.locked).toBe(true);
     expect(view.state.response.on).toEqual(['feit', 'voorbeeld']);
+  });
+});
+
+describe('groep C: keuzes staan niet op een vaste plek', () => {
+  test('AmbiguityStep schudt de zinsvarianten per keer en bewaart de plek in de inhoud', async () => {
+    const user = userEvent.setup();
+    const step = demoStep('twee-betekenissen', 'ambiguity');
+    const texts = step.options.map((option) => option.t);
+    const orders = new Set<string>();
+    const firstFit = new Set<string>();
+    for (const seed of SEEDS.slice(0, 8)) {
+      const view = renderStep(AmbiguityStep, step, undefined, seed);
+      const order = shownOrder(texts);
+      expect([...order].sort()).toEqual([...texts].sort());
+      orders.add(order.join('|'));
+      firstFit.add(order.find((text) => step.options.find((option) => option.t === text)?.fits) ?? '');
+
+      await user.click(screen.getByRole('button', { name: /Met de verrekijker zag ik de man/i }));
+      await user.click(screen.getByRole('button', { name: /Ik zag de man die een verrekijker/i }));
+      expect(view.state.response).toMatchObject({ solved: { A: 1, B: 2 }, mistakes: 0 });
+      view.unmount();
+    }
+    expect(orders.size).toBeGreaterThan(2);
+    // De eerste passende zin is niet steeds die van betekenis A.
+    expect(firstFit.size).toBe(2);
+  });
+
+  test('AmbiguityStep houdt dezelfde volgorde bij dezelfde sleutel (verversen)', () => {
+    const step = demoStep('twee-betekenissen', 'ambiguity');
+    const texts = step.options.map((option) => option.t);
+    const first = renderStep(AmbiguityStep, step, undefined, 'vast');
+    const before = shownOrder(texts);
+    first.unmount();
+    renderStep(AmbiguityStep, step, undefined, 'vast');
+    expect(shownOrder(texts)).toEqual(before);
+  });
+
+  test('ChatStep schudt de antwoorden per ronde en bewaart de keuze als plek in de inhoud', async () => {
+    const user = userEvent.setup();
+    const step = demoStep('chat-scenario', 'chat');
+    const round = step.rounds[0]!;
+    const rightAt = new Set<number>();
+    for (const seed of SEEDS) {
+      const view = renderStep(ChatStep, step, undefined, seed);
+      const order = shownOrder(round.options);
+      expect([...order].sort()).toEqual([...round.options].sort());
+      rightAt.add(order.indexOf(round.options[round.right]!));
+
+      await user.click(screen.getByRole('button', { name: round.options[round.right]! }));
+      expect(view.state.response.picks).toEqual([round.right]);
+      view.unmount();
+    }
+    expect(rightAt).toEqual(new Set([0, 1]));
+  });
+
+  test('ChatStep schudt elke ronde apart', () => {
+    const step = demoStep('chat-scenario', 'chat');
+    const shown = (picks: number[]) =>
+      SEEDS.map((seed) => {
+        const view = renderStep(ChatStep, step, { kind: 'chat', picks }, seed);
+        const order = shownOrder(step.rounds[picks.length]!.options).map((text) => step.rounds[picks.length]!.options.indexOf(text));
+        view.unmount();
+        return order.join('');
+      });
+    // Met dezelfde sleutel kan ronde 2 anders staan dan ronde 1.
+    const first = shown([]);
+    const second = shown([0]);
+    expect(first.some((order, i) => order !== second[i])).toBe(true);
+  });
+
+  test('IntentStep schudt de antwoorden per situatie', async () => {
+    const user = userEvent.setup();
+    const step = demoStep('zegt-en-bedoelt', 'intent');
+    const round = step.rounds[0]!;
+    const rightAt = new Set<number>();
+    for (const seed of SEEDS) {
+      const view = renderStep(IntentStep, step, undefined, seed);
+      const order = shownOrder(round.replies);
+      expect([...order].sort()).toEqual([...round.replies].sort());
+      rightAt.add(order.indexOf(round.replies[round.right]!));
+
+      await user.click(screen.getByRole('button', { name: round.replies[round.right]! }));
+      expect(view.state.response).toMatchObject({ done: [0], mistakes: 0 });
+      view.unmount();
+    }
+    expect(rightAt).toEqual(new Set([0, 1]));
+  });
+
+  test('ScaleStep schudt de argumenten; de schaal bewaart id’s', async () => {
+    const user = userEvent.setup();
+    const step = demoStep('weegschaal', 'scale');
+    const texts = step.args.map((arg) => arg.t);
+    const orders = new Set<string>();
+    for (const seed of SEEDS.slice(0, 8)) {
+      const view = renderStep(ScaleStep, step, undefined, seed);
+      const order = shownOrder(texts);
+      expect([...order].sort()).toEqual([...texts].sort());
+      orders.add(order.join('|'));
+
+      await user.click(screen.getByRole('button', { name: /feit · weegt 3/i }));
+      await user.click(screen.getByRole('button', { name: /voorbeeld · weegt 2/i }));
+      expect(view.state.response).toMatchObject({ on: ['feit', 'voorbeeld'], mistakes: 0 });
+      view.unmount();
+    }
+    expect(orders.size).toBeGreaterThan(2);
+  });
+
+  test('ToneStep houdt de toonschaal op volgorde, ook met een andere sleutel', () => {
+    const step = demoStep('toonregelaar', 'tone');
+    const names = step.levels.map((level) => level.name);
+    for (const seed of SEEDS.slice(0, 4)) {
+      const view = renderStep(ToneStep, step, undefined, seed);
+      expect(shownOrder(names)).toEqual(names);
+      view.unmount();
+    }
   });
 });

@@ -34,7 +34,7 @@ export function gotoPanel(response: ExplainResponse, panel: number): ExplainResp
  * experimenten. De hoofdknop in de voettekst gaat naar het volgende deel zodra de opdracht
  * van dit deel gedaan is; terug kan altijd.
  */
-export function ExplainStep({ step, response, onChange }: StepProps<'explain'>) {
+export function ExplainStep({ step, response, onChange, seed }: StepProps<'explain'>) {
   const calm = useCalmMotion();
   const current = Math.min(response.panel, step.panels.length - 1);
   const panel = step.panels[current]!;
@@ -108,6 +108,7 @@ export function ExplainStep({ step, response, onChange }: StepProps<'explain'>) 
             <PanelBody
               panel={panel}
               index={current}
+              seed={seed}
               response={response}
               onLab={(chip) => onChange({ ...response, labs: { ...response.labs, [String(current)]: chip } })}
               onSolved={solve}
@@ -129,12 +130,15 @@ export function ExplainStep({ step, response, onChange }: StepProps<'explain'>) 
 function PanelBody({
   panel,
   index,
+  seed,
   response,
   onLab,
   onSolved,
 }: {
   panel: Panel;
   index: number;
+  /** Sleutel om keuzes in de experimenten te schudden (zie `StepProps.seed`). */
+  seed: string;
   response: ExplainResponse;
   onLab: (chip: number) => void;
   onSolved: (widget: PanelWidget) => void;
@@ -155,7 +159,7 @@ function PanelBody({
       {panel.show && panel.show.length > 0 && <Examples examples={panel.show} />}
       {panel.lab && <LabWidget data={panel.lab} chosen={response.labs[String(index)]} onChoose={onLab} />}
       {widgets.map((widget) => {
-        const props = { solved: solved(widget), onSolved: () => onSolved(widget) };
+        const props = { solved: solved(widget), onSolved: () => onSolved(widget), seed: `${seed}:${index}:${widget}` };
         switch (widget) {
           case 'split':
             return panel.split && <SplitWidget key={widget} data={panel.split} {...props} />;

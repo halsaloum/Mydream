@@ -3,8 +3,9 @@
 import { Grid3x3, MoveHorizontal, Repeat, Scale, Shapes, Volume2 } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useEffect, useId, useRef, useState, type CSSProperties, type ReactNode } from 'react';
-import { evaluateTableau } from '@/content/tableau';
+import { evaluateTableau, rankings, winsAlone } from '@/content/tableau';
 import { DIPHTHONGS, VOWEL_INFO, VOWELS, type SoundPair, type Vowel } from '@/content/vowels';
+import { shuffle } from '@/engine/hash';
 import { cn } from '@/lib/cn';
 import { transition, useCalmMotion } from '@/lib/motion';
 import { play } from '@/lib/sound';
@@ -450,16 +451,25 @@ function breakable(name: string): ReactNode {
   );
 }
 
+/**
+ * De beginrangorde van de eisen: elke keer anders geschud, maar nooit al een oplossing. Bij
+ * twee eisen blijft alleen de volgorde van de inhoud over; die is volgens het contract nooit
+ * de oplossing.
+ */
+export function tableauStart(seed: string, marks: readonly (readonly number[])[], count: number, winner: number): number[] {
+  const open = rankings(count).filter((order) => !winsAlone(marks, order, winner));
+  return shuffle(seed, open)[0] ?? Array.from({ length: count }, (_, i) => i);
+}
+
 /** Een OT-tableau: wissel eisen van plek en kijk welke kandidaat wint. Opgelost als de goede kandidaat wint. */
-export function TableauWidget({ data, solved, onSolved }: WidgetProps<'tableau'>) {
-  const target = data.constraints.map((_, i) => i);
-  const [order, setOrder] = useState<number[]>(target);
+export function TableauWidget({ data, solved, onSolved, seed }: WidgetProps<'tableau'>) {
+  const marks = data.candidates.map((candidate) => candidate.marks);
+  const [order, setOrder] = useState<number[]>(() => tableauStart(seed, marks, data.constraints.length, data.winner));
   const [held, setHeld] = useState<number | null>(null);
   const { box, solve } = useSolve(onSolved);
   const calm = useCalmMotion();
   const help = useId();
   const { ref: scrollRef, overflow } = useOverflow();
-  const marks = data.candidates.map((candidate) => candidate.marks);
   const { winners, fatal } = evaluateTableau(marks, order);
   const winner = winners.length === 1 ? data.candidates[winners[0] ?? -1] : undefined;
   const right = winners.length === 1 && winners[0] === data.winner;

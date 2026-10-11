@@ -3,6 +3,7 @@
 import { Check, Layers3 } from 'lucide-react';
 import { AnimatePresence, LayoutGroup, motion } from 'motion/react';
 import { useMemo, useRef, useState } from 'react';
+import { permutation } from '@/engine/hash';
 import { cn } from '@/lib/cn';
 import { spring, transition, useCalmMotion } from '@/lib/motion';
 import { play } from '@/lib/sound';
@@ -11,7 +12,11 @@ import { InlineFeedback, Kbd, Stage, StepIntro, type StepProps } from '../shared
 
 type Msg = { tone: 'wrong' | 'right' | 'info'; text: string; id: number } | null;
 
-export function StackStep({ step, response, onChange, locked, stepKey }: StepProps<'stack'>) {
+/**
+ * Alinea-stapel. De zinnen die nog over zijn staan in een vaste, geschudde volgorde: anders stond
+ * de zin voor de volgende laag altijd bovenaan.
+ */
+export function StackStep({ step, response, onChange, locked, stepKey, seed }: StepProps<'stack'>) {
   const calm = useCalmMotion();
   const [message, setMessage] = useState<Msg>(null);
   const [bad, setBad] = useState<number | null>(null);
@@ -19,7 +24,8 @@ export function StackStep({ step, response, onChange, locked, stepKey }: StepPro
   const placed = Math.min(response.placed, step.layers.length);
   const current = step.layers[placed];
   const paragraph = step.layers.map((layer) => layer.text).join(' ');
-  const options = useMemo(() => step.layers.map((_, index) => index).filter((index) => index >= placed), [step.layers, placed]);
+  const order = useMemo(() => permutation(seed, step.layers.length), [seed, step.layers]);
+  const options = useMemo(() => order.filter((index) => index >= placed), [order, placed]);
 
   const choose = (index: number) => {
     if (locked || !current) return;

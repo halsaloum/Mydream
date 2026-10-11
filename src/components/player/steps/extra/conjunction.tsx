@@ -2,17 +2,21 @@
 
 import { Check } from 'lucide-react';
 import { LayoutGroup, motion } from 'motion/react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { permutation } from '@/engine/hash';
 import { cn } from '@/lib/cn';
 import { spring } from '@/lib/motion';
 import { play } from '@/lib/sound';
 import { InlineFeedback, isTypingTarget, Kbd, Stage, StepIntro, type StepProps } from '../shared';
 
 const isRightSlot = (type: 'neven' | 'onder', slot: 'A' | 'B') => (slot === 'A') === (type === 'neven');
+const typeAccent = (type: 'neven' | 'onder') => (type === 'onder' ? 'purple' : 'yellow');
 
-export function ConjunctionStep({ step, response, onChange, locked, stepKey }: StepProps<'conjunction'>) {
+export function ConjunctionStep({ step, response, onChange, locked, stepKey, seed }: StepProps<'conjunction'>) {
   const [bad, setBad] = useState<'A' | 'B' | null>(null);
   const [message, setMessage] = useState('');
+  // In de inhoud wisselen neven en onder vaak om en om: schud de knoppen. Index = plek in de inhoud.
+  const order = useMemo(() => permutation(seed, step.items.length), [seed, step.items]);
   const currentIndex = Math.min(response.current, step.items.length - 1);
   const item = step.items[currentIndex] ?? step.items[0];
   const placed = response.placed.includes(currentIndex);
@@ -30,9 +34,10 @@ export function ConjunctionStep({ step, response, onChange, locked, stepKey }: S
     const onKey = (event: KeyboardEvent) => {
       if (event.metaKey || event.ctrlKey || event.altKey || isTypingTarget(event.target)) return;
       const n = Number(event.key);
-      if (Number.isInteger(n) && n >= 1 && step.items[n - 1]) {
+      const index = Number.isInteger(n) && n >= 1 ? order[n - 1] : undefined;
+      if (index !== undefined) {
         event.preventDefault();
-        select(n - 1);
+        select(index);
       }
     };
     window.addEventListener('keydown', onKey);
@@ -67,16 +72,19 @@ export function ConjunctionStep({ step, response, onChange, locked, stepKey }: S
       <StepIntro prompt={step.prompt} intro={step.intro} />
 
       <div className="mt-6 flex flex-wrap gap-2.5" role="group" aria-label="Voegwoorden">
-        {step.items.map((it, index) => {
+        {order.map((index, position) => {
+          const it = step.items[index];
+          if (!it) return null;
           const done = response.placed.includes(index);
           const active = index === currentIndex;
+          // De kleur verraadt neven of onder: pas kleuren als het voegwoord geplaatst is.
           return (
             <button
               key={it.conj}
               type="button"
               onClick={() => select(index)}
               disabled={locked}
-              data-accent={it.type === 'onder' ? 'purple' : 'yellow'}
+              data-accent={done ? typeAccent(it.type) : 'slate'}
               aria-pressed={active}
               className={cn(
                 'slab pressable flex min-h-12 items-center gap-2 rounded-control border-2 px-4 font-display text-lead font-extrabold outline-none [--lift:3px] focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-focus',
@@ -85,7 +93,7 @@ export function ConjunctionStep({ step, response, onChange, locked, stepKey }: S
             >
               {it.conj}
               {done && <Check aria-label="gedaan" className="size-4" strokeWidth={3.5} />}
-              <span className="sr-only">{index + 1}</span>
+              <span className="sr-only">{position + 1}</span>
             </button>
           );
         })}

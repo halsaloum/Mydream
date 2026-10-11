@@ -3,6 +3,7 @@
 import { MessageCircle } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useEffect, useMemo, useState } from 'react';
+import { permutation } from '@/engine/hash';
 import { cn } from '@/lib/cn';
 import { transition, useCalmMotion } from '@/lib/motion';
 import { play } from '@/lib/sound';
@@ -11,8 +12,13 @@ import { InlineFeedback, StepIntro, type StepProps } from '../shared';
 
 type Feedback = { id: string; ok: boolean; text: string };
 
-export function ChatStep({ step, response, onChange, locked }: StepProps<'chat'>) {
+/**
+ * Chat-scenario. Per ronde staan de antwoorden elke keer in een andere volgorde; een keuze wordt
+ * bewaard als de plek in de inhoud (`right`), niet als de plek op het scherm.
+ */
+export function ChatStep({ step, response, onChange, locked, seed }: StepProps<'chat'>) {
   const calm = useCalmMotion();
+  const orders = useMemo(() => step.rounds.map((round, i) => permutation(`${seed}:round:${i}`, round.options.length)), [seed, step.rounds]);
   const [typing, setTyping] = useState(false);
   const [feedback, setFeedback] = useState<Feedback | null>(null);
   const visibleIncoming = typing ? response.picks.length : Math.min(response.picks.length + 1, step.rounds.length);
@@ -98,12 +104,15 @@ export function ChatStep({ step, response, onChange, locked }: StepProps<'chat'>
 
       {current && !locked && (
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
-          {current.options.map((option, i) => (
-            <Button key={option} variant="secondary" size="lg" disabled={typing} onClick={() => pick(i)} className="h-auto justify-start py-4 text-left font-serif text-[1.15rem] leading-snug">
-              <MessageCircle aria-hidden className="size-5" />
-              <span>{option}</span>
-            </Button>
-          ))}
+          {orders[response.picks.length]?.map((i) => {
+            const option = current.options[i] ?? '';
+            return (
+              <Button key={option} variant="secondary" size="lg" disabled={typing} onClick={() => pick(i)} className="h-auto justify-start py-4 text-left font-serif text-[1.15rem] leading-snug">
+                <MessageCircle aria-hidden className="size-5" />
+                <span>{option}</span>
+              </Button>
+            );
+          })}
         </div>
       )}
     </div>

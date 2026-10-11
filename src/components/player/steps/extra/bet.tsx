@@ -4,7 +4,8 @@ import { Radio } from '@base-ui/react/radio';
 import { RadioGroup } from '@base-ui/react/radio-group';
 import { Check, X } from 'lucide-react';
 import { motion } from 'motion/react';
-import { useId } from 'react';
+import { useId, useMemo } from 'react';
+import { shuffle } from '@/engine/hash';
 import { betConsequence } from '@/engine/kinds';
 import { cn } from '@/lib/cn';
 import { transition, useCalmMotion } from '@/lib/motion';
@@ -30,8 +31,13 @@ function CoinStack({ count, lost = false }: { count: 1 | 2 | 3; lost?: boolean }
   );
 }
 
-export function BetStep({ step, response, onChange, locked, correct }: StepProps<'bet'>) {
+/**
+ * Durf je? De antwoorden staan elke keer in een andere volgorde (het antwoord is de tekst, niet
+ * de plek); de inzet is een schaal van weinig naar veel en blijft op volgorde.
+ */
+export function BetStep({ step, response, onChange, locked, correct, seed }: StepProps<'bet'>) {
   const calm = useCalmMotion();
+  const options = useMemo(() => shuffle(seed, step.options), [seed, step.options]);
   const answerId = useId();
   const betId = useId();
   const selected = response.value;
@@ -72,7 +78,7 @@ export function BetStep({ step, response, onChange, locked, correct }: StepProps
 
       <RadioGroup aria-labelledby={answerId} value={selected ?? ''} onValueChange={(value) => chooseValue(String(value))} readOnly={locked} className="mt-6 grid gap-3">
         <h2 id={answerId} className="sr-only">Antwoorden</h2>
-        {step.options.map((option) => {
+        {options.map((option) => {
           const isAnswer = option === step.answer;
           const isChosen = option === selected;
           const verdict = locked ? (isAnswer ? 'right' : isChosen ? 'wrong' : 'other') : null;

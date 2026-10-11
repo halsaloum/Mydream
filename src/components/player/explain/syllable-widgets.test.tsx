@@ -47,7 +47,7 @@ const HERFST: WidgetProps<'tree'>['data'] = {
 describe('lettergreepexperimenten', () => {
   it('sonoriteitsberg: een verkeerde knip lost niet op, de goede knip wel', async () => {
     const user = userEvent.setup();
-    const onSolved = show((solved, done) => <SonorityWidget data={ZEBRA} solved={solved} onSolved={done} />);
+    const onSolved = show((solved, done) => <SonorityWidget seed="test" data={ZEBRA} solved={solved} onSolved={done} />);
 
     expect(screen.getAllByText(', klinker', { exact: false })).toHaveLength(2);
     await user.click(screen.getByRole('button', { name: 'Knip tussen b en r' }));
@@ -62,7 +62,7 @@ describe('lettergreepexperimenten', () => {
 
   it('lettergreepboom: een klank aan de verkeerde tak telt niet; alles op zijn plek lost op', async () => {
     const user = userEvent.setup();
-    const onSolved = show((solved, done) => <TreeWidget data={HERFST} solved={solved} onSolved={done} />);
+    const onSolved = show((solved, done) => <TreeWidget seed="test" data={HERFST} solved={solved} onSolved={done} />);
 
     expect(screen.getByRole('button', { name: 'Appendix' })).toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: 'e' }));
@@ -82,7 +82,7 @@ describe('lettergreepexperimenten', () => {
   });
 
   it('lettergreepboom: zonder appendix in de opgave ook geen appendixknop', () => {
-    show((solved, done) => <TreeWidget data={{ ...HERFST, segs: HERFST.segs.slice(0, 3) }} solved={solved} onSolved={done} />);
+    show((solved, done) => <TreeWidget seed="test" data={{ ...HERFST, segs: HERFST.segs.slice(0, 3) }} solved={solved} onSolved={done} />);
     expect(screen.queryByRole('button', { name: 'Appendix' })).not.toBeInTheDocument();
   });
 });

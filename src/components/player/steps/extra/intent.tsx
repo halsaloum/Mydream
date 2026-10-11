@@ -2,7 +2,8 @@
 
 import { ArrowRight } from 'lucide-react';
 import { motion } from 'motion/react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
+import { permutation } from '@/engine/hash';
 import { cn } from '@/lib/cn';
 import { transition, useCalmMotion } from '@/lib/motion';
 import { play } from '@/lib/sound';
@@ -12,8 +13,10 @@ import { InlineFeedback, StepIntro, type StepProps } from '../shared';
 type Mood = 'neutral' | 'happy' | 'flat';
 type Feedback = { id: string; tone: 'right' | 'wrong' | 'info'; text: string };
 
-export function IntentStep({ step, response, onChange, locked }: StepProps<'intent'>) {
+/** Zegt en bedoelt. Per situatie staan de antwoorden elke keer in een andere volgorde; `right` blijft de plek in de inhoud. */
+export function IntentStep({ step, response, onChange, locked, seed }: StepProps<'intent'>) {
   const calm = useCalmMotion();
+  const orders = useMemo(() => step.rounds.map((round, i) => permutation(`${seed}:round:${i}`, round.replies.length)), [seed, step.rounds]);
   const [feedback, setFeedback] = useState<Feedback | null>(null);
   const [bad, setBad] = useState<number | null>(null);
   const round = step.rounds[response.round] ?? step.rounds[0];
@@ -73,7 +76,8 @@ export function IntentStep({ step, response, onChange, locked }: StepProps<'inte
       </InlineFeedback>
 
       <div className="mt-4 grid gap-3 sm:grid-cols-2">
-        {round.replies.map((reply, i) => {
+        {(orders[response.round] ?? orders[0] ?? []).map((i) => {
+          const reply = round.replies[i] ?? '';
           const state = solved && i === round.right ? 'right' : bad === i ? 'wrong' : 'idle';
           return (
             <motion.button

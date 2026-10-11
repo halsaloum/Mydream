@@ -1,4 +1,4 @@
-import { test as base, expect, type Page } from '@playwright/test';
+import { test as base, expect, type Locator, type Page } from '@playwright/test';
 
 /** Een leerling die de kennismaking al heeft afgerond (zonder verzonnen voortgang). */
 export const ONBOARDED = {
@@ -32,4 +32,4 @@ export async function openStages(page: Page, stages: readonly string[]) {
 }
 
 export const test = base;
-export { expect };
+export { expect, type Locator };

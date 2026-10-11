@@ -4,9 +4,10 @@ import { Radio } from '@base-ui/react/radio';
 import { RadioGroup } from '@base-ui/react/radio-group';
 import { ArrowLeftRight, CaseLower, Check, Disc3, FlaskConical, Hammer, Magnet, MousePointerClick, Scissors, X } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
-import { useId, useRef, useState } from 'react';
+import { useId, useMemo, useRef, useState } from 'react';
 import type { Panel } from '@/content/schema';
 import { tokenize } from '@/content/text';
+import { permutation, shuffle } from '@/engine/hash';
 import { celebrate, originOf } from '@/lib/confetti';
 import { cn } from '@/lib/cn';
 import { transition, useCalmMotion } from '@/lib/motion';
@@ -21,7 +22,13 @@ import { Tile } from '../tile';
  * oorspronkelijke app). Alles werkt met aanraken, muis en toetsenbord.
  */
 type Data<K extends keyof Panel> = NonNullable<Panel[K]>;
-export type WidgetProps<K extends keyof Panel> = { data: Data<K>; solved: boolean; onSolved: () => void };
+export type WidgetProps<K extends keyof Panel> = {
+  data: Data<K>;
+  solved: boolean;
+  onSolved: () => void;
+  /** Sleutel om keuzes te schudden: vast zolang de uitleg open is, anders bij een nieuwe ronde. */
+  seed: string;
+};
 
 export const ICON = 'size-[1.05rem]';
 export const SHAKE = { x: [0, -6, 6, -3, 0] };
@@ -132,9 +139,20 @@ export function SplitWidget({ data, solved, onSolved }: WidgetProps<'split'>) {
 
 /* ------------------------------------------------------------------ markeren */
 
-/** Tik alle woorden aan die bij de vraag horen. */
-export function MarkWidget({ data, solved, onSolved }: WidgetProps<'mark'>) {
-  const words = tokenize(data.sentence);
+/** Lidwoorden, voegwoorden en voorzetsels: een gewone zin heeft er bijna altijd een, een rijtje losse woorden niet. */
+const GLUE = new Set(['de', 'het', 'een', "'t", '’t', 'en', 'of', 'maar', 'dat', 'die', 'op', 'in', 'aan', 'van', 'met', 'voor', 'naar', 'bij', 'uit', 'om', 'te', 'door', 'over', 'is']);
+
+/**
+ * Een rijtje losse woorden in plaats van een zin: geen leestekens en geen enkel lidwoord,
+ * voegwoord of voorzetsel. Zo'n rijtje heeft geen leesvolgorde, en de inhoud zet de doelwoorden
+ * er vaak vooraan of om en om in.
+ */
+const isWordList = (words: readonly string[]) => words.every((word) => !/[.,;:?!]/.test(word) && !GLUE.has(word.toLowerCase()));
+
+/** Tik alle woorden aan die bij de vraag horen. Een zin blijft in leesvolgorde; een rijtje losse woorden staat geschud. */
+export function MarkWidget({ data, solved, onSolved, seed }: WidgetProps<'mark'>) {
+  const words = useMemo(() => tokenize(data.sentence), [data.sentence]);
+  const order = useMemo(() => (isWordList(words) ? permutation(seed, words.length) : words.map((_, i) => i)), [seed, words]);
   const [found, setFound] = useState<number[]>([]);
   const shown = solved ? data.targets : found;
   const { flash, flashKey, trigger } = useFlash<number>();
@@ -159,7 +177,8 @@ export function MarkWidget({ data, solved, onSolved }: WidgetProps<'mark'>) {
         status={solved ? data.note : flash !== null ? `“${words[flash] ?? ''}” hoort er niet bij. ${shown.length} van ${data.targets.length} gevonden.` : `${shown.length} van ${data.targets.length} gevonden`}
       >
         <p className="font-serif text-example leading-[1.9] text-ink" lang="nl">
-          {words.map((word, i) => {
+          {order.map((i) => {
+            const word = words[i];
             const hit = shown.includes(i);
             const bad = flash === i;
             return (
@@ -195,8 +214,9 @@ export function MarkWidget({ data, solved, onSolved }: WidgetProps<'mark'>) {
 const endingLabel = (ending: string) => (ending === '' ? '∅' : ending);
 const endingName = (ending: string) => (ending === '' ? 'niets erachter' : ending);
 
-/** Plak de juiste uitgang achter de stam. */
-export function BuildWidget({ data, solved, onSolved }: WidgetProps<'build'>) {
+/** Plak de juiste uitgang achter de stam. De uitgangen staan geschud: in de inhoud staat de goede vaak vooraan. */
+export function BuildWidget({ data, solved, onSolved, seed }: WidgetProps<'build'>) {
+  const endings = useMemo(() => shuffle(seed, data.endings), [seed, data.endings]);
   const [ending, setEnding] = useState<string | null>(null);
   const [tries, setTries] = useState(0);
   const { box, solve } = useSolve(onSolved);
@@ -248,7 +268,7 @@ export function BuildWidget({ data, solved, onSolved }: WidgetProps<'build'>) {
           </span>
         </div>
         <div role="group" aria-label="Uitgangen" className="mt-5 flex flex-wrap justify-center gap-2.5">
-          {data.endings.map((option) => (
+          {endings.map((option) => (
             <Tile
               key={option}
               size="lg"
@@ -283,14 +303,35 @@ function orderFromAnswer(blocks: readonly string[], answer: string): number[] {
   return order;
 }
 
+const fits = (blocks: readonly string[], accept: readonly string[], order: readonly number[]) => accept.includes(order.map((i) => blocks[i]).join(' '));
+
+/** Alleen sorteren ("op alfabet", "in de volgorde van …"): dan betekent de beginvolgorde niets. */
+const onlyOrdering = (goal: string) => /alfabet|volgorde/i.test(goal);
+
+/**
+ * De beginvolgorde uit de inhoud: die is vaak bewust gekozen (een gewone zin om om te bouwen,
+ * een typische fout om te herstellen). Is de opdracht alleen sorteren, of staat ze al goed, dan
+ * een geschudde volgorde die nog niet klopt; een vaste volgorde verraadt daar het antwoord (vaak
+ * precies omgekeerd).
+ */
+function startOrder(seed: string, { goal, blocks, accept }: Data<'swap'>): number[] {
+  const order = blocks.map((_, i) => i);
+  if (!onlyOrdering(goal) && !fits(blocks, accept, order)) return order;
+  for (let k = 0; k < 24; k++) {
+    const next = permutation(`${seed}:start:${k}`, blocks.length);
+    if (!fits(blocks, accept, next)) return next;
+  }
+  return order;
+}
+
 /** Wissel blokken tot de zin klopt: tik twee blokken, of sleep een blok op een ander. */
-export function SwapWidget({ data, solved, onSolved }: WidgetProps<'swap'>) {
-  const [order, setOrder] = useState<number[]>(() => data.blocks.map((_, i) => i));
+export function SwapWidget({ data, solved, onSolved, seed }: WidgetProps<'swap'>) {
+  const [order, setOrder] = useState<number[]>(() => startOrder(seed, data));
   const [held, setHeld] = useState<number | null>(null);
   const guard = useClickGuard();
   const { box, solve } = useSolve(onSolved);
   const help = useId();
-  const shown = solved && !data.accept.includes(order.map((i) => data.blocks[i]).join(' ')) ? orderFromAnswer(data.blocks, data.accept[0] ?? '') : order;
+  const shown = solved && !fits(data.blocks, data.accept, order) ? orderFromAnswer(data.blocks, data.accept[0] ?? '') : order;
 
   const swap = (a: number, b: number) => {
     if (a === b) return;
@@ -301,7 +342,7 @@ export function SwapWidget({ data, solved, onSolved }: WidgetProps<'swap'>) {
     [next[ia], next[ib]] = [next[ib]!, next[ia]!];
     setOrder(next);
     setHeld(null);
-    if (data.accept.includes(next.map((i) => data.blocks[i]).join(' '))) solve();
+    if (fits(data.blocks, data.accept, next)) solve();
     else play('place');
   };
 
@@ -461,8 +502,9 @@ export function AlphaWidget({ data, solved, onSolved }: WidgetProps<'alpha'>) {
 
 /* ------------------------------------------------------------------ klinkerwiel */
 
-/** Wissel de klinker en kijk welk woord er ontstaat. */
-export function WheelWidget({ data, solved, onSolved }: WidgetProps<'wheel'>) {
+/** Wissel de klinker en kijk welk woord er ontstaat. De klinkers staan geschud; de keuzes tellen in inhoudsindexen. */
+export function WheelWidget({ data, solved, onSolved, seed }: WidgetProps<'wheel'>) {
+  const order = useMemo(() => permutation(seed, data.options.length), [seed, data.options]);
   const [current, setCurrent] = useState<number | null>(null);
   const [seen, setSeen] = useState<number[]>([]);
   const { box, solve } = useSolve(onSolved);
@@ -537,9 +579,9 @@ export function WheelWidget({ data, solved, onSolved }: WidgetProps<'wheel'>) {
           onValueChange={(value) => spin(Number(value))}
           className="mt-4 flex flex-wrap justify-center gap-2"
         >
-          {data.options.map((choice, i) => (
+          {order.map((i) => (
             <Radio.Root
-              key={choice.v}
+              key={i}
               value={String(i)}
               className={cn(
                 'slab pressable grid size-13 place-items-center rounded-control border-2 font-serif text-[1.5rem] [--lift:3px]',
@@ -548,7 +590,7 @@ export function WheelWidget({ data, solved, onSolved }: WidgetProps<'wheel'>) {
                 'data-[checked]:border-blue data-[checked]:bg-blue-soft data-[checked]:text-blue-ink data-[checked]:[--slab:var(--color-blue)]',
               )}
             >
-              {choice.v}
+              {data.options[i]?.v}
             </Radio.Root>
           ))}
         </RadioGroup>
@@ -559,8 +601,9 @@ export function WheelWidget({ data, solved, onSolved }: WidgetProps<'wheel'>) {
 
 /* ------------------------------------------------------------------ letters plakken */
 
-/** Plak twee letters samen tot één klank. */
-export function BlendWidget({ data, solved, onSolved }: WidgetProps<'blend'>) {
+/** Plak twee letters samen tot één klank. De letters staan geschud, zodat buren geen paar verraden. */
+export function BlendWidget({ data, solved, onSolved, seed }: WidgetProps<'blend'>) {
+  const order = useMemo(() => permutation(seed, data.letters.length), [seed, data.letters]);
   const [first, setFirst] = useState<number | null>(null);
   const [made, setMade] = useState<string[]>([]);
   const shown = solved ? data.pairs.map((pair) => pair.s) : made;
@@ -610,7 +653,7 @@ export function BlendWidget({ data, solved, onSolved }: WidgetProps<'blend'>) {
           className="flex flex-wrap justify-center gap-2.5"
           lang="nl"
         >
-          {data.letters.map((letter, i) => (
+          {order.map((i) => (
             <Tile
               key={i}
               size="lg"
@@ -620,7 +663,7 @@ export function BlendWidget({ data, solved, onSolved }: WidgetProps<'blend'>) {
               onClick={() => tap(i)}
               faceClassName={cn('min-w-14 justify-center', first === i && '-rotate-3')}
             >
-              {letter}
+              {data.letters[i]}
             </Tile>
           ))}
         </motion.div>

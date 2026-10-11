@@ -24,7 +24,7 @@ function show(data = FIETS) {
   function Harness() {
     const [solved, setSolved] = useState(false);
     return (
-      <ModelWidget
+      <ModelWidget seed="test"
         data={data}
         solved={solved}
         onSolved={() => {

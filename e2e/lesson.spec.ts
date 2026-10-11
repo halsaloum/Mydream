@@ -1,6 +1,11 @@
-import { expect, openStages, seedOnboarded, test } from './fixtures';
+import { expect, openStages, seedOnboarded, test, type Locator } from './fixtures';
 
 test.beforeEach(async ({ page }) => seedOnboarded(page));
+
+/** Het cijfer waarmee je een keuze kiest; de keuzes staan elke ronde in een andere volgorde. */
+async function digitOf(option: Locator) {
+  return (await option.innerText()).trim().charAt(0);
+}
 
 test('les direct openen, met het toetsenbord doen en na verversen hervatten', async ({ page }) => {
   await page.goto('/les/l4');
@@ -15,12 +20,16 @@ test('les direct openen, met het toetsenbord doen en na verversen hervatten', as
   await page.keyboard.press('Enter');
 
   await expect(page.getByRole('heading', { name: 'Welke past in een mail aan een klant?' })).toBeVisible();
-  await page.keyboard.press('1');
-  await expect(page.getByRole('radio', { name: /Bedankt voor uw bericht\.$/ })).toBeChecked();
+  const goed = page.getByRole('radio', { name: /Bedankt voor uw bericht\.$/ });
+  const digit = await digitOf(goed);
+  await page.keyboard.press(digit);
+  await expect(goed).toBeChecked();
 
+  // Na verversen staan de keuzes in dezelfde volgorde en is dezelfde keuze nog gekozen.
   await page.reload();
   await expect(page.getByRole('heading', { name: 'Welke past in een mail aan een klant?' })).toBeVisible();
-  await expect(page.getByRole('radio', { name: /Bedankt voor uw bericht\.$/ })).toBeChecked();
+  await expect(goed).toBeChecked();
+  expect(await digitOf(goed)).toBe(digit);
 
   await page.keyboard.press('Enter');
   await expect(page.getByRole('status').filter({ hasText: 'Rustig en zakelijk.' })).toBeVisible();
@@ -163,7 +172,7 @@ test('een afgeronde les blijft na verversen afgerond', async ({ page }) => {
   await page.goto('/les/l4');
   await page.getByRole('radio', { name: 'rustig' }).click();
   await page.keyboard.press('Enter');
-  await page.keyboard.press('1');
+  await page.keyboard.press(await digitOf(page.getByRole('radio', { name: /Bedankt voor uw bericht\.$/ })));
   await page.keyboard.press('Enter');
   await page.keyboard.press('Enter');
   await expect(page.getByRole('heading', { name: 'Wat je nu weet' })).toBeVisible();
