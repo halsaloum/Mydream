@@ -118,7 +118,9 @@
 .learningMain { width: 100%; }
 .player { --color-blue-ink: #39781b; --color-blue-soft: #eff8e7; }
 .player > header { border-bottom: none; }
-.player .learningCard { border: 0; box-shadow: none; background: transparent; padding: 12px 0 24px; }
+.player .learningCard { border: 1px solid #e0e5d9; box-shadow: none; background: #fff; padding: clamp(20px, 3vw, 32px); }
+.player .learningCard :global([data-theory-page]) { background: #fff; }
+.player .learningCard :global([data-theory-page]) > div { background-color: #fff; }
 .player .actionDock > div { max-width: 900px; }
 .player .actionDock button:not(:disabled) { min-height: 50px; }
 .player .actionDock button:last-child:not(:disabled) { letter-spacing: .025em; }
