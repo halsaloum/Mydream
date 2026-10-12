@@ -8,11 +8,15 @@ import { carryOver, SESSIONS_KEY, useSessions } from './sessions';
 import { DEFAULT_SETTINGS, SETTINGS_KEY, useSettings } from './settings';
 import { checkStorage, storageNotices } from './storage';
 import { applyImport, exportData, parseImport } from './transfer';
+import { useWordRound, useWords } from './words';
+import { EMPTY_WORDS, learnCard } from '@/lib/words/memory';
 
 beforeEach(() => {
   useSettings.setState(DEFAULT_SETTINGS);
   useProgress.setState(EMPTY_PROGRESS);
   useSessions.setState({ byId: {} });
+  useWords.setState(EMPTY_WORDS);
+  useWordRound.setState({ current: null, checked: null });
 });
 
 describe('opslag', () => {
@@ -157,6 +161,26 @@ describe('exporteren en importeren', () => {
     expect(useProgress.getState().activity[dayKey()]?.activeMs).toBe(90_000);
 
     expect(parseImport('geen json')).toEqual({ ok: false, error: 'Dit bestand is geen geldige JSON.' });
+    expect(parseImport('{"app":"iets anders"}').ok).toBe(false);
+  });
+
+  it('neemt je woorden mee, en een ouder bestand zonder woorden begint met een lege woordenlijst', () => {
+    useWords.getState().setPerDay(8);
+    useWords.setState({ cards: { draagvlak: learnCard(3, dayKey(), 3) } });
+    const text = exportData();
+    useWords.getState().reset();
+    const parsed = parseImport(text);
+    expect(parsed.ok).toBe(true);
+    if (parsed.ok) applyImport(parsed.data);
+    expect(useWords.getState().perDay).toBe(8);
+    expect(Object.keys(useWords.getState().cards)).toEqual(['draagvlak']);
+
+    const old = JSON.parse(text) as Record<string, unknown>;
+    delete old.words;
+    const parsedOld = parseImport(JSON.stringify(old));
+    expect(parsedOld.ok).toBe(true);
+    if (parsedOld.ok) applyImport(parsedOld.data);
+    expect(useWords.getState().cards).toEqual({});
     expect(parseImport('{"app":"iets anders"}').ok).toBe(false);
   });
 });

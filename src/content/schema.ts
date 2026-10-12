@@ -3,6 +3,7 @@ import { AccentSchema } from './accent';
 import { EXTRA_STEP_SCHEMAS } from './kinds';
 import { ARGUMENT_STEP_SCHEMAS } from './kinds-argument';
 import { SPELLING_STEP_SCHEMAS } from './kinds-spelling';
+import { WORD_STEP_SCHEMAS } from './kinds-words';
 import { parseBracket, spanText } from './bracket';
 import { canWin, winsAlone } from './tableau';
 import { hasBalancedEmphasis, isPermutationJoin, tokenize } from './text';
@@ -790,6 +791,7 @@ export const StepSchema = z
     ...EXTRA_STEP_SCHEMAS,
     ...ARGUMENT_STEP_SCHEMAS,
     ...SPELLING_STEP_SCHEMAS,
+    ...WORD_STEP_SCHEMAS,
   ])
   .superRefine((step, ctx) => {
     switch (step.kind) {

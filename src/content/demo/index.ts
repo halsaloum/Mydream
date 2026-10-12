@@ -3,13 +3,14 @@ import { course } from '../catalog';
 import { StepSchema, type Domain, type Step } from '../schema';
 import { ARGUMENT_DEMOS } from './argumenten';
 import { DEMO_GROUPS, DEMO_ITEMS, type DemoItem } from './oefenvormen';
+import { WORD_DEMOS } from './woorden';
 
 export { DEMO_GROUPS, type DemoGroup } from './oefenvormen';
 
 export type DemoEntry = Omit<DemoItem, 'step' | 'domain'> & { step: Step; domain: Domain };
 
 /** Alle demo's, in de volgorde van de galerij (ook voor "Volgende oefenvorm"). */
-const ordered = [...DEMO_ITEMS, ...ARGUMENT_DEMOS]
+const ordered = [...DEMO_ITEMS, ...ARGUMENT_DEMOS, ...WORD_DEMOS]
   .map((item, i) => ({ item, i }))
   .sort((a, b) => DEMO_GROUPS.indexOf(a.item.group) - DEMO_GROUPS.indexOf(b.item.group) || a.i - b.i)
   .map(({ item }) => item);

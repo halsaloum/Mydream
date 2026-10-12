@@ -40,6 +40,11 @@ import { ClozeStep } from './steps/spelling/cloze';
 import { DrillStep } from './steps/spelling/drill';
 import { PassageStep } from './steps/spelling/passage';
 import { LearnStep, RewriteStep, TypeStep, WriteStep } from './steps/text-steps';
+import { GuessStep } from './steps/words/guess';
+import { RecallStep } from './steps/words/recall';
+import { SceneStep } from './steps/words/scene';
+import { UseStep } from './steps/words/use';
+import { WordStep } from './steps/words/word-card';
 
 /**
  * Elke stapsoort uit het inhoudscontract heeft precies één component. Een nieuwe oefenvorm
@@ -87,6 +92,11 @@ const STEP_COMPONENTS: { [K in StepKind]: ComponentType<StepProps<K>> } = {
   cloze: ClozeStep,
   drill: DrillStep,
   passage: PassageStep,
+  word: WordStep,
+  guess: GuessStep,
+  recall: RecallStep,
+  scene: SceneStep,
+  use: UseStep,
 };
 
 type StepViewProps = {

@@ -27,13 +27,14 @@ import { Kbd } from './steps/shared';
 import type { PlayerController } from './use-session';
 
 export type PlayerMeta = {
-  mode: 'lesson' | 'review' | 'demo';
+  mode: 'lesson' | 'review' | 'demo' | 'words';
   title: string;
   /** Korte context boven de titel in de kop, bv. het vakgebied. */
   context?: string;
   accent: Accent;
   exit: { href: Route; label: string };
-  finish: { title: string; context?: string; primary: FinishAction; secondary?: FinishAction; learned: string[] };
+  /** `again: false` verbergt de knop om opnieuw te beginnen (bijv. als er geen nieuwe woorden meer zijn). */
+  finish: { title: string; context?: string; primary: FinishAction; secondary?: FinishAction; learned: string[]; again?: boolean };
   /** Niveau en vakgebied, getoond bij de eerste stap. */
   tag?: { layer: Layer; layerIndex: number; domain: Domain; stage?: Stage | undefined; icon?: string | undefined };
 };
@@ -50,7 +51,12 @@ function waitingHint(step: Step, response: Response): string {
     case 'choice':
     case 'combine':
     case 'bet':
+    case 'scene':
       return 'Kies je antwoord';
+    case 'guess':
+      return 'Kies wat het woord volgens jou betekent';
+    case 'recall':
+      return 'Typ het woord';
     case 'type':
     case 'fix':
     case 'rewrite':
@@ -203,7 +209,7 @@ export function LessonPlayer({ controller, meta }: { controller: PlayerControlle
             celebrate={firstPhase !== null && firstPhase !== 'done'}
             primary={meta.finish.primary}
             secondary={meta.finish.secondary}
-            onRestart={controller.restart}
+            onRestart={meta.finish.again === false ? undefined : controller.restart}
           />
         </main>
       </div>

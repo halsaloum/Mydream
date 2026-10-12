@@ -1,7 +1,7 @@
 'use client';
 
 import { NavigationMenu } from '@base-ui/react/navigation-menu';
-import { BookOpenText, ChartColumnIncreasing, House, Repeat2, Settings } from 'lucide-react';
+import { BookOpenText, ChartColumnIncreasing, House, Languages, Repeat2, Settings } from 'lucide-react';
 import { motion } from 'motion/react';
 import type { Route } from 'next';
 import Link from 'next/link';
@@ -12,10 +12,12 @@ import { cn } from '@/lib/cn';
 import { spring, transition, useCalmMotion } from '@/lib/motion';
 import { useHydrated } from '@/state/hydration';
 import { useProgress } from '@/state/progress';
+import { dueCount, useWords } from '@/state/words';
 
 const NAV: { href: Route; label: string; icon: typeof House }[] = [
   { href: '/', label: 'Leren', icon: House },
   { href: '/lessen', label: 'Lessen', icon: BookOpenText },
+  { href: '/woorden', label: 'Woorden', icon: Languages },
   { href: '/herhalen', label: 'Herhalen', icon: Repeat2 },
   { href: '/voortgang', label: 'Voortgang', icon: ChartColumnIncreasing },
 ];
@@ -30,13 +32,20 @@ function useReviewCount() {
   return hydrated ? count : 0;
 }
 
-function Badge({ count }: { count: number }) {
+/** Woorden die vandaag terug moeten komen. */
+function useWordsDue() {
+  const hydrated = useHydrated();
+  const cards = useWords((state) => state.cards);
+  return hydrated ? dueCount(cards) : 0;
+}
+
+function Badge({ count, what = 'om te herhalen' }: { count: number; what?: string }) {
   if (count === 0) return null;
   return (
     <span className="ml-1 inline-grid h-5 min-w-5 animate-bounce-in place-items-center rounded-full bg-orange bg-linear-to-b from-white/25 to-transparent px-1.5 text-[0.7rem] leading-none font-extrabold text-orange-on tabular-nums shadow-[0_3px_8px_-3px_var(--color-orange-deep)]">
       <span className="sr-only">, </span>
       {count > 99 ? '99+' : count}
-      <span className="sr-only"> om te herhalen</span>
+      <span className="sr-only"> {what}</span>
     </span>
   );
 }
@@ -55,6 +64,8 @@ function PageTransition({ children }: { children: ReactNode }) {
 export function AppShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const reviewCount = useReviewCount();
+  const wordsDue = useWordsDue();
+  const counts: Partial<Record<Route, number>> = { '/herhalen': reviewCount, '/woorden': wordsDue };
 
   return (
     <div className="flex min-h-dvh flex-col">
@@ -97,7 +108,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                         strokeWidth={2.4}
                       />
                       {item.label}
-                      {item.href === '/herhalen' && <Badge count={reviewCount} />}
+                      <Badge count={counts[item.href] ?? 0} what={item.href === '/woorden' ? 'woorden om te herhalen' : 'om te herhalen'} />
                     </NavigationMenu.Link>
                   </NavigationMenu.Item>
                 );
@@ -130,7 +141,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         aria-label="Hoofdnavigatie (mobiel)"
         className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-surface/85 pb-[env(safe-area-inset-bottom)] shadow-[0_-10px_30px_-18px_rgb(60_40_10/0.3)] backdrop-blur-xl backdrop-saturate-150 md:hidden"
       >
-        <NavigationMenu.List className="mx-auto grid max-w-md grid-cols-4">
+        <NavigationMenu.List className="mx-auto grid max-w-lg grid-cols-5">
           {NAV.map((item) => {
             const active = isActive(pathname, item.href);
             return (
@@ -156,9 +167,9 @@ export function AppShell({ children }: { children: ReactNode }) {
                       className={cn('relative size-5 transition-transform duration-300 ease-[var(--ease-spring)]', active && '-translate-y-px scale-110')}
                       strokeWidth={2.5}
                     />
-                    {item.href === '/herhalen' && reviewCount > 0 && (
+                    {(counts[item.href] ?? 0) > 0 && (
                       <span className="absolute -top-1 right-1.5 grid h-4 min-w-4 place-items-center rounded-full bg-orange px-1 text-[0.625rem] font-extrabold text-orange-on">
-                        {reviewCount > 9 ? '9+' : reviewCount}
+                        {(counts[item.href] ?? 0) > 9 ? '9+' : counts[item.href]}
                       </span>
                     )}
                   </span>

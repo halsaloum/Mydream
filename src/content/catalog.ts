@@ -110,6 +110,11 @@ export const EXERCISE_LABELS: Record<StepKind, string> = {
   cloze: 'Invultekst',
   drill: 'Reeks',
   passage: 'Tekstdictee',
+  word: 'Woordkaart',
+  guess: 'Raad eerst',
+  recall: 'Ophalen',
+  scene: 'Denk na',
+  use: 'Gebruik het',
 };
 
 /** Vakgebieden die als perspectief op elk niveau gelden. */
