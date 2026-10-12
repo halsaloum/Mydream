@@ -38,6 +38,8 @@ Eerste keer e2e: `npx playwright install chromium`. Een draaiende server hergebr
 | `/oefenvormen`            | Galerij van de nieuwe oefenvormen met voorbeeldinhoud (telt niet mee)      |
 | `/woorden`                | Woorden: de ronde van vandaag, je reeks, alle woorden per thema, de methodes |
 | `/woorden/vandaag`        | De woordenronde in de lesplayer; hervat na verversen                       |
+| `/argumentatie`           | Begeleid leerpad voor leiders: logica, drogredenen, kaarten, oefenlab en video’s |
+| `/argumentatie/les/[lessonId]` | Uitgebreide argumentatieles, reconstructie, casusreflectie en checkpoint |
 
 Laden, lege toestanden, ontbrekende lessen (404) en fouten hebben elk een eigen scherm.
 
@@ -55,6 +57,7 @@ gebruikt: `typescript-eslint` en de React-/a11y-plugins van `eslint-config-next`
 | tailwindcss, @tailwindcss/postcss | 4.3.3 | Ontwerptokens in `src/app/globals.css` |
 | motion | 14.0.0 | Stapovergangen, kaartjes naar hun plek, herschikken, voortgang, Pim |
 | @dnd-kit/core | 6.3.1 | Slepen van oefenblokken (altijd met klik-/toetsenbordalternatief) |
+| konva / react-konva | 10.7.1 / 19.3.0 | Interactieve 2D-argumentatie-, causaliteits- en Bayes-labs, met een volledig tekstalternatief |
 | zustand | 5.0.15 | Instellingen, voortgang, sessieherstel (localStorage) |
 | zod | 4.6.5 | Lescontract en validatie van opgeslagen gegevens |
 | lucide-react | 1.52.0 | Iconen (naast eigen SVG voor Pim, niveaus en vakgebieden) |
@@ -66,8 +69,8 @@ gebruikt: `typescript-eslint` en de React-/a11y-plugins van `eslint-config-next`
 | eslint, eslint-config-next | 9.39.5, 16.3.8 | Lint incl. React Compiler- en jsx-a11y-regels |
 
 Geluid gebruikt Web Audio (geen bestanden); fonts komen via `next/font` (Fraunces, Bricolage Grotesque, Figtree).
-Voorlezen (de knop "Luister" bij klanken) gebruikt de spraak van de browser (Web Speech API, `nl-NL`); zonder spraak
-verdwijnt de knop.
+Voorlezen gebruikt de Nederlandse stemmen van de browser (Web Speech API, `nl-NL`). Bij klanken verdwijnt de
+knop zonder spraakondersteuning; de leespagina’s vermelden wanneer Nederlands voorlezen niet beschikbaar is.
 
 ## Architectuur
 
@@ -95,7 +98,7 @@ flowchart LR
 
 ### Eén inhoudsbron
 
-De app gebruikt **alleen** `src/content/catalog.ts`. Die laadt de 29 lessen uit `legacy/build.ts` (byte-gelijk aan
+De schrijflesbibliotheek gebruikt **alleen** `src/content/catalog.ts`. Die laadt de 29 lessen uit `legacy/build.ts` (byte-gelijk aan
 de bron) via `adapters/legacy.ts`, voegt de nieuwe lessen uit `packs/` toe en valideert alles met het contract.
 `legacy/course.ts` bevat alleen de typen: de tweede cursus (`COURSE`) en `BOOKS` zijn bewust weggelaten, zodat er
 geen tegenstrijdige inhoud naast elkaar bestaat.
@@ -164,6 +167,63 @@ Voortgang staat lokaal (`state/words.ts`, `pennig:woorden` en `pennig:woorden-ro
 woord toevoegen: een `WordEntry` in het bestand van zijn thema; een nieuw thema in `words/themes.ts` en `bank/index.ts`.
 De id van een woord is zijn sleutel in de voortgang en mag daarna niet meer veranderen; verandert de inhoud van een
 opdracht, dan vervalt alleen een lopende ronde met die stap.
+
+## Argumentatie en drogredenen
+
+Een apart leergebied op `/argumentatie`, bereikbaar vanuit de hoofdnavigatie en startpagina. De inhoudsbron
+is `src/content/argumentation/index.ts`: 21 lessen van nul voorkennis naar complexe argumenten, gericht op
+leidinggeven, sterke taal en verantwoord besluiten. Tien volwaardige fundamentpagina’s introduceren alle begrippen
+vóór toepassing; de eerste les begint met Argument, Conclusie, Premisse en Gevolgtrekking. De tijdsindicatie telt
+circa vier minuten per begrippenpagina bij de bestaande lesduur. De stof bouwt op eerdere voorkennis; elke volgende
+les wordt beschikbaar na afronden van de vorige. Elke fase eindigt met acht objectieve checkpointvragen en een
+grens van 80%. De eindtoets bevat daarnaast twee zelfstandige expertwerkstukken met zelfbeoordeling.
+
+Waar een begrip nieuw is, begint de les met de volledige begrippenpagina. Daarna volgt een kleine, begeleide
+voorkennisvraag, een eigen voorspelling vóór
+een uitgewerkt voorbeeld, toepassing en steeds meer zelfstandige reconstructie. Lange analyses worden met
+modelantwoorden en rubrics zelf beoordeeld. De beginlessen hebben korte schrijfopdrachten; latere lessen vragen
+80–100 woorden. Eigen tekst wordt niet automatisch inhoudelijk beoordeeld en telt niet mee in de objectieve score.
+
+De uitleg verschijnt per kernidee op een aparte leespagina. Zelf nadenken, verdieping, het lab en elke video
+hebben eveneens een eigen pagina. De volledige teksten blijven behouden; de vaste Vorige/Volgende-bediening
+en paginavoortgang begeleiden het lezen. De leespositie blijft bewaard bij verversen, herlezen en export/import.
+Alle lessen hebben een extra transfer-vraag bij het tweede kernidee, met directe inhoudelijke feedback voordat
+het voorbeeld verschijnt. Deze begeleide keuzes beïnvloeden de toetsscore niet.
+Het overzicht biedt één doorlopende leerroute. Kaarten, simulaties en media verschijnen in de betreffende les;
+er zijn geen aparte tabs voor oefenvormen of handmatige niveaukeuze. Bij een gewijzigde leesopbouw begint alleen
+het lezen opnieuw, terwijl oefenantwoorden en eerdere resultaten behouden blijven.
+
+Elke leespagina heeft een voorleesbediening: starten, pauzeren, hervatten en stoppen. De stemkiezer toont de
+beschikbare Nederlandse stemmen. Een schuifregelaar bewaart het aparte leestempo van 0,6× tot 1,5×; de instelling
+voor losse klanken blijft behouden. Veranderen van tempo of stem hervat bij het actuele fragment. Korte fragmenten
+houden ook lange pagina’s leesbaar voor de spraakmotor. Wisselen van pagina stopt het voorlezen en start nooit
+automatisch. Alleen de huidige, zichtbare uitleg en vrijgegeven feedback worden gelezen; eigen teksten,
+verborgen uitwerkingen en toekomstige leespagina’s worden niet meegenomen. Stemkwaliteit hangt af van de
+geïnstalleerde stemmen en de browser.
+
+- `components/argumentation/` — overzicht, lesplayer, starters, dnd-kit-reconstructies, argumentwerkbank, video’s
+  en React Konva-oefenlabs. Native bediening en tekstalternatieven werken ook zonder canvas of slepen.
+- `lib/argumentation/` — objectieve beoordeling, begeleide volgorde, argumentgrafen en numerieke modellen.
+- `state/argumentation.ts` — gevalideerde lokale sessies, eerste-antwoordscores en zekerheid, herhaalschema,
+  tien afgeronde pogingen met eigen teksten, werkkaarten en videonotities. Alles zit in export/import en wissen.
+- `content/argumentation/` — lessen, concrete startvragen, casussen, begrippen, gecontroleerde videobronnen en
+  bronverantwoording naar de aangeleverde boeken. Boeken worden niet geüpload of publiek meegeleverd.
+
+Alle 21 lessen hebben een interactieve beeldkaart, samen met 54 vergelijktoestanden. De tien fundamenten hebben
+daarnaast hun eigen kaart. Je verandert bijvoorbeeld
+voorwaarden, kritiekdoelen, groepssamenstelling of kansen en leest wat daardoor wel en niet volgt. De mediatheek
+bevat 13 video’s en vijf pagina’s met visuele uitleg; elke les biedt een passende selectie met kijkvragen en toepassing.
+In argumentgrafen kun je afzonderlijke onderdelen uitlichten en hun aangegeven verbindingen volgen. Video’s
+met een YouTube-versie hebben een echte miniatuur; de speler laadt pas na een klik.
+
+Herhalingen beginnen bij de opdrachten. Een zwakke score komt na één dag terug; overige herhalingen volgen
+na 3, 7, 14 of 30 dagen afhankelijk van het aantal pogingen. Zekerheid wordt vóór feedback vastgelegd en beïnvloedt
+de score niet. Het resultaat wijst op hoogzekere fouten en bevestigt ook correcte antwoorden waar je aan twijfelde.
+
+Kaarten tonen gekoppelde, convergente en seriële steun en gerichte kritiek op een premisse, conclusie of
+gevolgtrekking. Je kunt eigen uitspraken en afleidingen maken, een tegenwerping richten en een tegenproef
+voorspellen voordat de gewijzigde kaart verschijnt. Drafts blijven per casus bewaard. Video’s laden pas na een
+klik; andere video’s en illustraties openen op de oorspronkelijke website. Er is geen onderzoeksroute.
 
 ## Lessen aansluiten
 

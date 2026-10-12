@@ -16,6 +16,7 @@ import { HeroScene } from './hero-scene';
 import { LayerMachine } from './layer-machine';
 import { RecentProgress } from './recent-progress';
 import { WordsCard } from './words-card';
+import { ArgumentationCard } from './argumentation-card';
 
 function TodayGoal({ goal, activeMs, streak }: { goal: number; activeMs: number; streak: number }) {
   const done = minutes(activeMs);
@@ -77,6 +78,7 @@ export function HomeView() {
         <div className="lg:self-start">
           <ContinueCard target={target} firstTime={firstTime} />
           <WordsCard />
+          <ArgumentationCard />
         </div>
       </div>
 

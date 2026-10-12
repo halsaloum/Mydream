@@ -142,22 +142,107 @@ export function canSpeak(voices: readonly SpeechSynthesisVoice[] = currentVoices
   return voices.length === 0 || voices.some(isDutch);
 }
 
-type SpeakOptions = {
+export type SpeechChunk = { index: number; total: number; text: string };
+export type SpeakOptions = {
   /** Vaste snelheid; zonder deze waarde geldt het tempo uit de instellingen. */
   rate?: number;
   /** Tempo ten opzichte van de instelling, bijv. 0.8 voor "nog wat langzamer". */
   slower?: number;
   onEnd?: () => void;
   onError?: () => void;
+  /** Nulgebaseerde voortgang zodra een fragment daadwerkelijk begint te klinken. */
+  onChunk?: (chunk: SpeechChunk) => void;
+  /** Een andere opdracht, stoppen of native annulering neemt deze run over. */
+  onInterrupt?: () => void;
 };
 
+export type SpeechStatus = 'idle' | 'speaking' | 'paused';
+let speechStatus: SpeechStatus = 'idle';
+const speechListeners = new Set<() => void>();
 let generation = 0;
+type ActiveSpeech = {
+  generation: number;
+  engine: SpeechSynthesis;
+  timer: number | null;
+  pending: (() => void) | null;
+  onInterrupt?: () => void;
+};
+let activeSpeech: ActiveSpeech | null = null;
 
-/** Lange teksten in zinnen: Chrome breekt uitspraken van meer dan ±15 seconden af. */
+function setSpeechStatus(next: SpeechStatus) {
+  if (speechStatus === next) return;
+  speechStatus = next;
+  speechListeners.forEach((listener) => listener());
+}
+
+function subscribeSpeech(listener: () => void) {
+  speechListeners.add(listener);
+  return () => { speechListeners.delete(listener); };
+}
+
+/** Alleen-lezen status van alle voorleesknoppen samen; op de server altijd idle. */
+export function useSpeechStatus(): SpeechStatus {
+  return useSyncExternalStore(subscribeSpeech, () => speechStatus, () => 'idle');
+}
+
+function clearTimer(run: ActiveSpeech | null) {
+  if (run?.timer !== null && run?.timer !== undefined) window.clearTimeout(run.timer);
+}
+
+function finishRun(run: number): ActiveSpeech | null {
+  if (activeSpeech?.generation !== run) return null;
+  const previous = activeSpeech;
+  activeSpeech = null;
+  generation++;
+  clearTimer(previous);
+  setSpeechStatus('idle');
+  return previous;
+}
+
+function abbreviationAt(text: string, index: number): boolean {
+  if (text[index] !== '.') return false;
+  const token = text.slice(0, index + 1).match(/[^\s]+$/u)?.[0].replace(/^["'‘“(]+/u, '').toLowerCase() ?? '';
+  return /^(?:dr|dhr|mevr|mw|prof|mr|ir|ing|nr|art|ca|ong|bijv|bv|etc|enz)\.$/u.test(token) || /^(?:\p{L}\.){1,5}$/u.test(token);
+}
+
+/** Korte zinnen en langere zinsdelen; behoud alle tekst en bescherm afkortingen/getallen. */
 export function chunks(text: string): string[] {
-  const clean = text.replace(/\s+/g, ' ').trim();
-  if (clean.length <= 160) return clean ? [clean] : [];
-  return clean.match(/[^.!?;:]+[.!?;:]*\s*/g)?.map((part) => part.trim()).filter(Boolean) ?? [clean];
+  const clean = text.replace(/\s+/gu, ' ').trim();
+  if (!clean) return [];
+  const sentences: string[] = [];
+  let start = 0;
+  for (let index = 0; index < clean.length; index++) {
+    if (!/[.!?;:]/u.test(clean[index]!) || abbreviationAt(clean, index)) continue;
+    let end = index + 1;
+    while (end < clean.length && /["'’”)\]}]/u.test(clean[end]!)) end++;
+    // Dit sluit ook punten in 1.5 en dubbele punten in 12:30 uit.
+    if (end < clean.length && clean[end] !== ' ') continue;
+    const sentence = clean.slice(start, end).trim();
+    if (sentence) sentences.push(sentence);
+    start = end;
+    index = end - 1;
+  }
+  const tail = clean.slice(start).trim();
+  if (tail) sentences.push(tail);
+  return sentences.flatMap((sentence) => {
+    const parts: string[] = [];
+    let rest = sentence;
+    while (rest.length > 220) {
+      let cut = rest.lastIndexOf(' ', 220);
+      const clause = [...rest.slice(0, 221).matchAll(/[,;:] /gu)].at(-1)?.index;
+      if (clause !== undefined && clause >= 140) cut = clause + 1;
+      while (cut > 0 && abbreviationAt(rest, cut - 1)) cut = rest.lastIndexOf(' ', cut - 1);
+      if (cut <= 0) {
+        cut = 220;
+        // Een ongewoon lang woord mag worden gedeeld, maar geen UTF-16-teken doormidden.
+        if (/[\uD800-\uDBFF]/u.test(rest[cut - 1]!)) cut--;
+      }
+      parts.push(rest.slice(0, cut).trim());
+      rest = rest.slice(cut).trim();
+    }
+    if (rest) parts.push(rest);
+    return parts;
+  });
 }
 
 function settingsRate(): number {
@@ -178,38 +263,72 @@ export function speakAll(texts: readonly string[], { gap = 0, ...options }: Spea
   if (parts.length === 0) return false;
   const voice = pickVoice(voices, useSettings.getState().speech.voice);
   const rate = Math.min(1.5, Math.max(0.4, options.rate ?? settingsRate() * (options.slower ?? 1)));
+  const previous = activeSpeech;
+  clearTimer(previous);
   const run = ++generation;
+  const current: ActiveSpeech = { generation: run, engine: speech.engine, timer: null, pending: null, onInterrupt: options.onInterrupt };
+  activeSpeech = current;
 
   const say = (index: number) => {
-    if (run !== generation) return;
-    const utterance = new speech.Utterance(parts[index] ?? '');
-    utterance.lang = voice?.lang.replace('_', '-') ?? 'nl-NL';
-    if (voice) utterance.voice = voice;
-    utterance.rate = rate;
-    utterance.onend = () => {
-      if (run !== generation) return;
-      if (index + 1 >= parts.length) return options.onEnd?.();
-      const gapAfter = texts.length > 1 ? gap : 0;
-      if (gapAfter > 0) window.setTimeout(() => say(index + 1), gapAfter);
-      else say(index + 1);
-    };
-    utterance.onerror = (event) => {
-      // `interrupted`/`canceled`: een nieuwe opdracht nam het over, geen echte fout.
-      if (run !== generation || event.error === 'interrupted' || event.error === 'canceled') return;
-      options.onError?.();
-    };
-    speech.engine.speak(utterance);
-    // Chrome blijft soms op pauze staan na een eerdere onderbreking.
-    if (speech.engine.paused) speech.engine.resume();
+    if (run !== generation || activeSpeech !== current) return;
+    if (speechStatus === 'paused') { current.pending = () => say(index); return; }
+    try {
+      const utterance = new speech.Utterance(parts[index] ?? '');
+      utterance.lang = voice?.lang.replace('_', '-') ?? 'nl-NL';
+      if (voice) utterance.voice = voice;
+      utterance.rate = rate;
+      let settled = false;
+      let started = false;
+      utterance.onstart = () => {
+        if (run !== generation || settled || started) return;
+        started = true;
+        setSpeechStatus(speech.engine.paused ? 'paused' : 'speaking');
+        options.onChunk?.({ index, total: parts.length, text: parts[index]! });
+      };
+      const syncStatus = () => { if (run === generation && !settled) setSpeechStatus(speech.engine.paused ? 'paused' : 'speaking'); };
+      utterance.onpause = syncStatus;
+      utterance.onresume = syncStatus;
+      utterance.onend = () => {
+        if (run !== generation || settled) return;
+        settled = true;
+        if (index + 1 >= parts.length) {
+          finishRun(run);
+          options.onEnd?.();
+          return;
+        }
+        const gapAfter = texts.length > 1 ? gap : 0;
+        if (gapAfter > 0) current.timer = window.setTimeout(() => { current.timer = null; say(index + 1); }, gapAfter);
+        else say(index + 1);
+      };
+      utterance.onerror = (event) => {
+        if (run !== generation || settled) return;
+        settled = true;
+        const ended = finishRun(run);
+        // Native annulering beëindigt óók de status, zonder een foutmelding te verzinnen.
+        if (event.error === 'interrupted' || event.error === 'canceled') ended?.onInterrupt?.();
+        else options.onError?.();
+      };
+      speech.engine.speak(utterance);
+      return true;
+    } catch {
+      if (finishRun(run)) options.onError?.();
+      return false;
+    }
   };
 
+  let accepted = false;
   try {
     speech.engine.cancel();
-    say(0);
-    return true;
+    // Sommige browsers blijven gepauzeerd na cancel; een nieuwe opdracht begint gewoon.
+    if (speech.engine.paused) speech.engine.resume();
+    setSpeechStatus('speaking');
+    accepted = say(0) === true;
   } catch {
-    return false;
+    if (finishRun(run)) options.onError?.();
+  } finally {
+    previous?.onInterrupt?.();
   }
+  return accepted;
 }
 
 /** Leest `text` voor; geeft `false` als de browser geen Nederlandse spraak heeft. */
@@ -219,12 +338,44 @@ export function speak(text: string, options: SpeakOptions = {}): boolean {
 
 /** Stopt wat er nu wordt voorgelezen. */
 export function stopSpeaking() {
+  const previous = activeSpeech;
   generation++;
+  activeSpeech = null;
+  clearTimer(previous);
+  setSpeechStatus('idle');
   try {
-    synth()?.engine.cancel();
+    (previous?.engine ?? synth()?.engine)?.cancel();
   } catch {
     // Geen spraak: niets te stoppen.
   }
+  previous?.onInterrupt?.();
+}
+
+/** Pauzeert een actieve opdracht; bij stilstand blijft de status idle. */
+export function pauseSpeaking(): boolean {
+  if (!activeSpeech) return false;
+  if (speechStatus === 'paused') return true;
+  try {
+    activeSpeech.engine.pause();
+    if (!activeSpeech.engine.paused) return false;
+    setSpeechStatus('paused');
+    return true;
+  } catch { return false; }
+}
+
+/** Hervat dezelfde opdracht, inclusief een fragment dat tijdens een pauze wachtte. */
+export function resumeSpeaking(): boolean {
+  const current = activeSpeech;
+  if (!current || speechStatus !== 'paused') return false;
+  try {
+    current.engine.resume();
+    if (current.engine.paused) return false;
+    setSpeechStatus('speaking');
+    const pending = current.pending;
+    current.pending = null;
+    pending?.();
+    return true;
+  } catch { return false; }
 }
 
 /** Of er een luisterknop kan komen. Op de server en bij de eerste weergave: nee. */

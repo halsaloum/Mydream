@@ -4,6 +4,7 @@ import { useSessions } from './sessions';
 import { pickSettingsData, SettingsDataSchema, useSettings, type SettingsData } from './settings';
 import { pickWordsData, useWordRound, useWords, WordsDataSchema } from './words';
 import { EMPTY_WORDS, type WordsData } from '@/lib/words/memory';
+import { ArgumentDataSchema, EMPTY_ARGUMENTS, pickArgumentData, useArgumentation, type ArgumentData } from './argumentation';
 
 /** Exporteren, importeren en wissen van lokale gegevens. Import wordt volledig gevalideerd. */
 const ExportSchema = z.object({
@@ -14,9 +15,10 @@ const ExportSchema = z.object({
   progress: ProgressDataSchema,
   /** Sinds de tab "Woorden"; oudere bestanden hebben dit niet. */
   words: WordsDataSchema.optional(),
+  arguments: ArgumentDataSchema.optional(),
 });
 
-export type ImportData = { exportedAt: string; settings: SettingsData; progress: ProgressData; words: WordsData | null };
+export type ImportData = { exportedAt: string; settings: SettingsData; progress: ProgressData; words: WordsData | null; arguments?: ArgumentData | null };
 
 export function exportData(now = new Date()): string {
   return JSON.stringify(
@@ -27,6 +29,7 @@ export function exportData(now = new Date()): string {
       settings: pickSettingsData(useSettings.getState()),
       progress: pickProgressData(useProgress.getState()),
       words: pickWordsData(useWords.getState()),
+      arguments: pickArgumentData(useArgumentation.getState()),
     },
     null,
     2,
@@ -42,8 +45,8 @@ export function parseImport(text: string): { ok: true; data: ImportData } | { ok
   }
   const result = ExportSchema.safeParse(json);
   if (!result.success) return { ok: false, error: 'Dit is geen geldig pennig-bestand, of het is beschadigd.' };
-  const { exportedAt, settings, progress, words } = result.data;
-  return { ok: true, data: { exportedAt, settings, progress, words: words ?? null } };
+  const { exportedAt, settings, progress, words, arguments: argumentData } = result.data;
+  return { ok: true, data: { exportedAt, settings, progress, words: words ?? null, arguments: argumentData ?? null } };
 }
 
 export function applyImport(data: ImportData) {
@@ -52,6 +55,7 @@ export function applyImport(data: ImportData) {
   useSessions.getState().reset();
   useWords.getState().replace(data.words ?? EMPTY_WORDS);
   useWordRound.getState().reset();
+  useArgumentation.getState().replace(data.arguments ?? EMPTY_ARGUMENTS);
 }
 
 export function resetProgress() {
@@ -59,6 +63,7 @@ export function resetProgress() {
   useSessions.getState().reset();
   useWords.getState().reset();
   useWordRound.getState().reset();
+  useArgumentation.getState().reset();
 }
 
 export function resetEverything() {

@@ -1,7 +1,7 @@
 'use client';
 
 import { NavigationMenu } from '@base-ui/react/navigation-menu';
-import { BookOpenText, ChartColumnIncreasing, House, Languages, Repeat2, Settings } from 'lucide-react';
+import { BookOpenText, ChartColumnIncreasing, House, Languages, Network, Repeat2, Settings } from 'lucide-react';
 import { motion } from 'motion/react';
 import type { Route } from 'next';
 import Link from 'next/link';
@@ -18,6 +18,7 @@ const NAV: { href: Route; label: string; icon: typeof House }[] = [
   { href: '/', label: 'Leren', icon: House },
   { href: '/lessen', label: 'Lessen', icon: BookOpenText },
   { href: '/woorden', label: 'Woorden', icon: Languages },
+  { href: '/argumentatie', label: 'Argumentatie', icon: Network },
   { href: '/herhalen', label: 'Herhalen', icon: Repeat2 },
   { href: '/voortgang', label: 'Voortgang', icon: ChartColumnIncreasing },
 ];
@@ -88,7 +89,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                       active={active}
                       render={<Link href={item.href} />}
                       className={cn(
-                        'group relative flex min-h-11 items-center gap-2 rounded-control px-3.5 font-display text-body font-bold transition-colors',
+                        'group relative flex min-h-11 items-center gap-2 rounded-control px-2.5 font-display text-small font-bold transition-colors lg:px-3.5',
                         active ? 'text-ink' : 'text-ink-muted hover:bg-ink/[0.05] hover:text-ink',
                       )}
                     >
@@ -141,7 +142,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         aria-label="Hoofdnavigatie (mobiel)"
         className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-surface/85 pb-[env(safe-area-inset-bottom)] shadow-[0_-10px_30px_-18px_rgb(60_40_10/0.3)] backdrop-blur-xl backdrop-saturate-150 md:hidden"
       >
-        <NavigationMenu.List className="mx-auto grid max-w-lg grid-cols-5">
+        <NavigationMenu.List className="mx-auto grid max-w-xl grid-cols-6">
           {NAV.map((item) => {
             const active = isActive(pathname, item.href);
             return (
@@ -150,7 +151,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                   active={active}
                   render={<Link href={item.href} />}
                   className={cn(
-                    'relative flex min-h-16 flex-col items-center justify-center gap-1 text-caption font-bold transition-colors',
+                    'relative flex min-h-16 flex-col items-center justify-center gap-1 text-[0.65rem] font-bold transition-colors sm:text-caption',
                     active ? 'text-green-ink' : 'text-ink-muted',
                   )}
                 >
