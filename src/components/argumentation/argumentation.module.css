@@ -114,7 +114,15 @@
 .lesson[data-locked='true'] .lessonNumber { box-shadow: 0 4px 0 var(--color-line); }
 
 .player { background: #f4f6f0; --color-blue-ink: #3d50b5; --color-blue-soft: #edf0ff; }
-.learningLayout { display: grid; grid-template-columns: 250px minmax(0, 760px); align-items: start; gap: 44px; max-width: 1140px; margin: 0 auto; padding: 38px 24px 180px; }
+.learningLayout { display: flex; flex-direction: column; max-width: 780px; margin: 0 auto; padding: 32px 24px 180px; }
+.learningMain { width: 100%; }
+.player { --color-blue-ink: #39781b; --color-blue-soft: #eff8e7; }
+.player > header { border-bottom: none; }
+.player .learningCard { border: 0; box-shadow: none; background: transparent; padding: 12px 0 24px; }
+.player .actionDock > div { max-width: 900px; }
+.player .actionDock button:not(:disabled) { min-height: 50px; }
+.player .actionDock button:last-child:not(:disabled) { letter-spacing: .025em; }
+.player .learningMain > div:first-child { margin-bottom: 20px; }
 .learningMain { min-width: 0; }
 .journey { position: sticky; top: 102px; max-height: calc(100dvh - 220px); overflow-y: auto; scrollbar-width: thin; padding: 4px 10px 12px 0; }
 .journeyHeading { display: flex; align-items: center; gap: 12px; }

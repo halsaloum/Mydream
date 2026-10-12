@@ -24,7 +24,6 @@ import { theoryPages } from '@/lib/argumentation/theory-pages';
 import { TheoryReader } from './theory-reader';
 import { argumentLessonMinutes } from '@/lib/argumentation/duration';
 import styles from './argumentation.module.css';
-import { LessonJourney } from './lesson-journey';
 
 function BookFoundation({ lesson }: { lesson: ArgumentLesson }) {
   const entries = argumentSourceGuide[lesson.id];
@@ -126,7 +125,7 @@ export function ArgumentLessonPlayer({ lesson }: { lesson: ArgumentLesson }) {
       </div>
     </header>
     <div className={styles.learningLayout}>
-    <LessonJourney lesson={lesson} session={session} readingIndex={readingIndex} canResume={canResume} />
+
     <main className={styles.learningMain}>
       <div className="mb-8">
         {(cursor !== 0 || readingIndex === 0) && <p className="mb-3 text-caption font-bold tracking-wider text-blue-ink uppercase">Argumentatie & drogredenen · {currentModule?.title}</p>}
