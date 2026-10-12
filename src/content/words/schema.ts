@@ -167,13 +167,22 @@ function formSource(form: string): string {
 /** Een buigingsuitgang die een leerling achter een vorm mag zetten (de gedelegeerde taken, plannen's). */
 const INFLECTION = "(?:e|en|n|s|['’]s)?";
 
+/** Gecompileerde patronen per vormenlijst: een patroon met \p{…} bouwen is traag, en het wordt bij elke toetsaanslag gevraagd. */
+const patterns = new Map<string, RegExp>();
+
 /**
  * Herkent elke vorm van het woord in een tekst (voor eigen zinnen en voor de controle van de
  * inhoud). `loose` laat ook een buigingsuitgang toe, voor de eigen zinnen van de leerling.
  */
 export function formPattern(entry: Pick<WordEntry, 'forms'>, loose = false): RegExp {
-  const sources = [...entry.forms].sort((a, b) => b.length - a.length).map(formSource);
-  return new RegExp(`${LETTER_BEFORE}(?:${sources.join('|')})${loose ? INFLECTION : ''}${LETTER_AFTER}`, 'iu');
+  const key = `${loose ? 'l' : 's'}\u0000${entry.forms.join('\u0000')}`;
+  let pattern = patterns.get(key);
+  if (!pattern) {
+    const sources = [...entry.forms].sort((a, b) => b.length - a.length).map(formSource);
+    pattern = new RegExp(`${LETTER_BEFORE}(?:${sources.join('|')})${loose ? INFLECTION : ''}${LETTER_AFTER}`, 'iu');
+    patterns.set(key, pattern);
+  }
+  return pattern;
 }
 
 /** Staat het woord in de tekst? Een vorm uit `forms`, of alle woorddelen uit `detect`. */

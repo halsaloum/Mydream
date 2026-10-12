@@ -36,6 +36,8 @@ Eerste keer e2e: `npx playwright install chromium`. Een draaiende server hergebr
 | `/voortgang`              | Per niveau en vakgebied, oefentijd, laatst geoefend                        |
 | `/instellingen`           | Geluid, rustige beweging, confetti, leerprofiel, export/import/wissen      |
 | `/oefenvormen`            | Galerij van de nieuwe oefenvormen met voorbeeldinhoud (telt niet mee)      |
+| `/woorden`                | Woorden: de ronde van vandaag, je reeks, alle woorden per thema, de methodes |
+| `/woorden/vandaag`        | De woordenronde in de lesplayer; hervat na verversen                       |
 
 Laden, lege toestanden, ontbrekende lessen (404) en fouten hebben elk een eigen scherm.
 
@@ -88,7 +90,8 @@ flowchart LR
 - `src/state` — Zustand-stores. Opslag wordt bij laden met Zod gevalideerd; beschadigde gegevens krijgen een
   reservekopie en een melding. Sessies die niet meer bij de inhoud passen, vervallen netjes.
 - `src/components/player` — de lesplayer en één component per oefenvorm (`step-view.tsx` is het register).
-- `src/app` — routes; `(app)` met navigatie, `(focus)` zonder (kennismaking, lessen, herhaalronde, voorbeelden).
+- `src/app` — routes; `(app)` met navigatie, `(focus)` zonder (kennismaking, lessen, herhaalronde, woordenronde, voorbeelden).
+- `src/content/words`, `src/lib/words`, `src/engine/fsrs.ts` — de tab Woorden (zie [Woorden](#woorden)).
 
 ### Eén inhoudsbron
 
@@ -139,6 +142,29 @@ en draaitegel staan nog in de app, maar geen les gebruikt ze nu; `packs/tables.t
 De demoset op `/oefenvormen` (`content/demo/`) is de voorbeeldinhoud uit "Interactieve lessen – ideeën", letterlijk
 overgenomen. Die is geen cursusinhoud: losse sessies, niet bewaard, telt niet mee voor voortgang of herhaling.
 
+## Woorden
+
+De tab **Woorden** leert elke dag nieuwe woorden voor het werk als leidinggevende (leidinggeven, besluiten, vergaderen,
+feedback, verandering, geld, integriteit, …) en voor goed algemeen Nederlands (verbindingswoorden, formeel Nederlands,
+denken en redeneren, …): 544 woorden in 24 thema's, in `src/content/words/bank/`. Elk woord is één `WordEntry`
+(`words/schema.ts`): betekenis, voorbeelden, vaste combinaties, een verwarrend buurwoord, en het materiaal voor alle
+oefeningen. De app bedenkt zelf geen zinnen; `words.test.ts` controleert elk woord en elke opdracht die de app ervan maakt.
+
+Een ronde (`lib/words/plan.ts`) bestaat uit de herhalingen van vandaag en een vast aantal nieuwe woorden, door elkaar en
+met tussenpozen per woord. Per nieuw woord: eerst **raden** uit een zin (`guess`), dan de **woordkaart** (`word`, met
+hardop zeggen), zelf **ophalen** in een nieuwe zin (`recall`, met beginletters zolang het woord nieuw is), een keuze in
+een gesprek of situatie (`scene`), een **eigen zin** die je met een voorbeeld vergelijkt (`use`), aan het eind een korte
+tekst met een paar woorden samen en nog één keer ophalen. Herhalingen wisselen van opdracht (ophalen, de vaste
+combinatie typen, benoemen, eigen zin, de betekenis met inzet) en volgen **FSRS-5** (`engine/fsrs.ts`, geverifieerd tegen
+de referentie-implementatie): een nieuw woord komt morgen terug, daarna net voordat je het zou vergeten. Woorden die op
+elkaar lijken (synoniemen, tegenstellingen, familie) komen niet op dezelfde dag. De onderbouwing staat op de pagina zelf
+("Zo leer je hier") en in `components/words/methods.tsx`.
+
+Voortgang staat lokaal (`state/words.ts`, `pennig:woorden` en `pennig:woorden-ronde`) en zit in export en import. Een
+woord toevoegen: een `WordEntry` in het bestand van zijn thema; een nieuw thema in `words/themes.ts` en `bank/index.ts`.
+De id van een woord is zijn sleutel in de voortgang en mag daarna niet meer veranderen; verandert de inhoud van een
+opdracht, dan vervalt alleen een lopende ronde met die stap.
+
 ## Lessen aansluiten
 
 1. Maak een cursus als JSON volgens `content/schema/course-pack.schema.json` (editors geven dan aanvulling en
@@ -157,12 +183,13 @@ Elke vorm werkt met aanraken, muis en toetsenbord; slepen heeft altijd een klik-
 
 | Modus | Vormen | Gedrag |
 | --- | --- | --- |
-| uitleg | uitleg (met klikexperiment, knippen, markeren, uitgang plakken, wisselen, alfabet, klinkerwiel, letters plakken, klinkerkaart, klanktabel, OT-tableau, sonoriteitsberg, lettergreepboom, woordboom (ook voor woordgroepen), paradigma, groepenjager, samenstelbank in 3D), nieuw begrip | Verder als de opdracht van een deel gedaan is |
-| gecontroleerd | meerkeuze, combineren, invullen, woorden ordenen, alinea ordenen, sorteren, fout verbeteren, herschrijven, vrij schrijven (met taakeisen), Durf je?, dictee | Controleer → feedback blijft staan; fout komt later terug |
-| zelfcontrolerend | swipe-kaarten, woordbouwer, tijdschuif, snelrondje (ook zonder klok), zinstrein, markeerstiften, voegwoord-duw, zinstang, verwijsdraad, betekenisladder, twee betekenissen, chat-scenario, toonregelaar, zegt en bedoelt, weegschaal, alinea-stapel, eindredactie | Rondt zichzelf af; fouten tellen in de score en komen op de herhaalstapel |
+| uitleg | uitleg (met klikexperiment, knippen, markeren, uitgang plakken, wisselen, alfabet, klinkerwiel, letters plakken, klinkerkaart, klanktabel, OT-tableau, sonoriteitsberg, lettergreepboom, woordboom (ook voor woordgroepen), paradigma, groepenjager, samenstelbank in 3D), nieuw begrip, woordkaart | Verder als de opdracht van een deel gedaan is |
+| gecontroleerd | meerkeuze, combineren, invullen, woorden ordenen, alinea ordenen, sorteren, fout verbeteren, herschrijven, vrij schrijven (met taakeisen), Durf je?, dictee, raad eerst, ophalen, denk na | Controleer → feedback blijft staan; fout komt later terug |
+| zelfcontrolerend | swipe-kaarten, woordbouwer, tijdschuif, snelrondje (ook zonder klok), zinstrein, markeerstiften, voegwoord-duw, zinstang, verwijsdraad, betekenisladder, twee betekenissen, chat-scenario, toonregelaar, zegt en bedoelt, weegschaal, alinea-stapel, eindredactie, gebruik het (eigen zin met voorbeeld) | Rondt zichzelf af; fouten tellen in de score en komen op de herhaalstapel |
 
 Een nieuwe vorm toevoegen: schema in `content/kinds.ts`, beoordeling in `engine/kinds.ts`, component in
-`components/player/steps/extra/`, en één regel in `components/player/step-view.tsx`.
+`components/player/steps/extra/`, en één regel in `components/player/step-view.tsx`. De vormen van de tab Woorden staan
+in `content/kinds-words.ts`, `engine/words.ts` en `components/player/steps/words/`.
 
 ## Ontwerpsysteem
 

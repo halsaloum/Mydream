@@ -9,7 +9,8 @@ import { containsWord, gapSolution, WordEntrySchema } from './schema';
 
 const bare = (text: string) => text.toLocaleLowerCase('nl').replace(/^(de|het|een)\s+/, '').trim();
 
-describe('woordenbank', () => {
+// 544 woorden met elk veertien opdrachten: ruim de tijd voor nemen.
+describe('woordenbank', { timeout: 60_000 }, () => {
   it('elk woord voldoet aan het contract', () => {
     const problems: string[] = [];
     for (const [theme, entries] of Object.entries(BANK)) {
@@ -28,9 +29,10 @@ describe('woordenbank', () => {
     expect(words.filter((word, i) => words.indexOf(word) !== i)).toEqual([]);
   });
 
-  it('elk thema in de bank bestaat, en heeft situaties voor de schrijfopdracht', () => {
+  it('elk thema in de bank bestaat, heeft minstens twintig woorden en situaties voor de schrijfopdracht', () => {
     const known = new Set(THEMES.map((theme) => theme.id));
     expect(Object.keys(BANK).filter((id) => !known.has(id))).toEqual([]);
+    expect(THEMES.filter((theme) => (BANK[theme.id]?.length ?? 0) < 20).map((theme) => theme.id)).toEqual([]);
     for (const theme of THEMES.filter((candidate) => candidate.group === 'vak')) expect(theme.situations.length).toBeGreaterThan(0);
   });
 
