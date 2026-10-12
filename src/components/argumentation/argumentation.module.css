@@ -1,0 +1,128 @@
+.root {
+  --color-blue-ink: #3549ad;
+  --color-blue-soft: #edf0ff;
+  --color-blue-line: #c8d0fa;
+  --color-blue: #7689f5;
+  --color-blue-deep: #5366ce;
+  --color-blue-on: #15225e;
+  --color-green-ink: #32651a;
+  --color-green-soft: #edf8df;
+}
+
+.hero {
+  border: 1px solid #d7decf;
+  border-radius: 28px;
+  padding: clamp(24px, 4vw, 48px);
+  background: #eff4e8;
+  overflow: hidden;
+}
+
+.preview {
+  padding: 22px;
+  border: 1px solid #dadfd3;
+  border-radius: 24px;
+  background: #fafcf7;
+  box-shadow: 0 7px 0 #dce3d3, 0 18px 36px #2438180a;
+  color: var(--color-ink);
+}
+
+.claim {
+  padding: 22px;
+  text-align: center;
+  border: 2px solid #ccd4f8;
+  border-radius: 16px;
+  background: #e9edff;
+  box-shadow: 0 4px 0 #ccd4f8;
+}
+
+.answer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 62px;
+  padding: 12px;
+  border: 2px solid #dce1d6;
+  border-radius: 14px;
+  background: white;
+  box-shadow: 0 3px 0 #dce1d6;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.5;
+  cursor: pointer;
+  transition: background 160ms, border-color 160ms;
+}
+.answer:hover { border-color: #8e9bcb; }
+.answerKey {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  border: 1px solid #dce1d6;
+  border-radius: 8px;
+  font-weight: 800;
+  font-size: 12px;
+}
+.correct { background: #edf8df; border-color: #a3cc7b; box-shadow: 0 3px 0 #a3cc7b; }
+.retry { background: #fff3e0; border-color: #e8bb80; box-shadow: 0 3px 0 #e8bb80; }
+
+.stats > * { border-radius: 20px; border-width: 2px; }
+.stats > :first-child { background: #fff; }
+.stats > button { background: #fff7e8; border-color: #ecdcc0; }
+.stats > button:hover { border-color: #d7ae68; }
+.stats > :last-child { background: #edf0ff; border-color: #d2d9f7; }
+
+.module {
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px;
+  box-shadow: 0 4px 0 var(--color-line);
+}
+.module[aria-current='step'] { box-shadow: 0 4px 0 var(--accent-ink); }
+.moduleNumber {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border-radius: 12px;
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-line);
+  font-size: 14px;
+}
+
+.lessonList { position: relative; }
+.lesson {
+  position: relative;
+  border-radius: 20px;
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+.lesson:hover { transform: translateY(-3px); box-shadow: 0 7px 0 #d7dcf0; }
+.lesson:active { transform: translateY(1px); }
+.lesson[data-next='true'] { border-color: #a6b3ef; background: #f6f7ff; box-shadow: 0 4px 0 #c5cef4; }
+.lesson[data-locked='true'] { background: #fafaf7; }
+.lesson[data-locked='true']:hover { box-shadow: 0 5px 0 #e7e3da; }
+.lessonNumber {
+  width: 52px;
+  height: 56px;
+  border-radius: 17px;
+  border-width: 2px;
+  box-shadow: 0 4px 0 var(--color-blue-line);
+}
+.lesson[data-next='true'] .lessonNumber { background: #d9efad; border-color: #b6d484; color: #304e17; box-shadow: 0 4px 0 #a6c376; }
+.lesson[data-locked='true'] .lessonNumber { box-shadow: 0 4px 0 var(--color-line); }
+
+.player { background: #f6f7f2; }
+.player > header { background: #fffffff2; border-bottom: 2px solid #e3e7dc; }
+.player :global([role='progressbar']) { min-height: 12px; }
+.player :global([role='radiogroup']) label { transition: transform 150ms, box-shadow 150ms, background 150ms; }
+.player :global([role='radiogroup']) label:has(input:checked) { box-shadow: 0 3px 0 var(--color-blue-line); }
+.player :global([role='status']) { animation: feedback-in 240ms ease-out; }
+@keyframes feedback-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) {
+  .root *, .root *::before, .root *::after { animation: none !important; transition: none !important; }
+  .lesson:hover, .lesson:active { transform: none; }
+}
+:global([data-motion='calm']) .root *, :global([data-motion='calm']) .root *::before, :global([data-motion='calm']) .root *::after { animation: none !important; transition: none !important; }
+:global([data-motion='calm']) .lesson:hover, :global([data-motion='calm']) .lesson:active { transform: none; }

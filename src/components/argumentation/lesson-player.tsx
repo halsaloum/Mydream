@@ -23,6 +23,7 @@ import { argumentSourceGuide } from '@/content/argumentation/source-guide';
 import { theoryPages } from '@/lib/argumentation/theory-pages';
 import { TheoryReader } from './theory-reader';
 import { argumentLessonMinutes } from '@/lib/argumentation/duration';
+import styles from './argumentation.module.css';
 
 function BookFoundation({ lesson }: { lesson: ArgumentLesson }) {
   const entries = argumentSourceGuide[lesson.id];
@@ -115,7 +116,7 @@ export function ArgumentLessonPlayer({ lesson }: { lesson: ArgumentLesson }) {
   };
   const selectedFeedback = exercise?.kind === 'choice' ? exercise.options.find((option) => option.id === answer.value)?.feedback : null;
 
-  return <div data-accent="blue" className="min-h-dvh bg-canvas">
+  return <div data-accent="blue" className={cn(styles.root, styles.player, 'min-h-dvh')}>
     <header className="sticky top-0 z-30 border-b border-line bg-canvas/95 backdrop-blur-xl">
       <div className="mx-auto flex min-h-16 max-w-5xl items-center gap-4 px-gutter py-3">
         <Link href="/argumentatie" className="flex min-h-11 shrink-0 items-center gap-2 rounded-control px-2 text-small font-bold text-ink-muted hover:bg-surface"><ArrowLeft aria-hidden className="size-5" /><span className="max-sm:sr-only">Leerpad</span></Link>
@@ -129,10 +130,10 @@ export function ArgumentLessonPlayer({ lesson }: { lesson: ArgumentLesson }) {
         <h1 ref={headingRef} tabIndex={-1} className={cn('outline-none', cursor === 0 && readingIndex > 0 ? 'font-display text-small font-semibold text-ink-muted' : 'font-serif text-[clamp(2rem,1.6rem+1.4vw,3rem)] leading-tight tracking-tight')}>{lesson.title}</h1>
         {!session.finished && cursor === 0 && readingIndex === 0 && <p className="mt-3 text-lead leading-relaxed text-ink-muted">{lesson.teaser}</p>}
       </div>
-      {!session.finished && (cursor > 0 || readingIndex === 0) && <ol aria-label="Steeds meer verantwoordelijkheid in deze les" className="mb-7 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">{phases.map((label, index) => <li key={label} className={cn('rounded-control border px-3 py-2 text-caption', phase === index ? 'border-blue-line bg-blue-soft font-bold text-blue-ink' : 'border-line bg-sunken text-ink-muted')} aria-current={phase === index ? 'step' : undefined}>{index + 1}. {label}</li>)}</ol>}
+      {!session.finished && (cursor > 0 || readingIndex === 0) && <ol aria-label="Steeds meer verantwoordelijkheid in deze les" className="mb-7 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">{phases.map((label, index) => <li key={label} className={cn('flex items-center gap-2 rounded-control border-2 px-3 py-2 text-caption', phase === index ? 'border-blue-line bg-blue-soft font-bold text-blue-ink shadow-slab-sm' : phase > index ? 'border-green-line bg-green-soft text-green-ink' : 'border-line bg-surface text-ink-muted')} aria-current={phase === index ? 'step' : undefined}>{index + 1}. {label}</li>)}</ol>}
       {session.finished && cursor !== 0 ? <Finished lesson={lesson} session={session} headingRef={resultHeadingRef} /> : <>
         {cursor === 0 && <div className="mb-5 flex items-center justify-between gap-4"><span className="inline-flex items-center gap-2 rounded-chip border border-blue-line bg-blue-soft px-3 py-1.5 text-caption font-bold text-blue-ink"><BookOpen aria-hidden className="size-3.5" />Eén kern tegelijk</span><div aria-hidden="true" className="flex gap-1.5">{readingPages.map((page, index) => <span key={page.id} className={cn('h-1.5 rounded-full transition-all calm:transition-none', index === readingIndex ? 'w-6 bg-blue-ink' : index < readingIndex ? 'w-1.5 bg-blue' : 'w-1.5 bg-line-strong')} />)}</div></div>}
-        <motion.div className={cn(cursor === 0 && 'rounded-[2rem] border border-line bg-surface p-5 shadow-ambient sm:p-9')} key={cursor === 0 ? `reading-${readingPage.id}` : cursor} initial={calm ? false : { opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: calm ? 0 : 0.18 }}>
+        <motion.div className="rounded-[2rem] border-2 border-line bg-surface p-5 shadow-slab-sm sm:p-9" key={cursor === 0 ? `reading-${readingPage.id}` : cursor} initial={calm ? false : { opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: calm ? 0 : 0.18 }}>
           {cursor === 0 ? <TheoryReader lesson={lesson} session={session} pageIndex={readingIndex} onPageChange={(index) => useArgumentation.getState().setTheoryPage(lesson.id, index)} /> : exercise ? <ArgumentExerciseView headingRef={exerciseHeadingRef} exercise={exercise} answer={answer} onChange={(patch) => useArgumentation.getState().answer(lesson.id, exercise.id, patch)} /> : null}
         </motion.div>
         {cursor === 0 && readingDone && <BookFoundation lesson={lesson} />}
