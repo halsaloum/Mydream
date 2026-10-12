@@ -92,7 +92,7 @@ function PageAudioControls({ text }: { text: string }) {
     if (ownsRun.current) startAt(offset.current, status === 'paused');
   };
 
-  return <section aria-label="Voorlezen" className="flex flex-wrap items-start gap-x-4 gap-y-2 rounded-2xl border border-line bg-sunken/40 p-3">
+  return <section aria-label="Voorlezen" className="sticky top-20 z-20 flex max-h-[calc(100dvh-12rem)] flex-wrap items-start gap-x-4 gap-y-2 overflow-y-auto rounded-2xl border border-line bg-white/95 p-3 shadow-sm backdrop-blur-md">
     <div className="flex flex-wrap items-center gap-2"><div className="flex flex-wrap gap-2">
       {!owned ? <Button variant="accent" data-accent="blue" size="sm" disabled={!ready} onClick={() => startAt(0)}><Volume2 aria-hidden="true" className="size-4" />Luisteren</Button> : status === 'paused' ? <Button variant="accent" data-accent="blue" size="sm" onClick={() => { setError(null); if (!resumeSpeaking()) setError('Hervatten lukte niet. Stop het voorlezen en probeer opnieuw.'); }}><Play aria-hidden="true" className="size-4" />Hervatten</Button> : <Button variant="secondary" size="sm" onClick={() => { setError(null); if (!pauseSpeaking()) setError('Pauzeren lukte niet in deze browser.'); }}><Pause aria-hidden="true" className="size-4" />Pauzeren</Button>}
       {owned && <Button variant="ghost" size="sm" onClick={stop}><Square aria-hidden="true" className="size-3.5" />Stoppen</Button>}
