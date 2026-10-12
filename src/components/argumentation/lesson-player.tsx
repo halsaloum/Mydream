@@ -24,6 +24,7 @@ import { theoryPages } from '@/lib/argumentation/theory-pages';
 import { TheoryReader } from './theory-reader';
 import { argumentLessonMinutes } from '@/lib/argumentation/duration';
 import styles from './argumentation.module.css';
+import { LessonJourney } from './lesson-journey';
 
 function BookFoundation({ lesson }: { lesson: ArgumentLesson }) {
   const entries = argumentSourceGuide[lesson.id];
@@ -124,16 +125,18 @@ export function ArgumentLessonPlayer({ lesson }: { lesson: ArgumentLesson }) {
         <span className="shrink-0 text-caption whitespace-nowrap text-ink-muted">≈ {argumentLessonMinutes(lesson)} min</span>
       </div>
     </header>
-    <main className={cn('mx-auto max-w-3xl px-gutter pt-9 sm:pt-12', cursor === 0 ? 'pb-40' : 'pb-16')}>
+    <div className={styles.learningLayout}>
+    <LessonJourney lesson={lesson} session={session} readingIndex={readingIndex} canResume={canResume} />
+    <main className={styles.learningMain}>
       <div className="mb-8">
         {(cursor !== 0 || readingIndex === 0) && <p className="mb-3 text-caption font-bold tracking-wider text-blue-ink uppercase">Argumentatie & drogredenen · {currentModule?.title}</p>}
-        <h1 ref={headingRef} tabIndex={-1} className={cn('outline-none', cursor === 0 && readingIndex > 0 ? 'font-display text-small font-semibold text-ink-muted' : 'font-serif text-[clamp(2rem,1.6rem+1.4vw,3rem)] leading-tight tracking-tight')}>{lesson.title}</h1>
+        <h1 ref={headingRef} tabIndex={-1} className={cn('outline-none', cursor === 0 && readingIndex > 0 ? 'font-display text-small font-semibold text-ink-muted' : 'font-display text-[clamp(1.8rem,1.4rem+1.4vw,2.7rem)] font-extrabold leading-tight tracking-tight')}>{lesson.title}</h1>
         {!session.finished && cursor === 0 && readingIndex === 0 && <p className="mt-3 text-lead leading-relaxed text-ink-muted">{lesson.teaser}</p>}
       </div>
       {!session.finished && (cursor > 0 || readingIndex === 0) && <ol aria-label="Steeds meer verantwoordelijkheid in deze les" className="mb-7 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">{phases.map((label, index) => <li key={label} className={cn('flex items-center gap-2 rounded-control border-2 px-3 py-2 text-caption', phase === index ? 'border-blue-line bg-blue-soft font-bold text-blue-ink shadow-slab-sm' : phase > index ? 'border-green-line bg-green-soft text-green-ink' : 'border-line bg-surface text-ink-muted')} aria-current={phase === index ? 'step' : undefined}>{index + 1}. {label}</li>)}</ol>}
       {session.finished && cursor !== 0 ? <Finished lesson={lesson} session={session} headingRef={resultHeadingRef} /> : <>
         {cursor === 0 && <div className="mb-5 flex items-center justify-between gap-4"><span className="inline-flex items-center gap-2 rounded-chip border border-blue-line bg-blue-soft px-3 py-1.5 text-caption font-bold text-blue-ink"><BookOpen aria-hidden className="size-3.5" />Eén kern tegelijk</span><div aria-hidden="true" className="flex gap-1.5">{readingPages.map((page, index) => <span key={page.id} className={cn('h-1.5 rounded-full transition-all calm:transition-none', index === readingIndex ? 'w-6 bg-blue-ink' : index < readingIndex ? 'w-1.5 bg-blue' : 'w-1.5 bg-line-strong')} />)}</div></div>}
-        <motion.div className="rounded-[2rem] border-2 border-line bg-surface p-5 shadow-slab-sm sm:p-9" key={cursor === 0 ? `reading-${readingPage.id}` : cursor} initial={calm ? false : { opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: calm ? 0 : 0.18 }}>
+        <motion.div className={styles.learningCard} key={cursor === 0 ? `reading-${readingPage.id}` : cursor} initial={calm ? false : { opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: calm ? 0 : 0.18 }}>
           {cursor === 0 ? <TheoryReader lesson={lesson} session={session} pageIndex={readingIndex} onPageChange={(index) => useArgumentation.getState().setTheoryPage(lesson.id, index)} /> : exercise ? <ArgumentExerciseView headingRef={exerciseHeadingRef} exercise={exercise} answer={answer} onChange={(patch) => useArgumentation.getState().answer(lesson.id, exercise.id, patch)} /> : null}
         </motion.div>
         {cursor === 0 && readingDone && <BookFoundation lesson={lesson} />}
@@ -144,7 +147,7 @@ export function ArgumentLessonPlayer({ lesson }: { lesson: ArgumentLesson }) {
           {answer.score !== 1 && (answer.confidence ?? -1) >= 2 && <p className="mt-4 border-t border-orange-line pt-3 text-small leading-relaxed text-orange-ink">Je verwachtte dat je analyse klopte. Benoem vóór je nieuwe poging welke veronderstelling of verbinding de feedback bevraagt.</p>}
           {answer.score === 1 && (answer.confidence ?? 3) <= 1 && <p className="mt-4 border-t border-green-line pt-3 text-small leading-relaxed text-green-ink">Je analyse klopt, ook al twijfelde je. Benoem het criterium uit de uitleg dat de doorslag geeft en waarom de sterkste andere interpretatie afvalt.</p>}
         </div>}
-        <div className={cn(cursor === 0 ? 'fixed inset-x-0 bottom-0 z-30 border-t border-line bg-canvas/95 px-gutter pt-4 pb-[max(1rem,env(safe-area-inset-bottom))] backdrop-blur-xl' : 'mt-8 border-t border-line pt-6')}>
+        <div className={styles.actionDock}>
         <div className="mx-auto flex max-w-3xl flex-wrap items-center justify-between gap-3">
           {cursor > 0 ? <Button variant="ghost" onClick={() => useArgumentation.getState().openTheory(lesson.id)}><BookOpen aria-hidden className="size-4" />Terug naar theorie</Button> : <Button aria-label="Vorige pagina" variant="secondary" disabled={readingIndex === 0} onClick={() => useArgumentation.getState().setTheoryPage(lesson.id, readingIndex - 1)}><ArrowLeft aria-hidden className="size-4" />Vorige</Button>}
           {cursor === 0 ? <div className="flex flex-wrap items-center gap-3"><span className="text-caption text-ink-muted max-sm:hidden">Pagina {readingIndex + 1} van {readingPages.length}</span>{readingDone ? <Button variant="accent" disabled={!ready} onClick={() => useArgumentation.getState().resume(lesson.id)}>{canResume ? resumeLabel : 'Naar de opdrachten'}<ArrowRight aria-hidden className="size-4" /></Button> : <Button variant="accent" disabled={!mayReadForward} onClick={() => useArgumentation.getState().setTheoryPage(lesson.id, readingIndex + 1)}>Volgende pagina<ArrowRight aria-hidden className="size-4" /></Button>}</div> : exercise && !answer.checked ? <Button disabled={!answerReady(exercise, answer) || (exercise.kind !== 'reflection' && answer.confidence === null)} onClick={() => useArgumentation.getState().check(lesson.id, exercise.id, gradeArgument(exercise, answer))}>{exercise.kind === 'reflection' ? 'Vergelijk met het model' : 'Controleer je analyse'}<Check aria-hidden className="size-4" /></Button> : <div className="flex flex-wrap gap-3">
@@ -165,5 +168,6 @@ export function ArgumentLessonPlayer({ lesson }: { lesson: ArgumentLesson }) {
       </details>
       <Link href="/argumentatie" className="mt-8 inline-flex min-h-11 items-center gap-2 text-small font-bold text-ink-muted"><X aria-hidden className="size-4" />Bewaren en terug naar het leerpad</Link>
     </main>
+    </div>
   </div>;
 }
