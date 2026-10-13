@@ -49,7 +49,7 @@ describe('current-page Dutch reading controls', () => {
     const { container } = render(<PageAudio pageId="concept-argument" text={text} />);
     expect(spoken).toHaveLength(0);
     expect(container.querySelector('details')).not.toHaveAttribute('open');
-    expect(screen.getByRole('button', { name: 'Voorlezen' })).toBeEnabled();
+    expect(screen.getByRole('button', { name: 'Luisteren' })).toBeEnabled();
     expect(screen.getByRole('slider', { name: 'Spreektempo' })).not.toBeVisible();
     openSettings();
     expect(screen.getByRole('slider', { name: 'Spreektempo' })).toBeVisible();
@@ -62,7 +62,7 @@ describe('current-page Dutch reading controls', () => {
   it('starts, pauses, resumes and stops a Dutch run with native controls', () => {
     const { engine, spoken } = stubSpeech();
     render(<PageAudio pageId="concept-argument" text={text} />);
-    fireEvent.click(screen.getByRole('button', { name: 'Voorlezen' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Luisteren' }));
     expect(spoken[0]).toMatchObject({ text: chunks(text)[0], rate: 1, voice: FENNA, lang: 'nl-NL' });
     act(() => spoken[0]?.onstart?.());
     expect(screen.getByRole('status')).toHaveTextContent('fragment 1 van');
@@ -73,14 +73,14 @@ describe('current-page Dutch reading controls', () => {
     expect(engine.resume).toHaveBeenCalledOnce();
     expect(screen.getByRole('button', { name: 'Pauzeren' })).toBeVisible();
     fireEvent.click(screen.getByRole('button', { name: 'Stoppen' }));
-    expect(screen.getByRole('button', { name: 'Voorlezen' })).toBeVisible();
-    expect(screen.getByRole('button', { name: 'Stoppen' })).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Luisteren' })).toBeVisible();
+    expect(screen.queryByRole('button', { name: 'Stoppen' })).not.toBeInTheDocument();
   });
 
   it('changes rate and voice from the current fragment, without replaying the whole page', () => {
     const { spoken } = stubSpeech();
     render(<PageAudio pageId="section-first" text={text} />);
-    fireEvent.click(screen.getByRole('button', { name: 'Voorlezen' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Luisteren' }));
     act(() => { spoken[0]?.onstart?.(); spoken[0]?.onend?.(); });
     act(() => spoken[1]?.onstart?.());
     openSettings();
@@ -95,7 +95,7 @@ describe('current-page Dutch reading controls', () => {
   it('keeps a paused run paused after a speed change', () => {
     const { engine, spoken } = stubSpeech();
     render(<PageAudio pageId="section-first" text={text} />);
-    fireEvent.click(screen.getByRole('button', { name: 'Voorlezen' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Luisteren' }));
     act(() => { spoken[0]?.onstart?.(); spoken[0]?.onend?.(); });
     act(() => spoken[1]?.onstart?.());
     fireEvent.click(screen.getByRole('button', { name: 'Pauzeren' }));
@@ -109,12 +109,12 @@ describe('current-page Dutch reading controls', () => {
   it('stops on page or visible-text changes, without starting the next page', () => {
     const { engine, spoken } = stubSpeech();
     const view = render(<PageAudio pageId="first" text={text} />);
-    fireEvent.click(screen.getByRole('button', { name: 'Voorlezen' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Luisteren' }));
     const before = engine.cancel.mock.calls.length;
     view.rerender(<PageAudio pageId="second" text={text} />);
     expect(engine.cancel).toHaveBeenCalledTimes(before + 1);
     expect(spoken).toHaveLength(1);
-    fireEvent.click(screen.getByRole('button', { name: 'Voorlezen' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Luisteren' }));
     const beforeTextChange = engine.cancel.mock.calls.length;
     view.rerender(<PageAudio pageId="second" text={`${text} Nieuwe zichtbare feedback.`} />);
     expect(engine.cancel).toHaveBeenCalledTimes(beforeTextChange + 1);
@@ -124,10 +124,10 @@ describe('current-page Dutch reading controls', () => {
   it('releases ownership when another speech widget takes over and does not cancel that widget on unmount', () => {
     const { engine } = stubSpeech();
     const view = render(<PageAudio pageId="first" text={text} />);
-    fireEvent.click(screen.getByRole('button', { name: 'Voorlezen' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Luisteren' }));
     act(() => { speak('huis'); });
-    expect(screen.getByRole('button', { name: 'Voorlezen' })).toBeVisible();
-    expect(screen.getByRole('button', { name: 'Stoppen' })).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Luisteren' })).toBeVisible();
+    expect(screen.queryByRole('button', { name: 'Stoppen' })).not.toBeInTheDocument();
     const before = engine.cancel.mock.calls.length;
     view.unmount();
     expect(engine.cancel).toHaveBeenCalledTimes(before);
@@ -135,14 +135,14 @@ describe('current-page Dutch reading controls', () => {
 
   it('disables unavailable Dutch speech and handles native errors without hanging', () => {
     const { unmount } = render(<PageAudio pageId="no-voice" text={text} />);
-    expect(screen.getByRole('button', { name: 'Voorlezen' })).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Luisteren' })).toBeDisabled();
     unmount();
     const { spoken } = stubSpeech();
     render(<PageAudio pageId="ready" text={text} />);
-    fireEvent.click(screen.getByRole('button', { name: 'Voorlezen' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Luisteren' }));
     act(() => spoken[0]?.onerror?.({ error: 'synthesis-failed' }));
     const audio = within(screen.getByRole('region', { name: 'Voorlezen' }));
     expect(audio.getByRole('status')).toHaveTextContent('Voorlezen is gestopt');
-    expect(audio.getByRole('button', { name: 'Voorlezen' })).toBeVisible();
+    expect(audio.getByRole('button', { name: 'Luisteren' })).toBeVisible();
   });
 });

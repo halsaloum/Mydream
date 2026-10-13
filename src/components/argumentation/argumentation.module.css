@@ -124,10 +124,8 @@
 .player .learningCard details { background: #fff; border-radius: 16px; transition: border-color 180ms, box-shadow 180ms; }
 .player .learningCard details[open] { border-color: #b7cba0; box-shadow: 0 4px 18px #263c1708; }
 .player .learningCard summary { list-style-position: inside; }
-.player .learningCard fieldset > div:has(input[type='radio']) { background: #fff; border: 2px solid #e2e7db; box-shadow: 0 3px 0 #e2e7db; }
-.player .learningCard fieldset > div:has(input:checked) { border-color: #91b862; box-shadow: 0 3px 0 #91b862; }
-.player .learningCard label:has(input:checked) { background: #f3f9ec; }
-.player .learningCard label:has(input:checked) > span:first-of-type { color: #fff; background: #497b29; border-color: #497b29; }
+/* The exercise supplies green or orange feedback; selection alone is not correctness. */
+.player .learningCard fieldset > div:has(input[type='radio']) { box-shadow: 0 3px 0 var(--color-line); }
 .player .learningCard label:has(input:focus-visible) { outline: 3px solid #497b29; outline-offset: 4px; }
 .player .learningCard fieldset > div:has(input[type='radio']):active { transform: translateY(2px); box-shadow: 0 1px 0 #d1dcc5; }
 .dockHint { display: flex; align-items: center; gap: 8px; font-size: 12px; line-height: 1.5; color: #68715f; }
@@ -168,7 +166,7 @@
 .learningCard :global([data-theory-page]) h2 { font-size: clamp(24px, 2.5vw, 32px); letter-spacing: -.035em; line-height: 1.22; }
 .learningCard fieldset > div:has(input[type='radio']) { border-radius: 16px; box-shadow: 0 4px 0 #e0e4da; transition: transform 160ms, box-shadow 160ms, border-color 160ms; }
 .learningCard fieldset > div:has(input[type='radio']):hover { transform: translateY(-2px); }
-.learningCard fieldset > div:has(input:checked) { box-shadow: 0 4px 0 #b5c696; }
+.learningCard fieldset > div:has(input:checked) { box-shadow: 0 4px 0 var(--color-line); }
 .learningCard label:has(input[type='radio']) { border-radius: 14px; }
 .learningCard label:has(input[type='radio']) > span:first-of-type { border: 2px solid #dce1d6; background: #ffffffa6; }
 .learningCard :global([role='status']) { border-radius: 12px; }

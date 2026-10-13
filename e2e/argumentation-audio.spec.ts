@@ -65,7 +65,7 @@ test('voorlezen blijft op de huidige kern en bewaart stem en instelbaar tempo', 
     return { runs: value.runs, cancelled: value.cancelled, paused: value.paused, resumed: value.resumed };
   });
   expect((await probe()).runs).toHaveLength(0);
-  await audio.getByRole('button', { name: 'Voorlezen', exact: true }).click();
+  await audio.getByRole('button', { name: 'Luisteren', exact: true }).click();
   await expect(audio.getByRole('button', { name: 'Pauzeren', exact: true })).toBeVisible();
   expect((await probe()).runs[0]).toMatchObject({ rate: 1, voice: 'xander' });
   await audio.getByRole('button', { name: 'Pauzeren', exact: true }).click();
@@ -90,7 +90,7 @@ test('voorlezen blijft op de huidige kern en bewaart stem en instelbaar tempo', 
   expect(spoken).not.toContain(lesson.deepDive.body);
 
   await audio.getByRole('button', { name: 'Stoppen', exact: true }).click();
-  await expect(audio.getByRole('button', { name: 'Voorlezen', exact: true })).toBeVisible();
+  await expect(audio.getByRole('button', { name: 'Luisteren', exact: true })).toBeVisible();
   await page.reload();
   await audio.locator('summary').click();
   await expect(rate).toHaveValue('1.25');
@@ -99,11 +99,11 @@ test('voorlezen blijft op de huidige kern en bewaart stem en instelbaar tempo', 
   await page.screenshot({ path: test.info().outputPath('argumentatie-voorlezen.png') });
   const question = page.getByRole('region', { name: `Oefen het begrip ${concept.term}`, exact: true });
   await question.getByRole('radio', { name: concept.options.find((option) => option.id === concept.answer)!.text, exact: true }).check();
-  await audio.getByRole('button', { name: 'Voorlezen', exact: true }).click();
+  await audio.getByRole('button', { name: 'Luisteren', exact: true }).click();
   const cancellations = (await probe()).cancelled;
   await page.getByRole('button', { name: 'Volgende pagina', exact: true }).click();
   await expect(page.getByRole('heading', { name: concepts[1]!.title, exact: true, level: 2 })).toBeVisible();
-  await expect(audio.getByRole('button', { name: 'Voorlezen', exact: true })).toBeVisible();
+  await expect(audio.getByRole('button', { name: 'Luisteren', exact: true })).toBeVisible();
   expect((await probe()).cancelled).toBeGreaterThan(cancellations);
   expect((await probe()).runs).toHaveLength(1);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
