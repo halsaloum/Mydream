@@ -771,6 +771,10 @@ const WriteStep = z.object({
   must: z.array(WriteCriterionSchema).describe('Taakeisen die de leerling tijdens het schrijven ziet afvinken.'),
   avoid: z.array(WriteAlarmSchema).optional().describe('Signalen bij mogelijke drogredenen; ze houden de leerling niet tegen.'),
   starters: z.array(Text).optional().describe('Zinsstarters die de leerling met één tik toevoegt.'),
+  rubric: z.object({
+    criteria: z.array(Rich).min(2).max(6),
+    example: Rich,
+  }).optional().describe('Inhoudelijke zelfcontrole met een voorbeeld; geen automatische beoordeling van schrijfkwaliteit.'),
   why,
   done: z.object({ title: Text, text: Text }).optional().describe('Afsluitende feedback; standaard "why".'),
 });
@@ -824,6 +828,13 @@ export const StepSchema = z
 
 export const StageSchema = z.enum(STAGES).describe('Stap: regels, toets, bachelor of master. Lessen zonder stap tonen geen label.');
 
+export const LessonGuidanceSchema = z.object({
+  goal: Rich.describe('Concreet leerdoel: wat kun je na het oefenen zelf doen?'),
+  startingPoint: Rich.describe('Begrijpelijk vertrekpunt, met uitleg van benodigde voorkennis.'),
+  strategy: z.array(Rich).min(2).max(6).describe('Aanpak die tijdens de hele les terug te vinden is.'),
+  selfCheck: z.array(Rich).min(2).max(6).describe('Vragen waarmee de leerling na afloop de eigen beheersing beoordeelt.'),
+});
+
 export const LessonSchema = z.object({
   id: Id,
   title: Text,
@@ -832,6 +843,7 @@ export const LessonSchema = z.object({
   icon: Text.describe('Kort teken op de lestegel, bv. "dt" of "¶".'),
   domain: Id.describe('Hoofdvakgebied: verwijst naar een domein-id van de cursus.'),
   also: z.array(Id).optional().describe('Andere vakgebieden die in de les meespelen.'),
+  guidance: LessonGuidanceSchema.optional(),
   steps: z.array(StepSchema).min(1),
 });
 
@@ -913,6 +925,7 @@ export type WriteCriterion = z.infer<typeof WriteCriterionSchema>;
 export type TextTest = z.infer<typeof TextTestSchema>;
 export type WriteAlarm = z.infer<typeof WriteAlarmSchema>;
 export type Lesson = z.infer<typeof LessonSchema>;
+export type LessonGuidance = z.infer<typeof LessonGuidanceSchema>;
 export type LessonInput = z.input<typeof LessonSchema>;
 export type Stage = z.infer<typeof StageSchema>;
 export type LayerExample = z.infer<typeof LayerExampleSchema>;

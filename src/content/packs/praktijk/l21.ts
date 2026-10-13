@@ -63,13 +63,13 @@ export const LES_L21: LessonInput = {
           },
         },
         {
-          text: 'De *ij* is in het Nederlands één letter. Krijgt een woord met *ij* vooraan een hoofdletter, dan worden de *i* en de *j* allebei groot: *IJsland*, *de IJssel*, *IJmuiden*, *het IJsselmeer*. Ook aan het begin van een zin: *IJs is koud.* Schrijf dus nooit *Ijsland*.',
+          text: 'De *ij* is een combinatie van twee letters die samen een klank weergeven: een digraaf. Krijgt een woord met *ij* vooraan een hoofdletter, dan worden de *i* en de *j* allebei groot: *IJsland*, *de IJssel*, *IJmuiden*, *het IJsselmeer*. Ook aan het begin van een zin: *IJs is koud.* Schrijf dus nooit *Ijsland*.',
           rule: 'Hoofdletter op een *ij*: allebei groot, *IJ*.',
           quiz: {
             q: 'Welke schrijfwijze is goed?',
             options: ['IJsland', 'Ijsland', 'IJSland', 'ijsland'],
             answer: 'IJsland',
-            why: 'De ij is één letter: hoofdletter I en hoofdletter J, de rest klein.',
+            why: 'De lettercombinatie ij krijgt bij een hoofdletter twee hoofdletters: I en J, de rest klein.',
           },
         },
       ],
@@ -147,7 +147,7 @@ export const LES_L21: LessonInput = {
       sentence: 'Mijn zwager Ruud van Dam woont in IJmuiden en werkt in de haven aan het Noordzeekanaal.',
       right: 'Goed: van klein na de voornaam Ruud, IJmuiden met hoofdletter I en hoofdletter J, en Noordzeekanaal als naam met een hoofdletter.',
       wrong:
-        'Kijk nog eens: Mijn zwager Ruud van Dam woont in IJmuiden en werkt in de haven aan het Noordzeekanaal. Een voornaam ervoor: van klein. De ij is één letter: IJ allebei groot. Noordzeekanaal is een naam.',
+        'Kijk nog eens: Mijn zwager Ruud van Dam woont in IJmuiden en werkt in de haven aan het Noordzeekanaal. Een voornaam ervoor: van klein. Bij de lettercombinatie ij worden I en J allebei groot. Noordzeekanaal is een naam.',
     },
     {
       kind: 'swipe',
@@ -155,7 +155,7 @@ export const LES_L21: LessonInput = {
       prompt: 'Goed of fout geschreven?',
       intro: 'Veeg naar rechts als de zin goed is, naar links als er een fout in zit.',
       cards: [
-        { t: 'Ik woon in Ijmuiden.', ok: false, fix: 'IJmuiden', why: 'De ij is één letter: allebei groot.' },
+        { t: 'Ik woon in Ijmuiden.', ok: false, fix: 'IJmuiden', why: 'Bij de lettercombinatie ij worden beide letters groot: IJ.' },
         { t: 'We gaan zeilen op het IJsselmeer.', ok: true, why: 'Een naam met ij vooraan: IJ allebei groot.' },
         { t: 'De afzender is J. van Dijk.', ok: true, why: 'Een voorletter ervoor: van blijft klein.' },
         { t: 'Kunt U mij helpen?', ok: false, fix: 'Kunt u mij helpen?', why: 'u schrijf je klein, ook als je beleefd bent.' },
@@ -606,7 +606,7 @@ export const LES_L21: LessonInput = {
         { t: 'een' },
         { t: 'toernooi' },
         { t: 'in' },
-        { t: 'Ijmuiden.', fix: 'IJmuiden.', why: 'De ij is één letter: bij een hoofdletter worden de i en de j allebei groot.' },
+        { t: 'Ijmuiden.', fix: 'IJmuiden.', why: 'Bij de lettercombinatie ij worden de i en de j allebei groot als een hoofdletter nodig is.' },
         { t: 'We' },
         { t: 'vertrekken' },
         { t: 'om' },

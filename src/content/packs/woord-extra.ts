@@ -100,7 +100,7 @@ export const WOORD_EXTRA_LESSONS: LessonInput[] = [
               q: 'Hoe schrijf je het voltooid deelwoord van ‘updaten’?',
               options: ['geüpdatet', 'geupdate', 'geüpdated'],
               answer: 'geüpdatet',
-              why: 'De stam is updat (je hoort een t aan het eind), dus ge- + updat + -et. Het trema scheidt ge en u.',
+              why: 'De stam is update: de slot-e van het Engelse woord blijft in de spelling staan. Je hoort als eindklank een t, dus het voltooid deelwoord krijgt -t: ge- + update + -t = geüpdatet. Het trema laat zien dat de u een nieuwe lettergreep begint.',
             },
           },
           {

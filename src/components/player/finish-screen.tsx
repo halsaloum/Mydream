@@ -5,6 +5,7 @@ import { animate, motion, useMotionValue, useTransform } from 'motion/react';
 import type { Route } from 'next';
 import Link from 'next/link';
 import { useEffect, type ReactNode } from 'react';
+import type { LessonGuidance } from '@/content/schema';
 import type { SessionSummary } from '@/engine/session';
 import { Pim, type PimMood } from '@/components/brand/pim';
 import { Button, ButtonLink } from '@/components/ui/button';
@@ -13,6 +14,7 @@ import { cn } from '@/lib/cn';
 import { ease, transition, useCalmMotion } from '@/lib/motion';
 import { play } from '@/lib/sound';
 import { ToyCanvas } from '@/lib/toy3d/toy-canvas';
+import { LessonReflection } from './lesson-guidance';
 
 const loadReward = () => import('@/lib/toy3d/scenes/reward').then((module) => module.rewardScene);
 
@@ -24,6 +26,7 @@ type FinishScreenProps = {
   context?: string;
   summary: SessionSummary;
   learned: string[];
+  guidance?: LessonGuidance;
   /** Alleen bij een afronding tijdens dit bezoek; niet na verversen. */
   celebrate: boolean;
   primary: FinishAction;
@@ -33,15 +36,15 @@ type FinishScreenProps = {
 
 function message(mode: FinishScreenProps['mode'], accuracy: number, graded: number): string {
   if (mode === 'demo') return 'Dit was een voorbeeld; het telt niet mee voor je voortgang.';
-  if (graded === 0) return 'Uitleg gelezen en uitgeprobeerd.';
-  if (mode === 'review') return accuracy >= 90 ? 'Je oefenpunten zitten erin.' : 'Wat nog niet lukte, komt later nog eens terug.';
+  if (graded === 0) return 'Je hebt de stappen doorlopen. Controleer zelf wat je zonder hulp kunt toepassen.';
+  if (mode === 'review') return accuracy >= 90 ? 'Deze herhaalronde ging goed. Probeer het later ook met nieuwe voorbeelden.' : 'Wat nog niet lukte, komt later nog eens terug.';
   if (mode === 'words') {
     if (accuracy >= 90) return 'Sterk. Je woorden komen terug net voordat je ze zou vergeten.';
     if (accuracy >= 60) return 'Goed gedaan. Wat nog lastig was, komt eerder terug.';
     return 'Lastige woorden komen morgen terug. Juist dat terughalen zet ze vast.';
   }
-  if (accuracy >= 90) return 'Dit zit erin.';
-  if (accuracy >= 60) return 'Goed gedaan. Nog een keer maakt het vast.';
+  if (accuracy >= 90) return 'Deze ronde ging goed. Kun je de aanpak ook uitleggen en bij een nieuw voorbeeld gebruiken?';
+  if (accuracy >= 60) return 'Je hebt geoefend. Bekijk wat nog lastig was en probeer het later zonder hulp.';
   return 'Je fouten komen straks terug in de herhaling. Zo leer je het.';
 }
 
@@ -58,7 +61,7 @@ function duration(ms: number): string {
 
 const RING = 2 * Math.PI * 52;
 
-export function FinishScreen({ mode, title, context, summary, learned, celebrate: party, primary, secondary, onRestart }: FinishScreenProps) {
+export function FinishScreen({ mode, title, context, summary, learned, guidance, celebrate: party, primary, secondary, onRestart }: FinishScreenProps) {
   const calm = useCalmMotion();
   const accuracy = summary.accuracy;
   const shown = useMotionValue(calm || !party ? accuracy : 0);
@@ -88,27 +91,35 @@ export function FinishScreen({ mode, title, context, summary, learned, celebrate
     <div className="mx-auto w-full max-w-lg px-gutter pt-10 pb-12 text-center sm:pt-14">
       <div className="flex items-center justify-center gap-2 sm:gap-6">
         <div className="relative size-40 shrink-0">
-          <svg viewBox="0 0 120 120" aria-hidden className="absolute inset-0 -rotate-90">
-            <circle cx="60" cy="60" r="52" fill="none" stroke="var(--color-line)" strokeWidth="10" />
-            <motion.circle
-              cx="60"
-              cy="60"
-              r="52"
-              fill="none"
-              stroke="var(--accent)"
-              strokeWidth="10"
-              strokeLinecap="round"
-              strokeDasharray={RING}
-              initial={{ strokeDashoffset: calm || !party ? RING * (1 - accuracy / 100) : RING }}
-              animate={{ strokeDashoffset: RING * (1 - accuracy / 100) }}
-              transition={calm || !party ? { duration: 0 } : { duration: 0.9, delay: 0.35, ease: ease.out }}
-            />
-          </svg>
-          <div className="absolute inset-0 grid place-items-center">
-            <p aria-hidden className="font-display text-[2.6rem] leading-none font-extrabold tracking-[-0.03em] text-accent-ink tabular-nums">
-              <motion.span>{rounded}</motion.span>%
-            </p>
-          </div>
+          {summary.graded > 0 ? (
+            <>
+              <svg viewBox="0 0 120 120" aria-hidden className="absolute inset-0 -rotate-90">
+                <circle cx="60" cy="60" r="52" fill="none" stroke="var(--color-line)" strokeWidth="10" />
+                <motion.circle
+                  cx="60"
+                  cy="60"
+                  r="52"
+                  fill="none"
+                  stroke="var(--accent)"
+                  strokeWidth="10"
+                  strokeLinecap="round"
+                  strokeDasharray={RING}
+                  initial={{ strokeDashoffset: calm || !party ? RING * (1 - accuracy / 100) : RING }}
+                  animate={{ strokeDashoffset: RING * (1 - accuracy / 100) }}
+                  transition={calm || !party ? { duration: 0 } : { duration: 0.9, delay: 0.35, ease: ease.out }}
+                />
+              </svg>
+              <div className="absolute inset-0 grid place-items-center">
+                <p aria-hidden className="font-display text-[2.6rem] leading-none font-extrabold tracking-[-0.03em] text-accent-ink tabular-nums">
+                  <motion.span>{rounded}</motion.span>%
+                </p>
+              </div>
+            </>
+          ) : (
+            <div className="grid size-full place-items-center rounded-full border-8 border-accent-line bg-accent-soft">
+              <Check aria-hidden className="size-16 text-accent-ink" strokeWidth={2.5} />
+            </div>
+          )}
         </div>
         <ToyCanvas
           load={loadReward}
@@ -122,12 +133,19 @@ export function FinishScreen({ mode, title, context, summary, learned, celebrate
           }
         />
       </div>
-      <p className="sr-only">{`${accuracy} procent in één keer goed.`}</p>
+      <p className="mt-3 text-small font-semibold text-ink-muted">
+        {summary.graded > 0 ? `${accuracy}% in één keer goed in deze ronde` : 'Afgerond zonder automatisch beoordeelde opdrachten'}
+      </p>
 
       <motion.div {...rise(0)}>
         {context && <p className="mt-7 text-small font-bold text-accent-ink">{context}</p>}
         <h1 className={cn('font-serif text-headline leading-tight text-ink', context ? 'mt-1' : 'mt-7')}>{title}</h1>
         <p className="mt-3 text-lead text-ink-muted">{message(mode, accuracy, summary.graded)}</p>
+        {mode === 'lesson' && (
+          <p className="mt-3 text-small leading-relaxed text-ink-muted">
+            Les afgerond. Dat is nog geen bewijs van beheersing: pas het geleerde zelfstandig toe en herhaal het op een later moment.
+          </p>
+        )}
       </motion.div>
 
       <motion.dl {...rise(1)} className="mt-8 grid grid-cols-3 gap-2.5 text-left">
@@ -164,7 +182,7 @@ export function FinishScreen({ mode, title, context, summary, learned, celebrate
 
       {learned.length > 0 && (
         <motion.section {...rise(3)} className="mt-6 rounded-card border-2 border-line bg-surface p-5 text-left shadow-slab">
-          <h2 className="font-display text-title-sm font-bold text-ink">Wat je nu weet</h2>
+          <h2 className="font-display text-title-sm font-bold text-ink">Hiermee heb je geoefend</h2>
           <ul className="mt-3 space-y-2.5">
             {learned.map((item, i) => (
               <motion.li
@@ -183,6 +201,8 @@ export function FinishScreen({ mode, title, context, summary, learned, celebrate
           </ul>
         </motion.section>
       )}
+
+      {guidance && <LessonReflection guidance={guidance} />}
 
       <div className="mt-9 flex flex-col-reverse gap-3 sm:flex-row sm:justify-center">
         {secondary && (

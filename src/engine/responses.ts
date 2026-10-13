@@ -32,7 +32,7 @@ export const ResponseSchema = z.discriminatedUnion('kind', [
   z.object({ kind: z.literal('sort'), assign: z.array(index.nullable()) }),
   z.object({ kind: z.literal('fix'), index: index.nullable(), value: z.string() }),
   z.object({ kind: z.literal('rewrite'), value: z.string() }),
-  z.object({ kind: z.literal('write'), value: z.string() }),
+  z.object({ kind: z.literal('write'), value: z.string(), reviewed: z.boolean().optional(), selfChecks: z.array(z.boolean()).optional() }),
   ...EXTRA_RESPONSE_SCHEMAS,
 ]);
 
@@ -74,6 +74,8 @@ export function responseFits(step: Step, response: Response): boolean {
   if (step.kind !== response.kind) return false;
   if (isExtraKind(response.kind)) return extraFits(step, response as Parameters<typeof extraFits>[1]);
   switch (response.kind) {
+    case 'write':
+      return step.kind === 'write' && (!response.selfChecks || response.selfChecks.length === (step.rubric?.criteria.length ?? 0));
     case 'explain':
       return step.kind === 'explain' && response.panel < step.panels.length && response.reached < step.panels.length;
     case 'order':

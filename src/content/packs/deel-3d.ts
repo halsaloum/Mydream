@@ -87,19 +87,19 @@ export const DEEL_3D_LESSONS: LessonInput[] = [
             },
           },
           {
-            text: 'Tussen de twee delen kan iets extra’s staan: een tussenklank. Je kent de regels uit "Pannenkoek of pannekoek?". *-en-* als het eerste deel alleen een meervoud op *-en* heeft. *-s-* als je hem hoort. Probeer het op de fiets: soms lijkt het eerste deel op een regel, maar is het geen echte.',
+            text: 'Tussen twee woorddelen kan een tussenklank staan. Kijk eerst naar de gangbare samenstelling: fietstas en fietsbel hebben geen tussenklank, fietsenrek wel. Hoor je een doffe e, dan helpt de meervoudsregel bij de keuze tussen -e- en -en-, met uitzonderingen. Bij een tussen-s helpen uitspraak en vergelijkbare woorden. De laatste letters van het eerste deel alleen beslissen niet.',
             model: {
               q: 'Schrijf de samenstelling, zonder lidwoord',
               model: 'fiets',
               parts: [
-                { id: 'band', ...AT.band, ask: 'Een pomp voor de banden: band + pomp =', answer: 'bandenpomp', hint: 'Wat is het meervoud van band?', traps: [{ w: 'bandpomp', note: 'Band heeft het meervoud banden, op -en. Dan schrijf je -en- ertussen.' }, { w: 'bandepomp', note: 'Band heeft een meervoud: banden. Dus met n.' }], note: 'Bandenpomp: band → banden, dus -en-. Ook als je één band oppompt.' },
-                { id: 'standaard', ...AT.standaard, ask: 'Niet op de standaard, maar in een rek voor veel fietsen: fiets + rek =', answer: 'fietsenrek', traps: [{ w: 'fietserek', note: 'Fiets heeft het meervoud fietsen: dan -en-, met n.' }], hint: 'Wat is het meervoud van fiets?', note: 'Fietsenrek, net als fietsenmaker en fietsenstalling.' },
+                { id: 'band', ...AT.band, ask: 'Een pomp voor de banden: band + pomp =', answer: 'bandenpomp', hint: 'Wat is het meervoud van band?', traps: [{ w: 'bandpomp', note: 'De gangbare vorm is bandenpomp. In de aanwezige tussenklank schrijf je -en-, omdat band alleen het gewone meervoud banden heeft.' }, { w: 'bandepomp', note: 'In bandenpomp is een tussenklank aanwezig. Band heeft alleen het gewone meervoud banden, daarom schrijf je hier -en- en niet -e-.' }], note: 'In de gangbare vorm bandenpomp schrijf je de tussenklank met -en-. Dat hoeft geen meervoud te betekenen: je kunt er ook één band mee oppompen.' },
+                { id: 'standaard', ...AT.standaard, ask: 'Niet op de standaard, maar in een rek voor veel fietsen: fiets + rek =', answer: 'fietsenrek', traps: [{ w: 'fietserek', note: 'Het gangbare woord fietsenrek heeft een tussenklank. Fiets heeft alleen het gewone meervoud fietsen, dus schrijf je hier -en-. Dat betekent niet dat elke samenstelling met fiets zo wordt gevormd.' }], hint: 'Wat is het meervoud van fiets?', note: 'Fietsenrek, net als fietsenmaker en fietsenstalling.' },
                 { id: 'naaf', ...AT.naaf, ask: 'In de achternaaf zit de versnelling. De kabel daarvoor: versnelling + kabel =', answer: 'versnellingskabel', hint: 'Welk achtervoegsel heeft versnelling? Wat trekt dat aan?', traps: [{ w: 'versnellingkabel', note: 'Versnelling eindigt op het achtervoegsel -ing, en -ing trekt een s: versnellingskabel.' }], note: 'Versnellingskabel: -ing trekt een s, je hoort hem ook.' },
-                { id: 'ketting', ...AT.ketting, ask: 'De dichte kast om de ketting: ketting + kast =', answer: 'kettingkast', traps: [{ w: 'kettingskast', note: 'Ketting eindigt wel op -ing, maar dat is geen achtervoegsel: er is geen werkwoord ketten. De familie heeft geen s: kettingslot, kettingreactie.' }], note: 'Kettingkast. De -ing van ketting is geen achtervoegsel, dus geen s.' },
+                { id: 'ketting', ...AT.ketting, ask: 'De dichte kast om de ketting: ketting + kast =', answer: 'kettingkast', traps: [{ w: 'kettingskast', note: 'De gangbare vorm kettingkast heeft geen tussen-s. Vergelijk kettingreactie en kettingzaag. In kettingslot hoort de s bij slot, niet bij een extra tussenklank. Alleen de letters -ing bepalen dit niet.' }], note: 'Kettingkast heeft geen tussen-s, zoals kettingreactie en kettingzaag. Dat kun je niet afleiden uit het ontbreken van een achtervoegsel: koning heeft ook geen -ing-achtervoegsel, maar koningsdag heeft wél een tussen-s.' },
               ],
-              note: 'banden + pomp, fietsen + rek, versnelling + s + kabel, ketting + kast. De tussenklank volgt het meervoud, het achtervoegsel of de familie, niet de vorm alleen.',
+              note: 'banden + pomp, fietsen + rek, versnelling + s + kabel, ketting + kast. De gangbare woordvorm, de uitspraak en verwante woorden helpen de tussenklank bepalen. De meervoudsregel bepaalt bij een aanwezige doffe e meestal of je -e- of -en- schrijft.',
             },
-            rule: 'Bij een tussenklank kijk je naar het eerste deel: zijn meervoud (-en-), zijn achtervoegsel (-ing trekt -s-) en zijn familie.',
+            rule: 'Niet elke samenstelling heeft een tussenklank. Controleer de gangbare vorm en gebruik daarna de passende regel, de uitzonderingen en de woordfamilie.',
             deep: {
               q: 'Waarom krijgt ketting geen s, en koning wel (koningsdag)?',
               a: 'Allebei eindigen ze op *-ing*, en allebei is dat geen achtervoegsel. Toch zeg je *koningsdag* en *kettingkast*. Andrea Krott, Harald Baayen en Robert Schreuder (2001) vonden de verklaring: sprekers kijken naar de *familie* van het eerste deel. *Koning* heeft veel woorden met s (*koningshuis*, *koningskroon*), *ketting* bijna geen (*kettingslot*, *kettingzaag*). Een nieuw woord volgt de familie. De tussen-s is dus geen schrijfregel die je uit de letters afleidt, maar een patroon in je woordenschat.',
@@ -134,7 +134,7 @@ export const DEEL_3D_LESSONS: LessonInput[] = [
         after: '.',
         hint: 'fiets…',
         answer: 'fietsenmaker',
-        why: 'Fiets heeft het meervoud fietsen, dus -en-: fietsenmaker.',
+        why: 'De gangbare samenstelling is fietsenmaker, met een doffe e tussen de delen. Omdat fiets alleen het gewone meervoud fietsen heeft, schrijf je die tussenklank als -en-. Fietsbel en fietstas hebben geen tussenklank: de meervoudsregel voegt die dus niet automatisch toe.',
       },
       {
         kind: 'choice',

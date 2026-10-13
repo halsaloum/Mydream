@@ -126,7 +126,7 @@ export const WOORD_LESSONS: LessonInput[] = [
             },
           },
           {
-            text: 'In het Nederlands is de spatie wél betekenisvol, omdat samenstellingen aan elkaar worden geschreven. Het Engels schrijft *hospital parking lot* in drie stukken, het Nederlands *ziekenhuisparkeerplaats* in één. Wie Nederlandse samenstellingen uit elkaar schrijft, maakt een *spatiefout*, soms ook de *Engelse ziekte* genoemd. Die fout verandert de betekenis. Een *lichtblauwe jurk* heeft een lichte kleur. Een *licht blauwe jurk* is een blauwe jurk die weinig weegt.',
+            text: 'In het Nederlands is de spatie wél betekenisvol, omdat samenstellingen aan elkaar worden geschreven. Het Engels schrijft *hospital parking lot* in drie stukken, het Nederlands *ziekenhuisparkeerplaats* in één. Wie Nederlandse samenstellingen uit elkaar schrijft, maakt een *spatiefout*, soms ook de *Engelse ziekte* genoemd. Die fout verandert de betekenis. Een *lichtblauwe jurk* heeft een lichte kleur. Een *lichte blauwe jurk* kan een blauwe jurk zijn die weinig weegt. Licht is dan een los bijvoeglijk naamwoord en krijgt de uitgang -e.',
             rule: 'Samenstellingen schrijf je aaneen. Een spatie maakt er twee losse woorden van, met een andere betekenis.',
             mark: { q: 'Tik de twee woorden die eigenlijk één samenstelling moeten zijn', sentence: 'Hij zat in de ziekenhuis bibliotheek te lezen.', targets: [4, 5], note: 'ziekenhuisbibliotheek is één woord. Met spatie lijkt het alsof er een ziekenhuis is en los daarvan een bibliotheek.' },
           },
@@ -156,7 +156,7 @@ export const WOORD_LESSONS: LessonInput[] = [
           { t: 'Een tekst kan meer tokens dan types hebben.', ok: true, why: 'Altijd zodra een woord twee keer voorkomt.' },
           { t: 'Volgens Bloomfield is -en een woord, want het komt heel vaak voor.', ok: false, fix: '-en is een gebonden vorm: het kan nooit alleen staan', why: 'Frequentie maakt iets niet vrij. Een woord is voor Bloomfield de kleinste vrije vorm.' },
           { t: 'Chinees en Thai schrijven zonder spaties tussen de woorden.', ok: true, why: 'De lezer knipt de tekst zelf in woorden.' },
-          { t: 'Een licht blauwe jurk en een lichtblauwe jurk betekenen hetzelfde.', ok: false, fix: 'licht blauw = niet zwaar en blauw, lichtblauw = een kleur', why: 'In het Nederlands verandert de spatie de betekenis.' },
+          { t: 'Een lichte blauwe jurk en een lichtblauwe jurk betekenen altijd hetzelfde.', ok: false, fix: 'lichte blauwe jurk kan niet zwaar en blauw betekenen; lichtblauwe jurk noemt een kleur', why: 'In het Nederlands verandert de spatie de betekenis.' },
         ],
       },
       {
@@ -198,10 +198,10 @@ export const WOORD_LESSONS: LessonInput[] = [
       {
         kind: 'bet',
         id: 'lichtblauw',
-        prompt: 'Wat beschrijft ‘een licht blauwe jurk’ letterlijk?',
+        prompt: 'Welke betekenis kan ‘een lichte blauwe jurk’ hebben, naast een lichte kleur?',
         options: ['Een blauwe jurk die weinig weegt', 'Een jurk in een lichte tint blauw', 'Allebei, het is hetzelfde'],
         answer: 'Een blauwe jurk die weinig weegt',
-        why: 'Met spatie zijn licht en blauw twee losse bijvoeglijke naamwoorden. De kleur is lichtblauw, aan elkaar.',
+        why: 'Lichte en blauwe zijn hier twee losse, verbogen bijvoeglijke naamwoorden: de jurk kan weinig wegen én blauw zijn. Voor alleen de kleurtint schrijf je lichtblauwe aan elkaar.',
       },
       {
         kind: 'type',
@@ -249,7 +249,7 @@ export const WOORD_LESSONS: LessonInput[] = [
             rule: 'Open klassen dragen de inhoud en groeien. Gesloten klassen bouwen de zin en staan bijna stil.',
             deep: {
               q: 'Bijna stil?',
-              a: 'Ook een gesloten klasse verandert, maar traag. Sinds 2016 wordt voorgesteld om *hen* of *die* te gebruiken voor non-binaire personen. Dat er nog steeds discussie over is, laat zien hoe stroef een gesloten klasse is: een nieuw zelfstandig naamwoord als *coronaproof* werd in een paar weken gewoon.',
+              a: 'Ook een gesloten klasse verandert, maar traag. Sinds 2016 wordt voorgesteld om *hen* of *die* te gebruiken voor non-binaire personen. Dat er nog steeds discussie over is, laat zien hoe stroef een gesloten klasse is: een nieuw bijvoeglijk naamwoord als *coronaproof* werd in een paar weken gewoon.',
             },
             quiz: {
               q: 'In welke klasse kwam er recent een woord bij?',

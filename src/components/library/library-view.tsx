@@ -78,7 +78,7 @@ export function LibraryView() {
         }
       />
 
-      <section aria-label="Lessen zoeken en filteren" className="rounded-card border-2 border-line bg-surface p-5 shadow-slab sm:p-6">
+      <fieldset disabled={!hydrated} aria-label="Lessen zoeken en filteren" className="min-w-0 rounded-card border-2 border-line bg-surface p-5 shadow-slab sm:p-6">
         <form
           role="search"
           onSubmit={(event) => {
@@ -149,7 +149,7 @@ export function LibraryView() {
             />
           </FilterRow>
         </div>
-      </section>
+      </fieldset>
 
       <div className="mt-8 flex min-h-11 flex-wrap items-center justify-between gap-3">
         <p role="status" className="font-display text-title-sm font-bold text-ink">

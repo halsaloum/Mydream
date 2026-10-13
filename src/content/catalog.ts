@@ -1,17 +1,19 @@
 import { z } from 'zod';
 import { adaptLegacyCourse } from './adapters/legacy';
 import { withExtraLessons } from './packs';
+import { withCurriculum } from './curriculum';
+import { createLearningPath } from './learning-path';
 import { CoursePackSchema, type CoursePack, type Domain, type Layer, type Lesson, type StepKind } from './schema';
 
 /**
  * De enige actieve inhoudsbron van de app.
  *
- * Nu: de bestaande bouwlagen uit `legacy/build.ts` via de adapter, aangevuld met de nieuwe lessen
- * uit `packs/` (achter de bestaande lessen van hun niveau). Alles gaat door hetzelfde contract.
+ * De bestaande bouwlagen via de adapter, extra lessen uit `packs/` en lesgebonden verbeteringen
+ * uit `curriculum/`. Alles gaat door hetzelfde contract.
  * Later: vervang `adaptLegacyCourse()` door een gevalideerde JSON-cursus (zie README, "Lessen aansluiten").
  */
 function loadCourse(): CoursePack {
-  const result = CoursePackSchema.safeParse(withExtraLessons(adaptLegacyCourse()));
+  const result = CoursePackSchema.safeParse(withCurriculum(withExtraLessons(adaptLegacyCourse())));
   if (!result.success) {
     throw new Error(`Lesinhoud voldoet niet aan het contract:\n${z.prettifyError(result.error)}`);
   }
@@ -27,7 +29,7 @@ export type LessonEntry = {
   domain: Domain;
   /** Andere vakgebieden die meespelen. */
   also: Domain[];
-  /** Positie in de leerlijn, vanaf 0. */
+  /** Positie in de bibliotheek (per bouwlaag), vanaf 0; de aanbevolen route staat apart. */
   order: number;
 };
 
@@ -49,6 +51,9 @@ export const lessonEntries: readonly LessonEntry[] = course.layers
 
 const entriesById = new Map(lessonEntries.map((entry) => [entry.lesson.id, entry]));
 
+export const learningPhases = createLearningPath(lessonEntries);
+export const learningPathEntries = learningPhases.flatMap((phase) => phase.entries);
+
 export const totalLessons = lessonEntries.length;
 
 export function getLessonEntry(id: string): LessonEntry | undefined {
@@ -64,8 +69,8 @@ export function getLayer(id: string): Layer | undefined {
 }
 
 export function nextLessonEntry(id: string): LessonEntry | undefined {
-  const entry = entriesById.get(id);
-  return entry ? lessonEntries[entry.order + 1] : undefined;
+  const index = learningPathEntries.findIndex((entry) => entry.lesson.id === id);
+  return index < 0 ? undefined : learningPathEntries[index + 1];
 }
 
 export const EXERCISE_LABELS: Record<StepKind, string> = {
@@ -123,7 +128,7 @@ export const perspectives = course.domains.filter((domain) => domain.persp);
 export type LessonOverview = {
   explainTitles: string[];
   exerciseKinds: StepKind[];
-  /** Beoordeelde opdrachten, inclusief snelle checks uit de uitleg. */
+  /** Oefenopdrachten, inclusief zelfcontrole en snelle checks uit de uitleg. */
   exerciseCount: number;
 };
 
@@ -147,7 +152,7 @@ export function lessonOverview(lesson: Lesson): LessonOverview {
   return { explainTitles, exerciseKinds: [...kinds], exerciseCount };
 }
 
-/** "3 oefeningen", "1 oefening", of "Uitleg en experimenten" voor een les zonder beoordeelde opdrachten. */
+/** "3 oefeningen", "1 oefening", of "Uitleg en experimenten" zonder afzonderlijke oefenopdrachten. */
 export function exerciseCountLabel(lesson: Lesson): string {
   const { exerciseCount } = lessonOverview(lesson);
   if (exerciseCount === 0) return 'Uitleg en experimenten';

@@ -263,7 +263,7 @@ type DilemmaResponse = ArgumentResponseOf<'dilemma'>;
 export type DilemmaSign = { t: string | null; side: 'left' | 'right'; added: boolean };
 
 export const dilemmaNeeded = (step: DilemmaStep) => step.candidates.filter((candidate) => candidate.ok === true).length;
-export const dilemmaAllAdded = (step: DilemmaStep, r: DilemmaResponse) => r.added.length >= dilemmaNeeded(step);
+export const dilemmaAllAdded = (step: DilemmaStep, r: DilemmaResponse) => step.candidates.every((candidate, index) => candidate.ok !== true || r.added.includes(index));
 
 export function dilemmaAdd(step: DilemmaStep, r: DilemmaResponse, i: number): Move<DilemmaResponse> {
   const candidate = step.candidates[i];
@@ -384,41 +384,45 @@ export function argumentIsComplete(step: Step, r: ArgumentResponse): boolean {
     case 'rebut':
       return step.kind === 'rebut' && r.round >= step.rounds.length;
     case 'strawman':
-      return step.kind === 'strawman' && r.fair;
+      return step.kind === 'strawman' && r.fair && strawmanAllFound(step, r);
     case 'slope':
-      return step.kind === 'slope' && r.honest;
+      return step.kind === 'slope' && r.honest && r.judged === step.links.length;
     case 'dilemma':
-      return step.kind === 'dilemma' && r.honest;
+      return step.kind === 'dilemma' && r.honest && dilemmaAllAdded(step, r);
     case 'inspect':
-      return step.kind === 'inspect' && inspectFlawed(step).every((row) => r.fixed.includes(row));
+      return step.kind === 'inspect' && step.rows.every((_, row) => r.judged.includes(row)) && inspectFlawed(step).every((row) => r.fixed.includes(row));
   }
 }
 
 /** Past een opgeslagen antwoord nog bij de (mogelijk gewijzigde) stap? */
 export function argumentFits(step: Step, r: ArgumentResponse): boolean {
-  const within = (values: readonly number[], length: number) => values.every((value) => value < length);
+  const unique = (values: readonly unknown[]) => new Set(values).size === values.length;
+  const within = (values: readonly number[], length: number) => unique(values) && values.every((value) => Number.isInteger(value) && value >= 0 && value < length);
+  const failedOptions = (values: readonly number[], options: readonly { ok?: boolean }[]) => within(values, options.length) && values.every((value) => options[value]?.ok !== true);
   switch (r.kind) {
     case 'reason':
-      return step.kind === 'reason' && r.pair < step.pairs.length;
+      return step.kind === 'reason' && r.pair < step.pairs.length && unique(r.found);
     case 'support':
-      return step.kind === 'support' && r.level <= step.levels.length && within(r.tried, step.levels[r.level]?.options.length ?? 0);
+      return step.kind === 'support' && r.level <= step.levels.length && failedOptions(r.tried, step.levels[r.level]?.options ?? []);
     case 'evidence':
       return step.kind === 'evidence' && r.sel < step.rows.length && r.pick.length === step.rows.length && r.pick.every((k, i) => k < (step.rows[i]?.options.length ?? 0));
     case 'rebut':
-      return step.kind === 'rebut' && r.round <= step.rounds.length && within(r.tried, step.rounds[r.round]?.options.length ?? 0);
+      return step.kind === 'rebut' && r.round <= step.rounds.length && failedOptions(r.tried, step.rounds[r.round]?.options ?? []);
     case 'strawman':
-      return step.kind === 'strawman' && r.found.every((id) => strawmanTwists(step).includes(id)) && within(r.tried, step.options.length);
+      return step.kind === 'strawman' && unique(r.found) && r.found.every((id) => strawmanTwists(step).includes(id)) && failedOptions(r.tried, step.options) && (!r.fair || strawmanAllFound(step, r));
     case 'slope':
-      return step.kind === 'slope' && r.judged <= step.links.length && within(r.tried, step.options.length);
+      return step.kind === 'slope' && r.judged <= step.links.length && failedOptions(r.tried, step.options) && (!r.honest || r.judged === step.links.length);
     case 'dilemma':
       return (
         step.kind === 'dilemma' &&
+        unique(r.added) &&
         r.added.every((i) => step.candidates[i]?.ok === true) &&
-        within(r.tried, step.candidates.length) &&
-        within(r.triedOptions, step.options.length)
+        failedOptions(r.tried, step.candidates) &&
+        failedOptions(r.triedOptions, step.options) &&
+        (!r.honest || dilemmaAllAdded(step, r))
       );
     case 'inspect':
-      return step.kind === 'inspect' && (r.sel === null || r.sel < step.rows.length) && within(r.judged, step.rows.length) && within(r.fixed, step.rows.length);
+      return step.kind === 'inspect' && (r.sel === null || r.sel < step.rows.length) && within(r.judged, step.rows.length) && within(r.fixed, step.rows.length) && r.fixed.every((row) => r.judged.includes(row) && 'fallacy' in step.rows[row]!);
   }
 }
 
@@ -439,7 +443,7 @@ export function argumentEvaluate(step: Step, r: ArgumentResponse): Outcome {
     case 'dilemma':
       return step.kind === 'dilemma' ? taskOutcome(taskScore(dilemmaNeeded(step) + 1, r.mistakes)) : taskOutcome(0);
     case 'inspect':
-      return step.kind === 'inspect' ? taskOutcome(taskScore(inspectFlawed(step).length * 2, r.mistakes)) : taskOutcome(0);
+      return step.kind === 'inspect' ? taskOutcome(taskScore(step.rows.length + inspectFlawed(step).length, r.mistakes)) : taskOutcome(0);
   }
 }
 
@@ -475,7 +479,8 @@ export function argumentProgress(step: Step, r: ArgumentResponse): string | null
     case 'inspect': {
       if (step.kind !== 'inspect') return null;
       const left = inspectFlawed(step).filter((row) => !r.fixed.includes(row)).length;
-      return `Nog ${left} ${plural(left, 'drogreden', 'drogredenen')} te herstellen`;
+      const unjudged = step.rows.filter((_, row) => !r.judged.includes(row)).length;
+      return `Nog ${unjudged} ${plural(unjudged, 'zin', 'zinnen')} beoordelen en ${left} ${plural(left, 'drogreden', 'drogredenen')} herstellen`;
     }
   }
 }

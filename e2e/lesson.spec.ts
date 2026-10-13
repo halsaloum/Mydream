@@ -1,4 +1,5 @@
 import { expect, openStages, seedOnboarded, test, type Locator } from './fixtures';
+import type { Page } from '@playwright/test';
 
 test.beforeEach(async ({ page }) => seedOnboarded(page));
 
@@ -7,7 +8,37 @@ async function digitOf(option: Locator) {
   return (await option.innerText()).trim().charAt(0);
 }
 
+/** Doorloop ook de nieuwe toepassing; alleen de oude korte les afronden is onvoldoende. */
+async function finishTonePractice(page: Page) {
+  const primary = page.getByRole('contentinfo').getByRole('button').last();
+  await expect(page.getByRole('heading', { name: 'Een duidelijke deadline hoeft niet te schreeuwen' })).toBeVisible();
+  await page.getByRole('radio', { name: 'verzoek', exact: true }).click();
+  await primary.click();
+  await primary.click();
+  await page.getByRole('radio', { name: /In de levering ontbreekt één map/ }).click();
+  await primary.click();
+  await primary.click();
+  await page.getByRole('button', { name: 'passend', exact: true }).click();
+  await page.getByRole('button', { name: 'Verstuur', exact: true }).click();
+  await primary.click();
+  await page.getByRole('radio', { name: /Wilt u de uitslag vandaag vóór 14.00 uur mailen/ }).click();
+  await primary.click();
+  await primary.click();
+  await page.getByRole('textbox', { name: 'Jouw versie' }).fill('Kunt u de bevestiging vandaag sturen?');
+  await primary.click();
+  await primary.click();
+  await page.getByRole('textbox', { name: 'Jouw tekst' }).fill('Beste collega, in je bericht ontbreekt de bijlage met de planning. Wil je die vandaag vóór 16.00 uur sturen? Dan kan ik de definitieve afspraken nog op tijd bevestigen en iedereen informeren over de tijden.');
+  const compare = page.getByRole('button', { name: 'Vergelijk met een voorbeeld' });
+  if (await compare.isVisible()) {
+    await compare.click();
+    for (const checkbox of await page.getByRole('region', { name: 'Inhoudelijke zelfcontrole' }).getByRole('checkbox').all()) await checkbox.check();
+  }
+  await primary.click();
+  await primary.click();
+}
+
 test('les direct openen, met het toetsenbord doen en na verversen hervatten', async ({ page }) => {
+  test.setTimeout(60_000);
   await page.goto('/les/l4');
   await expect(page.getByRole('heading', { name: 'Tekens geven toon' })).toBeVisible();
 
@@ -35,7 +66,8 @@ test('les direct openen, met het toetsenbord doen en na verversen hervatten', as
   await expect(page.getByRole('status').filter({ hasText: 'Rustig en zakelijk.' })).toBeVisible();
   await page.keyboard.press('Enter');
 
-  await expect(page.getByRole('heading', { name: 'Wat je nu weet' })).toBeVisible();
+  await finishTonePractice(page);
+  await expect(page.getByRole('heading', { name: 'Hiermee heb je geoefend' })).toBeVisible();
   await page.getByRole('link', { name: 'Naar Leren' }).click();
   await expect(page).toHaveURL(/\/$/);
   await page.goto('/voortgang');
@@ -169,13 +201,15 @@ test('fiets in 3D: een onderdeel kiezen en het woord met het goede lidwoord type
 });
 
 test('een afgeronde les blijft na verversen afgerond', async ({ page }) => {
+  test.setTimeout(60_000);
   await page.goto('/les/l4');
   await page.getByRole('radio', { name: 'rustig' }).click();
   await page.keyboard.press('Enter');
   await page.keyboard.press(await digitOf(page.getByRole('radio', { name: /Bedankt voor uw bericht\.$/ })));
   await page.keyboard.press('Enter');
   await page.keyboard.press('Enter');
-  await expect(page.getByRole('heading', { name: 'Wat je nu weet' })).toBeVisible();
+  await finishTonePractice(page);
+  await expect(page.getByRole('heading', { name: 'Hiermee heb je geoefend' })).toBeVisible();
 
   await page.goto('/voortgang');
   await page.reload();

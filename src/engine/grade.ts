@@ -138,7 +138,9 @@ export function isComplete(step: Step, response: Response): boolean {
     case 'write': {
       if (response.kind !== 'write') return false;
       const status = criteriaStatus(step, response.value);
-      return status.enoughWords && status.criteria.every((criterion) => criterion.met);
+      const reviewed = !step.rubric || (response.reviewed === true &&
+        response.selfChecks?.length === step.rubric.criteria.length && response.selfChecks.every(Boolean));
+      return status.enoughWords && status.criteria.every((criterion) => criterion.met) && reviewed;
     }
     default:
       return false;

@@ -1,11 +1,9 @@
-# pennig — van letter tot alinea
+# pennig — van eerste zin tot sterk betoog
 
 Leerapp voor Nederlands schrijven met Pim het potlood, opnieuw gebouwd in Next.js. Voor volwassenen die
 Nederlands op moedertaalniveau lezen en verstaan, en de schrijftaal willen beheersen: van letter tot alinea.
 
-Deze versie is **de interface en de oefenengine**. De lessen worden later apart uit PDF's gemaakt; de bestaande
-lesinhoud draait ongewijzigd mee als referentie en testmateriaal. Voor "De letter", "Klank en letter", "De lettergreep",
-"Het betekenisvolle woorddeel", "Het woord" en "De woordgroep" staan er al nieuwe lessen bij: praktische spellinglessen in de eerste drie niveaus, daarna tot masterniveau (zie [Eén inhoudsbron](#één-inhoudsbron)).
+Deze versie bevat **138 lessen**: alle 113 bestaande lessen zijn uitgebreid met lesgebonden begeleiding en toepassingsopdrachten, aangevuld met negen schrijfmodules en zestien lessen argumentatie en drogredenen. De route loopt van taalbasis via helder schrijven naar zelfstandig argumenteren; specialistische taalkunde staat daarnaast als keuzeverdieping. Afronden en automatisch goed antwoorden zijn geen bewijs van blijvende beheersing.
 
 ```bash
 npm install
@@ -95,12 +93,11 @@ flowchart LR
 
 ### Eén inhoudsbron
 
-De app gebruikt **alleen** `src/content/catalog.ts`. Die laadt de 29 lessen uit `legacy/build.ts` (byte-gelijk aan
-de bron) via `adapters/legacy.ts`, voegt de nieuwe lessen uit `packs/` toe en valideert alles met het contract.
+De app gebruikt **alleen** `src/content/catalog.ts`. Die laadt de 29 basislessen uit `legacy/build.ts` via `adapters/legacy.ts`, voegt 109 lessen uit `packs/` toe en verrijkt de bestaande lessen via `curriculum/`. Alles wordt gevalideerd met hetzelfde contract. De oorspronkelijke stappen blijven op hun plek voor hervatten; inhoudelijke fouten zijn gecorrigeerd.
 `legacy/course.ts` bevat alleen de typen: de tweede cursus (`COURSE`) en `BOOKS` zijn bewust weggelaten, zodat er
 geen tegenstrijdige inhoud naast elkaar bestaat.
 
-`packs/` bevat 84 nieuwe lessen voor zes niveaus, achter de bestaande lessen van dat niveau (`withExtraLessons`):
+`packs/` bevat 109 aanvullende lessen voor negen niveaus, achter de bestaande lessen van dat niveau (`withExtraLessons`):
 
 | Bestand | Niveau | Lessen |
 | --- | --- | --- |
@@ -120,6 +117,12 @@ geen tegenstrijdige inhoud naast elkaar bestaat.
 | `packs/groep-bouw.ts` | De woordgroep | 4 — bachelor: de voorzetselgroep en R-woorden, complement of bepaling, de bijvoeglijke groep, lange bepalingen voor en na (naamwoordstijl, bijstelling, beperkende en uitbreidende bijzin) |
 | `packs/groep-master.ts` | De woordgroep | 4 — bachelor: nevenschikking en samentrekking · master: X-bar-theorie, structurele ambiguïteit en tuinpadzinnen, de DP-hypothese |
 | `packs/groep-theorie.ts` | De woordgroep | 4 — master: kwantoren en bereik, de betekenis van bijvoeglijke naamwoorden, woordgroep of samenstelling, zwaarte, volgorde en typologie |
+
+`packs/schrijven.ts` voegt negen modules toe voor zinnen, samenhang en tekstherziening. `packs/argumentatie.ts` bevat zestien opeenvolgende lessen van standpunt en reden tot een volledig betoog, met bewijsbeoordeling, tegenargumenten en herstel van drogredenen.
+
+`curriculum/` bevat de verbeteringen voor alle 113 eerdere lessen: een concreet leerdoel, vertrekpunt, strategie, zelfcontrole en nieuwe toepassingsopdrachten. `learning-path.ts` bepaalt de aanbevolen volgorde onafhankelijk van de negen bibliotheekniveaus. Alle lessen blijven vrij toegankelijk.
+
+Vrije schrijfopdrachten met `rubric` tonen na de eerste versie een voorbeeld en controlepunten. De leerling vergelijkt en herziet zelf; een tekstwijziging wist de vinkjes. Woordenaantal en trefwoorden controleren alleen vormeisen. Vrij schrijven telt niet als objectief goed antwoord in het lespercentage. Zelfcontrole is geen automatische inhoudelijke beoordeling.
 
 De eerste drie niveaus zijn praktisch: de spellingregels kennen en toepassen, zonder taalwetenschap, geschiedenis of
 vergelijking met andere talen (`packs/praktijk/praktijk.test.ts` bewaakt lengte, afwisseling en interactiviteit).

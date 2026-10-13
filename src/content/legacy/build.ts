@@ -9,8 +9,8 @@ export const LAYERS: Layer[] = [
   { id: 'letter', name: 'De letter', icon: 'a', made: 'het kleinste teken', color: 'bg-mint', shade: '#58a700', learn: 'Lettervormen, het alfabet, hoofdletters en kleine letters.', fields: ['orth'], example: '*b* en *B*: één letter, twee vormen.', lessons: [
     { id: 'l1', domain: 'orth', title: 'Klinkers en medeklinkers', skill: 'Spelling', icon: 'a', steps: [
       { kind: 'explain', title: 'Twee soorten letters', panels: [
-        { text: 'Het Nederlands heeft 26 letters. Die vallen in twee groepen. *Klinkers* maak je met een open mond: de lucht stroomt vrij. *Medeklinkers* maak je door de lucht ergens te blokkeren, met je lippen, tong of keel. Zeg maar eens *aaa* en dan *p*: voel je het verschil?', rule: 'Er zijn vijf klinkers: *a e i o u*. Alle andere letters zijn medeklinkers.', alpha: { q: 'Tik de vijf klinkers aan', targets: ['a', 'e', 'i', 'o', 'u'], note: 'a, e, i, o, u. De andere 21 zijn medeklinkers.' } },
-        { text: 'Elk Nederlands woord heeft minstens één klinker. Die vormt het hart, de medeklinkers zitten eromheen als een rand. Daarom verandert een woord helemaal als je alleen de klinker wisselt.', deep: { q: 'En de y dan?', a: 'De *y* is een buitenbeentje. In leenwoorden als *baby* of *hobby* klinkt hij als een klinker (*ie*). Aan het begin van *yoghurt* klinkt hij als de medeklinker *j*. Hij hoort dus bij geen van beide groepen.' }, wheel: { start: 'b', end: 'k', need: 4, note: 'Eén klinker, vier woorden. Klinkers zijn het hart van een woord.', options: [{ v: 'a', mean: 'bak: een bak met water' }, { v: 'e', mean: 'bek: de mond van een dier' }, { v: 'i' }, { v: 'o', mean: 'bok: een mannetjesgeit' }, { v: 'u', mean: 'buk: buig voorover!' }] } },
+        { text: 'Het Nederlandse alfabet heeft 26 letters. Letters zijn tekens; klanken spreek je uit. Bij een *klinkerklank* stroomt de lucht vrij door je mond. Bij een *medeklinkerklank* vernauw of blokkeer je de lucht met bijvoorbeeld je lippen of tong. Zeg eens *aaa* en dan *p*: voel je het verschil?', rule: 'De vijf gewone klinkerletters zijn *a e i o u*. Ook de *y* kan een klinker weergeven, zoals in *baby*.', alpha: { q: 'Tik de vijf gewone klinkerletters aan', targets: ['a', 'e', 'i', 'o', 'u'], note: 'a, e, i, o, u zijn de vijf gewone klinkerletters. De y heeft verschillende rollen.' } },
+        { text: 'Een klinkerklank vormt meestal de kern van een lettergreep; er kunnen medeklinkers omheen staan. Wissel je de klinker, dan kan een ander woord ontstaan. Probeer alle vijf mogelijkheden.', deep: { q: 'En de y dan?', a: 'De rol van de *y* hangt af van het woord. In *baby* of *hobby* geeft hij een klinkerklank weer (*ie*). Aan het begin van *yoghurt* klinkt hij als de medeklinker *j*. Kijk dus naar de klank die de letter daar weergeeft.' }, wheel: { start: 'b', end: 'k', need: 5, note: 'Vijf klinkers, vijf bestaande woorden: ook bik bestaat, zoals in ik bik de verf af.', options: [{ v: 'a', mean: 'bak: een bak met water' }, { v: 'e', mean: 'bek: de mond van een dier' }, { v: 'i', mean: 'bik: ik bik de oude verf af' }, { v: 'o', mean: 'bok: een mannetjesgeit' }, { v: 'u', mean: 'buk: buig voorover!' }] } },
         { text: 'Waarom is dit handig? Of een woord met een klinker begint, bepaalt soms de spelling eromheen. Je zegt *een appel*, maar in een samenstelling zie je dat ook terug: *zee-egel*, met een streepje tussen twee klinkers die anders samensmelten.', deep: { q: 'Waarom dat streepje in zee-egel?', a: 'Zonder streepje lees je *zeeegel* als *zeeë-gel* of *zeeeg-el*. Het streepje laat zien waar het ene woord stopt en het andere begint. Dat zie je bij botsende klinkers: *auto-ongeluk*, *zee-eend*.' }, mark: { q: 'Tik de woorden die met een klinker beginnen', sentence: 'appel peer ui druif oliebol', targets: [0, 2, 4], note: 'a, u en o: klinkers.' } },
       ] },
     ] },
@@ -108,8 +108,8 @@ export const LAYERS: Layer[] = [
           { k: 'boompje', out: 'boom + pje', note: 'Uitgang -pje maakt het klein.' },
           { k: 'onaardig', out: 'on + aardig', note: 'Voorvoegsel on- draait de betekenis om.' },
         ] } },
-        { text: 'Het verkleinwoord heeft vijf uitgangen. De klank aan het eind van de stam kiest.', build: { before: 'Een kleine boom is een…', stem: 'boom', endings: ['je', 'tje', 'pje', 'etje'], answer: 'pje', note: 'Na m: -pje.' } },
-        { text: 'Korte klank + medeklinker: -etje.', build: { before: 'Een kleine bal is een…', stem: 'ball', endings: ['je', 'tje', 'etje'], answer: 'etje', note: 'balletje.' } },
+        { text: 'Verkleinwoorden hebben verschillende uitgangen. Kijk naar de klanken aan het einde van het woord. Na een lange klinker plus m krijg je vaak -pje: boom → boompje. Maar kom wordt kommetje.', build: { before: 'Een kleine boom is een…', stem: 'boom', endings: ['je', 'tje', 'pje', 'etje'], answer: 'pje', note: 'boom heeft een lange oo vóór m: boompje. Een korte klinker kan een andere uitgang geven: kommetje.' } },
+        { text: 'Na een korte beklemtoonde klinker plus bijvoorbeeld l, m, n of ng komt vaak -etje: bal → balletje, kom → kommetje. Dit geldt niet voor elke medeklinker: kat → katje.', build: { before: 'Een kleine bal is een…', stem: 'ball', endings: ['je', 'tje', 'etje'], answer: 'etje', note: 'balletje.' } },
       ] },
       { kind: 'sort', prompt: 'Meervoud op -en of op -s?', buckets: ['-en', '-s'], items: [{ t: 'boek', b: 0 }, { t: 'tafel', b: 1 }, { t: 'stoel', b: 0 }, { t: 'auto', b: 1 }, { t: 'kat', b: 0 }, { t: 'meisje', b: 1 }], why: 'Op -el, -er, -je en klinker: vaak -s.' },
     ] },
@@ -148,11 +148,11 @@ export const LAYERS: Layer[] = [
       { kind: 'explain', title: 'Je hoort het niet, je schrijft het wel', panels: [
         { text: 'Wordt en word klinken hetzelfde. Vervang het werkwoord door lopen. Hoor je loopt? Schrijf een t.', build: { before: 'Hij (vinden)…', stem: 'vind', endings: ['', 't', 'd'], answer: 't', note: 'Hij loopt → vindt.' } },
         { text: 'Staat jij achter het werkwoord, dan valt de t weg.', build: { before: '(worden) … jij ook moe?', stem: 'Word', endings: ['', 't', 'dt'], answer: '', note: 'Loop jij? → Word jij?' } },
-        { text: "Verleden tijd: stam + te of de. 't kofschip beslist: staat de laatste letter van de stam in t-k-f-s-ch-p? Dan -te.", lab: { label: 'Tik een werkwoord', chips: [
+        { text: "Bij zwakke werkwoorden maak je de verleden tijd met de stam + -te of -de. Kijk voor de keuze naar de eindklank vóór -en in het hele werkwoord. Een stemloze eindklank uit 't kofschip (t-k-f-s-ch-p) geeft -te; anders -de. Behoud daarbij de v of z uit het hele werkwoord: leven → v → leefde, reizen → z → reisde. Ga dus niet alleen af op de geschreven ik-vorm.", lab: { label: 'Tik een werkwoord', chips: [
           { k: 'werken', out: 'werkte', note: 'k → -te' }, { k: 'spelen', out: 'speelde', note: 'l → -de' }, { k: 'leven', out: 'leefde', note: 'v (niet f) → -de' },
         ] } },
       ] },
-      { kind: 'sort', prompt: '-te of -de?', buckets: ['-te', '-de'], items: [{ t: 'missen', b: 0 }, { t: 'horen', b: 1 }, { t: 'stoppen', b: 0 }, { t: 'reizen', b: 1 }, { t: 'lachen', b: 0 }, { t: 'leven', b: 1 }], why: 's, p, ch → kofschip. r, z, v → niet.' },
+      { kind: 'sort', prompt: '-te of -de?', buckets: ['-te', '-de'], items: [{ t: 'missen', b: 0 }, { t: 'horen', b: 1 }, { t: 'stoppen', b: 0 }, { t: 'reizen', b: 1 }, { t: 'lachen', b: 0 }, { t: 'leven', b: 1 }], why: 'Kijk vóór -en in het hele werkwoord: s, p, ch geven -te; r, z, v geven -de. Daarom reisde en leefde, ondanks de s en f in ik reis en ik leef.' },
       { kind: 'fix', prompt: 'Tik het foute woord aan en verbeter het.', sentence: 'Mijn zus houd van lange wandelingen.', wrong: 2, answer: 'houdt', why: 'Zij loopt → houdt.' },
     ] },
     { id: 'w2', domain: 'morf', also: ['syn'], title: 'de, het en de -e', skill: 'Woorden', icon: 'de', steps: [
@@ -193,7 +193,7 @@ export const LAYERS: Layer[] = [
         ] } },
       ] },
       { kind: 'choice', prompt: 'Brief aan de gemeente:', before: 'Ik verzoek', after: 'mijn aanvraag te bekijken.', options: ['u', 'jou', 'je'], answer: 'u', why: 'Formele brief: u.' },
-      { kind: 'fix', prompt: 'Tik het woord dat niet past bij de toon.', sentence: 'Geachte heer Jansen, kun jij mij laten weten wanneer u tijd heeft?', wrong: 4, answer: 'u', why: 'Geachte → u, en consequent blijven.' },
+      { kind: 'fix', prompt: 'Tik het woord dat niet past bij de toon.', sentence: 'Geachte heer Jansen, wilt jij mij laten weten wanneer u tijd heeft?', wrong: 4, answer: 'u', why: 'De formele aanspreekvorm is u. Met wilt wordt de verbeterde zin: wilt u mij laten weten wanneer u tijd heeft?' },
     ] },
     { id: 'w6', domain: 'prag', also: ['sem'], title: 'Wie is ik?', skill: 'Woorden', icon: 'ik', steps: [
       { kind: 'explain', title: 'Woorden die naar de situatie wijzen', panels: [
@@ -210,7 +210,7 @@ export const LAYERS: Layer[] = [
     { id: 'p1', domain: 'syn', title: 'Blokken in de zin', skill: 'Zinsbouw', icon: '▭', steps: [
       { kind: 'explain', title: 'Woorden klonteren samen', panels: [
         { text: 'Woorden vormen groepjes rond één kern: de oude buurman, op het station, heel erg snel. Zo’n groep beweegt als één blok door de zin.', swap: { goal: 'Zet het blok "op het station" vooraan.', blocks: ['Ik', 'wachtte', 'op het station'], accept: ['op het station wachtte Ik'], note: 'Op het station wachtte ik. Het blok blijft heel.' } },
-        { text: 'Het onderwerp is het blok dat de handeling doet. Vraag: wie of wat + persoonsvorm?', mark: { q: 'Tik het hele onderwerp', sentence: 'De oude buurman van hiernaast zwaait.', targets: [0, 1, 2, 3, 4], note: 'Wie zwaait? De oude buurman van hiernaast.' } },
+        { text: 'Het onderwerp is het zinsdeel waarmee de persoonsvorm in persoon en getal overeenkomt. Vaak is het de doener, maar niet altijd: in De buurman wordt geholpen ondergaat hij iets. Vraag in dit voorbeeld: wie zwaait?', mark: { q: 'Tik het hele onderwerp', sentence: 'De oude buurman van hiernaast zwaait.', targets: [0, 1, 2, 3, 4], note: 'Wie zwaait? De oude buurman van hiernaast.' } },
       ] },
       { kind: 'order', prompt: 'Maak een goede zin van de blokken.', tiles: ['de rode fiets', 'Mijn broer', 'heeft', 'gekocht'], answer: 'Mijn broer heeft de rode fiets gekocht', why: 'Onderwerp, persoonsvorm, lijdend voorwerp, rest.' },
     ] },
@@ -230,17 +230,17 @@ export const LAYERS: Layer[] = [
   { id: 'zin', name: 'De enkelvoudige zin', icon: '—.', made: 'blokken rond een persoonsvorm', color: 'bg-[#2b70c9]', shade: '#1f5aa5', learn: 'Zinsdelen, woordvolgorde, overeenstemming en de betekenis van de hele zin.', fields: ['syn', 'sem', 'prag'], example: '*Ik lees het boek.*', lessons: [
     { id: 'z1', domain: 'syn', title: 'De motor op plek 2', skill: 'Zinsbouw', icon: '2', steps: [
       { kind: 'explain', title: 'De persoonsvorm is de motor', panels: [
-        { text: 'Elke zin heeft een persoonsvorm: het werkwoord dat meeverandert met tijd. In een hoofdzin staat die altijd op plek 2.', mark: { q: 'Tik de persoonsvorm', sentence: 'Morgen fiets ik naar mijn werk.', targets: [1], note: 'fiets → fietste.' } },
-        { text: 'Zet je iets anders vooraan, dan schuift het onderwerp achter de persoonsvorm. Dat heet inversie.', swap: { goal: 'Persoonsvorm op plek 2.', blocks: ['Gisteren', 'ik', 'zag', 'haar'], accept: ['Gisteren zag ik haar'], note: 'Gisteren (1) zag (2) ik.' } },
+        { text: 'De persoonsvorm verandert mee met tijd en onderwerp: ik fiets, ik fietste, wij fietsen. In een gewone mededelende hoofdzin staat hij op de tweede zinsdeelpositie, niet per se als tweede woord. In een ja-neevraag of bevel kan hij vooraan staan: Fiets je mee? Fiets door!', mark: { q: 'Tik de persoonsvorm', sentence: 'Morgen fiets ik naar mijn werk.', targets: [1], note: 'fiets → fietste.' } },
+        { text: 'Zet je iets anders vooraan, dan schuift het onderwerp achter de persoonsvorm. Dat heet inversie.', swap: { goal: 'Zet de persoonsvorm op de tweede zinsdeelpositie.', blocks: ['Gisteren', 'ik', 'zag', 'haar'], accept: ['Gisteren zag ik haar'], note: 'Gisteren (1) zag (2) ik.' } },
         { text: 'Onderwerp en persoonsvorm horen bij elkaar: meervoud bij meervoud.', quiz: { q: 'De kinderen … buiten.', options: ['speelt', 'spelen'], answer: 'spelen', why: 'De kinderen = meervoud.' } },
       ] },
-      { kind: 'rewrite', prompt: 'Begin met "Elke zaterdag".', source: 'Wij zwemmen elke zaterdag in het meer.', accept: ['Elke zaterdag zwemmen wij in het meer.', 'Elke zaterdag zwemmen we in het meer.'], why: 'zwemmen blijft op plek 2.' },
+      { kind: 'rewrite', prompt: 'Begin met "Elke zaterdag".', source: 'Wij zwemmen elke zaterdag in het meer.', accept: ['Elke zaterdag zwemmen wij in het meer.', 'Elke zaterdag zwemmen we in het meer.'], why: 'Elke zaterdag is samen één zinsdeel. Zwemmen volgt op de tweede zinsdeelpositie, als derde woord.' },
       { kind: 'fix', prompt: 'Tik het foute woord aan en verbeter het.', sentence: 'De leerlingen van deze klas werkt hard.', wrong: 5, answer: 'werken', why: 'Onderwerp: de leerlingen (meervoud).' },
     ] },
     { id: 'z2', domain: 'prag', also: ['syn'], title: 'Volgorde is nadruk', skill: 'Zinsbouw', icon: '!', steps: [
       { kind: 'explain', title: 'Wat vooraan staat, valt op', panels: [
-        { text: 'Met dezelfde blokken kun je verschillende zinnen bouwen. Wat op plek 1 staat, krijgt de nadruk.', lab: { label: 'Tik wat vooraan staat', chips: [
-          { k: 'ik', out: 'Ik heb dat boek nooit gelezen.', note: 'Neutraal.' }, { k: 'dat boek', out: 'Dat boek heb ik nooit gelezen.', note: 'Nadruk op het boek.' }, { k: 'nooit', out: 'Nooit heb ik dat boek gelezen.', note: 'Dramatisch.' },
+        { text: 'Met dezelfde blokken kun je verschillende zinnen bouwen. Het eerste zinsdeel kan aansluiten bij bekende informatie, een tijd of plaats aangeven, of nadruk krijgen. Wat opvalt hangt ook af van de context en de klemtoon.', lab: { label: 'Tik wat vooraan staat', chips: [
+          { k: 'ik', out: 'Ik heb dat boek nooit gelezen.', note: 'Neutraal.' }, { k: 'dat boek', out: 'Dat boek heb ik nooit gelezen.', note: 'Het boek is het onderwerp van gesprek; met klemtoon kan het ook een tegenstelling benadrukken.' }, { k: 'nooit', out: 'Nooit heb ik dat boek gelezen.', note: 'Dramatisch.' },
         ] } },
       ] },
       { kind: 'write', prompt: 'Schrijf drie zinnen over je ochtend. Begin geen enkele zin met "ik".', minWords: 18, must: [{ label: 'geen zin begint met "ik"', test: /^(?!\s*ik\b)(?![\s\S]*[.!?]\s+ik\b)/i }], why: 'Een ander zinsbegin geeft je tekst ritme.' },
@@ -250,7 +250,7 @@ export const LAYERS: Layer[] = [
         { text: 'Het teken aan het eind bepaalt hoe je de zin leest.', lab: { label: 'Tik een teken', chips: [
           { k: '.', out: 'Je komt morgen.', note: 'Mededeling.' }, { k: '?', out: 'Je komt morgen?', note: 'Verbaasde vraag.' }, { k: '!', out: 'Je komt morgen!', note: 'Bevel of blijdschap.' },
         ] } },
-        { text: 'Een opsomming krijgt komma’s, maar vóór het laatste "en" niet.', quiz: { q: 'Welke is goed?', options: ['Ik koop brood, kaas, en melk.', 'Ik koop brood, kaas en melk.', 'Ik koop brood kaas en melk.'], answer: 'Ik koop brood, kaas en melk.', why: 'Geen komma vóór en.' } },
+        { text: 'In een eenvoudige opsomming scheiden komma’s de delen. Vóór het laatste en staat meestal geen komma. Een komma vóór en mag wel als die de structuur of betekenis verduidelijkt, bijvoorbeeld bij lange zinsdelen.', quiz: { q: 'Welke eenvoudige opsomming volgt de gebruikelijke leestekens?', options: ['Ik koop brood kaas en melk.', 'Ik koop brood, kaas en melk.', 'Ik koop brood, kaas en, melk.'], answer: 'Ik koop brood, kaas en melk.', why: 'In deze korte, duidelijke opsomming staat een komma tussen brood en kaas, en is vóór en geen komma nodig. Een komma vóór en is niet altijd fout.' } },
       ] },
       { kind: 'rewrite', prompt: 'Zet de leestekens en hoofdletter goed.', source: 'ga je mee naar utrecht', accept: ['Ga je mee naar Utrecht?'], why: 'Hoofdletters + vraagteken.' },
     ] },
@@ -259,14 +259,14 @@ export const LAYERS: Layer[] = [
   { id: 'samen', name: 'De samengestelde zin', icon: '—,—', made: 'zinnen verbonden tot één', color: 'bg-[#ff86d0]', shade: '#cc6ba6', learn: 'Hoofd- en bijzinnen, verbindingswoorden en relaties zoals oorzaak of tegenstelling.', fields: ['syn', 'sem', 'prag'], example: '*Ik lees het boek omdat ik wil leren.*', lessons: [
     { id: 's1', domain: 'sem', also: ['syn'], title: 'Verbindingswoorden', skill: 'Complex', icon: '&', steps: [
       { kind: 'explain', title: 'Twee zinnen, één gedachte', panels: [
-        { text: 'Met een voegwoord maak je van twee zinnen één. En, maar, want, of, dus laten de zin met rust. Andere voegwoorden duwen de persoonsvorm naar achteren: dat is een bijzin.', lab: { label: 'Tik een voegwoord', chips: [
+        { text: 'Verbindingswoorden laten zien hoe zinnen samenhangen. De nevenschikkende voegwoorden en, maar, want en of verbinden hoofdzinnen; de woordvolgorde blijft die van een hoofdzin. Bij onderschikkende voegwoorden zoals omdat en hoewel komt de persoonsvorm meestal achterin de bijzin. Dus heeft twee mogelijkheden: Ik heb honger, dus ik eet en Ik heb honger. Dus eet ik. In de tweede zin is dus een verbindend bijwoord vooraan, met inversie.', lab: { label: 'Tik een voegwoord', chips: [
           { k: 'want', out: 'Ik bleef thuis, want het regende hard.', note: 'Volgorde blijft.' }, { k: 'omdat', out: 'Ik bleef thuis, omdat het hard regende.', note: 'regende → achteraan.' },
         ] } },
-        { text: 'Elk voegwoord is een relatie tussen gedachten.', lab: { label: 'Tik een relatie', chips: [
+        { text: 'Een verbindingswoord laat een relatie tussen gedachten zien. Let zowel op de betekenis als op de woordvolgorde.', lab: { label: 'Tik een relatie', chips: [
           { k: 'want', out: 'reden', note: 'Ik eet, want ik heb honger.' }, { k: 'maar', out: 'tegenstelling', note: 'Ik eet, maar heb geen honger.' }, { k: 'dus', out: 'gevolg', note: 'Ik heb honger, dus ik eet.' }, { k: 'hoewel', out: 'toegeving', note: 'Hoewel ik vol zit, eet ik.' },
         ] } },
       ] },
-      { kind: 'sort', prompt: 'Met rust of naar achteren?', buckets: ['met rust', 'duwt'], items: [{ t: 'want', b: 0 }, { t: 'omdat', b: 1 }, { t: 'maar', b: 0 }, { t: 'hoewel', b: 1 }, { t: 'dus', b: 0 }, { t: 'terwijl', b: 1 }], why: 'en, maar, want, of, dus: met rust.' },
+      { kind: 'sort', prompt: 'Met rust of naar achteren?', buckets: ['met rust', 'duwt'], items: [{ t: 'want', b: 0 }, { t: 'omdat', b: 1 }, { t: 'maar', b: 0 }, { t: 'hoewel', b: 1 }, { t: 'of', b: 0 }, { t: 'terwijl', b: 1 }], why: 'Want, maar en of verbinden hoofdzinnen. Omdat, hoewel en terwijl leiden bijzinnen in. Dus vraagt extra aandacht: dus ik eet, maar ook dus eet ik.' },
       { kind: 'rewrite', prompt: 'Verbind met "omdat".', source: 'Ik bleef thuis. Ik was ziek.', accept: ['Ik bleef thuis, omdat ik ziek was.', 'Ik bleef thuis omdat ik ziek was.'], why: 'was schuift naar het eind.' },
     ] },
     { id: 's2', domain: 'syn', also: ['orth'], title: 'De komma', skill: 'Complex', icon: ',', steps: [

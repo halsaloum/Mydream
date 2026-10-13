@@ -5,6 +5,7 @@ import { Check, Circle } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useId } from 'react';
 import { TextArea } from '@/components/ui/field';
+import { Button } from '@/components/ui/button';
 import { RichText } from '@/components/ui/rich-text';
 import { criteriaStatus, isFormExercise } from '@/engine/grade';
 import { cn } from '@/lib/cn';
@@ -122,15 +123,17 @@ export function WriteStep({ step, response, onChange, locked, onSubmit }: StepPr
     ...status.criteria,
   ];
   const allMet = items.every((item) => item.met);
+  const reviewed = !step.rubric || (response.reviewed && step.rubric.criteria.every((_, index) => response.selfChecks?.[index]));
   return (
     <div>
       <StepHeading>{step.prompt}</StepHeading>
+      {step.intro && <p className="mt-3 text-body text-ink-soft"><RichText text={step.intro} /></p>}
       <TextArea
         className="mt-6"
         label="Jouw tekst"
         hideLabel
         value={response.value}
-        onChange={(value) => onChange({ kind: 'write', value })}
+        onChange={(value) => onChange({ kind: 'write', value, reviewed: response.reviewed, selfChecks: step.rubric?.criteria.map(() => false) })}
         placeholder="Begin met een heldere kernzin…"
         rows={8}
         disabled={locked}
@@ -163,10 +166,39 @@ export function WriteStep({ step, response, onChange, locked, onSubmit }: StepPr
           </li>
         ))}
       </ul>
+      {step.rubric && (
+        <section aria-label="Inhoudelijke zelfcontrole" className="mt-6 rounded-card border-2 border-line bg-surface p-5">
+          <h3 className="font-display text-title font-bold">Van eerste versie naar sterke tekst</h3>
+          <p className="mt-2 text-body text-ink-soft">De woordenteller beoordeelt je redenering niet. Schrijf eerst zelf, vergelijk daarna met het voorbeeld en controleer je eigen tekst. Verschillende antwoorden kunnen goed zijn.</p>
+          {!response.reviewed ? (
+            <Button className="mt-4" variant="secondary" disabled={!allMet || locked} onClick={() => onChange({ ...response, reviewed: true, selfChecks: step.rubric?.criteria.map(() => false) })}>
+              Vergelijk met een voorbeeld
+            </Button>
+          ) : (
+            <div className="mt-4">
+              <p className="text-caption font-bold text-ink-muted">Eén mogelijke uitwerking</p>
+              <p className="mt-2 whitespace-pre-line text-body leading-relaxed"><RichText text={step.rubric.example} /></p>
+              <p className="mt-5 font-bold">Controleer en verbeter jouw tekst</p>
+              <p className="mt-1 text-small text-ink-muted">Vink een punt af nadat je het hebt nagekeken. Pas zo nodig je tekst aan; daarna controleer je de punten opnieuw.</p>
+              <ul className="mt-3 space-y-2">
+                {step.rubric.criteria.map((criterion, index) => (
+                  <li key={criterion}>
+                    <label className="flex min-h-11 cursor-pointer items-start gap-3 rounded-control border border-line p-3 text-body">
+                      <input type="checkbox" className="mt-1 size-5 shrink-0 accent-green" disabled={locked} checked={response.selfChecks?.[index] ?? false}
+                        onChange={(event) => onChange({ ...response, selfChecks: step.rubric!.criteria.map((_, i) => i === index ? event.target.checked : response.selfChecks?.[i] ?? false) })} />
+                      <span><RichText text={criterion} /></span>
+                    </label>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </section>
+      )}
       <p role="status" className="mt-3 text-small font-semibold text-ink-muted">
-        {allMet && !locked ? (
+        {allMet && reviewed && !locked ? (
           <span className="inline-flex flex-wrap items-center gap-1.5 text-green-ink">
-            Alle eisen gehaald. Controleer met de knop of <Kbd>Ctrl</Kbd> + <Kbd>Enter</Kbd>.
+            {step.rubric ? 'Vormcheck en eigen inhoudscontrole afgerond.' : 'Automatische vormeisen gehaald.'} Rond af met de knop of <Kbd>Ctrl</Kbd> + <Kbd>Enter</Kbd>.
           </span>
         ) : null}
       </p>

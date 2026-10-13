@@ -1,4 +1,4 @@
-import { course, lessonEntries, type LessonEntry } from '@/content/catalog';
+import { course, lessonEntries, learningPathEntries, type LessonEntry } from '@/content/catalog';
 import type { Domain, Layer } from '@/content/schema';
 import type { SessionState } from '@/engine/session';
 import { addDays, dayKey } from '@/lib/dates';
@@ -20,7 +20,7 @@ export function lessonStatus(id: string, progress: ProgressData, sessions: Recor
 export function recommendedLesson(progress: ProgressData, profile: Profile): LessonEntry | undefined {
   const startLayer = profile.start === 'basis' ? BASIS_START_LAYER : 0;
   const open = (entry: LessonEntry) => !progress.lessons[entry.lesson.id];
-  return lessonEntries.find((entry) => entry.layerIndex >= startLayer && open(entry)) ?? lessonEntries.find(open);
+  return learningPathEntries.find((entry) => entry.layerIndex >= startLayer && open(entry)) ?? learningPathEntries.find(open);
 }
 
 export type ContinueTarget =

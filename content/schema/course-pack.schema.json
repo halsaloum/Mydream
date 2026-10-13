@@ -230,6 +230,50 @@
                     "description": "Stabiele sleutel; wijzig niet zodra leerlingen voortgang hebben."
                   }
                 },
+                "guidance": {
+                  "type": "object",
+                  "properties": {
+                    "goal": {
+                      "type": "string",
+                      "pattern": "\\S",
+                      "description": "Concreet leerdoel: wat kun je na het oefenen zelf doen?"
+                    },
+                    "startingPoint": {
+                      "type": "string",
+                      "pattern": "\\S",
+                      "description": "Begrijpelijk vertrekpunt, met uitleg van benodigde voorkennis."
+                    },
+                    "strategy": {
+                      "minItems": 2,
+                      "maxItems": 6,
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "pattern": "\\S",
+                        "description": "Tekst waarin *woord* een taalvoorbeeld markeert."
+                      },
+                      "description": "Aanpak die tijdens de hele les terug te vinden is."
+                    },
+                    "selfCheck": {
+                      "minItems": 2,
+                      "maxItems": 6,
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "pattern": "\\S",
+                        "description": "Tekst waarin *woord* een taalvoorbeeld markeert."
+                      },
+                      "description": "Vragen waarmee de leerling na afloop de eigen beheersing beoordeelt."
+                    }
+                  },
+                  "required": [
+                    "goal",
+                    "startingPoint",
+                    "strategy",
+                    "selfCheck"
+                  ],
+                  "additionalProperties": false
+                },
                 "steps": {
                   "minItems": 1,
                   "type": "array",
@@ -2851,6 +2895,32 @@
                               "type": "string",
                               "pattern": "\\S"
                             }
+                          },
+                          "rubric": {
+                            "description": "Inhoudelijke zelfcontrole met een voorbeeld; geen automatische beoordeling van schrijfkwaliteit.",
+                            "type": "object",
+                            "properties": {
+                              "criteria": {
+                                "minItems": 2,
+                                "maxItems": 6,
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "pattern": "\\S",
+                                  "description": "Tekst waarin *woord* een taalvoorbeeld markeert."
+                                }
+                              },
+                              "example": {
+                                "type": "string",
+                                "pattern": "\\S",
+                                "description": "Tekst waarin *woord* een taalvoorbeeld markeert."
+                              }
+                            },
+                            "required": [
+                              "criteria",
+                              "example"
+                            ],
+                            "additionalProperties": false
                           },
                           "why": {
                             "type": "string",

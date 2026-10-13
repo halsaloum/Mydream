@@ -69,7 +69,7 @@ export function ToneStep({ step, response, onChange, locked }: StepProps<'tone'>
                 <InlineFeedback className="mt-4" tone={judged.ok ? 'right' : 'wrong'} id={lastSent} reserve={false}>{judged.verdict}</InlineFeedback>
               </motion.div>
             ) : (
-              <motion.p key="empty" className="mt-4 rounded-control border-2 border-dashed border-line-strong px-4 py-3 text-small font-semibold text-ink-muted">Past deze toon bij je huisbaas?</motion.p>
+              <motion.p key="empty" className="mt-4 rounded-control border-2 border-dashed border-line-strong px-4 py-3 text-small font-semibold text-ink-muted">Past deze toon bij {step.contact.name} en deze situatie?</motion.p>
             )}
           </AnimatePresence>
         </div>
@@ -86,13 +86,13 @@ export function ToneStep({ step, response, onChange, locked }: StepProps<'tone'>
           className="flex flex-col gap-3"
         >
           <div className="flex items-center justify-between">
-            <Slider.Label className="font-display text-body font-bold text-ink">Toon van los naar plechtig</Slider.Label>
+            <Slider.Label className="font-display text-body font-bold text-ink">Kies een toon</Slider.Label>
             <Slider.Value className="text-small font-bold text-orange-ink">{() => level?.name ?? ''}</Slider.Value>
           </div>
           <Slider.Control className="flex h-12 touch-none items-center select-none data-[disabled]:opacity-60">
             <Slider.Track className="relative h-4 w-full rounded-full bg-line shadow-[inset_0_2px_0_rgb(16_24_40/0.07)]">
               <Slider.Indicator className="rounded-full bg-orange" />
-              <Slider.Thumb aria-label="Toon van los naar plechtig" getAriaValueText={() => level?.name ?? ''} className="size-9 rounded-full border-2 border-orange bg-surface shadow-[0_4px_0_var(--color-orange-deep)] outline-none focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-focus" />
+              <Slider.Thumb aria-label="Kies een toon" getAriaValueText={() => level?.name ?? ''} className="size-9 rounded-full border-2 border-orange bg-surface shadow-[0_4px_0_var(--color-orange-deep)] outline-none focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-focus" />
             </Slider.Track>
           </Slider.Control>
         </Slider.Root>

@@ -222,8 +222,8 @@ export const LES_D24: LessonInput = {
       title: 'Wat -ing erft: gebeurtenis of ding',
       panels: [
         {
-          text: '*De vertaling van de roman door Ans duurde jaren.* Hier erft *vertaling* alles van *vertalen*: de roman (het lijdend voorwerp, nu met *van*), Ans (de dader, nu met *door*), en het duurt. *De vertaling ligt op tafel.* Hier is *vertaling* een ding: geen argumenten, wel een plek. Jane Grimshaw (*Argument Structure*, 1990) noemde de eerste een *complexe gebeurtenisnominalisatie* en de tweede een *resultaatnominalisatie*. Alleen de eerste heeft argumentstructuur. Haar toetsen: kan er een *door*-bepaling bij, past *voortdurend* ervoor, en is er een meervoud? Tik de zinnen.',
-          rule: 'Gebeurtenisnominalisatie: erft de argumenten (*van*, *door*), duurt, geen meervoud. Resultaatnominalisatie: een ding, telbaar, zonder argumenten.',
+          text: '*De vertaling van de roman door Ans duurde jaren.* Hier erft *vertaling* alles van *vertalen*: de roman (het lijdend voorwerp, nu met *van*), Ans (de dader, nu met *door*), en het duurt. *De vertaling ligt op tafel.* Hier is *vertaling* een ding: geen argumenten, wel een plek. Jane Grimshaw (*Argument Structure*, 1990) noemde de eerste een *complexe gebeurtenisnominalisatie* en de tweede een *resultaatnominalisatie*. Alleen de eerste heeft argumentstructuur. Gebruik meerdere aanwijzingen: gaat het om een proces dat duurt, of om het resultaat dat ergens ligt? Bepalingen met van en door helpen, maar zijn niet op zichzelf beslissend. Ook meervoud is geen absolute toets: afzonderlijke gebeurtenissen kunnen geteld worden. Tik de zinnen.',
+          rule: 'Gebeurtenislezing: het proces staat centraal, vaak met deelnemers via van en door. Resultaatlezing: het product staat centraal. Meervoud alleen beslist niet tussen die lezingen.',
           lab: {
             label: 'Tik een zin',
             chips: [
@@ -234,9 +234,9 @@ export const LES_D24: LessonInput = {
               },
               { k: 'De vertaling ligt op tafel.', out: 'resultaat', note: 'Geen argumenten, wel een plek: het ding dat uit het vertalen kwam.' },
               {
-                k: 'Drie vertalingen van de roman.',
+                k: 'Drie vertalingen van de roman liggen op tafel.',
                 out: 'resultaat',
-                note: 'Een gebeurtenisnominalisatie heeft geen meervoud. Drie vertalingen zijn drie boeken.',
+                note: 'Liggen op tafel maakt hier duidelijk dat het om drie exemplaren van het resultaat gaat. Meervoud alleen zou niet genoeg zijn: de twee vertalingen duurden elk een jaar kan twee processen noemen.',
               },
               {
                 k: 'De voortdurende vertaling van nieuws door vrijwilligers.',
@@ -265,7 +265,7 @@ export const LES_D24: LessonInput = {
                   { fill: 'ja', hint: 'het romans vertalen: het lijdend voorwerp mag los ervoor, zonder van.' },
                 ],
               },
-              { label: 'de vertaling (gebeurtenis)', cells: [{ fill: 'nee', hint: 'Een gebeurtenis die duurt, telt niet: geen meervoud.' }, 'nee', 'nee'] },
+              { label: 'de vertaling (afzonderlijke gebeurtenissen)', cells: [{ fill: 'ja', hint: 'De twee vertalingen duurden elk een jaar: ook afzonderlijke processen kun je tellen. Meervoud is dus geen beslissende toets.' }, 'nee', 'nee'] },
               { label: 'de vertaling (resultaat)', cells: [{ fill: 'ja', hint: 'Drie vertalingen op tafel: dingen kun je tellen.' }, 'nee', 'nee'] },
               {
                 label: 'de vertaler',
@@ -348,7 +348,7 @@ export const LES_D24: LessonInput = {
       ],
       done: {
         title: 'Door en ligt beslissen',
-        text: 'Een door-bepaling en een werkwoord van verloop (verliep, duurde) dwingen de gebeurtenislezing af; een plek of een meervoud dwingt het ding af.',
+        text: 'Verliep en duurde wijzen in deze voorbeelden op het vertaalproces; ligt in de winkel wijst op het resultaat. Een door-bepaling of een meervoud alleen beslist niet: bekijk de hele zin.',
       },
     },
     {

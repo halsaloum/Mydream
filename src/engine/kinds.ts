@@ -112,6 +112,7 @@ export function stepMode(step: Step): StepMode {
 }
 
 export function isScored(step: Step): boolean {
+  if (step.kind === 'write') return false;
   const mode = stepMode(step);
   return mode === 'graded' || (mode === 'task' && !UNSCORED.has(step.kind));
 }

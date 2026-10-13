@@ -14,7 +14,7 @@ Omdat lees- en luistervaardigheid al op moedertaalniveau zijn, hoeft de interfac
 
 ## Product Purpose
 
-pennig leert schrijven "van letter tot alinea": de taal wordt opgebouwd in acht bouwlagen (letter, lettergreep, woorddeel, woord, woordgroep, zin, samengestelde zin, alinea), elk bekeken vanuit vier domeinen (morfologie, syntaxis, semantiek, pragmatiek). Elke les combineert uitleg met klikexperimenten en oefeningen die direct beoordeeld worden; fouten komen later terug als gerichte herhaling.
+pennig leert schrijven van taalbasis tot zelfstandig betoog, in negen bouwlagen (letter, klank en letter, lettergreep, woorddeel, woord, woordgroep, zin, samengestelde zin, alinea). De leerroute bouwt op van uitleg en begeleid oefenen naar toepassing, bewijsbeoordeling, tegenargumenten en drogredenen. Elke les heeft een leerdoel, aanpak en zelfcontrole. Specialistische taalkunde is keuzeverdieping.
 
 Succes: de leerling maakt aantoonbaar minder schrijffouten en kan uitleggen waarom iets zo geschreven wordt.
 
@@ -24,8 +24,8 @@ Niet een losse verzameling taalregels, maar één doorlopende constructie: hetze
 
 ## Operating Context
 
-- Lesinhoud wordt apart uitgewerkt vanuit PDF's en later in de app geladen via het inhoudscontract (`src/content/schema.ts`, JSON Schema in `content/schema/`).
-- Tot die tijd draait de app op de bestaande 26 lessen uit de oorspronkelijke app (ongewijzigd, als referentie en testmateriaal).
+- De actieve cursus bevat 138 lessen via het inhoudscontract (`src/content/schema.ts`, JSON Schema in `content/schema/`).
+- De 113 bestaande lessen zijn uitgebreid; negen schrijfmodules en zestien argumentatielessen vullen de leerroute aan.
 - Alle voortgang staat lokaal in de browser (localStorage); er is geen account of server.
 
 ## Capabilities and Constraints
@@ -34,7 +34,8 @@ Niet een losse verzameling taalregels, maar één doorlopende constructie: hetze
 - Oefenvormen: uitleg met klikexperimenten, meerkeuze, invullen, woorden en zinnen ordenen, blokken wisselen, sorteren, lettergrepen knippen, letters en woorden markeren, woorden opbouwen, klinkerwiel, letters combineren, fouten verbeteren, herschrijven, alinea's ordenen, vrij schrijven met taakcriteria.
 - Elke interactie werkt met aanraken, muis en toetsenbord; slepen heeft altijd een klik- of knopalternatief.
 - Een les is rechtstreeks via de URL te openen en hervat na verversen.
-- Schrijf geen nieuwe lessen, wijzig geen uitleg en bedenk geen curriculum.
+- Verbeter lesinhoud didactisch en inhoudelijk: vertrek bij ontbrekende voorkennis, leg begrippen uit, oefen gevarieerd en laat toepassen op nieuwe situaties.
+- Beoordeel vrije teksten eerlijk: automatische vormchecks bewijzen geen inhoudelijke kwaliteit. Gebruik voorbeeldantwoorden en expliciete eigen controle; presenteer afronding niet als bewezen beheersing.
 - Stack ligt vast: Next.js App Router, React, TypeScript (strikt), Base UI, Tailwind CSS, Motion, dnd-kit, Zustand, Zod, Lucide, canvas-confetti, three.js (3D), Web Audio, Vitest, Testing Library, Playwright.
 
 ## Brand Commitments
@@ -47,7 +48,7 @@ Niet een losse verzameling taalregels, maar één doorlopende constructie: hetze
 
 ## Evidence on Hand
 
-- 26 lessen in 8 bouwlagen en 4 domeinen (`src/content/legacy/build.ts`), plus het groeiende voorbeeld per laag (`src/content/legacy/layer-examples.ts`).
+- 138 lessen in 9 bouwlagen en 7 vakgebieden via `src/content/catalog.ts`, inclusief begeleiding, toepassingsopgaven en argumentatie. Het groeiende voorbeeld per laag staat in `src/content/legacy/layer-examples.ts`.
 - Er zijn geen gebruikersresultaten, testimonials of statistieken; toon nooit verzonnen voortgang of resultaten.
 
 ## Product Principles

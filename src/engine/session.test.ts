@@ -1,10 +1,13 @@
 // @vitest-environment node
 import { describe, expect, it } from 'vitest';
-import { getLessonEntry } from '@/content/catalog';
+import { adaptLegacyCourse } from '@/content/adapters/legacy';
+import { CoursePackSchema } from '@/content/schema';
 import { buildPlan } from './plan';
 import { createSession, currentKey, currentResponse, isRetry, sessionProgress, sessionReducer, summarize, type SessionState } from './session';
 
-const plan = buildPlan(getLessonEntry('z1')!.lesson);
+// Een vaste basisles is de fixture voor de reducer; de uitgebreide cursus wordt apart integraal getest.
+const basis = CoursePackSchema.parse(adaptLegacyCourse()).layers.flatMap((layer) => layer.lessons);
+const plan = buildPlan(basis.find((lesson) => lesson.id === 'z1')!);
 const byKey = new Map(plan.map((item) => [item.key, item]));
 const lookup = (key: string) => byKey.get(key);
 const kinds = plan.map((item) => item.step.kind);

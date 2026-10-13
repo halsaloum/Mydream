@@ -20,7 +20,7 @@ const rewrite = (lessonId: string, source: string) =>
 describe('lesplan', () => {
   it('haalt snelle checks uit de uitleg en zet ze direct erachter', () => {
     const plan = buildPlan(getLessonEntry('k1')!.lesson);
-    expect(plan.map((item) => item.step.kind)).toEqual(['explain', 'choice', 'sort', 'choice', 'type', 'fix']);
+    expect(plan.map((item) => item.step.kind)).toEqual(['explain', 'choice', 'sort', 'choice', 'type', 'fix', 'explain', 'sort', 'cloze', 'choice', 'proofread']);
     const explain = plan[0]!.step;
     expect(explain.kind === 'explain' && explain.panels.every((panel) => !panel.quiz)).toBe(true);
     expect(plan[1]!.step).toMatchObject({ kind: 'choice', prompt: 'Welke is goed gespeld?', answer: 'klein' });

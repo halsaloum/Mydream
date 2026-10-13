@@ -1,12 +1,12 @@
 'use client';
 
-import { ArrowRight, BookOpen, Check, X } from 'lucide-react';
+import { ArrowRight, BookOpen, Check, ListChecks, X } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import type { Route } from 'next';
 import Link from 'next/link';
 import { useEffect, useRef, useState, type MouseEvent, type ReactNode } from 'react';
 import type { Accent } from '@/content/accent';
-import type { Domain, Layer, Stage, Step } from '@/content/schema';
+import type { Domain, Layer, LessonGuidance, Stage, Step } from '@/content/schema';
 import { evaluate, expectedAnswer, isComplete, isPanelReady } from '@/engine/grade';
 import { extraFeedback, extraProgress, isExtraKind, stepMode, type ExtraResponse } from '@/engine/kinds';
 import type { Response } from '@/engine/responses';
@@ -21,6 +21,7 @@ import { play } from '@/lib/sound';
 import { gotoPanel } from './explain/explain-step';
 import { FinishScreen, type FinishAction } from './finish-screen';
 import { LayerTag, RetryBadge, ReviewSource } from './layer-tag';
+import { LessonApproachSheet, LessonIntroduction } from './lesson-guidance';
 import { lessonRules, RuleSheet } from './rule-sheet';
 import { StepView } from './step-view';
 import { Kbd } from './steps/shared';
@@ -37,6 +38,7 @@ export type PlayerMeta = {
   finish: { title: string; context?: string; primary: FinishAction; secondary?: FinishAction; learned: string[]; again?: boolean };
   /** Niveau en vakgebied, getoond bij de eerste stap. */
   tag?: { layer: Layer; layerIndex: number; domain: Domain; stage?: Stage | undefined; icon?: string | undefined };
+  guidance?: LessonGuidance;
 };
 
 const PRAISE = ['Precies!', 'Klopt!', 'Mooi zo!', 'Helemaal goed!'];
@@ -68,7 +70,7 @@ function waitingHint(step: Step, response: Response): string {
     case 'sort':
       return 'Sorteer alle kaartjes';
     case 'write':
-      return 'Haal alle taakeisen';
+      return step.rubric ? 'Vergelijk en controleer je tekst' : 'Controleer de taakeisen van je tekst';
     case 'cloze':
     case 'passage':
       return extraProgress(step, response as ExtraResponse) ?? 'Typ je antwoord';
@@ -94,6 +96,8 @@ export function LessonPlayer({ controller, meta }: { controller: PlayerControlle
   const primaryRef = useRef<HTMLButtonElement>(null);
   const ruleOpener = useRef<HTMLElement | null>(null);
   const [rulesOpen, setRulesOpen] = useState(false);
+  const approachOpener = useRef<HTMLElement | null>(null);
+  const [approachOpen, setApproachOpen] = useState(false);
 
   const key = session ? currentKey(session) : undefined;
   const item = key ? lookup(key) : undefined;
@@ -157,7 +161,7 @@ export function LessonPlayer({ controller, meta }: { controller: PlayerControlle
     } else if (mode === 'teach') {
       primary = { label: 'Begrepen', enabled: true, variant: 'accent', run: advance };
     } else if (mode === 'graded') {
-      primary = { label: 'Controleer', enabled: isComplete(item.step, response), variant: 'accent', run: check };
+      primary = { label: item.step.kind === 'write' ? 'Rond schrijfopdracht af' : 'Controleer', enabled: isComplete(item.step, response), variant: 'accent', run: check };
     }
   }
 
@@ -188,6 +192,12 @@ export function LessonPlayer({ controller, meta }: { controller: PlayerControlle
     setRulesOpen(true);
   };
 
+  const openApproach = (event: MouseEvent<HTMLElement>) => {
+    approachOpener.current = event.currentTarget;
+    play('tap');
+    setApproachOpen(true);
+  };
+
   const ruleLessonId = item?.lessonId ?? null;
   const hasRules = meta.mode !== 'demo' && ruleLessonId !== null && lessonRules(ruleLessonId) !== null;
   const teaching = item ? stepMode(item.step) === 'teach' : false;
@@ -206,6 +216,7 @@ export function LessonPlayer({ controller, meta }: { controller: PlayerControlle
             context={meta.finish.context}
             summary={summary}
             learned={meta.finish.learned}
+            guidance={meta.guidance}
             celebrate={firstPhase !== null && firstPhase !== 'done'}
             primary={meta.finish.primary}
             secondary={meta.finish.secondary}
@@ -245,9 +256,11 @@ export function LessonPlayer({ controller, meta }: { controller: PlayerControlle
         progress={sessionProgress(session)}
         counter={`${Math.min(pos + 1, session.queue.length)} / ${session.queue.length}`}
         rules={hasRules && !teaching ? openRules : undefined}
+        approach={meta.guidance ? openApproach : undefined}
       />
 
       <main id="inhoud" className="relative mx-auto w-full max-w-3xl flex-1 px-3 pt-5 pb-10 sm:px-gutter sm:pt-9">
+        {pos === 0 && meta.guidance && <LessonIntroduction guidance={meta.guidance} />}
         <AnimatePresence mode="popLayout" initial={false}>
           <motion.article
             key={pos}
@@ -323,11 +336,21 @@ export function LessonPlayer({ controller, meta }: { controller: PlayerControlle
       {ruleLessonId && (
         <RuleSheet lessonId={ruleLessonId} open={rulesOpen} onOpenChange={setRulesOpen} finalFocus={ruleOpener} />
       )}
+      {meta.guidance && (
+        <LessonApproachSheet
+          guidance={meta.guidance}
+          title={meta.title}
+          accent={meta.accent}
+          open={approachOpen}
+          onOpenChange={setApproachOpen}
+          finalFocus={approachOpener}
+        />
+      )}
     </div>
   );
 }
 
-function PlayerHeader({ meta, progress, counter, rules }: { meta: PlayerMeta; progress: number; counter: string | null; rules?: (event: MouseEvent<HTMLElement>) => void }) {
+function PlayerHeader({ meta, progress, counter, rules, approach }: { meta: PlayerMeta; progress: number; counter: string | null; rules?: (event: MouseEvent<HTMLElement>) => void; approach?: (event: MouseEvent<HTMLElement>) => void }) {
   return (
     <header className="sticky top-0 z-30 border-b border-line/80 bg-canvas/85 shadow-[0_8px_24px_-20px_rgb(60_40_10/0.35)] backdrop-blur-xl backdrop-saturate-150 supports-[backdrop-filter]:bg-canvas/70">
       <div className="mx-auto flex w-full max-w-3xl items-center gap-3 px-3 py-3 sm:gap-4 sm:px-gutter">
@@ -348,6 +371,12 @@ function PlayerHeader({ meta, progress, counter, rules }: { meta: PlayerMeta; pr
           </div>
           <ProgressBar className="mt-2" value={progress * 100} label="Voortgang in deze les" valueText={counter ? `Stap ${counter.replace(' / ', ' van ')}` : undefined} />
         </div>
+        {approach && (
+          <Button variant="secondary" size="sm" onClick={approach} className="px-3" aria-label="Aanpak voor deze les">
+            <ListChecks aria-hidden className="size-[1.1rem]" strokeWidth={2.5} />
+            <span>Aanpak</span>
+          </Button>
+        )}
         {rules && (
           <Button variant="secondary" size="sm" onClick={rules} className="px-3">
             <BookOpen aria-hidden className="size-[1.1rem]" strokeWidth={2.5} />
@@ -364,7 +393,7 @@ function WaitingHint({ step, response, enabled, graded }: { step: Step; response
   if (graded && enabled) {
     return (
       <p className="hidden items-center gap-1.5 text-small font-semibold text-ink-muted sm:flex">
-        <Kbd>Enter</Kbd> om te controleren
+        <Kbd>Enter</Kbd> {step.kind === 'write' ? 'om af te ronden' : 'om te controleren'}
       </p>
     );
   }
@@ -377,7 +406,10 @@ function Feedback({ step, response, correct, pos }: { step: Step; response: Resp
   let detail: ReactNode = null;
   let why: string | undefined;
 
-  if (isExtraKind(step.kind)) {
+  if (step.kind === 'write') {
+    title = 'Schrijfopdracht afgerond';
+    why = step.done?.text ?? step.why;
+  } else if (isExtraKind(step.kind)) {
     const result = extraFeedback(step, response as ExtraResponse, evaluate(step, response));
     title = result.title;
     why = result.body;
@@ -415,7 +447,7 @@ function Feedback({ step, response, correct, pos }: { step: Step; response: Resp
       </span>
       <div className={cn('min-w-0', correct ? 'text-green-ink' : 'text-red-ink')}>
         <p className="font-display text-title-sm font-extrabold">
-          <span className="sr-only">{correct ? 'Goed. ' : 'Fout. '}</span>
+          {step.kind !== 'write' && <span className="sr-only">{correct ? 'Goed. ' : 'Fout. '}</span>}
           {title}
         </p>
         {detail}

@@ -515,10 +515,10 @@ export const DEEL_LESSONS: LessonInput[] = [
       {
         kind: 'explain',
         id: 'uitleg',
-        title: 'Het hoofd staat rechts',
+        title: 'Het hoofd staat meestal rechts',
         panels: [
           {
-            text: 'Goed nieuws voor iedereen die worstelt met *de* en *het*: in een samengesteld woord beslist het laatste deel. *Het mes*, dus *het zakmes*. *De zak*, maar dat telt niet. Dat laatste deel heet het *hoofd*. Het bepaalt de woordsoort, het lidwoord en de betekenis: een zakmes is een mes.',
+            text: 'Een handig uitgangspunt voor *de* en *het*: in gewone Nederlandse samenstellingen is het laatste deel meestal het hoofd. *Het mes*, dus *het zakmes*. *De zak*, maar dat telt niet. Dat laatste deel heet het *hoofd*. Het bepaalt de woordsoort, het lidwoord en de betekenis: een zakmes is een mes.',
             lab: {
               label: 'Tik een woord',
               chips: [
@@ -528,7 +528,7 @@ export const DEEL_LESSONS: LessonInput[] = [
                 { k: 'nummerbord', out: 'het nummerbord', note: 'Hoofd: het bord.' },
               ],
             },
-            rule: 'De rechterhoofdregel: in een Nederlands woord is het meest rechtse deel het hoofd.',
+            rule: 'De rechterhoofdregel beschrijft een sterk patroon: het hoofd staat in gewone Nederlandse samenstellingen meestal rechts. Er zijn uitzonderingen, zoals het kabinet-Rutte.',
           },
           {
             text: 'Ook achtervoegsels zijn hoofden. *-heid* maakt altijd een *de*-woord, *-je* altijd een *het*-woord, *-baar* altijd een bijvoeglijk naamwoord. Daarom is het *de man* maar *het mannetje*, en *het geluk* maar *de gelukzaligheid*.',
@@ -699,7 +699,7 @@ export const DEEL_LESSONS: LessonInput[] = [
           { t: 'aardappel', b: 1 },
           { t: 'zakmes', b: 1 },
         ],
-        why: 'Spaans, Italiaans, Frans en het type kabinet-Rutte: hoofd links. Gewone Nederlandse samenstellingen: hoofd rechts. Kijk naar wat het ding is: een aardappel is een appel, een pomme de terre een pomme.',
+        why: 'In deze Romaanse voorbeelden en in kabinet-Rutte staat het grammaticale hoofd links; in de Nederlandse voorbeelden rechts. Een zakmes is een mes. Aardappel en pomme de terre hebben een historische, overdrachtelijke betekenis: een aardappel is geen appel, maar de grammaticale bouw is nog herkenbaar.',
       },
       {
         kind: 'type',
@@ -1000,7 +1000,7 @@ export const DEEL_LESSONS: LessonInput[] = [
                 { k: 'HOOGleraar', out: 'samenstelling', note: 'Een professor, ook als hij klein is.' },
               ],
             },
-            rule: 'Samenstelling: aan elkaar, klemtoon meestal vooraan, het hoofd rechts.',
+            rule: 'Een gewone samenstelling schrijf je aan elkaar; de klemtoon staat vaak vooraan en het hoofd meestal rechts. Er zijn uitzonderingen op die patronen.',
           },
           {
             text: 'Niet elke samenstelling heeft haar hoofd binnenin. Een *dikkop* is geen kop maar een kikkervisje; een *roodborstje* is een vogel. Dat heet *exocentrisch*: het hoofd zit buiten het woord. En in *zoetzuur* of *zangeres-actrice* zijn beide delen even belangrijk: *coördinatief*.',
@@ -1249,16 +1249,16 @@ export const DEEL_LESSONS: LessonInput[] = [
         title: 'Tussenklanken',
         panels: [
           {
-            text: 'Hoeveel pannen heb je nodig voor een pannenkoek? Eén. Toch schrijf je *pannenkoek*. En een *ruggengraat* zit in één rug. Het stukje tussen de twee delen heet een *tussenklank* of *bindmorfeem*. Het ziet eruit als een meervoud, maar het betekent niets.',
+            text: 'Hoeveel pannen heb je nodig voor een pannenkoek? Eén. Toch schrijf je *pannenkoek*. En een *ruggengraat* zit in één rug. Het stukje tussen de twee delen heet een *tussenklank* of *bindmorfeem*. Het lijkt op een meervoud, maar drukt niet automatisch meerdere exemplaren uit.',
             build: { before: 'Een kast voor boeken is een…', stem: 'boek', endings: ['kast', 'ekast', 'enkast', 'skast'], answer: 'enkast', note: 'boekenkast: boek heeft alleen een meervoud op -en.' },
-            rule: 'Schrijf -en- als het eerste deel een zelfstandig naamwoord is met alleen een meervoud op -en: pannenkoek, boekenkast, ruggengraat.',
+            rule: 'Hoor je een doffe e tussen de delen? Schrijf meestal -en- als het eerste deel een zelfstandig naamwoord is met alleen een meervoud op -en. Voeg niet overal een tussenklank toe: bloem + pot blijft bloempot. Controleer ook de uitzonderingen.',
           },
           {
-            text: 'De uitzonderingen: schrijf *-e-* zonder n als het eerste deel uniek is (*zonnebloem*, *koninginnedag*) of geen meervoud heeft (*rijstebrij*). En de tussen-s? Die is eenvoudiger: hoor je hem, schrijf je hem. *Dorpsplein*, *schaapskooi*, maar *stadhuis*.',
+            text: 'Niet elk meervoud geeft -en-. Bij een eerste deel dat op een onbeklemtoonde e eindigt en zowel een meervoud op -en als op -s heeft, schrijf je -e-: groente → groenten/groentes → groentesoep. Ook zonder gewoon meervoud schrijf je -e-: rijstebrij. Er zijn uitzonderingen, zoals zonnebloem en koninginnedag: het eerste deel is hier als enig exemplaar bedoeld. Verder bestaan vaste vormen, zoals ruggespraak. Raadpleeg bij twijfel de Woordenlijst. Voor de tussen-s helpt de uitspraak: dorpsplein, schaapskooi, maar stadhuis.',
             lab: {
               label: 'Tik een woord',
               chips: [
-                { k: 'zonnebloem', out: 'zon + e + bloem', note: 'Er is maar één zon: geen n.' },
+                { k: 'zonnebloem', out: 'zon + e + bloem', note: 'Zon is in deze samenstelling als enig exemplaar bedoeld: dit is een uitzondering. Het bestaan van andere sterren verandert die spelling niet.' },
                 { k: 'rijstebrij', out: 'rijst + e + brij', note: 'Rijst heeft geen meervoud: geen n.' },
                 { k: 'dorpsplein', out: 'dorp + s + plein', note: 'Je hoort een s, dus je schrijft hem.' },
                 { k: 'stadhuis', out: 'stad + huis', note: 'Geen s te horen: geen s.' },
@@ -1266,21 +1266,21 @@ export const DEEL_LESSONS: LessonInput[] = [
             },
           },
           {
-            text: 'Waar komt de tussenklank vandaan? Uit oude naamvallen. In het Middelnederlands eindigden veel zelfstandige naamwoorden in de tweede naamval (de genitief) op *-en*, ook in het enkelvoud. Een pannenkoek was dus een koek van de pan. De naamval verdween, het stukje bleef. Daarom heeft het geen meervoudsbetekenis meer.',
+            text: 'Waar komt de tussenklank vandaan? Uit oude naamvallen. In het Middelnederlands eindigden veel zelfstandige naamwoorden in de tweede naamval (de genitief) op *-en*, ook in het enkelvoud. Een pannenkoek was dus een koek van de pan. De naamval verdween, het stukje bleef. Zo kan een tussenklank blijven staan zonder dat meerdere exemplaren bedoeld zijn. Ook meervoudsvormen en analogie met andere woorden hebben bij de ontwikkeling een rol gespeeld.',
             deep: {
               q: 'Hoe kiezen sprekers bij een nieuw woord?',
-              a: 'Andrea Krott, Harald Baayen en Robert Schreuder (2001) lieten zien dat sprekers kijken naar de *familie* van het eerste deel. *Dorp* krijgt bijna altijd een s (*dorpsplein*, *dorpshuis*, *dorpsstraat*), dus een nieuw woord met *dorp* ook. De keuze is dus geen regel in je hoofd, maar *analogie* met woorden die je al kent.',
+              a: 'Andrea Krott, Harald Baayen en Robert Schreuder (2001) lieten zien dat sprekers kijken naar de *familie* van het eerste deel. *Dorp* krijgt bijna altijd een s (*dorpsplein*, *dorpshuis*, *dorpsstraat*), dus een nieuw woord met *dorp* ook. *Analogie* met woorden die je al kent speelt dus een belangrijke rol bij de keuze; de officiële schrijfwijze controleer je met de spellingregels en de Woordenlijst.',
             },
             quiz: {
               q: 'Waarom schrijf je ‘zonnebloem’ zonder n?',
-              options: ['Er is maar één zon', 'Je hoort geen n', 'Zon heeft een meervoud op -s'],
-              answer: 'Er is maar één zon',
-              why: 'Een uniek eerste deel krijgt -e-: zonnebloem, koninginnedag.',
+              options: ['Het eerste deel is hier als enig exemplaar bedoeld', 'Je hoort geen n', 'Zon heeft een meervoud op -s'],
+              answer: 'Het eerste deel is hier als enig exemplaar bedoeld',
+              why: 'Zonnebloem valt onder de uitzondering voor een eerste deel dat hier als enig exemplaar bedoeld is, net als koninginnedag. Alleen tellen hoeveel zonnen er bestaan is geen algemene spellingregel.',
             },
           },
           {
-            text: 'Nu alles bij elkaar, met echte voorwerpen. Loop drie vragen af, in deze volgorde. Hoor je iets tussen de delen? Zo niet, dan schrijf je niets, ook als het eerste deel een meervoud op *-en* heeft: *bloempot*. Hoor je een *s*? Dan schrijf je hem: *vissersboot*. Hoor je een sjwa, de doffe *e*? Dan beslist het meervoud: alleen *-en* geeft *-en-* (*boekenkast*), een uniek eerste deel geeft *-e-* (*zonnebloem*). En kijk naar de volgorde: het laatste deel is de baas. Een *koekenpan* is een pan, een *pannenkoek* is een koek.',
-            rule: 'Eerst je oor (hoor je iets, en is het een s?), dan het meervoud. En het laatste deel bepaalt wat het woord is.',
+            text: 'Nu alles bij elkaar, met echte voorwerpen. Loop drie vragen af, in deze volgorde. Hoor je iets tussen de delen? Zo niet, dan schrijf je niets, ook als het eerste deel een meervoud op *-en* heeft: *bloempot*. Hoor je een *s*? Dan schrijf je hem: *vissersboot*. Hoor je een sjwa, de doffe *e*? Dan helpt de meervoudsregel: alleen *-en* geeft meestal *-en-* (*boekenkast*). Controleer uitzonderingen: *zonnebloem* heeft *-e-*; *groentesoep* ook, omdat *groente* zowel *groenten* als *groentes* heeft. En kijk naar de volgorde: het laatste deel is de baas. Een *koekenpan* is een pan, een *pannenkoek* is een koek.',
+            rule: 'Eerst de bestaande woordvorm en de uitspraak, dan het meervoud en de uitzonderingen. De meervoudsregel voegt niet zelf een tussenklank toe.',
             compound: {
               q: 'Bouw de samenstelling en kies de spelling',
               rounds: [
@@ -1308,7 +1308,7 @@ export const DEEL_LESSONS: LessonInput[] = [
                   result: 'zonnebloem',
                   options: ['zonnenbloem', 'zonnebloem', 'zonbloem', 'zonsbloem'],
                   answer: 'zonnebloem',
-                  note: 'zon + e + bloem: je hoort een sjwa, maar er is maar één zon. Een uniek eerste deel krijgt -e- zonder n.',
+                  note: 'zon + e + bloem: een vaste uitzondering op de hoofdregel. Zon is hier als enig exemplaar bedoeld, daarom -e- zonder n.',
                   swap: 'Andersom zou het een soort zon zijn. Je zoekt een bloem, dus bloem komt achteraan.',
                 },
                 {
@@ -1352,7 +1352,7 @@ export const DEEL_LESSONS: LessonInput[] = [
           { t: 'boekenkast', b: 0 },
           { t: 'koninginnedag', b: 1 },
         ],
-        why: '-en- bij een meervoud op -en, -e- bij uniek (zon, koningin) of zonder meervoud (rijst), -s- als je hem hoort.',
+        why: 'Bij een doffe e geeft een zelfstandig naamwoord met alleen een meervoud op -en meestal -en-. Uitzonderingen zijn hier zonnebloem en koninginnedag; rijst heeft geen gewoon meervoud. Bij een hoorbare s schrijf je -s-. Voeg zonder aanleiding geen tussenklank toe.',
       },
       {
         kind: 'type',
@@ -1386,7 +1386,7 @@ export const DEEL_LESSONS: LessonInput[] = [
               answer: 'enbloem',
               note: 'paardenbloem: paard heeft het meervoud paarden, dus -en-. Al heeft de bloem niets met paarden te maken.',
             },
-            rule: 'De tussen-n volgt het meervoud, niet de uitspraak: je hoort hem vaak niet.',
+            rule: 'Of je in een aanwezige tussenklank -e- of -en- schrijft, hangt af van de meervoudsregel en uitzonderingen. Alleen luisteren naar een n is onvoldoende.',
           },
           {
             text: 'Bij de tussen-s werkt de familie ook via het achtervoegsel van het eerste deel. Eindigt het op *-ing*, *-heid*, *-schap* of *-teit*, dan volgt bijna altijd een *s*: *regeringsleider*, *vrijheidsstrijd*, *gemeenschapshuis*, *universiteitsgebouw*. Sprekers hoeven die woorden niet te kennen: het achtervoegsel zegt het al.',
@@ -1471,7 +1471,7 @@ export const DEEL_LESSONS: LessonInput[] = [
         prompt: 'Klopt deze zin?',
         cards: [
           { t: 'Sinds 2005 schrijf je paardenbloem.', ok: true, why: 'De uitzondering voor plantennamen verdween.' },
-          { t: 'Je schrijft de tussen-n alleen als je hem hoort.', ok: false, fix: 'De tussen-n volgt het meervoud, niet de uitspraak', why: 'Veel sprekers zeggen de n niet, en toch schrijf je pannenkoek.' },
+          { t: 'Je schrijft de tussen-n alleen als je hem hoort.', ok: false, fix: 'Gebruik de meervoudsregel en de uitzonderingen; alleen luisteren is onvoldoende', why: 'Veel sprekers zeggen de n niet, en toch schrijf je pannenkoek.' },
           { t: 'Na -ing volgt in een samenstelling bijna altijd een s.', ok: true, why: 'regeringsleider, verzekeringsmaatschappij. Er zijn uitzonderingen, zoals woningnood: bijna altijd, niet altijd.' },
           { t: 'Het Duits heeft geen tussenklanken.', ok: false, fix: 'Het Duits heeft Fugenelemente', why: 'Kindergarten, Regierungschef.' },
           { t: 'Lezers zien in boekenkast vaak een meervoud.', ok: true, why: 'Dat vonden Schreuder en collega’s (1998).' },
@@ -1772,13 +1772,13 @@ export const DEEL_LESSONS: LessonInput[] = [
             },
           },
           {
-            text: 'Leenwoorden nemen hun eigen allomorfen mee. *Museum* wordt *musea*, *historicus* wordt *historici*, *stabiel* wordt *stabil-* in *stabiliteit*. Wat de allomorf kiest, kan klank zijn (*-pje* na m), het woord zelf (*kinderen*) of de herkomst (*musea*).',
+            text: 'Leenwoorden nemen hun eigen allomorfen mee. *Museum* wordt *musea*, *historicus* wordt *historici*, *stabiel* wordt *stabil-* in *stabiliteit*. Wat de allomorf kiest, kan klank zijn (*-pje* na een lange klinker plus m in *boompje*), het woord zelf (*kinderen*) of de herkomst (*musea*).',
             rule: 'Allomorfie kan bepaald worden door klank (fonologisch), door het woord (lexicaal) of door de herkomst van het woord.',
             quiz: {
               q: 'Wat bepaalt de vorm -pje in boompje?',
-              options: ['De klank: na m volgt -pje', 'Het woord zelf: boom moet je uit je hoofd leren', 'De herkomst: boom komt uit het Latijn'],
-              answer: 'De klank: na m volgt -pje',
-              why: 'Fonologisch bepaalde allomorfie: na een m volgt -pje, zoals in boompje en bezempje. Zie De lettergreep, les g10.',
+              options: ['De klank: na de lange oo plus m volgt -pje', 'Het woord zelf: boom moet je uit je hoofd leren', 'De herkomst: boom komt uit het Latijn'],
+              answer: 'De klank: na de lange oo plus m volgt -pje',
+              why: 'De uitgang hangt af van de klanken én de klemtoon: boompje en bezempje hebben -pje, maar kom wordt kommetje. Na m komt dus niet altijd -pje. Zie De lettergreep, les g10.',
             },
             deep: {
               q: 'Waarom dan hond met een d, maar huis zonder z?',

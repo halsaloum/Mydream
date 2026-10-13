@@ -213,12 +213,14 @@ describe('groep B extra oefeningen', () => {
     // (false) geschud wordt, en zet hem in de lijst.
     const classified = highlightSteps.map(({ lesson, step }) => `${lesson}/${step.id}:${isWordList(step)}`);
     expect(classified.toSorted()).toEqual([
+      'd1/toepassen-basis-uitgangen:false',
       'd11/er-rollen:false',
       'd18/eindbaas:false',
       'd21/basis:true',
       'd23/drie-stiften:true',
       'd24/nominalisaties:false',
       'd6/lagen:false',
+      'd6/toepassen-opbouw-fietsers:false',
       'd8/binnenin:true',
       'k30/kleuren:true',
       'p4/voor-na:false',

@@ -20,6 +20,8 @@ import { LES_W25 } from './nieuw/w25';
 import { LES_W26 } from './nieuw/w26';
 import { withResearch } from './onderzoek';
 import { GREEP_PRAKTIJK, KLANK_PRAKTIJK, LETTER_PRAKTIJK } from './praktijk';
+import { SCHRIJFLESSEN } from './schrijven';
+import { ARGUMENTATIE_LESSONS } from './argumentatie';
 
 /**
  * Lessen die later bij de oorspronkelijke niveaus zijn geschreven, per niveau-id. Ze komen achter
@@ -33,6 +35,9 @@ export const EXTRA_LESSONS: Readonly<Record<string, readonly LessonInput[]>> = {
   deel: withResearch([...DEEL_LESSONS, ...DEEL_EXTRA_LESSONS, ...DEEL_3D_LESSONS, LES_D21, LES_D22, LES_D23, ...DEEL_MASTER_LESSONS, LES_D24]),
   woord: withResearch([...WOORD_LESSONS, ...WOORD_EXTRA_LESSONS, LES_W23, LES_W24, ...WOORD_MASTER_LESSONS, ...WOORD_EXTRA_MASTER_LESSONS, LES_W25, LES_W26]),
   groep: [...GROEP_LESSONS, ...GROEP_BOUW_LESSONS, ...GROEP_EXTRA_LESSONS, ...GROEP_MASTER_LESSONS, ...GROEP_THEORIE_LESSONS],
+  zin: SCHRIJFLESSEN.zin ?? [],
+  samen: SCHRIJFLESSEN.samen ?? [],
+  alinea: [...(SCHRIJFLESSEN.alinea ?? []), ...ARGUMENTATIE_LESSONS],
 };
 
 /** Voegt de extra lessen toe aan hun niveau. Een onbekend niveau is een fout in de inhoud. */

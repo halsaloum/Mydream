@@ -16,6 +16,7 @@ import { HeroScene } from './hero-scene';
 import { LayerMachine } from './layer-machine';
 import { RecentProgress } from './recent-progress';
 import { WordsCard } from './words-card';
+import { LearningRoute } from './learning-route';
 
 function TodayGoal({ goal, activeMs, streak }: { goal: number; activeMs: number; streak: number }) {
   const done = minutes(activeMs);
@@ -66,10 +67,10 @@ export function HomeView() {
         <div>
           <p className="mb-3 text-caption font-bold tracking-[0.12em] text-green-ink uppercase">Kleine stappen. Steeds beter schrijven.</p>
           <h1 className="font-serif text-[clamp(2.5rem,1.7rem+2.6vw,3.75rem)] leading-[1.08] font-medium tracking-[-0.025em] text-ink">
-            Van letter <em className="text-ink-muted">tot alinea</em>
+            Van eerste zin <em className="text-ink-muted">tot sterk betoog</em>
           </h1>
           <p className="mt-4 max-w-lg text-body leading-relaxed text-ink-soft">
-            Letters worden woorden. Woorden worden jouw verhaal. Leer samen met Pim schrijven, op jouw tempo.
+            Leer vanaf de basis helder schrijven, argumenten onderbouwen en drogredenen doorzien. Stap voor stap, met uitleg, oefening en je eigen teksten.
           </p>
           {profile.goalMinutes && <TodayGoal goal={profile.goalMinutes} activeMs={today?.activeMs ?? 0} streak={streakDays(progress.activity)} />}
         </div>
@@ -79,6 +80,8 @@ export function HomeView() {
           <WordsCard />
         </div>
       </div>
+
+      <LearningRoute progress={progress} />
 
       <LayerMachine
         selected={selectedLayer ?? defaultLayer}

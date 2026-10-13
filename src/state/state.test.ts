@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import { lessonEntries } from '@/content/catalog';
+import { lessonEntries, learningPhases } from '@/content/catalog';
 import { planFor } from '@/lib/plans';
 import { addDays, dayKey } from '@/lib/dates';
 import { EMPTY_PROGRESS, PROGRESS_KEY, useProgress } from './progress';
@@ -65,7 +65,8 @@ describe('opslag', () => {
 
 describe('sessies en voortgang', () => {
   it('schrijft een afgeronde les één keer weg, met fouten als oefenpunt', () => {
-    const plan = planFor('l4')!;
+    // Vaste korte fixture voor eenmalig opslaan; de hele uitgebreide les wordt in de browser doorlopen.
+    const plan = planFor('l4')!.slice(0, 2);
     expect(plan.map((item) => item.step.kind)).toEqual(['explain', 'choice']);
     const { start, dispatch } = useSessions.getState();
     start('l4', 'lesson', plan);
@@ -122,6 +123,11 @@ describe('les veranderd tijdens een update', () => {
 });
 
 describe('aanbevelingen', () => {
+  it('begeleidt na basis en schrijven naar argumentatie vóór de keuzeverdieping', () => {
+    const completed = learningPhases.filter((phase) => ['taalbasis', 'schrijven'].includes(phase.id)).flatMap((phase) => phase.entries);
+    const lessons = Object.fromEntries(completed.map((entry) => [entry.lesson.id, { attempts: 1, bestAccuracy: 80, lastAccuracy: 80, firstCompletedAt: 'x', lastCompletedAt: 'x' }]));
+    expect(recommendedLesson({ ...EMPTY_PROGRESS, lessons }, DEFAULT_SETTINGS.profile)?.lesson.id).toBe('a20');
+  });
   it('"Ik ken de basis al" kiest een later startpunt zonder voortgang te verzinnen', () => {
     const profile = { ...DEFAULT_SETTINGS.profile, start: 'basis' as const };
     expect(recommendedLesson(EMPTY_PROGRESS, profile)?.lesson.id).toBe('g1');
