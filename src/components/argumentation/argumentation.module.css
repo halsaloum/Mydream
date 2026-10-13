@@ -118,7 +118,24 @@
 .learningMain { width: 100%; }
 .player { --color-blue-ink: #39781b; --color-blue-soft: #eff8e7; }
 .player > header { border-bottom: none; }
-.player .learningCard { border: 1px solid #e0e5d9; box-shadow: none; background: #fff; padding: clamp(20px, 3vw, 32px); }
+.player .learningCard { border: 1px solid #e0e5d9; box-shadow: 0 4px 0 #e8ecdf, 0 18px 48px #263c1706; background: #fff; padding: clamp(20px, 3vw, 36px); border-radius: 28px; }
+.player .learningMain h1 { text-wrap: balance; }
+.player .learningCard p { text-wrap: pretty; }
+.player .learningCard details { background: #fff; border-radius: 16px; transition: border-color 180ms, box-shadow 180ms; }
+.player .learningCard details[open] { border-color: #b7cba0; box-shadow: 0 4px 18px #263c1708; }
+.player .learningCard summary { list-style-position: inside; }
+.player .learningCard fieldset > div:has(input[type='radio']) { background: #fff; border: 2px solid #e2e7db; box-shadow: 0 3px 0 #e2e7db; }
+.player .learningCard fieldset > div:has(input:checked) { border-color: #91b862; box-shadow: 0 3px 0 #91b862; }
+.player .learningCard label:has(input:checked) { background: #f3f9ec; }
+.player .learningCard label:has(input:checked) > span:first-of-type { color: #fff; background: #497b29; border-color: #497b29; }
+.player .learningCard label:has(input:focus-visible) { outline: 3px solid #497b29; outline-offset: 4px; }
+.player .learningCard fieldset > div:has(input[type='radio']):active { transform: translateY(2px); box-shadow: 0 1px 0 #d1dcc5; }
+.dockHint { display: flex; align-items: center; gap: 8px; font-size: 12px; line-height: 1.5; color: #68715f; }
+.dockHint[data-ready='true'] { color: #39781b; font-weight: 700; }
+.actionDock[data-ready='true'] { border-top-color: #bfd69d; background: #f8fcf4f5; }
+@media (max-width: 640px) { .dockHint { width: 100%; order: -1; justify-content: center; font-size: 11px; } }
+@media (prefers-reduced-motion: reduce) { .player .learningCard fieldset > div:has(input[type='radio']):hover, .player .learningCard fieldset > div:has(input[type='radio']):active { transform: none; } }
+:global([data-motion='calm']) .player .learningCard fieldset > div:has(input[type='radio']) { transform: none; }
 .player .learningCard :global([data-theory-page]) { background: #fff; }
 .player .learningCard :global([data-theory-page]) > div { background-color: #fff; }
 .player .actionDock > div { max-width: 900px; }
