@@ -9,6 +9,7 @@ import { LESSONS } from './legacy/build';
 import { EXTRA_LESSONS, withExtraLessons } from './packs';
 import { panelWidgets } from '../engine/plan';
 import { CoursePackSchema, PanelSchema, STAGES, StepSchema, type CoursePackInput } from './schema';
+import { canonicalLayerId } from './sentence-layer';
 
 const SCHEMA_FILE = path.resolve(import.meta.dirname, '../../content/schema/course-pack.schema.json');
 
@@ -26,8 +27,8 @@ const EXTRA_IDS = new Set(Object.values(EXTRA_LESSONS).flatMap((lessons) => less
 const legacyEntries = lessonEntries.filter((entry) => !EXTRA_IDS.has(entry.lesson.id));
 
 describe('bestaande lesinhoud', () => {
-  it('voldoet aan het contract: 9 niveaus, 138 lessen, 7 vakgebieden waarvan 4 perspectieven', () => {
-    expect(course.layers).toHaveLength(9);
+  it('voldoet aan het contract: 7 niveaus, 138 lessen, 7 vakgebieden waarvan 4 perspectieven', () => {
+    expect(course.layers).toHaveLength(7);
     expect(legacyEntries).toHaveLength(29);
     expect(EXTRA_IDS.size).toBe(109);
     expect(lessonEntries).toHaveLength(138);
@@ -74,7 +75,9 @@ describe('bestaande lesinhoud', () => {
 describe('nieuwe lessen (packs)', () => {
   it('staan achter de bestaande lessen van hun niveau', () => {
     for (const [layerId, extra] of Object.entries(EXTRA_LESSONS)) {
-      const ids = course.layers.find((layer) => layer.id === layerId)?.lessons.map((lesson) => lesson.id) ?? [];
+      const original = adaptLegacyCourse().layers.find((layer) => layer.id === layerId)!;
+      const originalIds = new Set([...original.lessons, ...extra].map((lesson) => lesson.id));
+      const ids = course.layers.find((layer) => layer.id === canonicalLayerId(layerId))?.lessons.filter((lesson) => originalIds.has(lesson.id)).map((lesson) => lesson.id) ?? [];
       expect(ids.slice(-extra.length)).toEqual(extra.map((lesson) => lesson.id));
     }
   });

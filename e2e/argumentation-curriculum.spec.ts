@@ -89,7 +89,7 @@ test('argumenteren vanaf nul: van aanpak en interactieve uitleg tot een eigen on
 
 test('de volledige argumentatielijn en eindcasus zijn vindbaar vanuit leren en de bibliotheek', async ({ page }) => {
   await page.goto('/');
-  await page.getByRole('tab', { name: /^Niveau 9: De alinea/ }).click();
+  await page.getByRole('tab', { name: /^Niveau 7: De alinea/ }).click();
   await openStages(page, ['Regels', 'Bachelor', 'Master']);
   await expect(page.getByRole('link', { name: /Van mening naar argument/ })).toBeVisible();
   await expect(page.getByRole('link', { name: /Oorzaak of alleen samenhang/ })).toBeVisible();

@@ -2,7 +2,7 @@
 
 import { Collapsible } from '@base-ui/react/collapsible';
 import { Tabs } from '@base-ui/react/tabs';
-import { ChevronDown, ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react';
+import { ArrowRight, ChevronDown, ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react';
 import { motion, type HTMLMotionProps } from 'motion/react';
 import { useEffect, useState } from 'react';
 import { course, getDomain, lessonEntries, type LessonEntry } from '@/content/catalog';
@@ -12,7 +12,7 @@ import { LayerTower } from './layer-tower';
 import { ToyCanvas } from '@/lib/toy3d/toy-canvas';
 import { LessonRow } from '@/components/lesson/lesson-row';
 import { STAGE_ACCENTS, STAGE_LABELS } from '@/components/lesson/stage-badge';
-import { IconButton } from '@/components/ui/button';
+import { ButtonLink, IconButton } from '@/components/ui/button';
 import { RichText } from '@/components/ui/rich-text';
 import type { SessionState } from '@/engine/session';
 import { cn } from '@/lib/cn';
@@ -278,7 +278,7 @@ export function LayerMachine({ selected, onSelect, progress, sessions, nextId }:
             load={loadTower}
             props={{ layers, selected, ratios: layers.map((item) => layerCompletion(item, progress).ratio) }}
             onTap={(id) => go(Number(id.split(':')[1]))}
-            label="De negen niveaus als toren van blokken, van letter onderaan tot alinea bovenaan."
+            label={`De ${layers.length} niveaus als toren van blokken, van letter onderaan tot alinea bovenaan.`}
             className="-mx-4 h-80 md:mx-0 md:-mt-6 md:h-[24rem]"
             fallback={<LayerTower layers={layers} selected={selected} progress={progress} onSelect={go} className="-my-10 scale-[0.8] md:-mt-8 md:mb-0 md:scale-100" />}
           />
@@ -397,6 +397,11 @@ function LayerDetail({
             ))}
           </ul>
         </div>
+        {layer.id === 'zinnen' && <div className="mt-6 rounded-control border-2 border-blue-line bg-blue-soft p-5">
+          <h4 className="font-display text-lead font-extrabold text-blue-ink">Ontdek de volledige afdeling Zinnen</h4>
+          <p className="mt-2 text-small leading-relaxed text-ink-soft">Bouw, verplaats en herstel zinnen in één leerroute. De woordgroep, enkelvoudige zin en samengestelde zin horen nu bij elkaar.</p>
+          <ButtonLink href="/zinnen" className="mt-4" variant="accent" data-accent="blue">Naar de interactieve lessen<ArrowRight aria-hidden className="size-4" /></ButtonLink>
+        </div>}
       </section>
 
       <div className={cn('stagger grid gap-4', domains.length > 1 && 'md:grid-cols-2')}>

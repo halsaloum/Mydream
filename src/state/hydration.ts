@@ -8,6 +8,7 @@ import { useSettings } from './settings';
 import { checkStorage, requestPersistentStorage, STORAGE_PREFIX } from './storage';
 import { useWordRound, useWords } from './words';
 import { useArgumentation } from './argumentation';
+import { useSentences } from './sentences';
 
 /**
  * De stores worden pas na het eerste renderen uit localStorage geladen (`skipHydration`).
@@ -16,7 +17,7 @@ import { useArgumentation } from './argumentation';
  */
 const useHydration = create<{ hydrated: boolean }>(() => ({ hydrated: false }));
 
-const stores = [useSettings, useProgress, useSessions, useWords, useWordRound, useArgumentation] as const;
+const stores = [useSettings, useProgress, useSessions, useWords, useWordRound, useArgumentation, useSentences] as const;
 
 async function rehydrateAll() {
   if (checkStorage()) requestPersistentStorage();
@@ -27,6 +28,7 @@ async function rehydrateAll() {
   await useWords.persist.rehydrate();
   await useWordRound.persist.rehydrate();
   await useArgumentation.persist.rehydrate();
+  await useSentences.persist.rehydrate();
 }
 
 export function useHydrated(): boolean {

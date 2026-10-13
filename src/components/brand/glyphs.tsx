@@ -32,6 +32,14 @@ const LAYER_PATHS: Record<string, ReactNode> = {
       <circle cx="20" cy="12" r="1.6" fill="currentColor" />
     </>
   ),
+  zinnen: (
+    <>
+      <rect x="2" y="7" width="6" height="9" rx="1.5" />
+      <rect x="10" y="7" width="6" height="9" rx="1.5" />
+      <path d="M8 12h2M16 12h3" />
+      <circle cx="21" cy="12" r="1.4" fill="currentColor" />
+    </>
+  ),
   samen: (
     <>
       <path d="M3 8h8M13 16h8" />

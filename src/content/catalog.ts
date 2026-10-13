@@ -3,6 +3,7 @@ import { adaptLegacyCourse } from './adapters/legacy';
 import { withExtraLessons } from './packs';
 import { withCurriculum } from './curriculum';
 import { createLearningPath } from './learning-path';
+import { canonicalLayerId, withSentenceLayer } from './sentence-layer';
 import { CoursePackSchema, type CoursePack, type Domain, type Layer, type Lesson, type StepKind } from './schema';
 
 /**
@@ -13,7 +14,7 @@ import { CoursePackSchema, type CoursePack, type Domain, type Layer, type Lesson
  * Later: vervang `adaptLegacyCourse()` door een gevalideerde JSON-cursus (zie README, "Lessen aansluiten").
  */
 function loadCourse(): CoursePack {
-  const result = CoursePackSchema.safeParse(withCurriculum(withExtraLessons(adaptLegacyCourse())));
+  const result = CoursePackSchema.safeParse(withSentenceLayer(withCurriculum(withExtraLessons(adaptLegacyCourse()))));
   if (!result.success) {
     throw new Error(`Lesinhoud voldoet niet aan het contract:\n${z.prettifyError(result.error)}`);
   }
@@ -65,7 +66,7 @@ export function getDomain(id: string): Domain | undefined {
 }
 
 export function getLayer(id: string): Layer | undefined {
-  return course.layers.find((layer) => layer.id === id);
+  return course.layers.find((layer) => layer.id === canonicalLayerId(id));
 }
 
 export function nextLessonEntry(id: string): LessonEntry | undefined {

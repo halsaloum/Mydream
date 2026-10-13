@@ -2,6 +2,7 @@
 
 import { RotateCcw } from 'lucide-react';
 import { motion } from 'motion/react';
+import Link from 'next/link';
 import { course, getLessonEntry } from '@/content/catalog';
 import type { Domain, Layer, Stage } from '@/content/schema';
 import { DomainGlyph } from '@/components/brand/glyphs';
@@ -62,7 +63,7 @@ export function LayerTag({
         </span>
         <span className="leading-tight">
           <span className="block text-caption font-bold text-ink-muted">Niveau {layerIndex + 1}</span>
-          <span className="block font-display text-body font-extrabold text-ink">{layer.name}</span>
+          {layer.id === 'zinnen' ? <Link href="/zinnen" className="block rounded-sm font-display text-body font-extrabold text-blue-ink underline decoration-blue-line underline-offset-4 focus-visible:outline-3 focus-visible:outline-focus">{layer.name}</Link> : <span className="block font-display text-body font-extrabold text-ink">{layer.name}</span>}
         </span>
       </div>
       <div

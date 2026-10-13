@@ -1,7 +1,7 @@
 'use client';
 
 import { NavigationMenu } from '@base-ui/react/navigation-menu';
-import { BookOpenText, ChartColumnIncreasing, House, Languages, Network, Repeat2, Settings } from 'lucide-react';
+import { Blocks, BookOpenText, ChartColumnIncreasing, House, Languages, Network, Repeat2, Settings } from 'lucide-react';
 import { motion } from 'motion/react';
 import type { Route } from 'next';
 import Link from 'next/link';
@@ -14,11 +14,12 @@ import { useHydrated } from '@/state/hydration';
 import { useProgress } from '@/state/progress';
 import { dueCount, useWords } from '@/state/words';
 
-const NAV: { href: Route; label: string; icon: typeof House }[] = [
+const NAV: { href: Route; label: string; mobileLabel?: string; icon: typeof House }[] = [
   { href: '/', label: 'Leren', icon: House },
   { href: '/lessen', label: 'Lessen', icon: BookOpenText },
+  { href: '/zinnen', label: 'Zinnen', icon: Blocks },
   { href: '/woorden', label: 'Woorden', icon: Languages },
-  { href: '/argumentatie', label: 'Argumentatie', icon: Network },
+  { href: '/argumentatie', label: 'Argumentatie', mobileLabel: 'Argumenten', icon: Network },
   { href: '/herhalen', label: 'Herhalen', icon: Repeat2 },
   { href: '/voortgang', label: 'Voortgang', icon: ChartColumnIncreasing },
 ];
@@ -79,7 +80,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       <header className="sticky top-0 z-40 border-b border-line/80 bg-canvas/85 shadow-[0_8px_24px_-20px_rgb(60_40_10/0.35)] backdrop-blur-xl backdrop-saturate-150 supports-[backdrop-filter]:bg-canvas/70">
         <div className="mx-auto flex h-16 w-full max-w-6xl items-center gap-4 px-gutter">
           <Wordmark />
-          <NavigationMenu.Root aria-label="Hoofdnavigatie" className="ml-auto hidden md:block">
+          <NavigationMenu.Root aria-label="Hoofdnavigatie" className="ml-auto hidden lg:block">
             <NavigationMenu.List className="flex items-center gap-1">
               {NAV.map((item) => {
                 const active = isActive(pathname, item.href);
@@ -120,7 +121,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             href="/instellingen"
             aria-current={isActive(pathname, '/instellingen') ? 'page' : undefined}
             className={cn(
-              'group ml-auto grid size-11 place-items-center rounded-control transition-colors md:ml-0',
+              'group ml-auto grid size-11 place-items-center rounded-control transition-colors lg:ml-0',
               isActive(pathname, '/instellingen') ? 'border-2 border-line bg-surface text-ink shadow-slab-sm' : 'text-ink-muted hover:bg-ink/[0.06] hover:text-ink',
             )}
           >
@@ -134,15 +135,15 @@ export function AppShell({ children }: { children: ReactNode }) {
         </div>
       </header>
 
-      <main id="inhoud" tabIndex={-1} className="mx-auto w-full max-w-6xl flex-1 px-gutter pt-8 pb-32 outline-none md:pt-10 md:pb-20">
+      <main id="inhoud" tabIndex={-1} className="mx-auto w-full max-w-6xl flex-1 px-gutter pt-8 pb-32 outline-none md:pt-10 lg:pb-20">
         <PageTransition key={pathname}>{children}</PageTransition>
       </main>
 
       <NavigationMenu.Root
         aria-label="Hoofdnavigatie (mobiel)"
-        className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-surface/85 pb-[env(safe-area-inset-bottom)] shadow-[0_-10px_30px_-18px_rgb(60_40_10/0.3)] backdrop-blur-xl backdrop-saturate-150 md:hidden"
+        className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-surface/85 pb-[env(safe-area-inset-bottom)] shadow-[0_-10px_30px_-18px_rgb(60_40_10/0.3)] backdrop-blur-xl backdrop-saturate-150 lg:hidden"
       >
-        <NavigationMenu.List className="mx-auto grid max-w-xl grid-cols-6">
+        <NavigationMenu.List className="mx-auto grid max-w-xl grid-cols-7">
           {NAV.map((item) => {
             const active = isActive(pathname, item.href);
             return (
@@ -174,7 +175,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                       </span>
                     )}
                   </span>
-                  {item.label}
+                  <span className="max-w-full truncate px-0.5">{item.mobileLabel ?? item.label}</span>
                 </NavigationMenu.Link>
               </NavigationMenu.Item>
             );

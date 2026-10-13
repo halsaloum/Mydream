@@ -207,7 +207,8 @@ export function LibraryView() {
                 aria-labelledby={`groep-${layer.id}`}
                 data-accent={layer.accent}
               >
-                <h2 id={`groep-${layer.id}`} className="mb-4 flex items-center gap-3 font-display text-title-sm font-extrabold">
+                <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+                <h2 id={`groep-${layer.id}`} className="flex items-center gap-3 font-display text-title-sm font-extrabold">
                   <span className="grid size-9 place-items-center rounded-control bg-accent icon-tile">
                     <LayerGlyph id={layer.id} className="size-[1.1rem]" />
                   </span>
@@ -215,6 +216,8 @@ export function LibraryView() {
                     Niveau {index + 1} <span className="text-ink-muted">·</span> {layer.name}
                   </span>
                 </h2>
+                {layer.id === 'zinnen' && <ButtonLink href="/zinnen" variant="accent" size="sm">Open de interactieve afdeling<ArrowRight aria-hidden className="size-4" /></ButtonLink>}
+                </div>
                 <ul className="stagger grid gap-3 md:grid-cols-2">
                   {entries.map((entry) => (
                     <li key={entry.lesson.id}>

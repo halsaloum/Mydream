@@ -1,5 +1,6 @@
 import { course, EXERCISE_LABELS, lessonEntries, type LessonEntry } from '@/content/catalog';
 import type { Lesson, StepKind } from '@/content/schema';
+import { canonicalLayerId, sentenceSearchTerms } from '@/content/sentence-layer';
 import type { LessonStatus } from '@/state/selectors';
 
 /** Filters van de lesbibliotheek. Ze staan in de URL, zodat terug, verversen en delen werken. */
@@ -27,7 +28,8 @@ export const LESSON_KINDS: StepKind[] = (Object.keys(EXERCISE_LABELS) as StepKin
 );
 
 export function parseFilters(params: URLSearchParams): LibraryFilters {
-  const niveau = params.get('niveau');
+  const rawNiveau = params.get('niveau');
+  const niveau = rawNiveau ? canonicalLayerId(rawNiveau) : null;
   const status = params.get('status') as StatusFilter | null;
   const vorm = params.get('vorm') as StepKind | null;
   return {
@@ -41,7 +43,7 @@ export function parseFilters(params: URLSearchParams): LibraryFilters {
 
 export function filtersToQuery(filters: LibraryFilters): string {
   const params = new URLSearchParams();
-  if (filters.niveau) params.set('niveau', filters.niveau);
+  if (filters.niveau) params.set('niveau', canonicalLayerId(filters.niveau));
   if (filters.vak.length) params.set('vak', filters.vak.join(','));
   if (filters.status !== 'alle') params.set('status', filters.status);
   if (filters.vorm !== 'alle') params.set('vorm', filters.vorm);
@@ -62,13 +64,13 @@ const fold = (text: string) =>
 function matchesQuery(entry: LessonEntry, q: string): boolean {
   const query = fold(q.trim());
   if (!query) return true;
-  const haystack = fold([entry.lesson.title, entry.layer.name, entry.domain.name, ...entry.also.map((domain) => domain.name)].join(' '));
+  const haystack = fold([entry.lesson.title, entry.layer.name, sentenceSearchTerms(entry.lesson.id), entry.domain.name, ...entry.also.map((domain) => domain.name)].join(' '));
   return query.split(/\s+/).every((word) => haystack.includes(word));
 }
 
 export function filterLessons(filters: LibraryFilters, statusOf: (id: string) => LessonStatus, entries: readonly LessonEntry[] = lessonEntries): LessonEntry[] {
   return entries.filter((entry) => {
-    if (filters.niveau && entry.layer.id !== filters.niveau) return false;
+    if (filters.niveau && entry.layer.id !== canonicalLayerId(filters.niveau)) return false;
     if (filters.vak.length && !filters.vak.some((id) => entry.domain.id === id || entry.also.some((domain) => domain.id === id))) return false;
     if (filters.status !== 'alle' && statusOf(entry.lesson.id) !== filters.status) return false;
     if (filters.vorm !== 'alle' && !lessonKinds(entry.lesson).includes(filters.vorm)) return false;

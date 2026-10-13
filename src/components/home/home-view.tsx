@@ -18,6 +18,7 @@ import { RecentProgress } from './recent-progress';
 import { WordsCard } from './words-card';
 import { LearningRoute } from './learning-route';
 import { ArgumentationCard } from './argumentation-card';
+import { SentenceCard } from './sentence-card';
 
 function TodayGoal({ goal, activeMs, streak }: { goal: number; activeMs: number; streak: number }) {
   const done = minutes(activeMs);
@@ -79,6 +80,7 @@ export function HomeView() {
         <div className="lg:self-start">
           <ContinueCard target={target} firstTime={firstTime} />
           <WordsCard />
+          <SentenceCard />
           <ArgumentationCard />
         </div>
       </div>

@@ -12,9 +12,24 @@ describe('lesbibliotheek: filters', () => {
   });
 
   it('filtert op niveau', () => {
-    const result = filter({ niveau: 'zin' });
-    expect(result.length).toBeGreaterThan(0);
-    expect(result.every((entry) => entry.layer.id === 'zin')).toBe(true);
+    const result = filter({ niveau: 'zinnen' });
+    expect(result).toHaveLength(30);
+    expect(result.every((entry) => entry.layer.id === 'zinnen')).toBe(true);
+  });
+
+  it('houdt gedeelde links naar de drie oude zinsbouwniveaus bruikbaar', () => {
+    const expected = filter({ niveau: 'zinnen' }).map((entry) => entry.lesson.id);
+    for (const niveau of ['groep', 'zin', 'samen']) {
+      expect(parseFilters(new URLSearchParams(`niveau=${niveau}`)).niveau).toBe('zinnen');
+      expect(filter({ niveau }).map((entry) => entry.lesson.id)).toEqual(expected);
+      expect(filtersToQuery({ ...EMPTY_FILTERS, niveau })).toBe('niveau=zinnen');
+    }
+  });
+
+  it('vindt de oorspronkelijke groepen ook onder hun vroegere namen', () => {
+    expect(filter({ q: 'woordgroep' }).map((entry) => entry.lesson.id)).toContain('p1');
+    expect(filter({ q: 'enkelvoudige zin' }).map((entry) => entry.lesson.id)).toContain('z20');
+    expect(filter({ q: 'samengestelde zin' }).map((entry) => entry.lesson.id)).toContain('s20');
   });
 
   it('een vakgebied telt ook mee als het "ook" in de les speelt', () => {

@@ -100,7 +100,7 @@ De schrijflesbibliotheek gebruikt **alleen** `src/content/catalog.ts`. Die laadt
 `legacy/course.ts` bevat alleen de typen: de tweede cursus (`COURSE`) en `BOOKS` zijn bewust weggelaten, zodat er
 geen tegenstrijdige inhoud naast elkaar bestaat.
 
-`packs/` bevat 109 aanvullende lessen voor negen niveaus, achter de bestaande lessen van dat niveau (`withExtraLessons`):
+`packs/` bevat 109 aanvullende lessen, achter de bestaande lessen van hun oorspronkelijke bouwlaag (`withExtraLessons`). Woordgroepen, enkelvoudige en samengestelde zinnen worden daarna samengevoegd tot één afdeling **Zinnen**; de bibliotheek toont zeven niveaus. De onderstaande tabel benoemt de historische bronpakketten:
 
 | Bestand | Niveau | Lessen |
 | --- | --- | --- |
@@ -123,7 +123,17 @@ geen tegenstrijdige inhoud naast elkaar bestaat.
 
 `packs/schrijven.ts` voegt negen modules toe voor zinnen, samenhang en tekstherziening. `packs/argumentatie.ts` bevat zestien opeenvolgende lessen van standpunt en reden tot een volledig betoog, met bewijsbeoordeling, tegenargumenten en herstel van drogredenen.
 
-`curriculum/` bevat de verbeteringen voor alle 113 eerdere lessen: een concreet leerdoel, vertrekpunt, strategie, zelfcontrole en nieuwe toepassingsopdrachten. `learning-path.ts` bepaalt de aanbevolen volgorde onafhankelijk van de negen bibliotheekniveaus. Alle lessen blijven vrij toegankelijk.
+`curriculum/` bevat de verbeteringen voor alle 113 eerdere lessen: een concreet leerdoel, vertrekpunt, strategie, zelfcontrole en nieuwe toepassingsopdrachten. `learning-path.ts` bepaalt de aanbevolen volgorde onafhankelijk van de zeven bibliotheekniveaus. Alle lessen blijven vrij toegankelijk.
+
+### De afdeling Zinnen
+
+`/zinnen` combineert woordgroepen, enkelvoudige en samengestelde zinnen in één praktisch leerpad. De dertig eerdere lessen behouden hun IDs, stappen, URLs en voortgang. Oude filters `groep`, `zin` en `samen` verwijzen naar `zinnen`.
+
+`src/content/sentences/` bevat twaalf nieuwe modules, van constituentproeven tot verwijzen en interpunctie. Iedere module heeft vijf schermen: ontdek-lab, brongebonden regels en beslisroute, zes arena-opdrachten, vier zelfstandige foutreparaties en een spiekkaart. De 120 opdrachten gebruiken verplaatsbare blokken, diagnosepoorten, afhankelijkheidsbogen, live transformaties en getypte reparaties. De steun neemt af; in de tweede ronde moet de leerling de bouwblokken eerst zelf bepalen.
+
+De regels zijn gecontroleerd met de E-ANS en praktische taaladviezen. De bronlinks verwijzen naar concrete paragrafen. Variatie en uitzonderingen worden toegelicht; leestekenadviezen worden niet als officiële spellingwetten voorgesteld. Illustratieve contextfoto’s, SVG-situaties en geanimeerde zinsblokken blijven bruikbaar met toetsenbord, aanraking en rustige beweging. De foto’s geven context; de voorbeeldzin en schematische tekening bepalen de exacte personen en aantallen.
+
+`src/lib/sentences/learning.ts` beoordeelt de afgebakende opdrachten. `src/state/sentences.ts` bewaart sessies, eerste pogingen, voltooiing en ongescoorde eigen toepassingen onder `pennig:zinnen`. Alleen tien werkelijk opgeloste opdrachten spelen de persoonlijke kaart op `/zinnen/codex` vrij. Export/import en wissen omvatten deze gegevens; oudere exports blijven bruikbaar. Een voltooid oefenpad bewijst geen blijvende beheersing.
 
 Vrije schrijfopdrachten met `rubric` tonen na de eerste versie een voorbeeld en controlepunten. De leerling vergelijkt en herziet zelf; een tekstwijziging wist de vinkjes. Woordenaantal en trefwoorden controleren alleen vormeisen. Vrij schrijven telt niet als objectief goed antwoord in het lespercentage. Zelfcontrole is geen automatische inhoudelijke beoordeling.
 

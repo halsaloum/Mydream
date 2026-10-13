@@ -14,7 +14,7 @@ Omdat lees- en luistervaardigheid al op moedertaalniveau zijn, hoeft de interfac
 
 ## Product Purpose
 
-pennig leert schrijven van taalbasis tot zelfstandig betoog, in negen bouwlagen (letter, klank en letter, lettergreep, woorddeel, woord, woordgroep, zin, samengestelde zin, alinea). De leerroute bouwt op van uitleg en begeleid oefenen naar toepassing, bewijsbeoordeling, tegenargumenten en drogredenen. Elke les heeft een leerdoel, aanpak en zelfcontrole. Specialistische taalkunde is keuzeverdieping.
+pennig leert schrijven van taalbasis tot zelfstandig betoog, in zeven bouwlagen (letter, klank en letter, lettergreep, woorddeel, woord, Zinnen, alinea). Zinnen verenigt woordgroepen, enkelvoudige en samengestelde zinnen in één afdeling. De leerroute bouwt op van uitleg en begeleid oefenen naar toepassing, bewijsbeoordeling, tegenargumenten en drogredenen. Elke les heeft een leerdoel, aanpak en zelfcontrole. Specialistische taalkunde is keuzeverdieping.
 
 Succes: de leerling maakt aantoonbaar minder schrijffouten en kan uitleggen waarom iets zo geschreven wordt.
 
@@ -26,6 +26,7 @@ Niet een losse verzameling taalregels, maar één doorlopende constructie: hetze
 
 - De actieve cursus bevat 138 lessen via het inhoudscontract (`src/content/schema.ts`, JSON Schema in `content/schema/`).
 - De 113 bestaande lessen zijn uitgebreid; negen schrijfmodules en zestien argumentatielessen vullen de leerroute aan.
+- Zinnen voegt twaalf praktische modules met 120 bouw- en reparatieopdrachten toe. Elke module doorloopt ontdekking, regels, begeleid bouwen, zelfstandige foutreparatie en een persoonlijke spiekkaart. De dertig eerdere zinsbouwlessen en hun voortgang blijven beschikbaar als aanvullende oefening.
 - Alle voortgang staat lokaal in de browser (localStorage); er is geen account of server.
 
 ## Capabilities and Constraints
