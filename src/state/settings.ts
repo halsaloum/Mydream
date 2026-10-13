@@ -49,12 +49,14 @@ export const SPEECH_RATES = [
 
 export type SpeechRateId = (typeof SPEECH_RATES)[number]['id'];
 
-const DEFAULT_SPEECH = { voice: null, rate: 'rustig', examples: true } as const;
+const DEFAULT_SPEECH = { voice: null, rate: 'rustig', readerRate: 1, examples: true } as const;
 
 const SpeechSchema = z.object({
   /** `voiceURI` van de gekozen stem; `null` = pennig kiest zelf de beste Nederlandse stem. */
   voice: z.string().nullable(),
   rate: z.enum(['langzaam', 'rustig', 'normaal']),
+  /** Apart spreektempo voor lange leespagina’s; oudere instellingen blijven geldig. */
+  readerRate: z.number().min(0.6).max(1.5).default(1),
   /** Taalvoorbeelden in de uitleg aantikken om ze te horen. */
   examples: z.boolean(),
 });

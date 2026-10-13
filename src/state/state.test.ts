@@ -5,7 +5,7 @@ import { addDays, dayKey } from '@/lib/dates';
 import { EMPTY_PROGRESS, PROGRESS_KEY, useProgress } from './progress';
 import { continueTarget, recommendedLesson, streakDays } from './selectors';
 import { carryOver, SESSIONS_KEY, useSessions } from './sessions';
-import { DEFAULT_SETTINGS, SETTINGS_KEY, useSettings } from './settings';
+import { DEFAULT_SETTINGS, SETTINGS_KEY, SettingsDataSchema, useSettings } from './settings';
 import { checkStorage, storageNotices } from './storage';
 import { applyImport, exportData, parseImport } from './transfer';
 import { useWordRound, useWords } from './words';
@@ -20,6 +20,17 @@ beforeEach(() => {
 });
 
 describe('opslag', () => {
+  it('behoudt oude steminstellingen en geeft lange leespagina’s hun eigen tempo', async () => {
+    const legacy = { ...DEFAULT_SETTINGS, speech: { voice: 'Xander', rate: 'langzaam', examples: false } };
+    window.localStorage.setItem(SETTINGS_KEY, JSON.stringify({ state: legacy, version: 1 }));
+    await useSettings.persist.rehydrate();
+    expect(useSettings.getState().speech).toEqual({ ...legacy.speech, readerRate: 1 });
+    useSettings.getState().setSpeech({ readerRate: 1.25 });
+    expect(useSettings.getState().speech.rate).toBe('langzaam');
+    expect(SettingsDataSchema.safeParse({ ...DEFAULT_SETTINGS, speech: { ...DEFAULT_SETTINGS.speech, readerRate: 0.5 } }).success).toBe(false);
+    expect(SettingsDataSchema.safeParse({ ...DEFAULT_SETTINGS, speech: { ...DEFAULT_SETTINGS.speech, readerRate: 1.6 } }).success).toBe(false);
+  });
+
   it('herstelt beschadigde gegevens met een reservekopie en een melding', async () => {
     const notices: string[] = [];
     const stop = storageNotices.subscribe((notice) => notices.push(notice.key));
@@ -155,6 +166,7 @@ describe('aanbevelingen', () => {
 describe('exporteren en importeren', () => {
   it('maakt een volledige rondgang en weigert ongeldige bestanden', () => {
     useSettings.getState().setProfile({ focus: 'zinnen', goalMinutes: 15 });
+    useSettings.getState().setSpeech({ readerRate: 1.2 });
     useProgress.getState().addActiveTime(90_000);
     const text = exportData();
     useSettings.getState().reset();
@@ -164,6 +176,7 @@ describe('exporteren en importeren', () => {
     expect(parsed.ok).toBe(true);
     if (parsed.ok) applyImport(parsed.data);
     expect(useSettings.getState().profile.focus).toBe('zinnen');
+    expect(useSettings.getState().speech.readerRate).toBe(1.2);
     expect(useProgress.getState().activity[dayKey()]?.activeMs).toBe(90_000);
 
     expect(parseImport('geen json')).toEqual({ ok: false, error: 'Dit bestand is geen geldige JSON.' });
