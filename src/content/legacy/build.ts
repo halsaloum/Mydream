@@ -271,7 +271,7 @@ export const LAYERS: Layer[] = [
     ] },
     { id: 's2', domain: 'syn', also: ['orth'], title: 'De komma', skill: 'Complex', icon: ',', steps: [
       { kind: 'explain', title: 'Waar twee motoren botsen', panels: [
-        { text: 'Begint de zin met een bijzin, dan staan er twee persoonsvormen naast elkaar. Daartussen zet je een komma.', quiz: { q: 'Waar hoort de komma?', options: ['Hoewel het regende, ging ik.', 'Hoewel, het regende ging ik.', 'Hoewel het, regende ging ik.'], answer: 'Hoewel het regende, ging ik.', why: 'regende | ging → komma.' } },
+        { text: 'Na een vooropgeplaatste bijzin maakt een komma de grens met de hoofdzin duidelijk. In Hoewel het regende, ging ik staan de persoonsvormen regende en ging naast elkaar. Een bijzin kan ook op andere woorden eindigen, zoals Nadat zij had gewerkt, ging ik naar huis.', quiz: { q: 'Waar hoort de komma?', options: ['Hoewel het regende, ging ik.', 'Hoewel, het regende ging ik.', 'Hoewel het, regende ging ik.'], answer: 'Hoewel het regende, ging ik.', why: 'De komma laat de grens tussen de bijzin en de hoofdzin zien; hier staan regende en ging naast elkaar.' } },
       ] },
       { kind: 'rewrite', prompt: 'Zet de komma goed.', source: 'Toen ik thuiskwam lag de kat op de bank.', accept: ['Toen ik thuiskwam, lag de kat op de bank.'], why: 'thuiskwam | lag.' },
       { kind: 'write', prompt: 'Schrijf over iets wat je toch deed, hoewel je geen zin had.', minWords: 20, must: [{ label: 'hoewel', test: any('hoewel') }, { label: 'een komma', test: /,/ }], why: 'Bijzin vooraan → komma.' },

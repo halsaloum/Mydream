@@ -4,7 +4,7 @@ import { Radio } from '@base-ui/react/radio';
 import { RadioGroup } from '@base-ui/react/radio-group';
 import { ArrowLeftRight, CaseLower, Check, Disc3, FlaskConical, Hammer, Magnet, MousePointerClick, Scissors, X } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
-import { useId, useMemo, useRef, useState } from 'react';
+import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import type { Panel } from '@/content/schema';
 import { tokenize } from '@/content/text';
 import { permutation, shuffle } from '@/engine/hash';
@@ -49,6 +49,7 @@ export function useSolve(onSolved: () => void) {
 export function useFlash<T>() {
   const [flash, setFlash] = useState<{ value: T; n: number } | null>(null);
   const timer = useRef<number | undefined>(undefined);
+  useEffect(() => () => window.clearTimeout(timer.current), []);
   return {
     flash: flash?.value ?? null,
     flashKey: flash?.n ?? 0,

@@ -1,9 +1,9 @@
-import { render, screen, within } from '@testing-library/react';
+import { act, render, renderHook, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useState } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { ParadigmWidget } from './paradigm-widget';
-import type { WidgetProps } from './widgets';
+import { useFlash, type WidgetProps } from './widgets';
 
 // jsdom heeft geen canvas; de confetti doet hier niet ter zake.
 vi.mock('@/lib/confetti', () => ({ celebrate: vi.fn(), originOf: () => undefined }));
@@ -33,6 +33,20 @@ function Harness({ onSolved }: { onSolved: () => void }) {
 }
 
 describe('paradigma', () => {
+  it('annuleert het korte foutsignaal wanneer de oefening wordt gesloten', () => {
+    vi.useFakeTimers();
+    const { result, unmount } = renderHook(() => useFlash<string>());
+    try {
+      act(() => result.current.trigger('verkeerde vorm'));
+      expect(vi.getTimerCount()).toBe(1);
+      unmount();
+      expect(vi.getTimerCount()).toBe(0);
+    } finally {
+      unmount();
+      vi.useRealTimers();
+    }
+  });
+
   it('een verkeerde vorm geeft de tip; alle vakjes goed lost op', async () => {
     const user = userEvent.setup();
     const onSolved = vi.fn();

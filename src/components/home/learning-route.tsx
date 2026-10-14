@@ -23,7 +23,7 @@ export function LearningRoute({ progress }: { progress: ProgressData }) {
               <p className="mt-2 flex-1 text-body text-ink-soft">{phase.description}</p>
               <p className="mt-4 mb-2 text-small font-semibold text-ink-muted">{done} van {phase.entries.length} lessen afgerond</p>
               <ProgressBar value={done} max={phase.entries.length} size="sm" label={`Voortgang: ${phase.title}`} />
-              <ButtonLink href={`/les/${next.lesson.id}` as Route} variant="secondary" className="mt-4 self-start">
+              <ButtonLink href={next.layer.id === 'zinnen' ? '/?niveau=zinnen#niveaus-titel' : `/les/${next.lesson.id}` as Route} variant="secondary" className="mt-4 self-start">
                 {done === phase.entries.length ? 'Herhaal dit onderdeel' : done > 0 ? 'Verder met dit onderdeel' : 'Start dit onderdeel'}
                 <span className="sr-only">: {phase.title}</span>
               </ButtonLink>

@@ -1,9 +1,11 @@
 'use client';
 
 import { Flame } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import { useEffect, useMemo, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { Suspense, useEffect, useMemo, useState } from 'react';
 import { course } from '@/content/catalog';
+import { sentenceLessons } from '@/content/sentences';
+import { canonicalLayerId } from '@/content/sentence-layer';
 import { PageSkeleton } from '@/components/ui/empty-state';
 import { ProgressBar } from '@/components/ui/progress';
 import { dayKey, minutes } from '@/lib/dates';
@@ -11,6 +13,8 @@ import { useProgressData, useSessionsById } from '@/state/hooks';
 import { useHydrated } from '@/state/hydration';
 import { continueTarget, recommendedLesson, streakDays } from '@/state/selectors';
 import { useSettings } from '@/state/settings';
+import { useSentences } from '@/state/sentences';
+import { lessonProgress } from '@/lib/sentences/learning';
 import { ContinueCard } from './continue-card';
 import { HeroScene } from './hero-scene';
 import { LayerMachine } from './layer-machine';
@@ -18,7 +22,6 @@ import { RecentProgress } from './recent-progress';
 import { WordsCard } from './words-card';
 import { LearningRoute } from './learning-route';
 import { ArgumentationCard } from './argumentation-card';
-import { SentenceCard } from './sentence-card';
 import { SpacedPracticeReminder } from '@/components/review/spaced-practice';
 
 function TodayGoal({ goal, activeMs, streak }: { goal: number; activeMs: number; streak: number }) {
@@ -42,16 +45,30 @@ function TodayGoal({ goal, activeMs, streak }: { goal: number; activeMs: number;
 }
 
 export function HomeView() {
+  return <Suspense fallback={<PageSkeleton blocks={['h-14 w-3/4 max-w-md', 'h-56', 'h-[28rem]']} />}><HomeContent /></Suspense>;
+}
+
+function HomeContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const requestedLayer = canonicalLayerId(searchParams.get('niveau') ?? '');
   const hydrated = useHydrated();
   const profile = useSettings((state) => state.profile);
   const progress = useProgressData();
   const sessions = useSessionsById();
-  const [selectedLayer, setSelectedLayer] = useState<number | null>(null);
+  const sentenceRecords = useSentences((state) => state.records);
+  const sentenceSessions = useSentences((state) => state.sessions);
+  const [selection, setSelection] = useState<{ request: string; index: number } | null>(null);
 
   useEffect(() => {
     if (hydrated && !profile.completedAt) router.replace('/welkom');
   }, [hydrated, profile.completedAt, router]);
+
+  useEffect(() => {
+    if (!hydrated || !profile.completedAt || window.location.hash !== '#niveaus-titel') return;
+    const frame = requestAnimationFrame(() => document.getElementById('niveaus-titel')?.scrollIntoView({ block: 'start' }));
+    return () => cancelAnimationFrame(frame);
+  }, [hydrated, profile.completedAt, requestedLayer]);
 
   const target = useMemo(() => continueTarget(progress, sessions, profile), [progress, sessions, profile]);
   const next = useMemo(() => recommendedLesson(progress, profile), [progress, profile]);
@@ -61,7 +78,13 @@ export function HomeView() {
   }
 
   const firstTime = Object.keys(progress.lessons).length === 0 && Object.keys(sessions).length === 0;
-  const defaultLayer = target.kind === 'complete' ? course.layers.length - 1 : target.entry.layerIndex;
+  const sentenceNext = sentenceLessons.find((lesson) => !sentenceRecords[lesson.id]);
+  const defaultLayer = target.kind === 'complete' ? sentenceNext ? course.layers.findIndex((layer) => layer.id === 'zinnen') : course.layers.length - 1 : target.entry.layerIndex;
+  const requestedIndex = course.layers.findIndex((layer) => layer.id === requestedLayer);
+  const selectedLayer = selection?.request === requestedLayer ? selection.index : requestedIndex >= 0 ? requestedIndex : defaultLayer;
+  const coreLesson = sentenceNext ?? sentenceLessons[0]!;
+  const coreSession = sentenceSessions[coreLesson.id];
+  const sentenceTarget = course.layers[selectedLayer]?.id === 'zinnen' ? { lesson: coreLesson, solved: lessonProgress(coreLesson, coreSession?.answers ?? {}).solved, started: Boolean(coreSession), completed: Boolean(sentenceRecords[coreLesson.id]) } : undefined;
   const today = progress.activity[dayKey()];
 
   return (
@@ -80,9 +103,8 @@ export function HomeView() {
         </div>
         <HeroScene className="order-last h-60 sm:h-72 lg:order-none lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:h-full lg:min-h-[26rem] lg:max-h-[36rem]" />
         <div className="lg:self-start">
-          <ContinueCard target={target} firstTime={firstTime} />
+          <ContinueCard target={target} firstTime={firstTime} sentence={sentenceTarget} />
           <WordsCard />
-          <SentenceCard />
           <ArgumentationCard />
         </div>
       </div>
@@ -90,8 +112,13 @@ export function HomeView() {
       <LearningRoute progress={progress} />
 
       <LayerMachine
-        selected={selectedLayer ?? defaultLayer}
-        onSelect={setSelectedLayer}
+        selected={selectedLayer}
+        onSelect={(index) => {
+          setSelection({ request: requestedLayer, index });
+          const params = new URLSearchParams(searchParams.toString());
+          params.set('niveau', course.layers[index]!.id);
+          router.replace(`/?${params.toString()}#niveaus-titel`, { scroll: false });
+        }}
         progress={progress}
         sessions={sessions}
         nextId={next?.lesson.id}

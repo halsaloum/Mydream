@@ -12,7 +12,7 @@ import { extraFeedback, extraProgress, isExtraKind, stepMode, type ExtraResponse
 import type { Response } from '@/engine/responses';
 import { currentKey, currentResponse, isRetry, sessionProgress, summarize, type SessionState } from '@/engine/session';
 import { Pim } from '@/components/brand/pim';
-import { Button, type ButtonVariant } from '@/components/ui/button';
+import { Button, ButtonLink, type ButtonVariant } from '@/components/ui/button';
 import { ProgressBar } from '@/components/ui/progress';
 import { celebrate, originOf } from '@/lib/confetti';
 import { cn } from '@/lib/cn';
@@ -39,6 +39,7 @@ export type PlayerMeta = {
   /** Niveau en vakgebied, getoond bij de eerste stap. */
   tag?: { layer: Layer; layerIndex: number; domain: Domain; stage?: Stage | undefined; icon?: string | undefined };
   guidance?: LessonGuidance;
+  learningReference?: { href: Route; title: string };
   /** Bij een zelfstandige kennischeck opent de regel pas na de eerste poging. */
   independent?: boolean;
 };
@@ -264,6 +265,11 @@ export function LessonPlayer({ controller, meta }: { controller: PlayerControlle
 
       <main id="inhoud" className="relative mx-auto w-full max-w-3xl flex-1 px-3 pt-5 pb-10 sm:px-gutter sm:pt-9">
         {pos === 0 && meta.guidance && <LessonIntroduction guidance={meta.guidance} />}
+        {pos === 0 && meta.learningReference && <section aria-label="Uitleg bij deze zinoefening" className="mb-5 rounded-card border-2 border-blue-line bg-blue-soft p-5">
+          <h2 className="font-display text-title-sm font-bold text-blue-ink">Eerst begrijpen, dan oefenen</h2>
+          <p className="mt-2 text-small leading-relaxed text-ink-soft">Bij niveau 6 vind je uitgebreide uitleg, een korte video en een voorbeeld dat je stap voor stap kunt onderzoeken. Je oefening hier blijft bewaard.</p>
+          <ButtonLink href={meta.learningReference.href} variant="secondary" className="mt-4">Bekijk de uitleg: {meta.learningReference.title}<ArrowRight aria-hidden className="size-4 shrink-0" /></ButtonLink>
+        </section>}
         <AnimatePresence mode="popLayout" initial={false}>
           <motion.article
             key={pos}

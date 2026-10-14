@@ -2,17 +2,18 @@
 
 import { Collapsible } from '@base-ui/react/collapsible';
 import { Tabs } from '@base-ui/react/tabs';
-import { ArrowRight, ChevronDown, ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react';
+import { ChevronDown, ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react';
 import { motion, type HTMLMotionProps } from 'motion/react';
 import { useEffect, useState } from 'react';
 import { course, getDomain, lessonEntries, type LessonEntry } from '@/content/catalog';
+import { sentenceLessons } from '@/content/sentences';
 import type { Domain, Layer, Stage } from '@/content/schema';
 import { DomainGlyph, LayerGlyph } from '@/components/brand/glyphs';
 import { LayerTower } from './layer-tower';
 import { ToyCanvas } from '@/lib/toy3d/toy-canvas';
 import { LessonRow } from '@/components/lesson/lesson-row';
 import { STAGE_ACCENTS, STAGE_LABELS } from '@/components/lesson/stage-badge';
-import { ButtonLink, IconButton } from '@/components/ui/button';
+import { IconButton } from '@/components/ui/button';
 import { RichText } from '@/components/ui/rich-text';
 import type { SessionState } from '@/engine/session';
 import { cn } from '@/lib/cn';
@@ -20,6 +21,8 @@ import { spring, transition, useCalmMotion } from '@/lib/motion';
 import { play } from '@/lib/sound';
 import type { ProgressData } from '@/state/progress';
 import { layerCompletion, lessonStatus } from '@/state/selectors';
+import { SentenceLearningPath } from '@/components/sentences/sentence-learning-path';
+import { useSentences } from '@/state/sentences';
 
 const AUTOPLAY_MS = 2600;
 const loadTower = () => import('@/lib/toy3d/scenes/tower').then((module) => module.towerScene);
@@ -218,6 +221,9 @@ type LayerMachineProps = {
  */
 export function LayerMachine({ selected, onSelect, progress, sessions, nextId }: LayerMachineProps) {
   const calm = useCalmMotion();
+  const sentenceRecords = useSentences((state) => state.records);
+  const sentenceDone = sentenceLessons.filter((lesson) => sentenceRecords[lesson.id]).length;
+  const completionFor = (item: Layer) => item.id === 'zinnen' ? { done: sentenceDone, total: sentenceLessons.length, ratio: sentenceDone / sentenceLessons.length } : layerCompletion(item, progress);
   const [playing, setPlaying] = useState(false);
   const layers = course.layers;
   const layer = layers[selected] ?? layers[0]!;
@@ -243,7 +249,7 @@ export function LayerMachine({ selected, onSelect, progress, sessions, nextId }:
       >
         <div className="flex items-start justify-between gap-4 px-6 pt-6 sm:px-8 sm:pt-8">
           <div>
-            <h2 id="niveaus-titel" className="font-display text-title font-extrabold">
+            <h2 id="niveaus-titel" className="scroll-mt-24 font-display text-title font-extrabold">
               De niveaus
             </h2>
             <p className="mt-1 text-small text-ink-muted">Hetzelfde voorbeeld, op elk niveau anders bekeken.</p>
@@ -276,11 +282,11 @@ export function LayerMachine({ selected, onSelect, progress, sessions, nextId }:
           </div>
           <ToyCanvas
             load={loadTower}
-            props={{ layers, selected, ratios: layers.map((item) => layerCompletion(item, progress).ratio) }}
+            props={{ layers, selected, ratios: layers.map((item) => completionFor(item).ratio) }}
             onTap={(id) => go(Number(id.split(':')[1]))}
             label={`De ${layers.length} niveaus als toren van blokken, van letter onderaan tot alinea bovenaan.`}
             className="-mx-4 h-80 md:mx-0 md:-mt-6 md:h-[24rem]"
-            fallback={<LayerTower layers={layers} selected={selected} progress={progress} onSelect={go} className="-my-10 scale-[0.8] md:-mt-8 md:mb-0 md:scale-100" />}
+            fallback={<LayerTower layers={layers} selected={selected} progress={progress} onSelect={go} ratios={Object.fromEntries(layers.map((item) => [item.id, completionFor(item).ratio]))} className="-my-10 scale-[0.8] md:-mt-8 md:mb-0 md:scale-100" />}
           />
         </div>
 
@@ -288,7 +294,7 @@ export function LayerMachine({ selected, onSelect, progress, sessions, nextId }:
           {layers.map((item, index) => {
             const active = index === selected;
             const reached = index <= selected;
-            const done = layerCompletion(item, progress);
+            const done = completionFor(item);
             return (
               <Tabs.Tab
                 key={item.id}
@@ -372,39 +378,8 @@ function LayerDetail({
     return domain ? [domain] : [];
   });
 
-  return (
-    <>
-      <section data-accent={layer.accent} aria-labelledby={`niveau-${layer.id}`} className="rounded-card border-2 border-line bg-surface p-6 shadow-slab sm:p-7">
-        <div className="flex items-start gap-4">
-          <span className="grid size-11 shrink-0 place-items-center rounded-control bg-accent icon-tile">
-            <LayerGlyph id={layer.id} className="size-5" />
-          </span>
-          <div className="min-w-0">
-            <h3 id={`niveau-${layer.id}`} className="font-display text-title-sm font-extrabold">
-              Niveau {index + 1}: {layer.name}
-            </h3>
-            <p className="mt-1 text-lead leading-snug text-ink">{layer.learn}</p>
-          </div>
-        </div>
-        <p className="mt-5 rounded-tile bg-sunken px-4 py-3.5 font-serif text-[1.375rem] leading-snug text-ink" lang="nl">
-          <RichText text={layer.example} />
-        </p>
-        <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-baseline sm:gap-4">
-          <p className="shrink-0 text-small font-bold text-ink-muted">Vakgebieden</p>
-          <ul className="flex flex-wrap gap-2">
-            {fields.map((domain) => (
-              <FieldPill key={domain.id} domain={domain} />
-            ))}
-          </ul>
-        </div>
-        {layer.id === 'zinnen' && <div className="mt-6 rounded-control border-2 border-blue-line bg-blue-soft p-5">
-          <h4 className="font-display text-lead font-extrabold text-blue-ink">Ontdek de volledige afdeling Zinnen</h4>
-          <p className="mt-2 text-small leading-relaxed text-ink-soft">Bouw, verplaats en herstel zinnen in één leerroute. De woordgroep, enkelvoudige zin en samengestelde zin horen nu bij elkaar.</p>
-          <ButtonLink href="/zinnen" className="mt-4" variant="accent" data-accent="blue">Naar de interactieve lessen<ArrowRight aria-hidden className="size-4" /></ButtonLink>
-        </div>}
-      </section>
-
-      <div className={cn('stagger grid gap-4', domains.length > 1 && 'md:grid-cols-2')}>
+  const domainCards = (
+    <div className={cn('stagger grid gap-4', domains.length > 1 && 'md:grid-cols-2')}>
         {domains.map((domain) => {
           const inDomain = entries.filter((entry) => entry.domain.id === domain.id);
           const completion = layerCompletion(layer, progress, domain.id);
@@ -435,6 +410,44 @@ function LayerDetail({
           );
         })}
       </div>
+  );
+
+  return (
+    <>
+      <section data-accent={layer.accent} aria-labelledby={`niveau-${layer.id}`} className="rounded-card border-2 border-line bg-surface p-6 shadow-slab sm:p-7">
+        <div className="flex items-start gap-4">
+          <span className="grid size-11 shrink-0 place-items-center rounded-control bg-accent icon-tile">
+            <LayerGlyph id={layer.id} className="size-5" />
+          </span>
+          <div className="min-w-0">
+            <h3 id={`niveau-${layer.id}`} className="font-display text-title-sm font-extrabold">
+              Niveau {index + 1}: {layer.name}
+            </h3>
+            <p className="mt-1 text-lead leading-snug text-ink">{layer.learn}</p>
+          </div>
+        </div>
+        <p className="mt-5 rounded-tile bg-sunken px-4 py-3.5 font-serif text-[1.375rem] leading-snug text-ink" lang="nl">
+          <RichText text={layer.example} />
+        </p>
+        <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-baseline sm:gap-4">
+          <p className="shrink-0 text-small font-bold text-ink-muted">Vakgebieden</p>
+          <ul className="flex flex-wrap gap-2">
+            {fields.map((domain) => (
+              <FieldPill key={domain.id} domain={domain} />
+            ))}
+          </ul>
+        </div>
+
+      </section>
+
+      {layer.id === 'zinnen' ? <>
+        <SentenceLearningPath embedded />
+        <details className="rounded-card border-2 border-line bg-surface p-5 sm:p-6">
+          <summary className="cursor-pointer font-display text-title-sm font-bold">Extra oefenen en verdiepen · {entries.length} lessen</summary>
+          <p className="mt-3 mb-5 text-small leading-relaxed text-ink-soft">Kies hieronder aanvullende oefening over woordgroepen en zinsbouw. Je eerdere voortgang blijft bewaard.</p>
+          {domainCards}
+        </details>
+      </> : domainCards}
     </>
   );
 }

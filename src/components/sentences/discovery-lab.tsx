@@ -63,7 +63,7 @@ export function DiscoveryLab({ lesson, visited, onVisit }: DiscoveryProps) {
     return { ...block, identity: `${identity}:${occurrence}` };
   });
 
-  return <section aria-label="Ontdek-lab" className="space-y-6">
+  return <section aria-label="Zinnen ontdekken" className="space-y-6">
     <div>
       <p className="mb-2 flex items-center gap-2 text-caption font-bold tracking-wide text-blue-ink uppercase"><Eye aria-hidden className="size-4" />Voorspel, onderzoek, vergelijk</p>
       <h2 className="font-display text-title-sm font-extrabold leading-tight text-ink">{lesson.discovery.question}</h2>
@@ -107,7 +107,7 @@ export function DiscoveryLab({ lesson, visited, onVisit }: DiscoveryProps) {
         <Button variant="secondary" disabled={!prediction.text.trim()} onClick={() => setPrediction({ compared: true })}>Vergelijk mijn verklaring</Button>
         <Button variant="ghost" size="sm" onClick={() => setPrediction({ compared: true })}>Ik heb eerst een uitgewerkt voorbeeld nodig</Button>
       </div> : <p className="text-small leading-relaxed text-purple-ink">Vergelijk je verklaring met de uitwerking hieronder. Welk woord of blok ondersteunt haar? Pas je tekst aan als je een verschil ontdekt.</p>}
-      <p className="text-caption text-ink-muted">Deze oefennotitie blijft op dit scherm. Bewaar je eigen toepassing later op je spiekkaart.</p>
+      <p className="text-caption text-ink-muted">Deze oefennotitie blijft op dit scherm. Bewaar je eigen toepassing bij de uitleg of samenvatting.</p>
     </section>
 
     <div className="grid min-w-0 gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:items-start">

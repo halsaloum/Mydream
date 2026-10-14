@@ -4,6 +4,8 @@ import type { Route } from 'next';
 import { useCallback, useMemo } from 'react';
 import { getLessonEntry, lessonOverview, nextLessonEntry } from '@/content/catalog';
 import { lessonIcon } from '@/content/lesson-icons';
+import { sentenceLessonHref } from '@/lib/sentences/routes';
+import { sentenceLessonForPractice } from '@/lib/sentences/practice-reference';
 import { demoEntries, demoLessonId, getDemo } from '@/content/demo';
 import { buildPlan } from '@/engine/plan';
 import { lookupStep, planFor } from '@/lib/plans';
@@ -24,6 +26,7 @@ export function LessonRoute({ lessonId }: { lessonId: string }) {
   if (!entry) return null;
 
   const next = nextLessonEntry(lessonId);
+  const sentenceLesson = entry.layer.id === 'zinnen' ? sentenceLessonForPractice(lessonId) : undefined;
   const meta: PlayerMeta = {
     mode: 'lesson',
     title: entry.lesson.title,
@@ -32,6 +35,7 @@ export function LessonRoute({ lessonId }: { lessonId: string }) {
     exit: { href: '/', label: 'Les sluiten (je voortgang is bewaard)' },
     tag: { layer: entry.layer, layerIndex: entry.layerIndex, domain: entry.domain, stage: entry.lesson.stage, icon: lessonIcon(lessonId) },
     guidance: entry.lesson.guidance,
+    ...(sentenceLesson ? { learningReference: { href: sentenceLessonHref(sentenceLesson.id), title: sentenceLesson.title } } : {}),
     finish: {
       title: entry.lesson.title,
       context: `${entry.domain.name} · Niveau ${entry.layerIndex + 1}: ${entry.layer.name}`,

@@ -91,7 +91,7 @@ async function solveExercise(page: Page, exercise: SentenceExercise) {
 }
 
 async function selectTab(page: Page, index: number) {
-  const tabs = page.getByRole('tablist', { name: 'De vijf onderdelen van deze module', exact: true }).getByRole('tab');
+  const tabs = page.getByRole('tablist', { name: 'De vijf onderdelen van deze les', exact: true }).getByRole('tab');
   await tabs.nth(index).click();
   await expect(tabs.nth(index)).toHaveAttribute('aria-selected', 'true');
 }
@@ -107,6 +107,7 @@ test('de afdeling Zinnen bundelt twaalf interactieve modules en behoudt alle der
   await expect(page.getByRole('link', { name: /^Open de module\s*:/ })).toHaveCount(1);
   await expect(page.getByRole('heading', { name: sentenceLessons[1]!.title, exact: true })).toBeVisible();
   await search.fill('');
+  await page.getByText('Extra oefenen en verdiepen · 30 lessen', { exact: true }).click();
   await page.getByRole('link', { name: 'Bekijk de 30 aanvullende lessen', exact: true }).click();
   await expect(page).toHaveURL(/\/lessen\?niveau=zinnen$/);
   const combined = page.getByRole('region', { name: /^Niveau 6.*Zinnen$/ });
@@ -120,13 +121,13 @@ test('de afdeling Zinnen bundelt twaalf interactieve modules en behoudt alle der
 
 test('vijf echte lesonderdelen werken met toetsenbord en het lab bewaart het gekozen contrast', async ({ page }) => {
   await page.goto(`/zinnen/les/${firstLesson.id}`);
-  const tabs = page.getByRole('tablist', { name: 'De vijf onderdelen van deze module', exact: true }).getByRole('tab');
+  const tabs = page.getByRole('tablist', { name: 'De vijf onderdelen van deze les', exact: true }).getByRole('tab');
   await expect(tabs).toHaveCount(5);
   await tabs.nth(0).focus();
   await tabs.nth(0).press('ArrowRight');
   await expect(tabs.nth(1)).toBeFocused();
   await expect(tabs.nth(1)).toHaveAttribute('aria-selected', 'true');
-  await expect(page.getByRole('heading', { name: 'De Codex-wetten', exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Begrijp eerst wat er gebeurt.', exact: true })).toBeVisible();
   await tabs.nth(1).press('ArrowRight');
   await expect(tabs.nth(2)).toBeFocused();
   await expect(page.getByRole('heading', { name: firstLesson.arena[0]!.prompt, exact: true })).toBeVisible();
@@ -137,24 +138,24 @@ test('vijf echte lesonderdelen werken met toetsenbord en het lab bewaart het gek
   await expect(page.getByText(firstLesson.debugger[0]!.instruction, { exact: true })).toHaveCount(0);
   await tabs.nth(3).press('End');
   await expect(tabs.nth(4)).toBeFocused();
-  await expect(page.getByRole('heading', { name: 'Verdien je spiekkaart.', exact: true })).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Module afronden en kaart bewaren', exact: true })).toHaveCount(0);
+  await expect(page.getByRole('heading', { name: firstLesson.summary.title, exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Module afronden en samenvatting bewaren', exact: true })).toHaveCount(0);
   await tabs.nth(4).press('Home');
   await expect(tabs.nth(0)).toBeFocused();
   const variant = firstLesson.discovery.variants.at(-1)!;
   const button = page.getByRole('group', { name: 'Contrasterende voorbeelden', exact: true }).getByRole('button', { name: new RegExp(`^${escapeRegExp(variant.label)}(?: · bekeken)?$`) });
   await button.click();
-  await expect(page.getByRole('region', { name: 'Ontdek-lab', exact: true }).getByRole('status')).toHaveText(variant.sentence);
+  await expect(page.getByRole('region', { name: 'Zinnen ontdekken', exact: true }).getByRole('status')).toHaveText(variant.sentence);
   await page.reload();
   await expect(button).toHaveAttribute('aria-pressed', 'true');
-  await expect(page.getByRole('region', { name: 'Ontdek-lab', exact: true }).getByRole('status')).toHaveText(variant.sentence);
+  await expect(page.getByRole('region', { name: 'Zinnen ontdekken', exact: true }).getByRole('status')).toHaveText(variant.sentence);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
 });
 
-test('een volledige module vereist zes bouwopdrachten en vier eigen reparaties voor de persoonlijke Codex', async ({ page }) => {
+test('een volledige module vereist zes bouwopdrachten en vier eigen reparaties om de samenvatting te bewaren', async ({ page }) => {
   test.setTimeout(180_000);
   await page.goto('/zinnen/codex');
-  await expect(page.getByRole('heading', { name: 'Je eerste kaart wacht op je.', exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Je eerste samenvatting wacht op je.', exact: true })).toBeVisible();
   await page.getByRole('link', { name: 'Begin met module 1', exact: true }).click();
   await selectTab(page, 2);
 
@@ -217,20 +218,20 @@ test('een volledige module vereist zes bouwopdrachten en vier eigen reparaties v
     await expect(page.getByRole('button', { name: 'Controleer mijn toepassing', exact: true })).toBeDisabled();
     await expect(page.getByText(exercise.repairs[0]!, { exact: true })).toHaveCount(0);
     await solveExercise(page, exercise);
-    await page.getByRole('button', { name: index === firstLesson.debugger.length - 1 ? 'Naar mijn spiekkaart' : 'Volgende opdracht', exact: true }).click();
+    await page.getByRole('button', { name: index === firstLesson.debugger.length - 1 ? 'Naar de samenvatting' : 'Volgende opdracht', exact: true }).click();
   }
   await expect(page.getByText('10/10', { exact: true })).toBeVisible();
-  await page.getByRole('button', { name: 'Module afronden en kaart bewaren', exact: true }).click();
+  await page.getByRole('button', { name: 'Module afronden en samenvatting bewaren', exact: true }).click();
   await expect(page.getByRole('heading', { name: firstLesson.summary.title, exact: true })).toBeVisible();
   await expect(page.getByText(/90% van je eerste gecontroleerde toepassingen klopte/)).toBeVisible();
   const transfer = 'De vriendelijke docent bij het raam leest een boek over taal. Zij leest het. Bij het raam beschrijft hier welke docent ik bedoel.';
   await page.getByRole('textbox', { name: 'Pas dit toe in je eigen tekst', exact: true }).fill(transfer);
   await page.reload();
   await expect(page.getByRole('textbox', { name: 'Pas dit toe in je eigen tekst', exact: true })).toHaveValue(transfer);
-  await page.getByRole('link', { name: 'Mijn persoonlijke Codex', exact: true }).click();
-  await expect(page.getByRole('heading', { name: 'Mijn Zins-Codex', exact: true })).toBeVisible();
+  await page.getByRole('region', { name: 'Voortgang en afronding', exact: true }).getByRole('link', { name: 'Mijn samenvattingen', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'Mijn samenvattingen', exact: true })).toBeVisible();
   await expect(page.getByRole('heading', { name: `1. ${firstLesson.summary.title}`, exact: true })).toBeVisible();
-  await expect(page.getByRole('status')).toHaveText('1 kaarten zichtbaar · 1 van 12 verzameld');
+  await expect(page.getByRole('status')).toHaveText('1 samenvattingen zichtbaar · 1 van 12 verzameld');
   await expect(page.getByText(transfer, { exact: true })).toBeVisible();
   await page.reload();
   await expect(page.getByText(transfer, { exact: true })).toBeVisible();

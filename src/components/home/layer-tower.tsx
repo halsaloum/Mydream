@@ -50,11 +50,11 @@ function SlabFace({ face, className, style, children }: { face: Face; className?
   );
 }
 
-function Slab({ layer, index, total, selected, progress, onSelect }: { layer: Layer; index: number; total: number; selected: number; progress: ProgressData; onSelect: (index: number) => void }) {
+function Slab({ layer, index, total, selected, progress, onSelect, ratio }: { layer: Layer; index: number; total: number; selected: number; progress: ProgressData; onSelect: (index: number) => void; ratio?: number }) {
   const calm = useCalmMotion();
   const active = index === selected;
   const reached = index <= selected;
-  const done = layerCompletion(layer, progress);
+  const completedRatio = ratio ?? layerCompletion(layer, progress).ratio;
   const y = ((total - 1) / 2 - index) * (H + GAP) - (active ? 6 : 0);
   return (
     <motion.div
@@ -83,9 +83,9 @@ function Slab({ layer, index, total, selected, progress, onSelect }: { layer: La
       >
         <LayerGlyph id={layer.id} className="size-3.5 shrink-0" />
         <span className="truncate">{layer.name}</span>
-        {done.done > 0 && (
+        {completedRatio > 0 && (
           <span className={cn('ml-auto h-1 w-7 shrink-0 overflow-hidden rounded-full', reached ? 'bg-black/20' : 'bg-line')}>
-            <span className={cn('block h-full rounded-full', reached ? 'bg-white' : 'bg-accent')} style={{ width: `${done.ratio * 100}%` }} />
+            <span className={cn('block h-full rounded-full', reached ? 'bg-white' : 'bg-accent')} style={{ width: `${completedRatio * 100}%` }} />
           </span>
         )}
       </SlabFace>
@@ -98,12 +98,14 @@ export function LayerTower({
   selected,
   progress,
   onSelect,
+  ratios,
   className,
 }: {
   layers: readonly Layer[];
   selected: number;
   progress: ProgressData;
   onSelect: (index: number) => void;
+  ratios?: Readonly<Record<string, number>>;
   className?: string;
 }) {
   const orbit = useOrbit({ initial: { x: -22, y: -32 }, limitX: [-50, 10], idleSway: 16 });
@@ -124,7 +126,7 @@ export function LayerTower({
           className="absolute top-0 left-0 origin-top-left rounded-full bg-[radial-gradient(closest-side,rgb(60_40_10/0.28),transparent)]"
         />
         {layers.map((layer, index) => (
-          <Slab key={layer.id} layer={layer} index={index} total={layers.length} selected={selected} progress={progress} onSelect={onSelect} />
+          <Slab key={layer.id} layer={layer} index={index} total={layers.length} selected={selected} progress={progress} onSelect={onSelect} ratio={ratios?.[layer.id]} />
         ))}
       </motion.div>
     </div>

@@ -4,14 +4,28 @@ import { ArrowRight } from 'lucide-react';
 import type { Route } from 'next';
 import Link from 'next/link';
 import { exerciseCountLabel } from '@/content/catalog';
+import type { SentenceLesson } from '@/content/sentences/types';
 import { DomainGlyph, LayerGlyph } from '@/components/brand/glyphs';
 import { Pim } from '@/components/brand/pim';
 import { ButtonLink } from '@/components/ui/button';
 import { ProgressBar } from '@/components/ui/progress';
 import type { ContinueTarget } from '@/state/selectors';
+import { sentenceLessonHref } from '@/lib/sentences/routes';
+
+export type SentenceContinueTarget = { lesson: SentenceLesson; solved: number; started: boolean; completed: boolean };
 
 /** "Verder met jouw les": de hoofdactie van de startpagina. */
-export function ContinueCard({ target, firstTime }: { target: ContinueTarget; firstTime: boolean }) {
+export function ContinueCard({ target, firstTime, sentence }: { target: ContinueTarget; firstTime: boolean; sentence?: SentenceContinueTarget }) {
+  if (sentence) return <section aria-labelledby="verder-titel" data-accent="navy" className="rounded-sheet border-2 border-line bg-surface p-5 shadow-sheet sm:p-6">
+    <p className="text-small font-bold text-blue-ink">Niveau 6 · Zinnen</p>
+    <h2 id="verder-titel" className="mt-3 font-display text-title font-extrabold"><span className="sr-only">Verder met jouw les: </span>{sentence.lesson.title}</h2>
+    <p className="mt-3 text-body leading-relaxed text-ink-soft">{sentence.completed ? 'Deze les is afgerond. Herhaal haar of kies een volgende les in het leerpad hieronder.' : sentence.started ? `${sentence.solved} van 10 opdrachten opgelost. Je antwoorden staan klaar.` : 'Eerst onderzoek je een voorbeeld, daarna bouw en herstel je de zin zelf.'}</p>
+    {sentence.started && <div className="mt-4"><ProgressBar value={sentence.completed ? 10 : sentence.solved} max={10} size="sm" label="Voortgang in deze zinnenles" /></div>}
+    <div className="mt-5 flex flex-wrap items-center gap-3 border-t border-line pt-4">
+      <ButtonLink href={sentenceLessonHref(sentence.lesson.id)} variant="accent" size="lg" className="max-sm:w-full">{sentence.completed ? 'Herhaal deze les' : sentence.started ? 'Verder met jouw les' : 'Begin met deze les'}<ArrowRight aria-hidden className="size-5" /></ButtonLink>
+      <Link href="/?niveau=zinnen#niveaus-titel" className="inline-flex min-h-11 items-center font-bold text-ink-muted hover:text-ink">Bekijk het leerpad</Link>
+    </div>
+  </section>;
   if (target.kind === 'complete') {
     return (
       <section aria-labelledby="verder-titel" className="flex flex-col gap-5 rounded-sheet border-2 border-line bg-surface p-6 shadow-sheet sm:flex-row sm:items-center sm:p-8">

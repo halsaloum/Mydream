@@ -1,7 +1,7 @@
 'use client';
 
 import { NavigationMenu } from '@base-ui/react/navigation-menu';
-import { Blocks, BookOpenText, ChartColumnIncreasing, House, Languages, Network, Repeat2, Settings } from 'lucide-react';
+import { BookOpenText, ChartColumnIncreasing, House, Languages, Network, Repeat2, Settings } from 'lucide-react';
 import { motion } from 'motion/react';
 import type { Route } from 'next';
 import Link from 'next/link';
@@ -18,7 +18,6 @@ import { dueCount, useWords } from '@/state/words';
 const NAV: { href: Route; label: string; mobileLabel?: string; icon: typeof House }[] = [
   { href: '/', label: 'Leren', icon: House },
   { href: '/lessen', label: 'Lessen', icon: BookOpenText },
-  { href: '/zinnen', label: 'Zinnen', icon: Blocks },
   { href: '/woorden', label: 'Woorden', icon: Languages },
   { href: '/argumentatie', label: 'Argumentatie', mobileLabel: 'Argumenten', icon: Network },
   { href: '/herhalen', label: 'Herhalen', icon: Repeat2 },
@@ -26,7 +25,7 @@ const NAV: { href: Route; label: string; mobileLabel?: string; icon: typeof Hous
 ];
 
 function isActive(pathname: string, href: string) {
-  return href === '/' ? pathname === '/' : pathname === href || pathname.startsWith(`${href}/`);
+  return href === '/' ? pathname === '/' || pathname === '/zinnen' || pathname.startsWith('/zinnen/') : pathname === href || pathname.startsWith(`${href}/`);
 }
 
 function useReviewCount() {
@@ -145,7 +144,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         aria-label="Hoofdnavigatie (mobiel)"
         className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-surface/85 pb-[env(safe-area-inset-bottom)] shadow-[0_-10px_30px_-18px_rgb(60_40_10/0.3)] backdrop-blur-xl backdrop-saturate-150 lg:hidden"
       >
-        <NavigationMenu.List className="mx-auto grid max-w-xl grid-cols-7">
+        <NavigationMenu.List className="mx-auto grid max-w-xl grid-cols-6">
           {NAV.map((item) => {
             const active = isActive(pathname, item.href);
             return (
