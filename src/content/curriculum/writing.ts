@@ -215,7 +215,7 @@ export const WRITING_UPGRADES: Record<string, LessonUpgrade> = {
   a1: {
     guidance: guide('Je bouwt een alinea rond één concrete hoofdgedachte met relevante uitwerking.', 'Je kunt losse, begrijpelijke zinnen schrijven.', ['Formuleer wat de lezer na deze alinea moet begrijpen.', 'Voeg uitleg en een passend voorbeeld toe.', 'Schrap zijpaden en laat de laatste zin aansluiten op de hoofdgedachte.'], ['Draagt elke zin iets bij aan dezelfde gedachte?', 'Herhaal ik niet alleen de kernzin in andere woorden?']),
     steps: [
-      { kind: 'explain', id: 'toepassen-alineadoel', title: 'Geef elke zin werk', panels: [{ text: 'Een kernzin formuleert de hoofdgedachte. Andere zinnen kunnen haar uitleggen, illustreren, begrenzen of onderbouwen. De kernzin staat vaak vooraan, maar dat is geen wet. Begin als oefening wel met de kernzin: zo kun je controleren of de rest erbij hoort.', lab: { label: 'Kijk naar de functie', chips: [{ k: 'Kern', out: 'Een vaste agenda maakt ons overleg korter.', note: 'Eén afgebakende hoofdgedachte.' }, { k: 'Uitleg', out: 'Deelnemers weten vooraf welke besluiten nodig zijn.', note: 'Legt uit waarom een agenda kan helpen.' }, { k: 'Voorbeeld', out: 'Bij een begrotingspunt sturen we de cijfers een dag eerder rond.', note: 'Maakt het proces concreet; bewijst op zichzelf nog geen algemeen effect.' }] } }] },
+      { kind: 'explain', id: 'toepassen-alineadoel', title: 'Geef elke zin werk', panels: [{ text: 'Een kernzin formuleert de hoofdgedachte. Andere zinnen kunnen haar uitleggen, illustreren, begrenzen of onderbouwen. De kernzin staat vaak vooraan, maar dat is geen wet. Begin als oefening wel met de kernzin: zo kun je controleren of de rest erbij hoort.', lab: { label: 'Kijk naar de functie', chips: [{ k: 'Kern', out: 'Een vaste agenda kan ons overleg korter maken.', note: 'Eén afgebakende hoofdgedachte.' }, { k: 'Uitleg', out: 'Deelnemers weten vooraf welke besluiten nodig zijn.', note: 'Legt uit waarom een agenda kan helpen.' }, { k: 'Voorbeeld', out: 'Bij een begrotingspunt sturen we de cijfers een dag eerder rond.', note: 'Maakt het proces concreet; bewijst op zichzelf nog geen algemeen effect.' }] } }] },
       choose('toepassen-kernzin', 'Welke kernzin geeft een alinea over onze openingstijden een duidelijke richting?', ['De bibliotheek opent op maandag twee uur langer.', 'Er zijn allerlei dingen met tijd.', 'Ik vind bibliotheken heel interessant.'], 'De bibliotheek opent op maandag twee uur langer.', 'De zin is concreet en laat zien welke uitwerking relevant zal zijn: reden, uren en gevolgen voor bezoekers.'),
       { kind: 'paragraph', id: 'toepassen-alineabouw', prompt: 'Orden: begin met het probleem, verklaar dat, geef de maatregel en eindig met het gevolg.', parts: [{ role: 'Probleem', text: 'Bezoekers vinden de ingang van het gebouw moeilijk.' }, { role: 'Uitleg', text: 'De voordeur ligt aan een zijstraat en is vanaf het plein niet zichtbaar.' }, { role: 'Maatregel', text: 'Daarom plaatsen we op het plein een bord met een pijl.' }, { role: 'Gevolg', text: 'Zo weten nieuwe bezoekers waar ze naar binnen kunnen.' }], why: 'De verwijzingen daarom en zo sluiten aan op de eerdere zinnen. Elke zin helpt hetzelfde toegangsprobleem oplossen.' },
       choose('toepassen-zijpad', 'Een alinea verklaart waarom het rooster verandert. Welke zin hoort waarschijnlijk in een andere alinea?', ['Het nieuwe logo krijgt een blauwe achtergrond.', 'De late lessen trokken te weinig deelnemers.', 'Daarom begint de cursus voortaan om 18.00 uur.'], 'Het nieuwe logo krijgt een blauwe achtergrond.', 'Het logo beantwoordt een andere vraag. Een zin kan interessant zijn en toch niet bijdragen aan deze hoofdgedachte.'),
@@ -274,5 +274,16 @@ for (const [lessonId, upgrade] of Object.entries(WRITING_UPGRADES)) {
         example: WRITING_EXAMPLES[lessonId] ?? step.why,
       };
     }
+  }
+}
+
+// Bij alinea's moet de lezer inhoudelijke criteria kunnen aanwijzen in de tekst.
+const ALINEA_CRITERIA: Record<string, string[]> = {
+  a1: ['Mijn vier tot zes zinnen werken dezelfde concrete verbetering uit.', 'Ik leg het nut uit en gebruik een voorbeeld dat bij die verbetering past.', 'Ik benoem een grens of voorwaarde zonder een gegarandeerd effect te claimen.'],
+  a2: ['Ik wijs aan welk ding en welke gebeurtenis mijn verwijzingen hernemen.', 'Ik kan uitleggen waarom mijn tegenstelling inhoudelijk klopt.', 'Een lezer kan zonder gokken bepalen wie iets doet en wat verandert.'],
+};
+for (const [lessonId, criteria] of Object.entries(ALINEA_CRITERIA)) {
+  for (const step of WRITING_UPGRADES[lessonId]!.steps) {
+    if (step.kind === 'write' && step.rubric) step.rubric.criteria = criteria;
   }
 }

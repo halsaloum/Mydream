@@ -58,8 +58,8 @@ export const GROEP_BOUW_LESSONS: LessonInput[] = [
             },
           },
           {
-            text: 'Verwijst *het*, *dat* of *wat* naar een ding, dan mag het niet na een voorzetsel staan. Je zegt niet *met het*, maar *ermee*. Het voornaamwoord wordt een *R-woord* (*er*, *daar*, *waar*, *hier*) en het voorzetsel komt erachter: *daarover*, *waarmee*, *hierop*. Let op: *met* wordt *mee* en *tot* wordt *toe*. Staan de twee delen naast elkaar, dan schrijf je ze aan elkaar. Maar ze kunnen ook uit elkaar: *Waar denk je aan?* *Daar heb ik niet op gerekend.*',
-            rule: 'Bij een ding: niet voorzetsel + het/dat/wat, maar er/daar/waar + voorzetsel.',
+            text: 'Bij een verwijzing naar een ding gebruik je na een voorzetsel vaak een *voornaamwoordelijk bijwoord*: niet *met het* als losse verwijzing, maar *ermee*. Een R-woord (*er*, *daar*, *waar*, *hier*) combineert dan met het voorzetseldeel: *daarover*, *waarmee*, *hierop*. Let op: *met* wordt *mee* en *tot* wordt *toe*. Aangrenzende delen schrijf je samen, maar ze kunnen ook uit elkaar: *Waar denk je aan?* *Daar heb ik niet op gerekend.* Dit is geen verbod op ieder *dit*, *dat* of *wat* na een voorzetsel: een uitgesproken tegenstelling of een volgende bijzin kan een ander patroon geven.',
+            rule: 'Bij een gewone losse verwijzing naar een ding zijn ermee, daarop en waarmee gebruikelijke patronen; bekijk ook de context.',
             mark: {
               q: 'Tik de twee helften van het gesplitste R-woord',
               sentence: 'Daar had ik eerlijk gezegd nooit op gerekend.',
@@ -295,7 +295,7 @@ export const GROEP_BOUW_LESSONS: LessonInput[] = [
         title: 'Wat de kern nodig heeft, en wat er los bij komt',
         panels: [
           {
-            text: 'Sommige woorden komen nooit alleen naar een feestje. *Geven* neemt altijd iemand mee die iets krijgt; *slapen* kan prima alleen. Wat een kern nodig heeft om af te zijn, heet een *complement* (ook: *argument*). Wat er vrij bij komt, als extra informatie, heet een *bepaling* (Engels: *adjunct*). Ook in de naamwoordgroep: in *de student natuurkunde met lang haar* zegt *natuurkunde* wát hij studeert (complement), en *met lang haar* is extra (bepaling).',
+            text: 'Werkwoorden selecteren verschillende deelnemers. Bij *geven* denk je bijvoorbeeld aan een gever, iets wat gegeven wordt en een ontvanger; bij *slapen* aan een slaper. Een geselecteerde aanvulling heet een *complement* (ook: *argument*). Zo’n aanvulling hoeft niet altijd uitgesproken te worden: *Zij leest* kan ook zonder zichtbaar object. Wat vrij extra informatie geeft, heet een *bepaling* (Engels: *adjunct*). Ook in de naamwoordgroep: in de hier gebruikte analyse van *de student natuurkunde met lang haar* is *natuurkunde* complement en *met lang haar* een vrije bepaling.',
             rule: 'Complement: wat de kern nodig heeft. Bepaling: wat er vrij bij komt.',
             phrase: {
               q: 'Vind de hele groep rond student, het complement en de bepaling',
@@ -372,7 +372,7 @@ export const GROEP_BOUW_LESSONS: LessonInput[] = [
         panels: [
           {
             text: 'Een betrouwbare test is de *doen-test*, het Nederlandse broertje van de Engelse *do so*-test. Je vervangt het werkwoord met zijn complementen door *deed dat*. Een bepaling mag erbuiten blijven: *Ik las het boek in de tuin en zij deed dat in de keuken.* Een complement niet: (fout) *Ik las het boek en zij deed dat de krant.* Wat na *deed dat* kan staan, is dus een bepaling.',
-            rule: 'Kan het na ‘deed dat’ staan, dan is het een bepaling. Kan dat niet, dan zit het in de werkwoordgroep: een complement.',
+            rule: 'De doen-test levert aanwijzingen voor het onderscheid; combineer haar met de betekenis en de selectie door het werkwoord.',
             lab: {
               label: 'Ik las het boek in de tuin en zij deed dat …',
               chips: [
@@ -517,13 +517,13 @@ export const GROEP_BOUW_LESSONS: LessonInput[] = [
             },
           },
           {
-            text: 'Gradeerwoorden zeggen hoe sterk de eigenschap is: *heel*, *erg*, *zeer*, *een beetje*, *te*, *zo*. Sommige hebben een partner verderop: *te moe om te fietsen*, *zo moe dat ik in slaap viel*. En let op *heel*: in *een heel mooie fiets* bepaalt *heel* het woord *mooie*, niet *fiets*. Het is dan een bijwoord en krijgt geen *-e*. *Een hele mooie fiets* hoor je veel, maar het is spreektaal.',
-            rule: 'heel bij een bijvoeglijk naamwoord blijft heel: een heel mooie fiets.',
+            text: 'Gradeerwoorden zeggen hoe sterk de eigenschap is: *heel*, *erg*, *zeer*, *een beetje*, *te*, *zo*. Sommige hebben een partner verderop: *te moe om te fietsen*, *zo moe dat ik in slaap viel*. In *een heel mooie fiets* bepaalt *heel* het woord *mooie*, niet *fiets*. Bij graadaanduidend *heel* bestaat ook een verbogen variant: *een hele mooie fiets*. Beide varianten zijn correct; dit is een bijzonder geval naast het gewone onverbogen bijwoord.',
+            rule: 'Heel en hele zijn beide correct als graadaanduiding bij mooie: een heel mooie fiets / een hele mooie fiets.',
             quiz: {
-              q: 'Wat is de norm in verzorgde schrijftaal?',
-              options: ['een heel mooie fiets', 'een hele mooie fiets'],
-              answer: 'een heel mooie fiets',
-              why: 'heel bepaalt mooie en is dan een bijwoord: geen buigings-e. Een hele fiets betekent een fiets die niet kapot is.',
+              q: 'Wat bepaalt heel in een heel mooie fiets?',
+              options: ['de graad van mooie', 'het aantal fietsen', 'dat de fiets compleet is'],
+              answer: 'de graad van mooie',
+              why: 'Heel zegt hier hoe mooi. Een heel mooie fiets en een hele mooie fiets zijn beide correct. In een hele fiets zonder mooie betekent hele juist compleet.',
             },
           },
           {
@@ -568,11 +568,11 @@ export const GROEP_BOUW_LESSONS: LessonInput[] = [
       {
         kind: 'fix',
         id: 'heel-mooi',
-        prompt: 'Verbeter het woord dat niet past in verzorgde schrijftaal.',
-        sentence: 'Het was een hele mooie voorstelling.',
+        prompt: 'Herstel de foutieve spelling heele. Gebruik de onverbogen vorm heel.',
+        sentence: 'Het was een heele mooie voorstelling.',
         wrong: 3,
         answer: 'heel',
-        why: 'heel bepaalt mooie, niet voorstelling. Als bijwoord krijgt het geen -e.',
+        why: 'De gevraagde onverbogen vorm is heel. Heele is fout gespeld; hele mooie zou als verbogen graadaanduiding ook correct zijn.',
       },
       {
         kind: 'explain',

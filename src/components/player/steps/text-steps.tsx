@@ -3,11 +3,11 @@
 import { Input } from '@base-ui/react/input';
 import { Check, Circle } from 'lucide-react';
 import { motion } from 'motion/react';
-import { useId } from 'react';
+import { useId, useState } from 'react';
 import { TextArea } from '@/components/ui/field';
 import { Button } from '@/components/ui/button';
 import { RichText } from '@/components/ui/rich-text';
-import { criteriaStatus, isFormExercise } from '@/engine/grade';
+import { criteriaStatus, isFormExercise, normalizeTyped } from '@/engine/grade';
 import { cn } from '@/lib/cn';
 import { transition, useCalmMotion } from '@/lib/motion';
 import { Examples, Hint, Kbd, Stage, StepHeading, type StepProps } from './shared';
@@ -26,9 +26,12 @@ export function LearnStep({ step }: StepProps<'learn'>) {
 }
 
 /** Invullen in de zin. Hoofdletters tellen niet mee; Enter controleert. */
-export function TypeStep({ step, response, onChange, locked, correct, onSubmit }: StepProps<'type'>) {
+export function TypeStep({ step, response, onChange, locked, correct, onSubmit, assistance = 'guided' }: StepProps<'type'>) {
   const id = useId();
-  const size = Math.max(5, response.value.length, step.hint.length) + 1.5;
+  const hintId = useId();
+  const [showHint, setShowHint] = useState(false);
+  const usefulHint = step.hint.trim() && normalizeTyped(step.hint) !== normalizeTyped(step.answer);
+  const size = Math.max(6, response.value.length) + 1.5;
   const state = locked ? (correct ? 'correct' : 'wrong') : 'idle';
   return (
     <div>
@@ -44,7 +47,7 @@ export function TypeStep({ step, response, onChange, locked, correct, onSubmit }
             data-step-autofocus
             value={response.value}
             onValueChange={(value) => onChange({ kind: 'type', value })}
-            placeholder={step.hint}
+            placeholder="…"
             readOnly={locked}
             autoComplete="off"
             autoCapitalize="off"
@@ -67,6 +70,14 @@ export function TypeStep({ step, response, onChange, locked, correct, onSubmit }
           {step.after}
         </p>
       </Stage>
+      {!locked && usefulHint && assistance === 'guided' && (
+        <div className="mt-4">
+          <button type="button" aria-expanded={showHint} aria-controls={showHint ? hintId : undefined} onClick={() => setShowHint((shown) => !shown)} className="min-h-11 rounded-control px-2 text-small font-bold text-accent-ink underline decoration-2 underline-offset-4 focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-focus">
+            {showHint ? 'Verberg aanwijzing' : 'Bekijk een aanwijzing'}
+          </button>
+          {showHint && <p id={hintId} className="mt-1 rounded-control border-2 border-line bg-sunken p-3 text-small text-ink-soft"><RichText text={step.hint} /></p>}
+        </div>
+      )}
       {!locked && (
         <Hint className="mt-4 hidden items-center gap-1.5 sm:flex">
           Typ je antwoord en druk op <Kbd>Enter</Kbd>.
@@ -78,7 +89,7 @@ export function TypeStep({ step, response, onChange, locked, correct, onSubmit }
 
 /** Herschrijven. Bij vormopdrachten tellen hoofdletters en leestekens mee; dat wordt vooraf gezegd. */
 export function RewriteStep({ step, response, onChange, locked, onSubmit }: StepProps<'rewrite'>) {
-  const strict = isFormExercise(step);
+  const strict = step.strict ?? isFormExercise(step);
   return (
     <div>
       <StepHeading>{step.prompt}</StepHeading>

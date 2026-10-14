@@ -1,4 +1,5 @@
 import { diagnosis, segmentation, tokens } from './helpers';
+import { reviewedDebugger } from './debugger-review';
 import type { DebugExercise, SentenceLesson, SentenceRule } from './types';
 
 const lessonId = (number: number) => `zinnen-${String(number).padStart(2, '0')}`;
@@ -21,7 +22,7 @@ function arena(number: number, index: number, rule: number, prompt: string, expl
 }
 
 function debug(number: number, index: number, rule: number, sentence: string, targets: number[], instruction: string, repairs: string[], explanation: string, hint: string): DebugExercise {
-  return {
+  return reviewedDebugger({
     id: `${lessonId(number)}-debugger-${index}`,
     kind: 'debug',
     support: 'zelfstandig',
@@ -33,7 +34,7 @@ function debug(number: number, index: number, rule: number, sentence: string, ta
     repairs,
     explanation,
     hint,
-  };
+  });
 }
 
 export const foundationLessons: SentenceLesson[] = [
@@ -179,7 +180,7 @@ export const foundationLessons: SentenceLesson[] = [
     arena: [
       {
         ...arena(2, 1, 2, 'Ontgrendel de werkwoordsvorm door eerst de kern van het onderwerp te vinden.', 'Het onderwerp is Een doos met twintig boeken. De kern doos is enkelvoud; de boeken zitten binnen een nabepaling. Daarom staat.', 'Vraag hoeveel dozen er staan; het aantal boeken is hier geen aantal dozen.'),
-        kind: 'gate', diagnosis: diagnosis('Een doos met twintig boeken staat op tafel.', [1], 'Klik alleen de kern van het onderwerp aan.', 'Doos is de kern. Boeken is wel onderdeel van de onderwerpgroep, maar niet haar kern.'),
+        kind: 'gate', diagnosis: diagnosis('Een doos met twintig boeken ___ op tafel.', [1], 'Klik alleen de kern van het onderwerp aan.', 'Doos is de kern. Boeken is wel onderdeel van de onderwerpgroep, maar niet haar kern.'),
         options: [{ id: 'staat', text: 'staat', feedback: 'Eén doos: enkelvoud staat.' }, { id: 'staan', text: 'staan', feedback: 'Boeken trekt je naar meervoud, maar de kern is doos.' }, { id: 'stonden', text: 'stonden', feedback: 'Deze vorm is meervoud én verleden tijd; gevraagd is tegenwoordige tijd bij één doos.' }], answer: 'staat',
       },
       {

@@ -13,7 +13,7 @@ import type { StepProps } from './shared';
  * - gecontroleerde vormen (graded) zetten vast bij `onSubmit` als ze compleet zijn;
  * - `seed` bepaalt hoe keuzes en kaartjes geschud worden (zoals één keer tonen in de player).
  */
-export function renderStep<K extends StepKind>(Component: ComponentType<StepProps<K>>, step: StepOf<K>, start?: ResponseOf<K>, seed = 'test:seed') {
+export function renderStep<K extends StepKind>(Component: ComponentType<StepProps<K>>, step: StepOf<K>, start?: ResponseOf<K>, seed = 'test:seed', assistance: StepProps<K>['assistance'] = 'guided') {
   const state = {
     response: (start ?? initialResponse(step as Step)) as ResponseOf<K>,
     locked: false,
@@ -48,6 +48,7 @@ export function renderStep<K extends StepKind>(Component: ComponentType<StepProp
           correct={correct}
           stepKey="test:s0#0"
           seed={seed}
+          assistance={assistance}
           onChange={(next) => {
             if (state.locked) return;
             state.response = next;

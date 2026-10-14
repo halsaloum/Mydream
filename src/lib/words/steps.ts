@@ -37,13 +37,21 @@ export function recallCue(answer: string): string {
     .join(' ');
 }
 
+/** A definition may contain an accepted answer; hide that occurrence before retrieval. */
+export function recallMeaning(meaning: string, answers: readonly string[]): string {
+  return [...answers].sort((a, b) => b.length - a.length).reduce((clue, answer) => {
+    const pattern = wholeWord(answer);
+    return clue.replace(new RegExp(pattern.source, `${pattern.flags.replace('g', '')}g`), '…');
+  }, meaning);
+}
+
 /** Zelf ophalen in een zin; met beginletters zolang het woord nog nieuw is, later zonder. */
 function recallStep(word: BankWord, index: 0 | 1 | 2, cued: boolean): StepOf<'recall'> {
   const { before, after, answers } = splitGap(word.gaps[index] ?? word.gaps[0]!);
   return {
     kind: 'recall',
-    prompt: cued ? 'Welk woord past hier?' : 'Welk woord past hier? Nu zonder beginletter.',
-    clue: word.meaning,
+    prompt: cued ? 'Vul het geleerde woord in de passende vorm in.' : 'Haal het geleerde woord op, zonder beginletter. Gebruik de vorm die hier past.',
+    clue: recallMeaning(word.meaning, answers),
     ...(cued ? { cue: recallCue(answers[0] ?? '') } : {}),
     before,
     after,
@@ -133,14 +141,13 @@ export function wordTaskStep(word: BankWord, task: Task): Step {
         bye: 'Helder, dank je.',
       };
     case 'colloc': {
-      // Zelf de vaste combinatie maken, niet kiezen uit foute combinaties: wie foute combinaties
-      // ziet, onthoudt die soms in plaats van de goede.
+      // Deze taak vraagt productie van de combinatie; de feedback noemt de bedoelde vorm.
       const { before, after, answers } = splitGap(word.colloc.text);
       // Staat het antwoord (vaak een voorzetsel) in de betekenis, dan alleen het woord als steuntje.
       const gives = answers.some((answer) => wholeWord(answer).test(word.meaning));
       return {
         kind: 'recall',
-        prompt: 'Wat hoort hier vast bij?',
+        prompt: 'Vul de geoefende vaste combinatie aan.',
         clueLabel: 'Het woord',
         clue: gives ? shown : `${shown}: ${word.meaning}`,
         cue: recallCue(answers[0] ?? ''),

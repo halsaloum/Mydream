@@ -168,6 +168,20 @@ export const argumentLessons: ArgumentLesson[] = [
             "category": "reden"
           }
         ]
+      },
+      {
+        "id": "intro1-jouw-argument",
+        "kind": "reflection",
+        "prompt": "Geef zelf een voorstel met een reden in een nieuwe situatie. Benoem daarna beide onderdelen.",
+        "scenario": "Je sportgroep bespreekt waar de tassen moeten liggen. Bij de deur staan ze in de looproute; naast de bank is ruimte. Schrijf een kort voorstel met een passende reden. Voeg geen ongeval of regel toe die niet is gegeven.",
+        "explanation": "Dit is zelfcontrole: een voorbeeld kan laten zien hoe je de onderdelen onderscheidt, maar beoordeelt jouw eigen tekst niet automatisch.",
+        "model": "Laten we de tassen naast de bank zetten, want dan staan ze niet in de looproute bij de deur. Het voorstel is om de tassen te verplaatsen; de reden is dat de looproute vrij blijft. Of de plek bij de bank geschikt blijft, kunnen we samen controleren.",
+        "rubric": [
+          "Ik doe een concreet voorstel en noem een reden die dat voorstel ondersteunt.",
+          "Ik benoem welk deel mijn voorstel is en welk deel de reden is.",
+          "Ik gebruik de gegeven situatie zonder er bewijs of een garantie bij te verzinnen."
+        ],
+        "minWords": 25
       }
     ],
     "sourceIds": [
@@ -821,7 +835,7 @@ export const argumentLessons: ArgumentLesson[] = [
         "model": "De empirische brug zegt dat de stijging door de app komt en zich bij andere groepen herhaalt. De normatieve brug zegt dat aanwezigheid en eventuele leerwinst de kosten en toegankelijkheidsproblemen van verplichting rechtvaardigen. Beide zijn nog onvoldoende onderbouwd. Een passende conclusie is dat de pilot een gerichte vervolgtoets rechtvaardigt, met een vergelijking zonder app, analyse van herinneringen en een toegankelijkheidstoets voordat algemene verplichting wordt overwogen. Vrijwillige deelname kan gemotiveerdere studenten selecteren. Daarom is ook buiten de pilot een zorgvuldig gekozen vergelijking nodig. Het gunstige resultaat mag als aanleiding voor vervolgtoets meetellen, maar is geen onafhankelijke rechtvaardiging van een algemene verplichting wanneer alternatieven en toegankelijkheid nog onzeker zijn.",
         "rubric": [
           "Je maakt een empirische en een normatieve brug apart expliciet.",
-          "Je beperkt causaliteit en generalisatie op basis van het vergelijkingswijze.",
+          "Je beperkt causaliteit en generalisatie op basis van de manier van vergelijken.",
           "Je noemt gericht vervolgtoets en een besluitvoorwaarde."
         ],
         "minWords": 80
@@ -984,7 +998,7 @@ export const argumentLessons: ArgumentLesson[] = [
       {
         "id": "ba3-dossier",
         "kind": "reflection",
-        "prompt": "Beschrijf een argumentkaart met twee steunroutes, één tussenconclusie en één gedeelde kwetsbaarheid.",
+        "prompt": "Reconstrueer de gepresenteerde steunroutes en één tussenconclusie. Maak zichtbaar welke routes dezelfde pilot delen, welke kwetsbaarheid zij delen en welk onafhankelijk bewijs nog ontbreekt. Je hoeft geen tweede onafhankelijke route te verzinnen.",
         "scenario": "Een ziekenhuis wil een logistiek systeem aanschaffen. De leverancier presenteert een pilot waarin wachttijden dalen en een kostenmodel dat besparingen voorspelt. Een extern adviesbureau noemt hetzelfde systeem efficiënt, maar baseert zijn advies op de cijfers van de leverancier. De pilot vond plaats op een rustige afdeling met extra personeel. Het kostenmodel gebruikt de pilotuitkomst om jaarlijkse besparingen te berekenen. De commissie wil een schema waarin duidelijk wordt wat onafhankelijke informatie is en welke conclusie echt door welk onderdeel wordt ondersteund.",
         "explanation": "De kostenroute is deels serieel afhankelijk van het piloteffect. Het adviesbureau vormt zonder eigen gegevens geen zelfstandige bevestiging.",
         "model": "De pilot ondersteunt eerst dat het systeem onder pilotomstandigheden mogelijk wachttijd vermindert. Die tussenconclusie voedt het kostenmodel en vervolgens het aankoopadvies. Het externe advies deelt dezelfde bron en mag niet als extra onafhankelijke meting worden geteld. Een zelfstandige route kan een apart onderbouwd voordeel zijn, bijvoorbeeld minder fouten, maar dat bewijs ontbreekt hier. De gedeelde kwetsbaarheid is de generalisatie van een rustige afdeling met extra personeel naar normale bedrijfsvoering. Een sterk tegenargument kan erkennen dat het systeem werkelijk nuttig is en toch de betrouwbaarheid van de jaarlijkse besparing betwisten. De commissie moet dat bezwaar op de kostenroute plaatsen. Onafhankelijke gegevens over gewone afdelingen zouden de gedeelde generalisatieaanname beter kunnen toetsen.",
@@ -3403,29 +3417,29 @@ export const argumentLessons: ArgumentLesson[] = [
       {
         "id": "ma4-frequenties",
         "kind": "choice",
-        "prompt": "Hoeveel positieve uitslagen zijn in dit model defect?",
-        "scenario": "Van 10.000 onderdelen zijn 100 defect. Er zijn 90 terecht positieve en 495 fout-positieve uitslagen.",
-        "explanation": "De posterior gebruikt alle positieve uitslagen als noemer: 90 + 495.",
+        "prompt": "Welk aandeel van de positieve uitslagen is in dit nieuwe model werkelijk defect?",
+        "scenario": "Hypothetisch nieuw dossier: van 5.000 onderdelen zijn 250 defect en 4.750 goed. De test geeft 200 terecht positieve en 190 fout-positieve uitslagen.",
+        "explanation": "De nieuwe referentiegroep bevat alle 390 positieve uitslagen: 200/390 ≈ 51,3%. De 200/250 = 80% meet sensitiviteit; het prior aandeel defecten is 250/5.000 = 5%.",
         "options": [
           {
             "id": "ma4-frequenties-o1",
-            "text": "90 van de 100, dus 90%.",
-            "feedback": "De noemer 100 bevat alle defecten, niet alle positieve uitslagen."
+            "text": "200 van de 250, dus 80%.",
+            "feedback": "De noemer 250 bevat alle defecten, niet alle positieve uitslagen."
           },
           {
             "id": "ma4-frequenties-o2",
-            "text": "90 van de 585, dus ongeveer 15,4%.",
-            "feedback": "Juist: de referentiegroep is positief geteste onderdelen."
+            "text": "200 van de 390, dus ongeveer 51,3%.",
+            "feedback": "Juist: 200 defecten plus 190 goede onderdelen vormen samen de positieve referentiegroep."
           },
           {
             "id": "ma4-frequenties-o3",
-            "text": "495 van de 585, dus ongeveer 84,6%.",
-            "feedback": "Dit is hier het aandeel goede onderdelen onder positieve uitslagen."
+            "text": "190 van de 390, dus ongeveer 48,7%.",
+            "feedback": "Dit is het aandeel goede onderdelen onder de positieve uitslagen."
           },
           {
             "id": "ma4-frequenties-o4",
-            "text": "100 van de 10.000, dus 1%.",
-            "feedback": "Dat is de prior voor de gehele populatie vóór de test."
+            "text": "250 van de 5.000, dus 5%.",
+            "feedback": "Dat is de prior in dit nieuwe dossier vóór de testuitslag."
           }
         ],
         "answer": "ma4-frequenties-o2"
@@ -3877,22 +3891,22 @@ export const argumentLessons: ArgumentLesson[] = [
         "id": "mc6-posterior",
         "kind": "choice",
         "prompt": "Wat is P(H|E)?",
-        "scenario": "In een geselecteerde populatie zijn 100 defecte en 900 goede onderdelen. Er zijn 90 terecht positieve en 45 fout-positieve uitslagen.",
-        "explanation": "De noemer is alle 135 positieve uitslagen.",
+        "scenario": "In een hypothetische populatie zijn 50 defecte en 950 goede onderdelen. H betekent defect en E betekent test positief. Er zijn 40 terecht positieve en 95 fout-positieve uitslagen.",
+        "explanation": "De positieve referentiegroep bevat 40 + 95 = 135 uitslagen. De posterior is 40/135 ≈ 29,6%; 40/50 = 80% is sensitiviteit en 50/1.000 = 5% is de prior.",
         "options": [
           {
             "id": "mc6-posterior-o1",
-            "text": "90%",
+            "text": "80% omdat 40 van de 50 defecten positief zijn.",
             "feedback": "Dit is de sensitiviteit onder defecten."
           },
           {
             "id": "mc6-posterior-o2",
-            "text": "66,7% bij benadering.",
+            "text": "29,6% bij benadering: 40 van alle 135 positieve uitslagen.",
             "feedback": "Juist: 90/135 is de kans op defect onder positieve uitslagen."
           },
           {
             "id": "mc6-posterior-o3",
-            "text": "10%",
+            "text": "5% omdat 50 van de 1.000 onderdelen defect zijn.",
             "feedback": "Dit is de prior in de geselecteerde populatie."
           }
         ],

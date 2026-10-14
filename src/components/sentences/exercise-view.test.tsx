@@ -178,13 +178,16 @@ describe('interactive sentence engines', () => {
     render(<Harness exercise={debug} />);
     expect(screen.getByRole('textbox')).toBeDisabled();
     expect(screen.queryByText(debug.hint)).not.toBeInTheDocument();
+    expect(screen.queryByText(debug.instruction)).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Noor kiezen' }));
     fireEvent.click(screen.getByRole('button', { name: 'Controleer mijn diagnose' }));
     expect(screen.getByRole('textbox')).toBeDisabled();
+    expect(screen.queryByText(debug.instruction)).not.toBeInTheDocument();
     expect(screen.getByText('Ik heb geprobeerd: toon een denkstap')).toBeVisible();
     fireEvent.click(screen.getByRole('button', { name: 'leest kiezen' }));
     fireEvent.click(screen.getByRole('button', { name: 'Controleer mijn diagnose' }));
     expect(screen.getByRole('textbox')).toBeEnabled();
+    expect(screen.getByText(debug.instruction)).toBeVisible();
     fireEvent.change(screen.getByRole('textbox'), { target: { value: 'Vandaag leest Noor een boek.' } });
     expect(saved().text).toBe('Vandaag leest Noor een boek.');
     expect(saved().diagnosisPassed).toBe(true);

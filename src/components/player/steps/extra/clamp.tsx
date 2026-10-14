@@ -24,13 +24,13 @@ export function ClampStep({ step, response, onChange, locked }: StepProps<'clamp
   const initial = `Tussen ${step.finite} en ${step.participle} staan nu ${clampCount(step, response.pos)} woorden.`;
   const [message, setMessage] = useState(initial);
   const count = clampCount(step, response.pos);
-  const goal = step.goal >= 3 ? step.goal : 8;
+  const goal = step.goal;
   const over = Math.max(0, count - goal);
   const level = count <= goal ? 'ok' : count <= goal + 3 ? 'mid' : 'bad';
   const meter = {
-    ok: { text: 'prettig te lezen', accent: 'green' },
-    mid: { text: 'het kan nog korter', accent: 'orange' },
-    bad: { text: 'te lang', accent: 'red' },
+    ok: { text: 'oefendoel gehaald', accent: 'green' },
+    mid: { text: 'nog boven het oefendoel', accent: 'orange' },
+    bad: { text: 'nog ruim boven het oefendoel', accent: 'red' },
   }[level];
 
   const move = (id: string, where: Pos) => {

@@ -12,6 +12,7 @@ import { cn } from '@/lib/cn';
 import { spring, transition, useCalmMotion } from '@/lib/motion';
 import { useHydrated } from '@/state/hydration';
 import { useProgress } from '@/state/progress';
+import { usePracticeDueCount } from '@/state/practice';
 import { dueCount, useWords } from '@/state/words';
 
 const NAV: { href: Route; label: string; mobileLabel?: string; icon: typeof House }[] = [
@@ -31,7 +32,8 @@ function isActive(pathname: string, href: string) {
 function useReviewCount() {
   const hydrated = useHydrated();
   const count = useProgress((state) => Object.keys(state.review).length);
-  return hydrated ? count : 0;
+  const scheduled = usePracticeDueCount();
+  return hydrated ? count + scheduled : 0;
 }
 
 /** Woorden die vandaag terug moeten komen. */

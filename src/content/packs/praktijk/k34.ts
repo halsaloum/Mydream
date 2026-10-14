@@ -16,7 +16,7 @@ export const LES_K34: LessonInput = {
       title: 'Dezelfde klank, twee spellingen',
       panels: [
         {
-          text: 'Zeg *dag* en *lach*. Aan het eind hoor je dezelfde klank. De *g* en de *ch* klinken bijna overal hetzelfde. Je moet dus kiezen. Aan het begin van een Nederlands woord is dat makkelijk: daar schrijf je bijna altijd *g*: *geld*, *groot*, *goed*, *graag*, *gisteren*, *gezond*. Een *ch* vooraan zie je alleen in leenwoorden, zoals *chaos*, *chef* en *chauffeur*. Die komen terug in de les over leenwoorden.',
+          text: 'Zeg *dag* en *lach*. Aan het eind hoor je dezelfde klank. Aan het woordeinde klinken *g* en *ch* vaak hetzelfde. In andere posities en regionale uitspraken kan er verschil zijn; baseer de spelling dus niet op één uitspraak. Je moet dus kiezen. Aan het begin van een Nederlands woord is dat makkelijk: daar schrijf je bijna altijd *g*: *geld*, *groot*, *goed*, *graag*, *gisteren*, *gezond*. Een *ch* vooraan zie je alleen in leenwoorden, zoals *chaos*, *chef* en *chauffeur*. Die komen terug in de les over leenwoorden.',
           rule: 'Aan het begin van een Nederlands woord schrijf je *g*: *geld*, *groot*, *gisteren*.',
           quiz: {
             q: 'Je hoort het begin van de dag vóór vandaag: ‘…isteren’. Hoe begint het woord?',

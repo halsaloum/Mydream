@@ -93,8 +93,8 @@ export function FixStep({ step, response, onChange, locked, correct, onSubmit }:
                 }}
                 description={
                   !locked ? (
-                    <span className="inline-flex items-center gap-1.5">
-                      Typ het goede woord en druk op <Kbd>Enter</Kbd>.
+                    <span className="inline-flex flex-wrap items-center gap-1.5">
+                      {step.strict ? 'Typ het woord met de juiste hoofdletters en leestekens.' : 'Typ het goede woord.'} <Kbd>Enter</Kbd> controleert.
                     </span>
                   ) : undefined
                 }

@@ -28,7 +28,7 @@ export const LES_K33: LessonInput = {
         },
         {
           text: 'Hoor je na die klank nog een *k*, zoals in *bank*, *dank*, *denken* en *drinken*? Dan schrijf je *nk*. Dus niet *ngk*: de *k* zorgt er al voor dat de *n* als *ng* klinkt. Vergelijk *bang* (je bent bang) en *bank* (je zit op de bank), *tang* (gereedschap) en *tank*. Draai aan het wiel.',
-          rule: 'ng-klank + k = *nk* (*bank*, *denken*). Nooit *ngk*.',
+          rule: 'In basiswoorden als *bank* en *denken*: ng-klank plus k schrijf je *nk*. Een samenstelling bewaart de losse delen, zoals *hang* + *kast* = *hangkast*.',
           wheel: {
             start: 'ba',
             end: '',
@@ -44,7 +44,7 @@ export const LES_K33: LessonInput = {
           },
           deep: {
             q: 'En bij woorden als ingang en aangeven?',
-            a: 'Daar hoor je een gewone *n* en daarna een *g*, want het zijn twee woorden aan elkaar: *in* + *gang*, *aan* + *geven*. Je schrijft gewoon wat je hoort: *ingang*, *aangeven*, *aangenaam*.',
+            a: 'Daar bewaar je de letters van verschillende woorddelen: *in* + *gang*, *aan* + *geven*. De uitspraak kan door snelle spraak veranderen, maar de spelling van die delen blijft: *ingang*, *aangeven*, *aangenaam*.',
           },
         },
         {

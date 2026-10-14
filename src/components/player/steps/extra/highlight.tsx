@@ -54,6 +54,7 @@ export function HighlightStep({ step, response, onChange, locked, seed }: StepPr
     if (locked) return;
     const onKey = (event: KeyboardEvent) => {
       if (event.metaKey || event.ctrlKey || event.altKey || isTypingTarget(event.target)) return;
+      if (document.querySelector('[role="dialog"], [role="alertdialog"]')) return;
       const n = Number(event.key);
       const pen = Number.isInteger(n) && n >= 1 ? step.pens[n - 1] : undefined;
       if (pen) {
@@ -68,10 +69,10 @@ export function HighlightStep({ step, response, onChange, locked, seed }: StepPr
   const paint = (index: number) => {
     if (locked || response.painted.includes(index)) return;
     const word = step.words[index];
-    if (!word?.role) return;
+    if (!word) return;
     setBad(null);
     setMessage('');
-    if (word.role !== response.pen) {
+    if (!word.role || word.role !== response.pen) {
       play('wrong');
       setBad(index);
       setMessage(`Dat hoort er niet bij. ${activePen?.ask ?? ''}`);
@@ -125,9 +126,9 @@ export function HighlightStep({ step, response, onChange, locked, seed }: StepPr
               <button
                 key={`${word.t}:${index}`}
                 type="button"
-                disabled={locked || painted || !word.role}
+                disabled={locked || painted}
                 onClick={() => paint(index)}
-                data-accent={pen?.accent ?? 'slate'}
+                data-accent={painted ? pen?.accent ?? 'slate' : 'slate'}
                 className={cn('group flex min-h-16 min-w-12 flex-col items-center gap-1 rounded-control px-1 outline-none focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-focus', bad === index && 'animate-shake')}
               >
                 <span className="relative overflow-hidden rounded-chip px-2.5 py-0.5 font-serif text-example leading-tight text-ink transition-colors group-hover:bg-line/50">

@@ -128,7 +128,7 @@ export function StackStep({ step, response, onChange, locked, stepKey, seed }: S
                       state={wrong ? 'wrong' : 'idle'}
                       disabled={locked}
                       onClick={() => choose(index)}
-                      aria-label={`${layer.text}. ${layer.role}`}
+                      aria-label={layer.text}
                     >
                       <span className="min-w-0 flex-1">{layer.text}</span>
                     </Tile>

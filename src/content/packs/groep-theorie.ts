@@ -165,7 +165,7 @@ export const GROEP_THEORIE_LESSONS: LessonInput[] = [
           },
           {
             text: 'Kwantoren verschillen ook in *monotonie*: welke kant een conclusie op mag. Bij *sommige* mag je van klein naar groot: uit *Sommige studenten rennen hard* volgt *Sommige studenten rennen*. Dat heet *opwaarts monotoon*. Bij *weinig* en *geen* gaat het andersom: uit *Weinig studenten rennen* volgt *Weinig studenten rennen hard*. Dat heet *neerwaarts monotoon*. Juist in neerwaartse omgevingen mogen *negatief-polaire* woorden staan, zoals *ook maar* en *hoeven*: *Weinig studenten hebben ook maar één boek gelezen*, maar niet ∗*Veel studenten hebben ook maar één boek gelezen*. Dat verband legde William Ladusaw (1979).',
-            rule: 'Negatief-polaire woorden zoals ook maar en hoeven hebben een neerwaarts monotone omgeving nodig.',
+            rule: 'Neerwaartse omgevingen kunnen negatief-polaire uitdrukkingen toestaan; ook vragen en andere contexten vragen een eigen analyse.',
             lab: {
               label: 'Tik een kwantor: welke kant gaat de conclusie op in B?',
               chips: [
@@ -182,13 +182,13 @@ export const GROEP_THEORIE_LESSONS: LessonInput[] = [
             },
           },
           {
-            text: 'Gary Milsark (1977) zag dat na *er* in een bestaanszin niet elke kwantor kan. *Er zitten twee studenten in de zaal* en *Er zitten veel studenten in de zaal* zijn goed. ∗*Er zitten alle studenten in de zaal* en ∗*Er zit iedere student in de zaal* niet. Milsark noemde de eerste soort *zwak* (*een*, *twee*, *enkele*, *veel*, *geen*) en de tweede *sterk* (*de*, *alle*, *iedere*, *de meeste*). Een zwakke kwantor introduceert iets nieuws; een sterke veronderstelt dat de verzameling al bekend is.',
-            rule: 'Milsark (1977): in een er-zin staan alleen zwakke kwantoren.',
+            text: 'Gary Milsark (1977) onderzocht beperkingen op kwantoren bij presentatief *er*. *Er zitten twee studenten in de zaal* en *Er zitten veel studenten in de zaal* introduceren een nieuwe groep. *Alle* en *iedere* passen niet op dezelfde manier in deze neutrale presentatieve lezing. Milsark noemde de eerste soort *zwak* (*een*, *twee*, *enkele*, *veel*, *geen*) en de tweede *sterk* (*de*, *alle*, *iedere*, *de meeste*). Sterke kwantoren werken met een totaalverzameling. Dit is geen verbod voor iedere zin met *er*: er bestaan andere functies en contextgebonden lezingen.',
+            rule: 'In de neutrale presentatieve lezing van er passen vooral zwakke kwantoren. Er heeft ook andere functies en contextgebonden lezingen.',
             quiz: {
-              q: 'Welke zin is goed?',
+              q: 'Welke zin introduceert met presentatief er een nieuwe groep, zonder een bekende totaalverzameling te veronderstellen?',
               options: ['Er staan enkele fietsen voor de deur.', 'Er staan de meeste fietsen voor de deur.', 'Er staat iedere fiets voor de deur.'],
               answer: 'Er staan enkele fietsen voor de deur.',
-              why: 'Enkele is zwak en mag na er. De meeste en iedere zijn sterk.',
+              why: 'Enkele introduceert hier een nieuwe groep. De meeste en iedere verwijzen naar een totaalverzameling. In een andere context kan er bijvoorbeeld een plaats aangeven, met andere mogelijkheden.',
             },
           },
         ],
@@ -208,7 +208,7 @@ export const GROEP_THEORIE_LESSONS: LessonInput[] = [
           { t: 'Er zitten veel studenten in de zaal.', b: 0 },
           { t: 'Er zitten beide studenten in de zaal.', b: 1 },
         ],
-        why: 'Zwak: twee, enkele, geen, veel. Sterk: alle, de meeste, iedere, beide. Sterke kwantoren veronderstellen een bekende verzameling, en dat botst met er, dat iets nieuws aankondigt.',
+        why: 'Zwak: twee, enkele, geen, veel. Sterk: alle, de meeste, iedere, beide. Deze indeling betreft de neutrale presentatieve lezing, waarin er iets nieuws aankondigt; er is niet in iedere zin presentatief.',
       },
       {
         kind: 'swipe',
@@ -264,7 +264,7 @@ export const GROEP_THEORIE_LESSONS: LessonInput[] = [
           'De meeste studenten hebben ook maar één vraag gesteld.',
         ],
         answer: 'Weinig studenten hebben ook maar één vraag gesteld.',
-        why: 'Ook maar is negatief-polair en heeft een neerwaartse omgeving nodig. Alleen weinig levert die; veel, sommige en de meeste zijn opwaarts.',
+        why: 'In deze neutrale mededelingen ondersteunt weinig de negatief-polaire lezing van ook maar. Veel, sommige en de meeste zijn opwaarts. Dit is geen beschrijving van alle mogelijke gebruikscontexten van polariteitsuitdrukkingen.',
       },
     ],
   },
@@ -519,8 +519,8 @@ export const GROEP_THEORIE_LESSONS: LessonInput[] = [
             },
           },
           {
-            text: 'Het duidelijkste kenmerk is de klemtoon. In een woordgroep valt de hoofdklemtoon rechts: *hoge SCHOOL*. In een samenstelling valt hij meestal links: *HOgeschool*. Daardoor hoor je het verschil, ook als je het niet ziet. Let op: *zwarte markt* klinkt als een woordgroep (*zwarte MARKT*), ook al is de betekenis vast.',
-            rule: 'Woordgroep: klemtoon rechts. Samenstelling: klemtoon meestal links.',
+            text: 'Een aanwijzing is de klemtoon. In een neutraal uitgesproken woordgroep ligt de hoofdklemtoon vaak rechts: *hoge SCHOOL*. In veel samenstellingen ligt hij links: *HOgeschool*. Er zijn uitzonderingen en contrastklemtoon kan dit patroon veranderen. Gebruik daarom ook spelling en buiging. *Zwarte markt* blijft bijvoorbeeld een losse woordgroep met een vaste betekenis.',
+            rule: 'Klemtoon helpt bij de diagnose, maar is geen sluitende test; combineer klemtoon, spelling en buiging.',
             lab: {
               label: 'Tik een combinatie',
               chips: [
@@ -649,7 +649,7 @@ export const GROEP_THEORIE_LESSONS: LessonInput[] = [
           },
           {
             text: 'Waarom die klemtoonregels? Noam Chomsky en Morris Halle (1968, *The Sound Pattern of English*) formuleerden er twee voor het Engels: de *Compound Stress Rule* (klemtoon links in een samenstelling) en de *Nuclear Stress Rule* (klemtoon rechts in een woordgroep). Het Nederlands volgt hetzelfde patroon. De klemtoon is dus een signaal van de structuur: hij vertelt de luisteraar of hij één woord of twee hoort.',
-            rule: 'Samenstellingsklemtoon links, woordgroepklemtoon rechts: de klemtoon verraadt de structuur.',
+            rule: 'Klemtoonpatronen leveren aanwijzingen voor de structuur; uitzonderingen en contrastklemtoon maken aanvullende tests nodig.',
             quiz: {
               q: 'Je hoort: ‘Mijn GROOTmoeder belde.’ Wie belde er?',
               options: ['je oma', 'een lange moeder', 'dat kun je niet horen'],
@@ -773,7 +773,7 @@ export const GROEP_THEORIE_LESSONS: LessonInput[] = [
             },
           },
           {
-            text: 'Waarom doen we dat? Tussen *heb* en *gelezen* staat het *middenveld*. Alles wat daar staat, moet de lezer onthouden tot het laatste werkwoord komt. Hoe zwaarder het middenveld, hoe langer het wachten. Bijzinnen gaan daarom bijna altijd naar achteren: *Ik heb gezegd dat ik kom*, niet ∗*Ik heb dat ik kom gezegd*.',
+            text: 'Waarom doen we dat? Tussen *heb* en *gelezen* staat het *middenveld*. Zwaar materiaal daar kan het herkennen van de hele werkwoordelijke constructie moeilijker maken. Veel inhoudelijke bijzinnen staan daarom bij voorkeur achteraan: *Ik heb gezegd dat ik kom*. Een bijzin in het middenveld is niet automatisch ongrammaticaal; de mogelijkheden hangen onder meer af van het soort bijzin, nadruk en context. Voorkeur voor een leesbare volgorde is dus iets anders dan een absoluut verbod.',
             rule: 'Houd het middenveld licht: zware voorzetselgroepen en bijzinnen naar achteren.',
             swap: {
               goal: 'Zet de zware voorzetselgroep achter het laatste werkwoord',
@@ -820,7 +820,7 @@ export const GROEP_THEORIE_LESSONS: LessonInput[] = [
       {
         kind: 'sort',
         id: 'naar-achteren',
-        prompt: 'Kan het deel achter het laatste werkwoord staan?',
+        prompt: 'Past het deel achter het laatste werkwoord in deze gewone neutrale schrijftaalzinnen, zonder losse toevoeging of bijzondere contrastlezing?',
         buckets: ['kan achteraan', 'kan niet achteraan'],
         items: [
           { t: 'over Napoleon (Ik heb een boek gelezen over Napoleon.)', b: 0 },
@@ -837,7 +837,7 @@ export const GROEP_THEORIE_LESSONS: LessonInput[] = [
       {
         kind: 'choice',
         id: 'leesbaar',
-        prompt: 'Welke zin is het best leesbaar?',
+        prompt: 'Welke zin plaatst de volledige dat-bijzin direct na het voltooid deelwoord besloten?',
         before: '',
         after: '',
         options: [
@@ -846,7 +846,7 @@ export const GROEP_THEORIE_LESSONS: LessonInput[] = [
           'De directie heeft in juni dat het kantoor sluit besloten.',
         ],
         answer: 'De directie heeft besloten dat het kantoor in juni sluit.',
-        why: 'De bijzin staat achter besloten. De andere twee zetten de bijzin in het middenveld, en dat is in het Nederlands niet alleen zwaar maar ook fout.',
+        why: 'De bijzin staat achter besloten en is daardoor in deze neutrale context gemakkelijk te verwerken. Een middenveldpositie beoordelen we niet uitsluitend op zwaarte: grammaticale mogelijkheden en leesbaarheid zijn verschillende vragen.',
       },
       {
         kind: 'explain',
@@ -958,7 +958,7 @@ export const GROEP_THEORIE_LESSONS: LessonInput[] = [
             fix: 'het is gemengd',
             why: 'De werkwoordgroep heeft de kern achteraan: omdat ik een boek lees.',
           },
-          { t: 'Een bijzin in het middenveld is in het Nederlands meestal fout.', ok: true, why: 'Ik heb gezegd dat ik kom, niet ik heb dat ik kom gezegd.' },
+          { t: 'Een zware inhoudelijke bijzin achteraan is in een neutrale Nederlandse zin vaak gemakkelijker te lezen.', ok: true, why: 'Ik heb gezegd dat ik kom heeft een licht middenveld. Dat is een leesbaarheidsvoorkeur, geen absoluut verbod op iedere middenveldbijzin.' },
           {
             t: 'Hawkins voorspelt kort vóór lang voor elke taal.',
             ok: false,

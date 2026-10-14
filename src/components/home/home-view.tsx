@@ -19,6 +19,7 @@ import { WordsCard } from './words-card';
 import { LearningRoute } from './learning-route';
 import { ArgumentationCard } from './argumentation-card';
 import { SentenceCard } from './sentence-card';
+import { SpacedPracticeReminder } from '@/components/review/spaced-practice';
 
 function TodayGoal({ goal, activeMs, streak }: { goal: number; activeMs: number; streak: number }) {
   const done = minutes(activeMs);
@@ -65,6 +66,7 @@ export function HomeView() {
 
   return (
     <div className="stagger flex flex-col gap-section">
+      <SpacedPracticeReminder />
       <div className="grid items-start gap-5 lg:grid-cols-[1.1fr_0.9fr] lg:grid-rows-[auto_auto] lg:gap-x-8 lg:gap-y-6">
         <div>
           <p className="mb-3 text-caption font-bold tracking-[0.12em] text-green-ink uppercase">Kleine stappen. Steeds beter schrijven.</p>

@@ -4,7 +4,7 @@ import { persist } from 'zustand/middleware';
 import type { ArgumentLesson } from '@/content/argumentation/types';
 import { fingerprint } from '@/engine/hash';
 import { addDays, dayKey } from '@/lib/dates';
-import { emptyArgumentAnswer, lessonPassed, lessonScore, nextReviewDays, type ArgumentAnswer } from '@/lib/argumentation/learning';
+import { answerReady, emptyArgumentAnswer, gradeArgument, lessonPassed, lessonScore, nextReviewDays, type ArgumentAnswer } from '@/lib/argumentation/learning';
 import { theoryPages } from '@/lib/argumentation/theory-pages';
 import { validatedStorage } from './storage';
 import { validateArgumentMap, type ArgumentMap } from '@/lib/argumentation/maps';
@@ -55,9 +55,13 @@ type Actions = {
   saveWorkshopNote: (preset: string, note: string) => void;
 };
 
+// Registered at start so restored and test lessons use the same assessment guards.
+const activeLessons = new Map<string, ArgumentLesson>();
+
 export const useArgumentation = create<ArgumentData & Actions>()(persist((set, get) => ({
   ...EMPTY_ARGUMENTS,
   start: (lesson, restart = false) => {
+    activeLessons.set(lesson.id, lesson);
     const signature = fingerprint(lesson);
     const readingSignature = fingerprint(theoryPages(lesson));
     const existing = get().sessions[lesson.id];
@@ -73,6 +77,15 @@ export const useArgumentation = create<ArgumentData & Actions>()(persist((set, g
     const session = state.sessions[lessonId];
     if (!session || session.finished) return state;
     const answer = session.answers[exerciseId] ?? emptyArgumentAnswer();
+    const lesson = activeLessons.get(lessonId);
+    const exercise = lesson?.exercises.find((item) => item.id === exerciseId);
+    if (lesson?.checkpoint && exercise) {
+      // First responses stay locked. Models are only used after all responses exist.
+      const reviewing = lesson.exercises.every((item) => session.answers[item.id]?.checked);
+      if (answer.checked && (exercise.kind !== 'reflection' || !reviewing)) return state;
+      patch = { ...patch, checked: answer.checked, score: answer.score, reasoning: answer.reasoning };
+      if (!reviewing) patch.rubric = {};
+    }
     return { sessions: { ...state.sessions, [lessonId]: { ...session, answers: {
       ...session.answers, [exerciseId]: { ...answer, ...patch },
     } } } };
@@ -81,14 +94,22 @@ export const useArgumentation = create<ArgumentData & Actions>()(persist((set, g
     const session = state.sessions[lessonId];
     const answer = session?.answers[exerciseId];
     if (!session || !answer || answer.checked || session.finished) return state;
+    const lesson = activeLessons.get(lessonId);
+    const exercise = lesson?.exercises.find((item) => item.id === exerciseId);
+    if (lesson?.checkpoint && exercise) {
+      if (!answerReady(exercise, answer)) return state;
+      score = gradeArgument(exercise, answer);
+    }
     return { sessions: { ...state.sessions, [lessonId]: {
-      ...session, answers: { ...session.answers, [exerciseId]: { ...answer, checked: true, score } },
+      ...session, answers: { ...session.answers, [exerciseId]: { ...answer, checked: true, score, ...(lesson?.checkpoint && exercise?.kind === 'reflection' ? { reasoning: answer.value } : {}) } },
       firstTry: score === null || exerciseId in session.firstTry ? session.firstTry : { ...session.firstTry, [exerciseId]: score },
       firstConfidence: score === null || answer.confidence === null || exerciseId in session.firstTry ? session.firstConfidence : { ...session.firstConfidence, [exerciseId]: answer.confidence },
     } } };
   }),
   move: (lessonId, cursor) => set((state) => {
     const session = state.sessions[lessonId];
+    const lesson = activeLessons.get(lessonId);
+    if (lesson?.checkpoint && (!Number.isInteger(cursor) || cursor < 0 || cursor > lesson.exercises.length + 1 || lesson.exercises.slice(0, Math.max(0, cursor - 1)).some((exercise) => !session?.answers[exercise.id]?.checked))) return state;
     return !session || session.finished ? state : { sessions: { ...state.sessions, [lessonId]: { ...session, cursor } } };
   }),
   setTheoryPage: (lessonId, theoryPage) => set((state) => {
@@ -109,24 +130,30 @@ export const useArgumentation = create<ArgumentData & Actions>()(persist((set, g
     if (!session || session.finished || lesson.exercises.some((exercise) => {
       const answer = session.answers[exercise.id];
       if (!answer?.checked) return true;
+      if (lesson.checkpoint && !answerReady(exercise, answer)) return true;
       if (exercise.kind === 'reflection') return !exercise.rubric.every((_, index) => answer.rubric[String(index)]);
       return !lesson.checkpoint && answer.score !== 1;
     })) return state;
-    const score = lessonScore(lesson, session.firstTry);
+    const firstTry = lesson.checkpoint ? Object.fromEntries(lesson.exercises.flatMap((exercise) => {
+      const answer = session.answers[exercise.id]!;
+      const grade = gradeArgument(exercise, answer);
+      return grade === null ? [] : [[exercise.id, grade]];
+    })) : session.firstTry;
+    const score = lessonScore(lesson, firstTry);
     const old = state.records[lesson.id];
     const attempts = (old?.attempts ?? 0) + 1;
     const now = new Date().toISOString();
     return {
-      sessions: { ...state.sessions, [lesson.id]: { ...session, finished: true, cursor: lesson.exercises.length + 1 } },
+      sessions: { ...state.sessions, [lesson.id]: { ...session, firstTry, finished: true, cursor: lesson.exercises.length + 1 } },
       records: { ...state.records, [lesson.id]: {
         attempts, bestScore: Math.max(old?.bestScore ?? 0, score), lastScore: score,
         completedAt: old?.completedAt ?? (lessonPassed(lesson, score) ? now : null), lastPracticedAt: now,
         reviewOn: lessonPassed(lesson, score) ? addDays(dayKey(), nextReviewDays(score, attempts)) : dayKey(),
         history: [...(old?.history ?? []), {
-          at: now, score, firstTry: session.firstTry, confidence: session.firstConfidence,
+          at: now, score, firstTry, confidence: session.firstConfidence,
           writings: Object.fromEntries([...lesson.exercises.flatMap((exercise) => {
             const answer = session.answers[exercise.id];
-            const text = exercise.kind === 'reflection' ? answer?.value : answer?.reasoning;
+            const text = exercise.kind === 'reflection' ? lesson.checkpoint && answer?.reasoning ? `Eerste zelfstandige versie:\n${answer.reasoning}\n\nVersie na zelfcontrole:\n${answer.value}` : answer?.value : answer?.reasoning;
             return text?.trim() ? [[exercise.id, text]] : [];
           }), ...Object.entries(session.answers).filter(([id]) => id.startsWith('inquiry-')).map(([id, answer]) => [id, `Eerste analyse:\n${answer.reasoning}\n\nHerziening:\n${answer.value}`])]),
         }].slice(-10),

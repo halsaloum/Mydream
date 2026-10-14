@@ -12,7 +12,8 @@ export function RecallStep({ step, response, onChange, locked, correct, onSubmit
   const id = useId();
   const answer = (locked && !correct && recallNearMiss(step, response.value)) || (step.answers[0] ?? '');
   const cue = step.cue ?? '';
-  const size = Math.max(6, response.value.length, cue.length, answer.length * 0.8) + 2;
+  // The input grows with the learner's text, never with the hidden solution.
+  const size = Math.max(16, response.value.length + 2, cue.length + 2);
   const state = locked ? (correct ? 'correct' : 'wrong') : 'idle';
   return (
     <div>
@@ -69,7 +70,7 @@ export function RecallStep({ step, response, onChange, locked, correct, onSubmit
       </Stage>
       {!locked && (
         <Hint className="mt-4 hidden items-center gap-1.5 sm:flex">
-          Typ het woord in de vorm die in de zin past en druk op <Kbd>Enter</Kbd>.
+          Gebruik het geleerde woord in de passende vorm en druk op <Kbd>Enter</Kbd>. Deze oefening vraagt om dat doelwoord; een ander passend synoniem kan buiten de opdracht vallen.
         </Hint>
       )}
     </div>

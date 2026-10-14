@@ -26,7 +26,7 @@ export const LES_G28: LessonInput = {
           },
         },
         {
-          text: 'Na een korte klank met één medeklinker wordt die medeklinker dubbel als er een klinker achter komt, zodat de klank kort blijft: *bal* → *ballen*, *wit* → *witte*. Niet na een lange klank (*raam* → *ramen*), niet na twee medeklinkers (*kast* → *kasten*) en niet na een doffe e (*gezellige*). Het meervoud is meestal *-en* (*boeken*). Na *-el*, *-em*, *-en*, *-er* en *-je* zonder klemtoon: *-s* (*tafels*, *kamers*, *huisjes*). Na *a*, *i*, *o*, *u* en *y*: *’s* (*auto’s*, *menu’s*, *baby’s*). En *zee* wordt *zeeën*.',
+          text: 'Na een korte klank met één medeklinker wordt die medeklinker dubbel als er een klinker achter komt, zodat de klank kort blijft: *bal* → *ballen*, *wit* → *witte*. Niet na een lange klank (*raam* → *ramen*), niet na twee medeklinkers (*kast* → *kasten*) en niet na een doffe e (*gezellige*). Het meervoud is meestal *-en* (*boeken*). Na *-el*, *-em*, *-en*, *-er* en *-je* zonder klemtoon: *-s* (*tafels*, *kamers*, *huisjes*). Na een lange eindklinker geschreven met één *a*, *i*, *o*, *u* of *y*: *’s* (*auto’s*, *menu’s*, *baby’s*). Een lettergroep als *ay* krijgt geen apostrof (*sprays*). En *zee* wordt *zeeën*.',
           rule: 'Korte klank + één medeklinker: dubbel (*ballen*). Meervoud: *-en*, *-s* of *’s*.',
           quiz: {
             q: 'Welk meervoud is goed?',
@@ -316,7 +316,7 @@ export const LES_G28: LessonInput = {
     {
       kind: 'rewrite',
       id: 'wij-verhuizen',
-      prompt: 'Schrijf de zin met wij in plaats van ik.',
+      prompt: 'Schrijf de zin met wij in plaats van ik. Pas ook de werkwoorden aan en vervang mijn door ons of onze, passend bij het zelfstandig naamwoord.',
       source: 'Ik verhuis in mei, dus ik verkoop mijn grote kast en mijn oude bed.',
       accept: [
         'Wij verhuizen in mei, dus wij verkopen onze grote kast en ons oude bed.',

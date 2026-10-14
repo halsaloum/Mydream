@@ -2668,7 +2668,11 @@
                           "answer": {
                             "type": "string",
                             "pattern": "\\S",
-                            "description": "Verbetering van dat woord; hoofdletters en leestekens tellen niet mee."
+                            "description": "Verbetering van dat woord; hoofdletters en leestekens tellen standaard niet mee, tenzij strict is ingeschakeld."
+                          },
+                          "strict": {
+                            "description": "Controleer ook hoofdletters en leestekens wanneer die het doel van deze woordcorrectie zijn.",
+                            "type": "boolean"
                           },
                           "why": {
                             "type": "string",
@@ -2715,6 +2719,10 @@
                               "pattern": "\\S"
                             },
                             "description": "Alle goede antwoorden."
+                          },
+                          "strict": {
+                            "description": "Controleer ook hoofdletters en leestekens bij gecombineerde vorm- en spellingopdrachten. Zonder waarde worden zuivere vormopdrachten automatisch herkend.",
+                            "type": "boolean"
                           },
                           "why": {
                             "type": "string",

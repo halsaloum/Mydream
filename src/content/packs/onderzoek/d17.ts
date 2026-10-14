@@ -104,7 +104,7 @@ export const ONDERZOEK_D17: StepInput[] = [
         },
       },
       {
-        text: 'Terug naar de schrijver. Homofoondominantie werkt in twee richtingen. Bij *vinden* is *vind* heel frequent (*ik vind dat…*), dus sluipt *hij vind* erin. Bij *worden* is het andersom: *wordt* komt veel vaker voor dan *word* (*het wordt*, *hij wordt*, de lijdende vorm), dus schrijven mensen *ik wordt*. Het onderzoek van Dominiek Sandra en collega’s laat zien dat de fout toeneemt onder tijdsdruk en bij een grotere afstand tot het onderwerp, en dat ook goede spellers hem maken. Het is geen kennisprobleem maar een geheugenprobleem. De remedie is dus niet nóg een keer de regel leren, maar een controlemoment inbouwen op precies de plekken waar een homofoon op de loer ligt, zoals werkwoorden met een stam op *d*.',
+        text: 'Homofoondominantie kan in twee richtingen werken: een veelgebruikte vorm als *vind* kan bij *hij* opduiken, en *wordt* kan bij *ik* verschijnen. Onderzoek van Dominiek Sandra en collega’s laat zien dat zulke fouten ook voorkomen bij mensen die de regel kennen, vooral onder tijdsdruk en bij grotere afstand tussen onderwerp en persoonsvorm. Geheugen en aandacht kunnen dus meespelen naast regelkennis. Oefen de regel als je die nog niet beheerst, en bouw daarna een gericht controlemoment in bij vormen zoals *word/wordt*.',
         rule: 'Controleer gericht: in de tegenwoordige tijd enkelvoud heeft een werkwoord met een stam op *d* een even klinkende tweeling (*word*, *wordt*).',
         mark: {
           q: 'Tik de persoonsvormen waar een homofoon op de loer ligt',

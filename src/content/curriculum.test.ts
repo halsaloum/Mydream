@@ -5,7 +5,7 @@ import { LESSON_UPGRADES } from './curriculum';
 
 describe('complete leerlijn van basis naar betoog', () => {
   it('biedt alle bestaande lessen eigen begeleiding en nieuwe toepassing', () => {
-    expect(Object.keys(LESSON_UPGRADES)).toHaveLength(113);
+    expect(Object.keys(LESSON_UPGRADES)).toHaveLength(119);
     for (const entry of lessonEntries) {
       expect(entry.lesson.guidance, entry.lesson.id).toBeDefined();
       expect(entry.lesson.guidance!.strategy.length).toBeGreaterThanOrEqual(2);

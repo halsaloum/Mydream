@@ -1,4 +1,5 @@
 import { diagnosis, segmentation, tokens } from './helpers';
+import { reviewedDebugger } from './debugger-review';
 import type { DebugExercise, SentenceLesson } from './types';
 
 const fields = [
@@ -18,12 +19,12 @@ function debug(
   repairs: string[],
   explanation: string,
 ): DebugExercise {
-  return {
+  return reviewedDebugger({
     id, kind: 'debug', support: 'zelfstandig', ruleId,
     prompt: instruction, tokens: tokens(sentence), targets: [`w${index}`],
     instruction: 'Schrijf de volledige verbeterde zin. Herstel alleen de gevraagde fout en behoud de overige woorden en hun onderlinge volgorde.',
     repairs, explanation, hint: 'Zoek eerst de regel die bij dit foutpunt hoort.',
-  };
+  });
 }
 
 export const structureLessons: SentenceLesson[] = [
@@ -95,7 +96,7 @@ export const structureLessons: SentenceLesson[] = [
         ], target: 'passief', explanation: 'De fiets wordt door de monteur gerepareerd. Het actieve lijdend voorwerp krijgt de onderwerpsrol.', hint: 'Zoek eerst wat de monteur repareert.' },
       { id: 'zin05-arena-02', kind: 'gate', support: 'volledig', ruleId: 'zin05-passief',
         prompt: 'Gebruik de tegenwoordige tijd. Ontgrendel de persoonsvorm in: De ramen ___ door Sam schoongemaakt.',
-        diagnosis: diagnosis('De ramen worden door Sam schoongemaakt.', [1], 'Klik op de kern van het nieuwe onderwerp.', 'Ramen is meervoud en stuurt de persoonsvorm aan; Sam staat in de door-bepaling.'),
+        diagnosis: diagnosis('De ramen ___ door Sam schoongemaakt.', [1], 'Klik op de kern van het nieuwe onderwerp.', 'Ramen is meervoud en stuurt de persoonsvorm aan; Sam staat in de door-bepaling.'),
         options: [
           { id: 'worden', text: 'worden', feedback: 'Het meervoudige onderwerp de ramen vraagt worden.' },
           { id: 'wordt', text: 'wordt', feedback: 'Dit is enkelvoud. De uitvoerder Sam stuurt deze persoonsvorm niet aan.' },
@@ -222,8 +223,8 @@ export const structureLessons: SentenceLesson[] = [
         explanation: 'De docent geeft de leerling het boek. De tweede pool is leeg omdat er geen ander werkwoord is.', hint: 'Ontvanger zonder voorzetsel, daarna het gegeven ding.' },
       { id: 'zin06-arena-05', kind: 'gate', support: 'half', ruleId: 'zin06-midden-naveld',
         prompt: 'Je ontkent dat je het bekende boek hebt gelezen. Kies de neutrale zin die dat precies zegt.',
-        segmentation: segmentation(['Ik', 'heb', 'dat boek', 'niet', 'gelezen.']),
-        diagnosis: diagnosis('Ik heb dat boek niet gelezen.', [2, 3], 'Selecteer de volledige groep die het al bekende boek aanduidt.', 'Dat boek verwijst naar een bekend boek. Niet ontkent hier het gelezen hebben.'),
+        segmentation: segmentation(['Ik', 'heb', 'dat boek', '___', 'gelezen.']),
+        diagnosis: diagnosis('Ik heb dat boek ___ gelezen.', [2, 3], 'Selecteer de volledige groep die het al bekende boek aanduidt.', 'Dat boek verwijst naar een bekend boek. Kies een ontkenning die alleen het lezen van dat bekende boek ontkent.'),
         options: [
           { id: 'boek-niet', text: 'Ik heb dat boek niet gelezen.', feedback: 'Dit ontkent het gelezen hebben van het bekende boek.' },
           { id: 'niet-dat', text: 'Ik heb niet dát boek gelezen, maar een ander.', feedback: 'Dit contrasteert twee boeken; dat is niet de gevraagde neutrale ontkenning.' },
@@ -313,7 +314,7 @@ export const structureLessons: SentenceLesson[] = [
         ], target: 'groen', explanation: 'Dat Noor het verslag geschreven heeft. Hier is groen even correct als rood.', hint: 'Groen zet geschreven vóór heeft.' },
       { id: 'zin07-arena-03', kind: 'gate', support: 'volledig', ruleId: 'zin07-ipp',
         prompt: 'Ontgrendel de vorm in: Ik heb gisteren ___ zwemmen.',
-        diagnosis: diagnosis('Ik heb gisteren willen zwemmen.', [4], 'Klik op de aanvullende infinitief die met willen één werkwoordgroep vormt.', 'Zwemmen is de infinitief die willen aanvult. In de voltooide werkwoordgroep verschijnt willen als vervangende infinitief.'),
+        diagnosis: diagnosis('Ik heb gisteren ___ zwemmen.', [4], 'Klik op de aanvullende infinitief die met het ontbrekende modale werkwoord één werkwoordgroep vormt.', 'Zwemmen is een aanvullende infinitief in dezelfde groep. Pas nu de regel voor de vervangende infinitief toe.'),
         options: [
           { id: 'willen', text: 'willen', feedback: 'Heeft willen zwemmen gebruikt de vervangende infinitief.' },
           { id: 'gewild', text: 'gewild', feedback: 'Heeft gewild kan zonder deze werkwoordelijke aanvulling, maar niet in de gevraagde groep gewild zwemmen.' },
@@ -328,8 +329,8 @@ export const structureLessons: SentenceLesson[] = [
         explanation: 'Belt ... op vormt samen opbellen. In een eenvoudige bijzin worden de delen aaneengeschreven: omdat Mila haar broer opbelt.', hint: 'Welk laatste woord hoort bij belt en verandert de werkwoordbetekenis?' },
       { id: 'zin07-arena-05', kind: 'gate', support: 'half', ruleId: 'zin07-ipp',
         prompt: 'Er volgt een losse om te-bijzin. Kies de vorm in Noor heeft ___ om de fiets te repareren.',
-        segmentation: { ...segmentation(['Noor', 'heeft', 'geprobeerd', 'om de fiets te repareren.']), prompt: 'Knip de zin in onderwerp, persoonsvorm, deelwoord en de volledige om te-bijzin.' },
-        diagnosis: diagnosis('Noor heeft geprobeerd om de fiets te repareren.', [3, 6], 'Selecteer om en te: de twee woorden die deze beknopte bijzin aankondigen.', 'Om ... te leidt hier een aparte beknopte bijzin in. Je mag geprobeerd dus niet automatisch door proberen vervangen.'),
+        segmentation: { ...segmentation(['Noor', 'heeft', '___', 'om de fiets te repareren.']), prompt: 'Knip de zin in onderwerp, persoonsvorm, ontbrekende werkwoordvorm en de volledige beknopte bijzin.' },
+        diagnosis: diagnosis('Noor heeft ___ om de fiets te repareren.', [3, 6], 'Selecteer de twee woorden die deze beknopte bijzin aankondigen.', 'De twee woorden leiden een aparte beknopte bijzin in. Onderzoek nu of de regel voor een vervangende infinitief hier van toepassing is.'),
         options: [
           { id: 'geprobeerd', text: 'geprobeerd', feedback: 'Heeft geprobeerd om te repareren is een correcte deelwoordconstructie.' },
           { id: 'proberen', text: 'proberen', feedback: 'Proberen kan in andere groepsvormende constructies, maar niet in de gevraagde heeft proberen om ... te-zin.' },
@@ -445,8 +446,8 @@ export const structureLessons: SentenceLesson[] = [
         explanation: 'Trams → rijden hoort bij de bijzin; wij → hoeven hoort bij de rompzin. De hele omdat-bijzin staat vóór hoeven.', hint: 'Bepaal welke woorden bij de reden en welke bij de hoofdmededeling horen.' },
       { id: 'zin08-arena-06', kind: 'gate', support: 'half', ruleId: 'zin08-betekenis',
         prompt: 'Je bleef bewust thuis om uit te rusten. Kies de verbinding: Ik bleef thuis ___ ik wilde uitrusten.',
-        segmentation: segmentation(['Ik', 'bleef', 'thuis', 'omdat ik wilde uitrusten.']),
-        diagnosis: diagnosis('Ik bleef thuis omdat ik wilde uitrusten.', [5], 'Klik op het woord dat laat zien dat dit een bewust motief is.', 'Wilde drukt hier de wens van de spreker uit; die wens motiveert het thuisblijven.'),
+        segmentation: segmentation(['Ik', 'bleef', 'thuis', '___ ik wilde uitrusten.']),
+        diagnosis: diagnosis('Ik bleef thuis ___ ik wilde uitrusten.', [5], 'Klik op het woord dat laat zien dat dit een bewust motief is.', 'Wilde drukt hier de wens van de spreker uit; die wens motiveert het thuisblijven.'),
         options: [
           { id: 'omdat', text: 'omdat', feedback: 'Omdat kan dit bewuste motief uitdrukken.' },
           { id: 'doordat', text: 'doordat', feedback: 'Doordat past niet bij deze duidelijk bedoelde eigen motivatie.' },

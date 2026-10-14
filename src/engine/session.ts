@@ -127,7 +127,7 @@ export function sessionReducer(state: SessionState, action: SessionAction, looku
 
   switch (action.type) {
     case 'respond': {
-      if (state.phase !== 'answering' || action.response.kind !== item.step.kind) return state;
+      if (state.phase !== 'answering' || action.response.kind !== item.step.kind || !responseFits(item.step, action.response)) return state;
       const next = touch({ ...state, responses: { ...state.responses, [String(state.pos)]: action.response } }, action.now);
       // Zelfcontrolerende oefeningen ronden zichzelf af zodra ze klaar zijn.
       if (stepMode(item.step) === 'task' && isComplete(item.step, action.response)) return finalize(next, key, item, action.response, action.now);
@@ -160,7 +160,7 @@ export function sessionReducer(state: SessionState, action: SessionAction, looku
 export type SessionSummary = {
   graded: number;
   firstTryCorrect: number;
-  /** Percentage oefeningen dat in één keer goed was. */
+  /** Gemiddelde score van de eerste ronde per oefening, inclusief deelscores. */
   accuracy: number;
   retries: number;
   /** Stappen voor de herhaalstapel (fout, of goed maar met twijfel). */

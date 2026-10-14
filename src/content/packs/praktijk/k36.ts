@@ -16,8 +16,8 @@ export const LES_K36: LessonInput = {
       title: 'Nooit een z of v aan het eind',
       panels: [
         {
-          text: 'Aan het begin van een woord moet je het woord kennen. Met *z*: *zee*, *zon*, *zout*, *zaterdag*, *zeep*. Met *s*: *soep*, *suiker*, *slapen*, *september*. Met *v*: *vader*, *vis*, *veel*, *vrij*, *vlees*. Met *f*: *fiets*, *feest*, *fout*, *fijn*, *film*. Maar aan het eind van een woord is het simpel: daar staat nooit een *z* of een *v* (alleen in een paar leenwoorden, zoals *quiz*). Daar schrijf je altijd *s* of *f*: *huis*, *kaas*, *reis*, *brief*, *lief*, *neef*.',
-          rule: 'Aan het eind van een woord: nooit *z* of *v*, altijd *s* of *f*: *huis*, *brief*.',
+          text: 'Aan het begin van een woord moet je het woord kennen. Met *z*: *zee*, *zon*, *zout*, *zaterdag*, *zeep*. Met *s*: *soep*, *suiker*, *slapen*, *september*. Met *v*: *vader*, *vis*, *veel*, *vrij*, *vlees*. Met *f*: *fiets*, *feest*, *fout*, *fijn*, *film*. Bij gewone Nederlandse woorden schrijf je aan het einde meestal *s* of *f*. Leenwoorden kunnen afwijken, zoals *quiz*, en de stam *quiz* in *ik quiz*. Voor deze gewone woorden schrijf je: *huis*, *kaas*, *reis*, *brief*, *lief*, *neef*.',
+          rule: 'Bij gewone woorden als *huis* en *brief*: eindletter *s* of *f*. Leenwoorden als *quiz* controleer je apart.',
           quiz: {
             q: 'Welke spelling is goed?',
             options: ['de brief', 'de briev', 'de brieff'],
@@ -27,7 +27,7 @@ export const LES_K36: LessonInput = {
         },
         {
           text: 'Maak je het woord langer, dan hoor je soms een *z* of een *v*. Die schrijf je dan ook: *huis* → *huizen*, *kaas* → *kazen*, *prijs* → *prijzen*, *reis* → *reizen*, *brief* → *brieven*, *neef* → *neven*, *wolf* → *wolven*. Dat geldt ook voor een bijvoeglijk naamwoord met *-e*: *lief* → *lieve*, *boos* → *boze*, *grijs* → *grijze*, *doof* → *dove*, *half* → *halve*.',
-          rule: 'Hoor je in het langere woord een *z* of *v*? Schrijf dan *z* of *v*: *huizen*, *brieven*, *lieve*.',
+          rule: 'Gebruik de correcte langere vorm: *huizen*, *brieven*, *lieve*. Als jouw regionale uitspraak s en z of f en v niet onderscheidt, helpt de uitspraak alleen niet; controleer dan de geschreven vorm.',
           paradigm: {
             q: 'Zet de langere vorm in het vakje',
             cols: ['langere vorm'],
@@ -185,8 +185,8 @@ export const LES_K36: LessonInput = {
           },
         },
         {
-          text: 'Een veelgemaakte fout is een *v* of *z* in een werkwoord met *t*: *hij leevt*, *zij reizt*. Aan het eind en vóór de *t* van *hij*, *zij* en *jij* staat nooit een *v* of *z*: *hij leeft*, *zij reist*, *jij leest*, *het vriest*, *zij kiest*. Ook in een vraag: *Leef jij gezond?*, *Reis jij vaak?*',
-          rule: 'Vóór de *t*: *ft* en *st*, nooit *vt* of *zt*: *hij leeft*, *zij reist*.',
+          text: 'Een veelgemaakte fout is een *v* of *z* in een werkwoord met *t*: *hij leevt*, *zij reizt*. In deze gewone Nederlandse werkwoorden schrijf je aan het einde van de stam en vóór de persoonsuitgang *t* een *f* of *s*: *hij leeft*, *zij reist*, *jij leest*, *het vriest*, *zij kiest*. Ook in een vraag: *Leef jij gezond?*, *Reis jij vaak?*',
+          rule: 'Deze gewone werkwoorden schrijven *ft* en *st*: *hij leeft*, *zij reist*. Een leenwoordstam als *quiz* valt buiten deze vuistregel.',
           build: {
             before: 'Mijn oma',
             stem: 'lee',

@@ -92,8 +92,8 @@ export const ONDERZOEK_D8: StepInput[] = [
         },
       },
       {
-        text: 'Wat heb je als schrijver aan de boom? Een lange samenstelling schrijf je aaneen, maar de spelling staat een *facultatief koppelteken* toe als het woord anders moeilijk leesbaar is. De beste plek is de hoogste knoop: daar maakt de lezer de grootste stap. *Kinderopvangtoeslag-affaire* laat de bouw zien. *Kinder-opvangtoeslagaffaire* zet het streepje op een lage knoop en helpt niemand. Knip het woord één keer, op de hoogste knoop.',
-        rule: 'Een facultatief koppelteken hoort op de hoogste knoop van de boom: *kinderopvangtoeslag-affaire*.',
+        text: 'Een lange samenstelling schrijf je in beginsel aaneen. Een *facultatief koppelteken* kan de leesbaarheid verbeteren of een dubbelzinnige grens verduidelijken. *Kinderopvangtoeslag-affaire* laat bijvoorbeeld een grote bouwstap zien. Dat is een schrijverskeuze, geen spellingwet die een hoogste knoop voorschrijft. Bepaal waar jouw lezer baat heeft bij een grens; een korte omschrijving kan nog duidelijker zijn.',
+        rule: 'Een facultatief koppelteken dient de leesbaarheid. De hoogste bouwgrens kan helpen, maar is geen verplichte plaats.',
         split: {
           q: 'Knip één keer, op de hoogste knoop',
           word: 'kinderopvangtoeslagaffaire',
@@ -216,10 +216,10 @@ export const ONDERZOEK_D8: StepInput[] = [
         why: 'Steden is een meervoud dat in geen enkelvoud bestaat: inherente buiging die de woordbouw voedt, zoals Booij beschreef.',
       },
       {
-        t: 'Een facultatief koppelteken zet je het best op de laagste knoop.',
+        t: 'De spelling verplicht je een facultatief koppelteken op de laagste knoop te zetten.',
         ok: false,
-        fix: 'op de hoogste knoop',
-        why: 'Daar maakt de lezer de grootste stap: kinderopvangtoeslag-affaire.',
+        fix: 'er is geen verplichte laagste of hoogste knoop; kies een grens die de lezer helpt',
+        why: 'Kinderopvangtoeslag-affaire is een mogelijke keuze. Facultatief betekent dat het teken voor leesbaarheid mag worden toegevoegd, niet dat één boomknoop verplicht is.',
       },
       {
         t: 'De spelling van kinderboekenschrijver laat zien welke boom bedoeld is.',

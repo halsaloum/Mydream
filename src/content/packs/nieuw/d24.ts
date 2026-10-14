@@ -446,13 +446,12 @@ export const LES_D24: LessonInput = {
       why: 'Een door-bepaling en duurde: dat kan alleen bij een gebeurtenisnominalisatie, die de argumenten van wibbelen erft. Drie wibbelingen op tafel zijn dingen.',
     },
     {
-      kind: 'fix',
+      kind: 'rewrite',
       id: 'afstandsloop',
-      prompt: 'Tik het foute woord aan en verbeter het.',
-      sentence: 'Ze traint al maanden voor de lange afstandsloop van zondag.',
-      wrong: 6,
-      answer: 'langeafstandsloop',
-      why: 'Bedoeld is een loop over de lange afstand. Die woordgroep gaat als geheel het woord in: aaneen, met tussen-s. Met een spatie maak je lange los van afstand. (Tik het eerste deel.)',
+      prompt: 'Bedoeld is de sportterm voor een loop over de lange afstand. Schrijf die samenstelling aaneen en behoud alle andere woorden.',
+      source: 'Ze traint al maanden voor de lange afstandsloop van zondag.',
+      accept: ['Ze traint al maanden voor de langeafstandsloop van zondag.'],
+      why: 'De sportterm is langeafstandsloop: de groep lange afstand zit in de samenstelling, met tussen-s. De opdracht vraagt die specifieke term; een vrije beschrijving van een lange afstandsloop is niet in elke context ongrammaticaal.',
     },
     {
       kind: 'explain',

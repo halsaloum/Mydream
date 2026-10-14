@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { demoEntries, getDemo } from '@/content/demo';
 import type { Step, StepOf } from '@/content/schema';
 import { evaluate, isComplete } from './grade';
-import { betConsequence, clampCount, dictationDiff, EXTRA_RESPONSE_SCHEMAS, extraFeedback, speedScore, STEP_MODES } from './kinds';
+import { betConsequence, clampCount, dictationDiff, EXTRA_RESPONSE_SCHEMAS, extraFeedback, extraFits, isScored, speedScore, STEP_MODES } from './kinds';
 import type { PlanStep } from './plan';
 import { initialResponse, type Response } from './responses';
 import { createSession, sessionReducer, summarize } from './session';
@@ -60,6 +60,19 @@ describe('zelfcontrolerende oefeningen', () => {
     expect(summary.missed).toHaveLength(0);
   });
 
+  it('een onbecijferde woordgok vervuilt het percentage en de eerste-pogingenteller niet', () => {
+    const step = demo<'guess'>('raad-eerst');
+    expect(isScored(step)).toBe(false);
+    const item: PlanStep = { key: 'guess', lessonId: 'demo', step, source: { stepIndex: 0 } };
+    const lookup = () => item;
+    let state = createSession('demo', 'lesson', [item], 0);
+    const response: Response = { kind: 'guess', value: step.options[0] ?? null };
+    state = sessionReducer(state, { type: 'respond', response, now: 1000 }, lookup);
+    state = sessionReducer(state, { type: 'check', now: 2000 }, lookup);
+    expect(state.firstTry).toEqual({});
+    expect(summarize(state, lookup)).toMatchObject({ graded: 0, firstTryCorrect: 0 });
+  });
+
   it('swipe-kaarten: score per kaart en de tekst uit de mock', () => {
     const step = demo<'swipe'>('swipe-kaarten');
     const answers = step.cards.map((card, i) => (i === 2 ? !card.ok : card.ok));
@@ -67,7 +80,40 @@ describe('zelfcontrolerende oefeningen', () => {
     expect(isComplete(step, response)).toBe(true);
     const outcome = evaluate(step, response);
     expect(outcome.score).toBeCloseTo(5 / 6);
-    expect(extraFeedback(step, response as never, outcome)).toEqual({ title: 'Mooi zo!', body: 'Je hebt 5 van de 6 zinnen goed beoordeeld.' });
+    expect(extraFeedback(step, response as never, outcome)).toEqual({ title: 'Afgerond met oefenpunten', body: 'Je hebt 5 van de 6 zinnen goed beoordeeld.' });
+  });
+
+  it('rondt de swipe-stapel pas af na het bekijken van de laatste uitleg, met compatibele oude antwoorden', () => {
+    const step = demo<'swipe'>('swipe-kaarten');
+    const answers = step.cards.map((card) => card.ok);
+    const pending: Response = { kind: 'swipe', answers, reviewed: answers.length - 1 };
+    expect(isComplete(step, pending)).toBe(false);
+    expect(isComplete(step, { ...pending, reviewed: answers.length })).toBe(true);
+    expect(isComplete(step, { kind: 'swipe', answers })).toBe(true);
+    expect(extraFits(step, { ...pending, reviewed: answers.length + 1 })).toBe(false);
+    expect(extraFits(step, { ...pending, reviewed: 0 })).toBe(false);
+    const { state } = runTask(step, [pending]);
+    expect(state.phase).toBe('answering');
+  });
+
+  it('een snelle herhaling wist geen fout; één goed antwoord bewijst niet de hele snelreeks', () => {
+    const step = demo<'speed'>('snelrondje');
+    const partial: Response = { kind: 'speed', answers: [{ item: 0, ok: true }], clock: true, endsAt: 20_000, finished: true };
+    expect(evaluate(step, partial)).toMatchObject({ correct: false, review: 'miss' });
+    expect(evaluate(step, partial).score).toBeCloseTo(1 / step.items.length, 2);
+    expect(extraFeedback(step, partial, evaluate(step, partial)).body).toContain(`${step.items.length - 1} combinaties zijn nog niet geoefend`);
+    const answers = step.items.map((_, item) => ({ item, ok: item !== 0 }));
+    const corrected = { ...partial, answers: [...answers, { item: 0, ok: true }] };
+    expect(evaluate(step, corrected).score).toBeCloseTo((step.items.length - 1) / step.items.length, 2);
+  });
+
+  it('authored completion text does not hide mistakes in a task', () => {
+    const step = { ...demo<'ladder'>('betekenisladder'), done: { title: 'Alles perfect!', text: 'Deze woorden liggen van zwak naar sterk.' } };
+    const response: Response = { kind: 'ladder', placed: step.steps.length, mistakes: 2 };
+    const feedback = extraFeedback(step, response, evaluate(step, response));
+    expect(feedback.title).toBe('Afgerond met oefenpunten');
+    expect(feedback.body).toContain('2 verkeerde keuzes');
+    expect(feedback.body).toContain(step.done.text);
   });
 
   it('zinstang: veertien woorden in de tang, korter na verplaatsen', () => {

@@ -89,8 +89,8 @@ export const LES_W26: LessonInput = {
           },
         },
         {
-          text: 'Tijd zegt wanneer; *aspect* zegt hoe je naar de gebeurtenis kijkt: als afgerond geheel, of als iets wat aan de gang is. Het Nederlands heeft daarvoor geen verplichte vorm zoals het Engelse *-ing*, maar wel twee bouwsels. *Aan het* plus infinitief: *Ik ben aan het werken.* En de houdingswerkwoorden *zitten*, *staan*, *liggen*, *lopen* en *hangen* met *te*: *Ik zit te lezen.* Allebei kunnen niet bij een toestand: *Ik ben aan het weten* bestaat niet. Een lijdend voorwerp gaat vóór *aan het*: *Ik ben de krant aan het lezen.* En in de voltooide tijd gebeurt iets vreemds: *Ik heb zitten lezen*, met een infinitief in plaats van een deelwoord en zonder *te* (de vervangende infinitief, zie d13).',
-          rule: 'Progressief: aan het + infinitief, of zitten, staan, liggen te + infinitief. Niet bij toestanden, en nooit verplicht.',
+          text: 'Tijd zegt wanneer; *aspect* zegt hoe je een situatie presenteert, bijvoorbeeld als afgerond of als bezig. Het Nederlands kan progressief gebruik uitdrukken met *aan het + infinitief* (*Ik ben aan het werken*) of een houdingswerkwoord met *te* (*Ik zit te lezen*). Die constructies passen vooral bij dynamische situaties. *Ik ben aan het weten* is in de gewone toestandslezing ongebruikelijk; context kan soms een andere, dynamische lezing oproepen. In *Ik ben de krant aan het lezen* staat het object vóór aan het. In de voltooide tijd krijg je *Ik heb zitten lezen*, met een vervangende infinitief en zonder te.',
+          rule: 'Progressief gebruik presenteert iets als bezig. Aan het + infinitief en houdingswerkwoorden met te passen vooral bij dynamische situaties.',
           swap: {
             goal: 'Bouw de progressieve zin met een lijdend voorwerp',
             blocks: ['Ik ben', 'aan het', 'de krant', 'lezen'],
@@ -234,7 +234,7 @@ export const LES_W26: LessonInput = {
     {
       kind: 'fix',
       id: 'toen-had',
-      prompt: 'Tik het foute woord aan en verbeter het.',
+      prompt: 'Beschrijf het eten als al afgerond vóór het thuiskomen, vanuit dat verleden standpunt. Vervang alleen heeft door de passende voorverleden vorm.',
       sentence: 'Toen ik thuiskwam, heeft ze al gegeten.',
       wrong: 3,
       answer: 'had',
@@ -308,7 +308,7 @@ export const LES_W26: LessonInput = {
           },
         },
         {
-          text: 'Een verhaal heeft een *verhaaltijd*, meestal het preteritum. Alles wat op de verhaallijn gebeurt, staat in de o.v.t.: *Hij kwam thuis, zette de tas neer en keek rond.* Wat eerder gebeurde dan de verhaallijn, krijgt de v.v.t.: *Ze had al gegeten.* Wat vanuit het verhaal nog moet komen, krijgt *zou*: *Hij wist dat hij dit nooit zou vergeten.* Zo blijft de lezer op één standpunt staan. Spring je ineens naar het perfectum (*Hij kwam thuis. Hij heeft de tas neergezet.*), dan verhuist het standpunt naar het nu en breekt het verhaal. Dat is wat *tijdsconsecutie* betekent: de tijden volgen één gekozen standpunt.',
+          text: 'Een verhaal kan één verleden standpunt volgen: *Hij kwam thuis, zette de tas neer en keek rond.* Een eerdere gebeurtenis kun je als voorverleden beschrijven: *Ze had al gegeten.* Een latere verwachting vanuit toen kan *zou* krijgen: *Hij wist dat hij dit nooit zou vergeten.* Een onbedoelde tijdsprong kan de volgorde onduidelijk maken, maar een bewuste wisseling van vertelstandpunt is een mogelijk stijlmiddel. Deze ronde oefent eerst het consequent vasthouden van één gekozen standpunt.',
           rule: 'Verhaallijn: o.v.t. Eerder dan de verhaallijn: v.v.t. Later vanuit het verhaal: zou.',
           paradigm: {
             q: 'Kies de vorm die het verhaal op één standpunt houdt',
@@ -451,7 +451,7 @@ export const LES_W26: LessonInput = {
           },
         },
         {
-          text: 'Waarom kan *aan het weten* niet? Zeno Vendler (1957) verdeelde werkwoorden naar hun innerlijke tijd: *toestanden* (*weten*, *wonen*), *activiteiten* zonder eindpunt (*wandelen*), *processen met eindpunt* (*een brief schrijven*) en *momenten* (*aankomen*). Twee toetsen: een activiteit duurt *een uur lang*, een proces met eindpunt is klaar *in een uur*, en een toestand doet geen van beide graag. De progressieve vorm vraagt iets wat aan de gang kan zijn: activiteiten en processen. Een toestand is niet aan de gang, hij is er gewoon. Dit is dezelfde eigenschap als de teliciteit uit Hebben of zijn (w16), maar nu gebruikt voor aspect in plaats van voor het hulpwerkwoord.',
+          text: 'Waarom klinkt *aan het weten* in de gewone lezing ongebruikelijk? Vendlers onderscheid helpt: toestanden (*weten*), activiteiten zonder ingebouwd eindpunt (*wandelen*), processen met eindpunt (*een brief schrijven*) en korte overgangen (*aankomen*). Een activiteit kan *een uur lang* duren; *in een uur een brief schrijven* noemt het bereiken van een eindpunt. Ook toestanden kunnen duren: *een uur lang wakker zijn*. De progressieve vorm past vooral bij een dynamische activiteit of een proces. De concrete betekenis en context bepalen de analyse; één duurwoord of één infinitief is geen onfeilbare toets.',
           rule: 'Aspect kijkt naar de innerlijke tijd van het werkwoord: duurt het, eindigt het, of is het er gewoon?',
           paradigm: {
             q: 'Vul de klassen van Vendler in',
@@ -648,7 +648,7 @@ export const LES_W26: LessonInput = {
           fix: 'Yesterday I worked',
           why: 'Het Engelse perfectum verdraagt geen tijdsbepaling in het verleden; het Nederlandse wel.',
         },
-        { t: 'Ik ben aan het weten bestaat niet.', ok: true, why: 'Weten is een toestand, en een toestand is niet aan de gang.' },
+        { t: 'Ik ben aan het weten is ongebruikelijk als weten een gewone toestand beschrijft.', ok: true, why: 'De progressieve constructie past vooral bij dynamische situaties. Toestanden kunnen wel duren; duur alleen bewijst dus geen dynamische lezing.' },
         { t: 'In het systeem van Te Winkel zijn er zes tijden.', ok: false, fix: 'Acht tijden', why: 'Drie tegenstellingen met elk twee waarden: 2 × 2 × 2.' },
         { t: 'Bij ik had gewerkt ligt R vóór S.', ok: true, why: 'Het standpunt ligt in het verleden, en E ligt daar nog vóór.' },
         {

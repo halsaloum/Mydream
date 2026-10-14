@@ -56,7 +56,9 @@ describe('groep A oefenvormen', () => {
       const index = shownCard(step, turn);
       shown.push(index);
       await user.keyboard(step.cards[index]!.ok ? '{ArrowRight}' : '{ArrowLeft}');
-      act(() => vi.advanceTimersByTime(420));
+      expect(state.response.answers).toHaveLength(turn + 1);
+      expect(state.locked).toBe(false);
+      await user.keyboard('{Enter}');
     }
 
     await waitFor(() => expect(state.locked).toBe(true));
@@ -106,13 +108,34 @@ describe('groep A oefenvormen', () => {
       const ok = step.cards[shownCard(step, turn)]!.ok;
       // Alleen de eerste kaart fout beoordelen.
       await user.keyboard(ok === (turn !== 0) ? '{ArrowRight}' : '{ArrowLeft}');
-      act(() => vi.advanceTimersByTime(420));
+      await user.keyboard('{Enter}');
     }
 
     await waitFor(() => expect(state.locked).toBe(true));
     expect(state.response.answers.filter((answer, i) => answer === step.cards[i]!.ok)).toHaveLength(5);
     expect(state.correct).toBe(false);
     expect(screen.getByText('5 van 6 goed')).toBeInTheDocument();
+  });
+
+  it('houdt de beoordeelde kaart en haar uitleg na verversen vast totdat je verdergaat', async () => {
+    const user = userEvent.setup();
+    const step = getDemo('swipe-kaarten')!.step as StepOf<'swipe'>;
+    const before = renderStep(SwipeStep, step);
+    const card = shownCard(step, 0);
+    await user.click(screen.getByRole('button', { name: step.cards[card]!.ok ? /^Goed$/ : /^Fout$/ }));
+    const saved = before.state.response;
+    const explanation = step.cards[card]!.why;
+    expect(saved).toMatchObject({ reviewed: 0 });
+    before.unmount();
+
+    const restored = renderStep(SwipeStep, step, saved);
+    expect(shownCard(step, 0)).toBe(card);
+    expect(screen.getByText((text) => text.includes(explanation))).toBeVisible();
+    expect(screen.getByRole('button', { name: /^Goed$/ })).toBeDisabled();
+    expect(screen.getByRole('button', { name: /^Fout$/ })).toBeDisabled();
+    await user.keyboard('{Enter}');
+    expect(restored.state.response).toMatchObject({ reviewed: 1 });
+    expect(shownCard(step, 1)).not.toBe(card);
   });
 
   it('vindt vijf echte woorden in woordbouwer', async () => {

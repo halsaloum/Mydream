@@ -61,14 +61,14 @@ export const LES_G24: LessonInput = {
           text: 'Na een korte klank met klemtoon en dan *l*, *m*, *n*, *r* of *ng* komt *-etje*. De medeklinker wordt dubbel, net als bij het meervoud: *bal*, *balletje*; *kam*, *kammetje*; *pen*, *pennetje*; *ster*, *sterretje*; *zon*, *zonnetje*. Alleen *ng* blijft enkel: *ring*, *ringetje*; *ding*, *dingetje*. Sorteer de voorwerpen.',
           rule: 'Korte klank met klemtoon + *l*, *m*, *n*, *r* of *ng*: *-etje*, met een dubbele medeklinker (*balletje*).',
           bins: {
-            q: 'Zet elk voorwerp in de bak van zijn verkleinwoord',
+            q: 'Zet elk voorwerp in de bak van zijn verkleinwoord. Gebruik bij bloem de opgegeven vorm bloempje.',
             bins: ['-je', '-tje', '-pje', '-etje'],
             items: [
               { thing: 'boek', bin: 0, note: 'boekje: na een k komt -je.' },
               { thing: 'muis', bin: 0, note: 'muisje: na een s komt -je.' },
               { thing: 'ei', bin: 1, note: 'eitje: na een tweeklank komt -tje.' },
               { thing: 'struisvogel', bin: 1, note: 'struisvogeltje: doffe e + l, dus -tje.' },
-              { thing: 'bloem', bin: 2, note: 'bloempje: een kleine bloem. oe + m, dus -pje.', hint: 'Het gaat om één kleine bloem, niet om een bos bloemen.' },
+              { thing: 'bloem', bin: 2, note: 'Deze opgegeven vorm krijgt -pje na oe + m. Bloemetje is ook een bestaand verkleinwoord; dat is hier niet de vorm die je sorteert.' },
               { thing: 'zon', bin: 3, note: 'zonnetje: korte o + n, met klemtoon. De n wordt dubbel.' },
               { thing: 'ster', bin: 3, note: 'sterretje: korte e + r, met klemtoon. De r wordt dubbel.' },
               { thing: 'pan', bin: 3, note: 'pannetje: korte a + n, met klemtoon. De n wordt dubbel.' },
@@ -200,7 +200,7 @@ export const LES_G24: LessonInput = {
           },
         },
         {
-          text: 'Woorden op *-ing* zonder klemtoon krijgen *-kje*: *koning*, *koninkje*; *woning*, *woninkje*; *ketting*, *kettinkje*. Met klemtoon op *ing* krijg je *-etje*: *ring*, *ringetje*. En let op twee woorden met een eigen betekenis: een *bloempje* is een kleine bloem, een *bloemetje* is een bosje bloemen dat je iemand geeft.',
+          text: 'Woorden op *-ing* zonder klemtoon krijgen *-kje*: *koning*, *koninkje*; *woning*, *woninkje*; *ketting*, *kettinkje*. Met klemtoon op *ing* krijg je *-etje*: *ring*, *ringetje*. En let op twee woorden met een eigen betekenis: *bloempje* en *bloemetje* kunnen allebei een kleine bloem betekenen. *Een bloemetje geven* betekent ook een bosje bloemen cadeau geven. De context bepaalt welke betekenis je bedoelt.',
           rule: '*-ing* zonder klemtoon: *-inkje* (*koninkje*). Met klemtoon: *-ingetje* (*ringetje*).',
           lab: {
             label: 'Tik een woord',
@@ -208,7 +208,7 @@ export const LES_G24: LessonInput = {
               { k: 'koning', out: 'koninkje', note: 'KO-ning: geen klemtoon op -ing, dus -kje.' },
               { k: 'ketting', out: 'kettinkje', note: 'KET-ting: geen klemtoon op -ing, dus -kje.' },
               { k: 'ring', out: 'ringetje', note: 'Eén lettergreep, met klemtoon: -etje.' },
-              { k: 'bloem', out: 'bloempje of bloemetje', note: 'bloempje: een kleine bloem. bloemetje: een bosje bloemen.' },
+              { k: 'bloem', out: 'bloempje of bloemetje', note: 'Beide kunnen een kleine bloem zijn. In een bloemetje geven kan bloemetje ook een bosje bloemen betekenen.' },
             ],
           },
           quiz: {
@@ -362,7 +362,7 @@ export const LES_G24: LessonInput = {
     {
       kind: 'choice',
       id: 'bloemetje',
-      prompt: 'Welk woord past?',
+      prompt: 'De buren geven een bos bloemen, niet één afzonderlijke bloem. Welk woord benoemt dit cadeau?',
       before: 'Voor haar verjaardag kreeg mijn moeder een mooi',
       after: 'van de buren.',
       options: ['bloempje', 'bloemtje', 'bloemetje', 'bloemmetje'],

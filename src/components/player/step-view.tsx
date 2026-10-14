@@ -108,6 +108,7 @@ type StepViewProps = {
   stepKey: string;
   seed: string;
   onSubmit: () => void;
+  assistance?: 'guided' | 'retrieval';
 };
 
 export function StepView({ step, response, onChange, ...rest }: StepViewProps) {

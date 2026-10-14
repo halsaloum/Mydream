@@ -62,7 +62,7 @@ export function courseCompletion(progress: ProgressData): Completion {
   return completion(lessonEntries, progress);
 }
 
-/** Gemiddelde "in één keer goed" over afgeronde lessen (beste poging), of null zonder data. */
+/** Gemiddelde beste rondescore over afgeronde lessen, inclusief gedeeltelijke scores; geen beheersingsmaat. */
 export function averageAccuracy(progress: ProgressData, entries: readonly LessonEntry[] = lessonEntries): number | null {
   const scores = entries.flatMap((entry) => {
     const record = progress.lessons[entry.lesson.id];

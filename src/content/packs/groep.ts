@@ -20,7 +20,7 @@ export const GROEP_LESSONS: LessonInput[] = [
         title: 'Drie tests voor een blok',
         panels: [
           {
-            text: 'Woorden gaan graag in groepjes op stap. Maar zeggen dat ze bij elkaar horen is makkelijk; bewijzen is het echte werk. Een groep woorden die samen één blok vormt, heet in de taalkunde een *constituent*. Test 1 is de *vooroptest*: in een Nederlandse hoofdzin staat vóór de persoonsvorm precies één zinsdeel. Wat je samen naar die plek kunt verplaatsen, is dus één blok: *Een fiets met rode banden heeft mijn buurman gekocht.*',
+            text: 'Woorden gaan graag in groepjes op stap. Maar zeggen dat ze bij elkaar horen is makkelijk; bewijzen is het echte werk. Een groep woorden die samen één blok vormt, heet in de taalkunde een *constituent*. Test 1 is de *vooroptest*: in een gewone mededelende hoofdzin staat vóór de persoonsvorm één zinsdeel. Wat je samen naar die plek kunt verplaatsen, levert bewijs voor een blok: *Een fiets met rode banden heeft mijn buurman gekocht.* Een ja-neevraag of bevel kan juist met de persoonsvorm beginnen.',
             rule: 'Vooroptest: wat samen vóór de persoonsvorm kan staan, is één constituent.',
             swap: {
               goal: 'Zet het lijdend voorwerp vooraan. De persoonsvorm blijft op plek 2.',
@@ -47,7 +47,7 @@ export const GROEP_LESSONS: LessonInput[] = [
             },
           },
           {
-            text: 'Test 3 is de *vraagtest*: een constituent kan in zijn eentje antwoord geven op een vraag. *Wie zag het boek?* *De oude buurman.* *Waar?* *In de bibliotheek.* Zo’n los antwoord heet een *fragment*. Een stuk dat geen blok is, klinkt als los antwoord altijd vreemd.',
+            text: 'Test 3 is de *vraagtest*: een passend los antwoord levert bewijs voor een constituent. *Wie zag het boek?* *De oude buurman.* *Waar?* *In de bibliotheek.* Zo’n los antwoord heet een *fragment*. Kies een vraag die bij de bedoelde betekenis past en combineer deze test met andere tests.',
             quiz: {
               q: 'Zin: De buurman zag het boek in de bibliotheek. Welk stuk kan geen los antwoord zijn?',
               options: ['boek in de', 'in de bibliotheek', 'het boek'],
@@ -193,7 +193,7 @@ export const GROEP_LESSONS: LessonInput[] = [
         prompt: 'Klopt het?',
         intro: 'Veeg naar rechts als de zin klopt, naar links als hij niet klopt.',
         cards: [
-          { t: 'Vóór de persoonsvorm in een hoofdzin staat precies één zinsdeel.', ok: true, why: 'Daarom werkt de vooroptest.' },
+          { t: 'Vóór de persoonsvorm in een gewone mededelende hoofdzin staat één zinsdeel.', ok: true, why: 'Daarop is de vooroptest gebaseerd. Een ja-neevraag of bevel heeft een ander patroon.' },
           {
             t: 'Eén woord kan nooit een woordgroep zijn.',
             ok: false,
@@ -259,8 +259,8 @@ export const GROEP_LESSONS: LessonInput[] = [
             },
           },
           {
-            text: 'Hoe vind je de kern? Twee tests. *Weglaten*: de bepalingen kun je meestal weglaten, de kern niet. *De oude buurman* wordt *de buurman*, maar niet *de oude*. *Congruentie*: de kern van het onderwerp bepaalt of de persoonsvorm enkelvoud of meervoud is. In *De sleutels van de kast* is *sleutels* de kern, niet *kast*.',
-            rule: 'Kerntests: de kern kun je niet weglaten, en de kern regelt de persoonsvorm.',
+            text: 'Hoe vind je de kern? Combineer twee aanwijzingen. *Weglaten*: bepalingen kun je vaak weglaten: *de oude buurman* wordt *de buurman*. De kern zelf is gewoonlijk nodig, maar in een passende context kan een bekend naamwoord impliciet blijven: *de oude* kan dan bijvoorbeeld *de oude buurman* betekenen. *Congruentie*: de kern van het onderwerp bepaalt in gewone gevallen of de persoonsvorm enkelvoud of meervoud is. In *De sleutels van de kast* is *sleutels* de kern, niet *kast*.',
+            rule: 'Gebruik weglaten en congruentie samen; contextuele weglating en bijzondere hoeveelheidsconstructies vragen extra aandacht.',
             quiz: {
               q: 'Kies de goede vorm: De sleutels van de kast … op tafel.',
               options: ['liggen', 'ligt'],
@@ -420,7 +420,7 @@ export const GROEP_LESSONS: LessonInput[] = [
         prompt: 'Laat alle bepalingen bij ‘huis’ weg, maar houd het lidwoord.',
         source: 'Het zeer oude huis van mijn oma aan de gracht is verkocht.',
         accept: ['Het huis is verkocht.'],
-        why: 'zeer oude, van mijn oma en aan de gracht zijn bepalingen; ze kunnen weg. De kern huis kan niet weg.',
+        why: 'zeer oude, van mijn oma en aan de gracht zijn bepalingen; ze kunnen hier weg. Huis is de kern. Een bekend zelfstandig naamwoord kan in andere contexten soms impliciet blijven.',
       },
       {
         kind: 'swipe',
@@ -732,13 +732,13 @@ export const GROEP_LESSONS: LessonInput[] = [
             },
           },
           {
-            text: 'Soms staan twee bijvoeglijke naamwoorden *naast* elkaar, op hetzelfde niveau: *een lange, saaie vergadering* is een vergadering die lang is en saai. Dat heet *nevengeschikt*, en daar zet je een komma. Soms staan ze *op elkaar*: *een oude Franse wijn* is een Franse wijn die oud is. Dat heet *gestapeld*: geen komma. De test: kun je *en* ertussen zetten en de volgorde omdraaien? *Een lange en saaie vergadering*, *een saaie, lange vergadering*: ja, dus komma. ∗*Een oude en Franse wijn* (fout): nee, dus geen komma.',
+            text: 'Soms staan twee bijvoeglijke naamwoorden *naast* elkaar, op hetzelfde niveau: *een lange, saaie vergadering* is een vergadering die lang is en saai. Bij zo’n opsomming zet je een komma. Soms staan ze *op elkaar*: *een oude Franse wijn* is een Franse wijn die oud is. Dat heet *gestapeld*: geen komma. Als hulpmiddel kun je *en* invoegen en de volgorde omdraaien, mits de bedoelde betekenis gelijk blijft. *Een oude en Franse wijn* kan wel als je oud en Frans afzonderlijk opsomt, maar heeft dan een andere bouw dan de gewone gestapelde combinatie.',
             rule: 'Kan er en tussen en kun je ze omdraaien? Dan nevengeschikt: zet een komma.',
             quiz: {
-              q: 'Welke groep heeft terecht een komma?',
-              options: ['een spannend, grappig boek', 'een klein, houten huisje', 'een oud, Frans kasteel'],
+              q: 'Je somt spannend en grappig als twee zelfstandige eigenschappen van het boek op. Welke weergave zonder en heeft daarvoor de juiste komma?',
+              options: ['een spannend, grappig boek', 'een spannend grappig, boek', 'een spannend grappig boek'],
               answer: 'een spannend, grappig boek',
-              why: 'spannend en grappig boek kan, en grappig, spannend ook. klein houten en oud Frans zijn gestapeld: geen komma.',
+              why: 'De bedoelde opsomming van spannend en grappig krijgt een komma tussen de twee bijvoeglijke naamwoorden, niet vóór de kern boek.',
             },
           },
         ],
@@ -754,7 +754,7 @@ export const GROEP_LESSONS: LessonInput[] = [
       {
         kind: 'sort',
         id: 'komma-of-niet',
-        prompt: 'Hoort er een komma tussen de twee bijvoeglijke naamwoorden?',
+        prompt: 'Gebruik de gewone gestapelde lezing voor maat/kleur/herkomst/materiaal. De andere paren zijn bedoelde opsommingen van zelfstandige eigenschappen. Waar komt een komma?',
         buckets: ['komma: nevengeschikt', 'geen komma: gestapeld'],
         items: [
           { t: 'een lange saaie vergadering', b: 0 },
@@ -772,7 +772,7 @@ export const GROEP_LESSONS: LessonInput[] = [
       {
         kind: 'rewrite',
         id: 'keet',
-        prompt: 'Zet een komma waar die hoort, en nergens anders.',
+        prompt: 'Lang en saai worden opgesomd; kleine houten keet heeft de gestapelde lezing. Zet de bijbehorende komma, en nergens anders.',
         source: 'Het was een lange saaie vergadering in een kleine houten keet.',
         accept: ['Het was een lange, saaie vergadering in een kleine houten keet.'],
         why: 'lang en saai zijn nevengeschikt: komma. klein en houten zijn gestapeld (maat en materiaal): geen komma.',
@@ -822,7 +822,7 @@ export const GROEP_LESSONS: LessonInput[] = [
               label: 'Tik een groep en doe de en-test',
               chips: [
                 { k: 'lange, saaie vergadering', out: 'lange en saaie · saaie, lange: kan', note: 'Nevengeschikt: komma.' },
-                { k: 'oude Franse wijn', out: 'oude en Franse: kan niet', note: 'Gestapeld: geen komma.' },
+                { k: 'oude Franse wijn', out: 'oude Franse: gewone gestapelde lezing', note: 'Geen komma bij deze lezing. Oude en Franse kan bij een afzonderlijke opsomming, maar krijgt dan een andere bouw.' },
                 { k: 'grote rode bal', out: 'grote en rode: vreemd', note: 'Maat en kleur zijn verschillende soorten: gestapeld.' },
                 { k: 'koude, natte dag', out: 'koude en natte · natte, koude: kan', note: 'Twee indrukken van dezelfde soort: komma.' },
               ],

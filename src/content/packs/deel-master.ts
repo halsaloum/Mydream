@@ -245,7 +245,7 @@ export const DEEL_MASTER_LESSONS: LessonInput[] = [
         title: 'Lagen in het woord',
         panels: [
           {
-            text: 'Het Nederlands heeft twee soorten achtervoegsels. *Inheemse*, uit het Germaans: *-heid*, *-baar*, *-ig*. Ze laten de klemtoon met rust: *WAAR* → *WAARheid*. En *geleerde*, uit het Latijn en Frans: *-iteit*, *-isch*, *-atie*. Die trekken de klemtoon naar zich toe: *neuTRAAL* → *neutraliTEIT*. Bouw *productiviteit* op.',
+            text: 'Een traditioneel model onderscheidt inheemse en geleerde lagen van achtervoegsels. Inheemse voorbeelden zoals *-heid* laten vaak de basisklemtoon staan: *WAAR → WAARheid*. Geleerde voorbeelden zoals *-iteit* kunnen de klemtoon verplaatsen: *neuTRAAL → neutraliTEIT*. Herkomst bepaalt dit gedrag niet zonder uitzonderingen: inheems *-in* is bijvoorbeeld zelf beklemtoond. Bouw nu *productiviteit* op.',
             bracket: {
               tree: '[[product ief] iteit]',
               nodes: [
@@ -257,8 +257,8 @@ export const DEEL_MASTER_LESSONS: LessonInput[] = [
             },
           },
           {
-            text: 'De lagen hebben een volgorde. Een inheems achtervoegsel mag om een geleerd heen: *absurd-heid*. Andersom niet: *waarheiditeit* is onmogelijk. Ook bij voorvoegsels: geleerd *in-* past alleen op geleerde stammen en past zich aan: *inactief*, *illegaal*, *irreëel*. Inheems *on-* past overal: *onmogelijk*, *onlogisch*.',
-            rule: 'Geleerde affixen zitten binnenin en verschuiven de klemtoon; inheemse affixen zitten erbuiten en laten de klemtoon met rust.',
+            text: 'De lagentheorie voorspelt een voorkeur: geleerde affixen eerder binnenin en makkelijk herkenbare affixen erbuiten. *Absurdheid* past bij dat beeld. Dat een vorm als *waarheiditeit* ongebruikelijk is, bewijst niet dat elke combinatie in omgekeerde volgorde verboden is. Voorvoegsels hebben eveneens eigen eisen: vergelijk *inactief*, *illegaal* en *onlogisch*. Later onderzoek en Nederlandse tegenvoorbeelden beperken een absoluut lagenverbod.',
+            rule: 'Lagen beschrijven woordvormingspatronen; de eisen en uitzonderingen van individuele affixen blijven relevant.',
             deep: {
               q: 'Waar komt dat idee vandaan?',
               a: 'Uit de *lexicale fonologie* van Paul Kiparsky (1982): het lexicon heeft niveaus, en klemtoonregels werken alleen op niveau 1, waar de geleerde affixen zitten. Jennifer Hay (2002) gaf een psychologische verklaring: affixen die je makkelijk loshaalt (*-heid*) staan buiten affixen die vergroeid zijn met hun stam (*-iteit*). Dat heet *complexity-based ordering*.',
@@ -512,8 +512,8 @@ export const DEEL_MASTER_LESSONS: LessonInput[] = [
       {
         kind: 'sort',
         id: 'levend',
-        prompt: 'Productief of niet meer?',
-        buckets: ['productief', 'niet meer'],
+        prompt: 'Welke patronen zijn breed productief, en welke hebben een veel beperktere productiviteit?',
+        buckets: ['Breed productief', 'Veel beperkter'],
         items: [
           { t: '-heid', b: 0 },
           { t: '-baar', b: 0 },
@@ -524,7 +524,7 @@ export const DEEL_MASTER_LESSONS: LessonInput[] = [
           { t: '-ing (planning)', b: 0 },
           { t: '-de (liefde)', b: 1 },
         ],
-        why: 'Met -heid, -baar en -er maak je dagelijks nieuwe woorden. -te, -sel en -nis zitten vooral in oude woorden.',
+        why: 'Met -heid, -baar en -er kun je relatief makkelijk nieuwe woorden vormen. De andere hier genoemde patronen zijn beperkter of vooral in bestaande woorden zichtbaar. Beperkt betekent niet dat een creatieve nieuwvorming of een bijzonder register onmogelijk is.',
       },
       {
         kind: 'bet',
@@ -725,7 +725,7 @@ export const DEEL_MASTER_LESSONS: LessonInput[] = [
       {
         kind: 'type',
         id: 'lies',
-        prompt: 'Typ de roepnaam.',
+        prompt: 'Haal de in deze les behandelde roepnaam op: hij begint met L en heeft vier letters. Andere roepnamen zijn daarmee niet fout.',
         before: 'Elisabeth wordt vaak',
         after: 'genoemd.',
         hint: 'één lettergreep',

@@ -33,7 +33,7 @@ export const LES_W23: LessonInput = {
         },
         {
           text: 'De uitgang *-t* is een morfeem met een vaste verdeling. *Hij*, *zij*, *het*, *wie*, *dat* en elk ander onderwerp in de derde persoon enkelvoud krijgen stam + t: *hij loopt*, dus ook *hij wordt*, waar je die t niet hoort. *Jij* en *je* krijgen de t alleen als ze vóór de persoonsvorm staan: *jij wordt* tegenover *word jij*. *U* is de uitzondering op de uitzondering: altijd stam + t, voor én achter het werkwoord: *u wordt*, *wordt u*. Vul het hele systeem in en let op de twee rijen met inversie.',
-          rule: 'Derde persoon en u: altijd stam + t. Jij en je: stam + t ervoor, kale stam erachter.',
+          rule: 'Bij de hier geoefende gewone werkwoorden in de tegenwoordige tijd: derde persoon en u krijgen stam + t. Jij/je als onderwerp achter de persoonsvorm: geen toegevoegde t.',
           paradigm: {
             q: 'Vul het systeem in',
             cols: ['vinden', 'worden'],
@@ -305,7 +305,7 @@ export const LES_W23: LessonInput = {
             chips: [
               { k: 'Nederlands', out: 'hij vindt', note: 'Stam vind + t. Je ziet twee morfemen, je hoort er één klank.' },
               { k: 'Duits', out: 'er findet', note: 'Het Duits schuift een e tussen stam en uitgang. Dan hoor je de t, en het probleem verdwijnt.' },
-              { k: 'Engels', out: 'he finds', note: 'De Engelse uitgang is een s. Die hoor je altijd, dus daar vergist niemand zich.' },
+              { k: 'Engels', out: 'he finds', note: 'De s is hier hoorbaar. Ook Engelstalige schrijvers kunnen fouten maken; de Nederlandse homofoonval ziet er alleen anders uit.' },
               {
                 k: 'Afrikaans',
                 out: 'hy vind',
@@ -329,7 +329,7 @@ export const LES_W23: LessonInput = {
           },
         },
         {
-          text: 'Een deelwoord dat vóór een naamwoord staat, is op weg naar een nieuw woord. *Verwacht*, *bekend* en *gesloten* gedragen zich als bijvoeglijke naamwoorden: ze krijgen *on-* (*onverwacht*, *onbekend*), ze laten *zeer* toe (*zeer bekend*) en soms een trap van vergelijking (*bekender*). Morfologen zoals Geert Booij beschrijven dat als conversie: een werkwoordsvorm wordt opgenomen in een andere woordsoort. Voor de spelling betekent het dat de buigings-e een aparte laag is, buiten op het deelwoord: *beantwoord* + *d* + *e*. De *-de* van de verleden tijd is een andere laag, direct op de stam. Bouw het woord laag voor laag.',
+          text: 'Een deelwoord kan bijvoeglijk gebruikt worden; sommige vormen worden zelfstandige bijvoeglijke naamwoorden. Vergelijk *zeer bekend* en *bekender*. Niet ieder deelwoord haalt al die proeven. Voor de spelling voeg je de buigings-e toe aan het deelwoord: *beantwoord + e = beantwoorde*. Je voegt geen tweede d toe. De verleden tijd is anders opgebouwd: *beantwoord + de = beantwoordde*. Bouw de twee vormen laag voor laag.',
           rule: 'Bijvoeglijk deelwoord: [[stam + d] + e]. Verleden tijd: [stam + de]. Dezelfde letters, een andere bouw.',
           bracket: {
             q: 'Bouw de beantwoorde vraag van binnen naar buiten',
@@ -364,8 +364,8 @@ export const LES_W23: LessonInput = {
           },
         },
         {
-          text: 'Leenwerkwoorden zijn de lakmoesproef van het systeem. Geen enkel geleend werkwoord wordt in het Nederlands sterk: *gecrasht*, *geüpdatet*, *gestreamd*, nooit een nieuwe klinkerwisseling. Steven Pinker (1999) ziet daarin het bewijs dat de zwakke vervoeging een echte regel is, de standaard die alles opvangt wat niet in het geheugen staat; Gary Marcus en collega’s (1995) lieten hetzelfde zien voor de Duitse meervouds-s. De Woordenlijst houdt de Engelse stam intact en zet er de Nederlandse uitgangen achter: *updaten* geeft *ik update*, *hij updatet*, *updatete*, *geüpdatet*. De laatste klank van de stam kiest -te of -de; een stomme e aan het eind telt niet mee. Een trema (*geüpdatet*) of een koppelteken (*ge-sms’t*, *ge-e-maild*) houdt de delen leesbaar.',
-          rule: 'Leenwerkwoorden zijn altijd zwak: Engelse stam, Nederlandse uitgang, ’t kofschip op de klank.',
+          text: 'Nieuwe Engelse leenwerkwoorden worden doorgaans zwak vervoegd: *gecrasht*, *geüpdatet*, *gestreamd*. Steven Pinker bespreekt dergelijke generalisatie als steun voor een standaardregel; ook schema- en analogiemodellen moeten die gegevens verklaren. Eén patroon beslist dus niet vanzelf tussen alle geheugentheorieën. De Woordenlijst behoudt de Engelse basis waar de Nederlandse spellingregels dat toelaten: *updaten* geeft *ik update*, *hij updatet*, *updatete*, *geüpdatet*. De uitgesproken eindklank kiest -te of -de; een stomme e telt daarvoor niet mee. Een trema of koppelteken markeert waar nodig de grens: *geüpdatet*, *ge-sms’t*, *ge-e-maild*.',
+          rule: 'De hier behandelde nieuwe Engelse leenwerkwoorden worden zwak vervoegd: Engelse stam, Nederlandse uitgang, ’t kofschip op de klank.',
           paradigm: {
             q: 'Vul de vormen in volgens de Woordenlijst',
             cols: ['verleden tijd', 'voltooid deelwoord'],
@@ -552,10 +552,10 @@ export const LES_W23: LessonInput = {
           why: 'Alleen de bouw verschilt: stam + te tegenover deelwoord + e. Dat zie je, dat hoor je niet.',
         },
         {
-          t: 'Een geleend werkwoord kan in het Nederlands sterk worden.',
+          t: 'De nieuwe Engelse werkwoorden crashen en streamen krijgen hier een sterke klinkerwisseling.',
           ok: false,
-          fix: 'Leenwerkwoorden zijn altijd zwak',
-          why: 'Gecrasht, geüpdatet, gestreamd: de zwakke vervoeging is de standaardregel die alles opvangt.',
+          fix: 'crashte/gecrasht en streamde/gestreamd zijn zwakke vormen',
+          why: 'Nieuwe Engelse leenwerkwoorden volgen doorgaans de zwakke vervoeging. Dat is geen uitspraak over alle historische ontleningen in de Nederlandse taal.',
         },
         { t: 'Ge-sms’t schrijf je met een koppelteken en een apostrof.', ok: true, why: 'Zo blijft de afkorting sms leesbaar tussen ge- en t.' },
       ],

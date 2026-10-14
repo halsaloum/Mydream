@@ -114,14 +114,14 @@ export function stepMode(step: Step): StepMode {
 export function isScored(step: Step): boolean {
   if (step.kind === 'write') return false;
   const mode = stepMode(step);
-  return mode === 'graded' || (mode === 'task' && !UNSCORED.has(step.kind));
+  return (mode === 'graded' || mode === 'task') && !UNSCORED.has(step.kind);
 }
 
 const index = z.int().nonnegative();
 const count = z.int().nonnegative();
 
 export const EXTRA_RESPONSE_SCHEMAS = [
-  z.object({ kind: z.literal('swipe'), answers: z.array(z.boolean()) }),
+  z.object({ kind: z.literal('swipe'), answers: z.array(z.boolean()), reviewed: count.optional() }),
   z.object({ kind: z.literal('morph'), combo: z.array(z.string()), found: z.array(z.string()) }),
   z.object({ kind: z.literal('timeline'), verb: index, stop: index, seen: z.array(index) }),
   z.object({
@@ -268,12 +268,21 @@ export function speedScore(answers: readonly { ok: boolean }[]) {
   return { points, combo, best, correct: answers.filter((answer) => answer.ok).length };
 }
 
+/** Een snelle herkansing vervangt de eerste beslissing niet; nog niet gevraagde items zijn niet behaald. */
+export function speedPractice(step: StepOf<'speed'>, answers: readonly { item: number; ok: boolean }[]) {
+  const first = new Map<number, boolean>();
+  for (const answer of answers) {
+    if (answer.item < step.items.length && !first.has(answer.item)) first.set(answer.item, answer.ok);
+  }
+  return { practiced: first.size, firstTry: [...first.values()].filter(Boolean).length, total: step.items.length };
+}
+
 /* ---------------------------------------------------------------- engine */
 
 export function extraInitialResponse(step: Step): ExtraResponse | null {
   switch (step.kind) {
     case 'swipe':
-      return { kind: 'swipe', answers: [] };
+      return { kind: 'swipe', answers: [], reviewed: 0 };
     case 'morph': {
       const combo = step.slots.map(() => '');
       return { kind: 'morph', combo, found: morphWord(step, combo) ? [morphKey(combo)] : [] };
@@ -324,7 +333,7 @@ export function extraIsComplete(step: Step, r: ExtraResponse): boolean {
   if (isWord(r)) return wordIsComplete(step, r);
   switch (r.kind) {
     case 'swipe':
-      return step.kind === 'swipe' && r.answers.length >= step.cards.length;
+      return step.kind === 'swipe' && r.answers.length === step.cards.length && (r.reviewed ?? r.answers.length) === r.answers.length;
     case 'morph':
       return step.kind === 'morph' && r.found.length >= step.goal;
     case 'timeline':
@@ -373,7 +382,8 @@ export function extraFits(step: Step, r: ExtraResponse): boolean {
   if (isWord(r)) return wordFits(step, r);
   switch (r.kind) {
     case 'swipe':
-      return step.kind === 'swipe' && r.answers.length <= step.cards.length;
+      return step.kind === 'swipe' && r.answers.length <= step.cards.length &&
+        (r.reviewed === undefined || (r.reviewed <= r.answers.length && r.reviewed >= Math.max(0, r.answers.length - 1)));
     case 'morph':
       return step.kind === 'morph' && r.combo.length === step.slots.length;
     case 'timeline':
@@ -423,8 +433,9 @@ export function extraEvaluate(step: Step, r: ExtraResponse): Outcome {
       return taskOutcome(right / step.cards.length);
     }
     case 'speed': {
-      const { correct } = speedScore(r.answers);
-      return taskOutcome(r.answers.length ? correct / r.answers.length : 0);
+      if (step.kind !== 'speed') break;
+      const { firstTry, total } = speedPractice(step, r.answers);
+      return taskOutcome(firstTry / total);
     }
     case 'chat': {
       if (step.kind !== 'chat') break;
@@ -486,24 +497,27 @@ export function extraFeedback(step: Step, r: ExtraResponse, outcome: Outcome): F
   if (isSpelling(r)) return spellingFeedback(step, r, outcome);
   if (isWord(r)) return wordFeedback(step, r, outcome);
   const done = 'done' in step && step.done ? { title: step.done.title, body: step.done.text } : null;
+  const measured = (body: string, title = 'Oefening afgerond'): Feedback => ({
+    title: outcome.correct ? done?.title ?? title : 'Afgerond met oefenpunten',
+    body: [body, done?.body].filter(Boolean).join(' '),
+  });
   switch (r.kind) {
     case 'swipe': {
       if (step.kind !== 'swipe') break;
       const right = Math.round((outcome.score ?? 0) * step.cards.length);
-      return done ?? { title: 'Mooi zo!', body: `Je hebt ${right} van de ${step.cards.length} zinnen goed beoordeeld.` };
+      return measured(`Je hebt ${right} van de ${step.cards.length} zinnen goed beoordeeld.`, 'Mooi zo!');
     }
     case 'speed': {
       if (step.kind !== 'speed') break;
-      const { points, best, correct } = speedScore(r.answers);
-      if (done) return done;
-      return r.clock
-        ? { title: 'Lekker tempo!', body: `${points} punten in ${step.seconds} seconden. Beste reeks: ${best} op rij.` }
-        : { title: 'Rondje klaar', body: `${correct} van de ${r.answers.length} goed. Beste reeks: ${best} op rij.` };
+      const { points, best } = speedScore(r.answers);
+      const { practiced, firstTry, total } = speedPractice(step, r.answers);
+      const coverage = practiced < total ? ` ${total - practiced} combinaties zijn nog niet geoefend.` : '';
+      return measured(`${firstTry} van de ${total} combinaties bij de eerste poging goed; ${practiced} geprobeerd.${coverage} ${points} spelpunten. Beste reeks: ${best} op rij.`, 'Rondje klaar');
     }
     case 'chat': {
       if (step.kind !== 'chat') break;
       const first = Math.round((outcome.score ?? 0) * step.rounds.length);
-      return done ?? { title: 'Bericht verstuurd', body: `${first} van ${step.rounds.length} in één keer goed.` };
+      return measured(`${first} van ${step.rounds.length} in één keer goed.`, 'Bericht verstuurd');
     }
     case 'proofread': {
       if (step.kind !== 'proofread') break;
@@ -527,6 +541,26 @@ export function extraFeedback(step: Step, r: ExtraResponse, outcome: Outcome): F
       if (step.kind !== 'dictation') break;
       return outcome.correct ? { title: 'Precies!', body: step.right } : { title: 'Niet helemaal', body: step.wrong };
     }
+    case 'highlight':
+      return measured(`${r.painted.length} woorden gemarkeerd; ${r.mistakes} verkeerde keuzes vóór afronding.`);
+    case 'conjunction':
+      return measured(`${r.placed.length} voegwoorden geplaatst; ${r.mistakes} verkeerde keuzes vóór afronding.`);
+    case 'refs':
+      return measured(`${r.linked} verwijzingen gekoppeld; ${r.mistakes} verkeerde keuzes vóór afronding.`);
+    case 'ladder':
+      return measured(`${r.placed} woorden geplaatst; ${r.mistakes} verkeerde keuzes vóór afronding.`);
+    case 'ambiguity':
+      return measured(`${Object.keys(r.solved).length} betekenissen gekoppeld; ${r.mistakes} verkeerde keuzes vóór afronding.`);
+    case 'intent':
+      return measured(`${r.done.length} situaties opgelost; ${r.mistakes} verkeerde keuzes vóór afronding.`);
+    case 'stack':
+      return measured(`${r.placed} zinnen geplaatst; ${r.mistakes} verkeerde keuzes vóór afronding.`);
+    case 'tone': {
+      const mistakes = step.kind === 'tone' ? r.sent.filter((level) => !step.levels[level]?.ok).length : 0;
+      return measured(`Een passende toon gevonden; ${mistakes} eerdere keuzes pasten niet bij deze situatie.`);
+    }
+    case 'scale':
+      return measured(`${r.on.length} argumenten gecombineerd; ${r.mistakes} keuzes bijgesteld vóór afronding.`);
     default:
       break;
   }
@@ -592,9 +626,9 @@ export function extraProgress(step: Step, r: ExtraResponse): string | null {
 /** Wat de inzet betekent voor de herhaling (Durf je?). */
 export function betConsequence(correct: boolean, bet: 1 | 2 | 3): string {
   if (correct) {
-    if (bet === 3) return 'Heel zeker en goed: dit beheers je. Deze vraag hoeft niet snel terug te komen.';
-    if (bet === 2) return 'Goed ingeschat. Nog één keer en hij zit vast.';
-    return 'Goed, maar je twijfelde. Deze vraag komt nog een keer terug om hem vast te zetten.';
+    if (bet === 3) return 'Heel zeker en goed in deze ronde. Controleer later met een nieuw voorbeeld of je het ook zonder hulp kunt.';
+    if (bet === 2) return 'Je vertrouwen paste bij dit goede antwoord. Pas de regel later opnieuw toe.';
+    return 'Goed, maar je twijfelde. Deze vraag blijft in je Herhaalstapel staan om later opnieuw op te halen.';
   }
   if (bet === 3) return 'Je was heel zeker, maar het is fout. Deze regel krijgt extra herhaling.';
   if (bet === 2) return 'Fout. Deze vraag komt terug in je Herhaalstapel.';

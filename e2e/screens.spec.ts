@@ -17,7 +17,9 @@ test('oefenvorm: swipe-kaarten met alleen het toetsenbord', async ({ page }) => 
   await expect(page.getByRole('heading', { name: 'Goed of fout geschreven?' })).toBeVisible();
   for (let i = 0; i < 6; i++) {
     await page.keyboard.press(i % 2 ? 'ArrowLeft' : 'ArrowRight');
-    await page.waitForTimeout(450);
+    const next = page.getByRole('button', { name: i === 5 ? 'Rond de stapel af' : 'Volgende kaart', exact: true });
+    await expect(next).toBeVisible();
+    await next.press('Enter');
   }
   const primary = page.getByRole('contentinfo').getByRole('button', { name: /Doorgaan/ });
   await expect(primary).toBeEnabled();

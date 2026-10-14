@@ -219,7 +219,7 @@ export function WordCardView({
               aria-pressed={said}
             >
               {said ? <Check aria-hidden className="size-5" strokeWidth={3} /> : <Mic aria-hidden className="size-5" strokeWidth={2.5} />}
-              {said ? 'Hardop gezegd' : 'Zeg het hardop'}
+              {said ? 'Hardop oefenen bevestigd' : 'Ik heb het hardop geoefend'}
             </button>
             <motion.p
               key={String(said)}
@@ -228,7 +228,7 @@ export function WordCardView({
               transition={transition.base}
               className="max-w-[40ch] text-caption font-semibold text-ink-muted"
             >
-              {said ? 'Goed zo: wat je hardop zegt, onthoud je beter.' : `Zeg ‘${word}’ en een van de zinnen hardop. Dat helpt je het te onthouden.`}
+              {said ? 'Je hebt het hardop geoefend. Probeer het later ook zonder de kaart op te halen.' : `Zeg ‘${word}’ en een van de zinnen hardop. Dit kan helpen bij het onthouden; gebruik de voorbeelden ook om uitspraak en betekenis te oefenen.`}
             </motion.p>
           </div>
         )}

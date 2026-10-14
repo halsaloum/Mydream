@@ -39,9 +39,9 @@ function message(mode: FinishScreenProps['mode'], accuracy: number, graded: numb
   if (graded === 0) return 'Je hebt de stappen doorlopen. Controleer zelf wat je zonder hulp kunt toepassen.';
   if (mode === 'review') return accuracy >= 90 ? 'Deze herhaalronde ging goed. Probeer het later ook met nieuwe voorbeelden.' : 'Wat nog niet lukte, komt later nog eens terug.';
   if (mode === 'words') {
-    if (accuracy >= 90) return 'Sterk. Je woorden komen terug net voordat je ze zou vergeten.';
-    if (accuracy >= 60) return 'Goed gedaan. Wat nog lastig was, komt eerder terug.';
-    return 'Lastige woorden komen morgen terug. Juist dat terughalen zet ze vast.';
+    if (accuracy >= 90) return 'Deze woorden lukten in deze ronde. Blijf ze op latere momenten ophalen.';
+    if (accuracy >= 60) return 'Je hebt met deze woorden geoefend. De woordenlijst laat zien wanneer ze opnieuw aan de beurt zijn.';
+    return 'Bekijk wat nog lastig was en haal de woorden later opnieuw op.';
   }
   if (accuracy >= 90) return 'Deze ronde ging goed. Kun je de aanpak ook uitleggen en bij een nieuw voorbeeld gebruiken?';
   if (accuracy >= 60) return 'Je hebt geoefend. Bekijk wat nog lastig was en probeer het later zonder hulp.';
@@ -134,8 +134,9 @@ export function FinishScreen({ mode, title, context, summary, learned, guidance,
         />
       </div>
       <p className="mt-3 text-small font-semibold text-ink-muted">
-        {summary.graded > 0 ? `${accuracy}% in één keer goed in deze ronde` : 'Afgerond zonder automatisch beoordeelde opdrachten'}
+        {summary.graded > 0 ? `${accuracy}% score in deze ronde` : 'Afgerond zonder automatisch beoordeelde opdrachten'}
       </p>
+      {summary.graded > 0 && <p className="mt-2 text-caption leading-relaxed text-ink-muted">De score telt ook gedeeltelijk goede opdrachten mee. Hieronder zie je hoeveel opdrachten bij de eerste ronde helemaal foutloos waren.</p>}
 
       <motion.div {...rise(0)}>
         {context && <p className="mt-7 text-small font-bold text-accent-ink">{context}</p>}
@@ -149,7 +150,7 @@ export function FinishScreen({ mode, title, context, summary, learned, guidance,
       </motion.div>
 
       <motion.dl {...rise(1)} className="mt-8 grid grid-cols-3 gap-2.5 text-left">
-        <Stat icon={<Target aria-hidden className="size-4" strokeWidth={2.5} />} label="In één keer goed">
+        <Stat icon={<Target aria-hidden className="size-4" strokeWidth={2.5} />} label="Helemaal foutloos">
           {summary.graded ? `${summary.firstTryCorrect}/${summary.graded}` : '–'}
         </Stat>
         <Stat icon={<Clock3 aria-hidden className="size-4" strokeWidth={2.5} />} label="Actieve tijd">

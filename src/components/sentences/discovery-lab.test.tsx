@@ -29,6 +29,7 @@ describe('het zinnen-ontdek-lab', () => {
     const lesson = foundationLessons[0]!;
     const visit = vi.fn();
     render(<Lab lesson={lesson} onVisit={visit} />);
+    fireEvent.click(screen.getByRole('button', { name: 'Ik heb eerst een uitgewerkt voorbeeld nodig' }));
     expect(visit).toHaveBeenCalledWith('onderwerp-eerst');
     expect(screen.getByText('1 van 2 voorbeelden bekeken')).toBeVisible();
     const other = screen.getByRole('button', { name: /Begin met het hele boekblok/ });
@@ -50,6 +51,7 @@ describe('het zinnen-ontdek-lab', () => {
 
   it('verandert in beeld de kern die de congruentie bestuurt', () => {
     render(<Lab lesson={foundationLessons[1]!} />);
+    fireEvent.click(screen.getByRole('button', { name: 'Ik heb eerst een uitgewerkt voorbeeld nodig' }));
     expect(screen.getByText('Eén doos staat')).toBeVisible();
     fireEvent.click(screen.getByRole('button', { name: /Twee dozen/ }));
     expect(screen.getByText('Twee dozen staan')).toBeVisible();
@@ -61,6 +63,7 @@ describe('het zinnen-ontdek-lab', () => {
     for (const lesson of sentenceLessons) {
       const visit = vi.fn();
       const view = render(<DiscoveryLab lesson={lesson} visited={[]} onVisit={visit} />);
+      fireEvent.click(screen.getByRole('button', { name: 'Ik heb eerst een uitgewerkt voorbeeld nodig' }));
       const choices = within(screen.getByRole('group', { name: 'Contrasterende voorbeelden' }));
       for (const variant of lesson.discovery.variants) {
         fireEvent.click(choices.getByRole('button', { name: variant.label }));
@@ -70,6 +73,33 @@ describe('het zinnen-ontdek-lab', () => {
       }
       view.unmount();
     }
+  });
+
+  it('laat eerst een eigen verklaring maken voordat grammaticale labels en uitwerking verschijnen', () => {
+    const lesson = foundationLessons[0]!;
+    render(<Lab lesson={lesson} />);
+    expect(screen.queryByText(lesson.discovery.takeaway)).not.toBeInTheDocument();
+    expect(screen.queryAllByText(lesson.discovery.variants[0]!.note)).toHaveLength(0);
+    const compare = screen.getByRole('button', { name: 'Vergelijk mijn verklaring' });
+    expect(compare).toBeDisabled();
+    fireEvent.change(screen.getByRole('textbox', { name: 'Wat denk je dat er verandert, en waarom?' }), { target: { value: 'Het hele boekblok verhuist. De lezer blijft dezelfde.' } });
+    expect(compare).toBeEnabled();
+    fireEvent.click(compare);
+    expect(screen.getByText(lesson.discovery.takeaway)).toBeVisible();
+    expect(screen.getAllByText(lesson.discovery.variants[0]!.note).every((node) => node.textContent)).toBe(true);
+    expect(screen.getByRole('textbox')).toHaveValue('Het hele boekblok verhuist. De lezer blijft dezelfde.');
+    expect(screen.getByRole('list', { name: 'Zinblokken in leesvolgorde' })).toHaveTextContent('persoonsvorm');
+    fireEvent.change(screen.getByRole('textbox'), { target: { value: 'De persoonsvorm blijft na één geheel staan.' } });
+    expect(screen.getByRole('textbox')).toHaveValue('De persoonsvorm blijft na één geheel staan.');
+  });
+
+  it('laat een beginner rechtstreeks met het uitgewerkte voorbeeld beginnen zonder schijnbeoordeling', () => {
+    const lesson = foundationLessons[1]!;
+    render(<Lab lesson={lesson} />);
+    fireEvent.click(screen.getByRole('button', { name: 'Ik heb eerst een uitgewerkt voorbeeld nodig' }));
+    expect(screen.getByText(lesson.discovery.takeaway)).toBeVisible();
+    expect(screen.getByRole('textbox')).toHaveValue('');
+    expect(screen.getByText(/je voorspelling krijgt geen cijfer/)).toBeVisible();
   });
 
   it('speelt uitsluitend op verzoek af en stopt bij pauzeren of verlaten', () => {

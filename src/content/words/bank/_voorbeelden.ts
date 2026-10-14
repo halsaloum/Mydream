@@ -123,7 +123,7 @@ export const BOVENDIEN: WordEntry = {
   pos: 'bw',
   level: 'B1',
   forms: ['bovendien'],
-  grammar: 'aan het begin van de zin: Bovendien + persoonsvorm + onderwerp',
+  grammar: 'in deze mededelende hoofdzin: Bovendien + persoonsvorm; het onderwerp staat daarna',
   meaning: 'Je voegt er nog een argument of feit aan toe, in dezelfde richting: en ook nog.',
   examples: ['Het plan is te duur. *Bovendien* hebben we er geen tijd voor.', 'Ze is slim en *bovendien* erg goed met mensen.'],
   collocations: ['en bovendien', 'Bovendien is het zo dat …', 'en het is bovendien …'],
@@ -141,7 +141,7 @@ export const BOVENDIEN: WordEntry = {
   ],
   colloc: {
     text: 'We hebben te weinig mensen. Bovendien {hebben we} geen budget.',
-    why: 'Na bovendien aan het begin van de zin komt eerst de persoonsvorm, dan het onderwerp.',
+    why: 'In deze mededelende hoofdzin volgt de persoonsvorm op het eerste zinsdeel Bovendien: hebben we. Het onderwerp staat verderop in de zin; het hoeft niet in elke zin onmiddellijk na de persoonsvorm te staan.',
   },
   chat: {
     name: 'Lotte',

@@ -35,7 +35,7 @@ describe('afronden is geen bewijs van beheersing', () => {
   it('beschrijft een perfecte kleine ronde eerlijk en houdt verder leren bereikbaar', () => {
     renderFinish();
 
-    expect(screen.getByText('100% in één keer goed in deze ronde')).toBeVisible();
+    expect(screen.getByText('100% score in deze ronde')).toBeVisible();
     expect(screen.getByText('1/1')).toBeVisible();
     expect(screen.getByText(/nog geen bewijs van beheersing/)).toBeVisible();
     expect(screen.getByRole('heading', { name: 'Hiermee heb je geoefend' })).toBeVisible();
@@ -43,6 +43,15 @@ describe('afronden is geen bewijs van beheersing', () => {
     expect(screen.getByRole('link', { name: 'Volgende les' })).toHaveAttribute('href', '/lessen');
     expect(screen.queryByText('Dit zit erin.')).not.toBeInTheDocument();
     expect(screen.queryByText('Wat je nu weet')).not.toBeInTheDocument();
+  });
+
+  it('onderscheidt gedeeltelijk goede opdrachten van het aantal volledig foutloze opdrachten', () => {
+    renderFinish({ ...summary, graded: 2, firstTryCorrect: 1, accuracy: 83 });
+    expect(screen.getByText('83% score in deze ronde')).toBeVisible();
+    expect(screen.getByText('1/2')).toBeVisible();
+    expect(screen.getByText('Helemaal foutloos')).toBeVisible();
+    expect(screen.getByText(/De score telt ook gedeeltelijk goede opdrachten mee/)).toBeVisible();
+    expect(screen.queryByText('83% in één keer goed in deze ronde')).not.toBeInTheDocument();
   });
 
   it('verzint geen percentage wanneer er geen beoordeelde opdrachten zijn', () => {

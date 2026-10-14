@@ -193,11 +193,13 @@ export function isCorrect(step: Step, response: Response): boolean {
       return response.kind === 'paragraph' && response.placed.every((part, position) => part === position);
     case 'sort':
       return response.kind === 'sort' && step.items.every((item, i) => response.assign[i] === item.b);
-    case 'fix':
-      return response.kind === 'fix' && response.index === step.wrong && normalizeLoose(response.value) === normalizeLoose(step.answer);
+    case 'fix': {
+      const normalize = step.strict ? normalizeStrict : normalizeLoose;
+      return response.kind === 'fix' && response.index === step.wrong && normalize(response.value) === normalize(step.answer);
+    }
     case 'rewrite': {
       if (response.kind !== 'rewrite') return false;
-      const normalize = isFormExercise(step) ? normalizeStrict : normalizeLoose;
+      const normalize = (step.strict ?? isFormExercise(step)) ? normalizeStrict : normalizeLoose;
       return step.accept.some((answer) => normalize(answer) === normalize(response.value));
     }
     default:

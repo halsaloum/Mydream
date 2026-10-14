@@ -133,6 +133,8 @@ export function DictationStep({ step, response, onChange, locked, onSubmit }: St
         label="Jouw zin"
         value={response.value}
         disabled={locked}
+        readOnly={visible}
+        description={visible ? 'Bekijk de zin eerst. Zodra hij verdwijnt, typ je uit je hoofd.' : undefined}
         onChange={(value) => onChange({ ...response, value })}
         placeholder="Typ hier wat je hoort"
         inputClassName="min-h-14 font-serif text-[1.35rem]"

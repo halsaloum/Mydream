@@ -32,13 +32,13 @@ export function ChatStep({ step, response, onChange, locked, seed }: StepProps<'
   useEffect(() => () => setTyping(false), []);
 
   const messages = useMemo(() => {
-    const list: Array<{ key: string; side: 'in' | 'out'; text: string; note?: string }> = [];
+    const list: Array<{ key: string; side: 'in' | 'out'; text: string; note?: string; correction?: string }> = [];
     step.rounds.forEach((round, i) => {
       if (i < visibleIncoming) list.push({ key: `in-${i}`, side: 'in', text: round.say });
       const pick = response.picks[i];
       if (pick !== undefined) {
         const wrong = pick !== round.right;
-        list.push({ key: `out-${i}`, side: 'out', text: round.options[round.right] ?? '', note: wrong ? `verbeterd voor het versturen: ${round.fix}` : undefined });
+        list.push({ key: `out-${i}`, side: 'out', text: round.options[pick] ?? '', note: wrong ? `Voorbeeldverbetering: ${round.fix}` : undefined, correction: wrong ? round.options[round.right] : undefined });
       }
     });
     if (response.picks.length >= step.rounds.length) list.push({ key: 'bye', side: 'in', text: step.bye });
@@ -85,6 +85,7 @@ export function ChatStep({ step, response, onChange, locked, seed }: StepProps<'
                   {message.text}
                 </p>
                 {message.note && <p className="mt-1 text-caption font-bold text-red-ink">{message.note}</p>}
+                {message.correction && <p className="mt-2 rounded-control border-2 border-green-line bg-green-soft px-3 py-2 text-body text-green-ink">{message.correction}</p>}
               </motion.div>
             ))}
             {typing && (

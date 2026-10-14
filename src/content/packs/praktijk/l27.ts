@@ -26,7 +26,7 @@ export const LES_L27: LessonInput = {
           },
         },
         {
-          text: 'Een hoofdletter krijgen: het begin van een zin; namen van personen, dieren, straten, plaatsen, landen en rivieren; talen en inwoners (*Nederlands*, *een Marokkaan*); bijvoeglijke naamwoorden van namen (*Turkse thee*); feestdagen (*Pasen*, *Suikerfeest*, *Koningsdag*); instellingen (*de Belastingdienst*). Klein blijven: dagen, maanden en seizoenen (*maandag*, *januari*, *zomer*), windstreken (*het noorden*) en titels (*koning Willem-Alexander*, *dokter Jansen*). Tussenvoegsels: *Jan de Vries*, maar *meneer De Vries*. En *IJ* is één letter: *IJsland*, *IJmuiden*.',
+          text: 'Een hoofdletter krijgen: het begin van een zin; namen van personen, dieren, straten, plaatsen, landen en rivieren; talen en inwoners (*Nederlands*, *een Marokkaan*); bijvoeglijke naamwoorden van namen (*Turkse thee*); feestdagen (*Pasen*, *Suikerfeest*, *Koningsdag*); instellingen (*de Belastingdienst*). Klein blijven: dagen, maanden en seizoenen (*maandag*, *januari*, *zomer*), windstreken (*het noorden*) en titels (*koning Willem-Alexander*, *dokter Jansen*). Tussenvoegsels: *Jan de Vries*, maar *meneer De Vries*. De *ij* bestaat uit twee geschreven letters; bij een hoofdletter worden ze allebei groot: *IJsland*, *IJmuiden*.',
           rule: 'Namen, talen, inwoners en feestdagen: hoofdletter. Dagen, maanden, seizoenen en titels: klein.',
           quiz: {
             q: 'Welke zin is goed?',
@@ -51,7 +51,7 @@ export const LES_L27: LessonInput = {
         },
         {
           text: 'De apostrof: meervoud met *’s* na *a*, *i*, *o*, *u* en *y* (*auto’s*, *menu’s*, *baby’s*), maar niet na *é*, een doffe *e* of *eau* (*cafés*, *tantes*, *cadeaus*). Bezit bij een naam: *Anna’s*, maar *Jans* en *Sannes*, en na *s*, *x*, *z* alleen *’* (*Max’ jas*). Weggelaten letters: *’s avonds*, *zo’n*, *m’n*. Afkortingen: *tv’s*, *sms’je*. Verkleinwoord: *baby’tje*, maar *autootje*.',
-          rule: 'Apostrof alleen na *a, i, o, u, y*, bij afkortingen, en waar letters weg zijn.',
+          rule: 'Apostrof bij een lange eindklinker geschreven met één letter, bij bezit na een s-klank, bij afkortingen en waar letters weg zijn.',
           quiz: {
             q: 'Welke rij is helemaal goed?',
             options: ['auto’s – cafés – Max’ jas', 'auto’s – café’s – Maxs jas', 'autos – cafés – Max’s jas'],
@@ -82,7 +82,7 @@ export const LES_L27: LessonInput = {
           t: 'In de Zomervakantie gaan we naar IJsland.',
           ok: false,
           fix: 'Zomervakantie → zomervakantie',
-          why: 'Een seizoen schrijf je klein, ook in een samenstelling. IJsland is goed: IJ is één letter.',
+          why: 'Een seizoen schrijf je klein, ook in een samenstelling. IJsland is goed: de i en de j krijgen samen de hoofdlettervorm IJ.',
         },
         { t: 'Hij zei: ‘Kom maar binnen.’', ok: true, why: 'Na een dubbele punt klein, behalve bij een letterlijk citaat. Dat begint met een hoofdletter.' },
         { t: 'Er zijn in deze straat drie café’s.', ok: false, fix: 'café’s → cafés', why: 'Na een é gewoon -s, zonder apostrof.' },
@@ -484,7 +484,7 @@ export const LES_L27: LessonInput = {
         { t: 'kwijt' },
         { t: 'in' },
         { t: 'het' },
-        { t: 'fietsen-rek', fix: 'fietsenrek', why: 'Een gewone samenstelling: aan elkaar.' },
+        { t: 'fietsen rek', fix: 'fietsenrek', why: 'Een gewone samenstelling: aan elkaar.' },
         { t: 'naast' },
         { t: 'de' },
         { t: 'ingang.' },
@@ -693,7 +693,7 @@ export const LES_L27: LessonInput = {
         { t: 'monteur' },
         { t: 'van' },
         { t: 'de' },
-        { t: 'energie-leverancier', fix: 'energieleverancier', why: 'e + l botsen niet: een gewone samenstelling schrijf je aan elkaar.' },
+        { t: 'energie leverancier', fix: 'energieleverancier', why: 'e + l botsen niet: een gewone samenstelling schrijf je aan elkaar.' },
         { t: 'kan' },
         { t: 'pas' },
         { t: 'na' },
@@ -946,7 +946,7 @@ export const LES_L27: LessonInput = {
         { t: 'er' },
         { t: 'een' },
         { t: 'groot' },
-        { t: 'fietsen-rek', fix: 'fietsenrek', why: 'Gewone samenstelling zonder botsing: aan elkaar.' },
+        { t: 'fietsen rek', fix: 'fietsenrek', why: 'Gewone samenstelling zonder botsing: aan elkaar.' },
         { t: 'bij' },
         { t: 'de' },
         { t: 'ingang.' },
