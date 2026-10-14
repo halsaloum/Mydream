@@ -230,7 +230,8 @@ test('kaartjes kunnen met de muis naar een inhoudelijk onderdeel worden gesleept
       const card = shuffle(exercise.id, exercise.cards)[0]!;
       const handle = page.getByRole('button', { name: 'Sleep kaart 1. Je kunt ook de keuzelijst gebruiken.', exact: true });
       const zone = page.getByTestId(`argument-zone-${card.category}`);
-      await handle.scrollIntoViewIfNeeded();
+      // Begin away from the auto-scroll edge; keep both endpoints in the viewport.
+      await handle.evaluate((element) => element.scrollIntoView({ block: 'center', behavior: 'instant' }));
       const from = await handle.boundingBox();
       const to = await zone.boundingBox();
       if (!from || !to) throw new Error('De kaart of het doelvak is niet zichtbaar.');

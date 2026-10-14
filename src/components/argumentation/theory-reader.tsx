@@ -7,14 +7,12 @@ import { lessonCoreChecks } from '@/content/argumentation/core-checks';
 import { argumentInquiries } from '@/content/argumentation/inquiries';
 import { lessonScaffolds } from '@/content/argumentation/scaffolds';
 import type { ArgumentLesson } from '@/content/argumentation/types';
-import { readingText } from '@/lib/argumentation/reading-text';
 import { theoryPages, type TheoryPage } from '@/lib/argumentation/theory-pages';
 import type { ArgumentSession } from '@/state/argumentation';
 import { CasePreparation } from './case-preparation';
 import { CoreCheckView } from './core-check';
 import { FoundationView } from './foundation-view';
 import { LessonWarmup } from './lesson-warmup';
-import { PageAudio } from './page-audio';
 
 const Lab = dynamic(() => import('./argument-lab').then((module) => module.ArgumentLabView), { loading: () => <p role="status" className="p-6 text-ink-muted">Het experiment wordt geladen…</p> });
 const MediaCard = dynamic(() => import('./media-view').then((module) => module.MediaCard), { loading: () => <p role="status" className="p-5 text-ink-muted">De extra uitleg wordt geladen…</p> });
@@ -76,7 +74,6 @@ export function TheoryReader({ lesson, session, pageIndex, onPageChange }: Theor
   }, [lesson.id, page.id]);
   return <section aria-label={`Leespagina: ${page.title}`} data-theory-page={page.kind} className="space-y-6">
     <div><p className="mb-2 text-caption font-bold tracking-wider text-blue-ink uppercase">{page.label}</p><h2 ref={heading} id={`${lesson.id}-theory-page`} tabIndex={-1} className="font-display text-title leading-snug font-bold outline-none">{page.title}</h2></div>
-    <PageAudio pageId={page.id} text={readingText(lesson, page, session)} />
     <div key={page.id} className="space-y-6"><PageContent page={page} lesson={lesson} session={session} /></div>
   </section>;
 }

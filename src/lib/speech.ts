@@ -143,6 +143,14 @@ export function canSpeak(voices: readonly SpeechSynthesisVoice[] = currentVoices
 }
 
 export type SpeechChunk = { index: number; total: number; text: string };
+/** Positie die de browser zelf meldt, gerekend in UTF-16-tekens van dit fragment. */
+export type SpeechBoundary = SpeechChunk & {
+  charIndex: number;
+  /** Nul wanneer de browser geen bruikbare lengte van het gesproken deel meldt. */
+  charLength: number;
+  /** Meestal "word" of "sentence"; niet iedere stem meldt woordgrenzen. */
+  name: string;
+};
 export type SpeakOptions = {
   /** Vaste snelheid; zonder deze waarde geldt het tempo uit de instellingen. */
   rate?: number;
@@ -152,6 +160,8 @@ export type SpeakOptions = {
   onError?: () => void;
   /** Nulgebaseerde voortgang zodra een fragment daadwerkelijk begint te klinken. */
   onChunk?: (chunk: SpeechChunk) => void;
+  /** Werkelijke browsergrenzen voor meelezen; er worden geen woordtijden verzonnen. */
+  onBoundary?: (boundary: SpeechBoundary) => void;
   /** Een andere opdracht, stoppen of native annulering neemt deze run over. */
   onInterrupt?: () => void;
 };
@@ -259,10 +269,11 @@ export function speakAll(texts: readonly string[], { gap = 0, ...options }: Spea
   const speech = synth();
   const voices = currentVoices();
   if (!speech || !canSpeak(voices)) return false;
-  const parts = texts.flatMap(chunks);
+  const fragments = texts.flatMap((text, sourceIndex) => chunks(text).map((part) => ({ text: part, sourceIndex })));
+  const parts = fragments.map((fragment) => fragment.text);
   if (parts.length === 0) return false;
   const voice = pickVoice(voices, useSettings.getState().speech.voice);
-  const rate = Math.min(1.5, Math.max(0.4, options.rate ?? settingsRate() * (options.slower ?? 1)));
+  const rate = Math.min(2, Math.max(0.4, options.rate ?? settingsRate() * (options.slower ?? 1)));
   const previous = activeSpeech;
   clearTimer(previous);
   const run = ++generation;
@@ -285,6 +296,15 @@ export function speakAll(texts: readonly string[], { gap = 0, ...options }: Spea
         setSpeechStatus(speech.engine.paused ? 'paused' : 'speaking');
         options.onChunk?.({ index, total: parts.length, text: parts[index]! });
       };
+      utterance.onboundary = (event) => {
+        if (run !== generation || activeSpeech !== current || settled || !started) return;
+        const text = parts[index]!;
+        // Sommige stemmen leveren geen grenzen of een onbruikbare positie. Een lezer
+        // kan dan het fragment markeren, zonder een gesproken woord te suggereren.
+        if (!Number.isInteger(event.charIndex) || event.charIndex < 0 || event.charIndex > text.length) return;
+        const charLength = Number.isInteger(event.charLength) && event.charLength >= 0 && event.charLength <= text.length - event.charIndex ? event.charLength : 0;
+        options.onBoundary?.({ index, total: parts.length, text, charIndex: event.charIndex, charLength, name: event.name });
+      };
       const syncStatus = () => { if (run === generation && !settled) setSpeechStatus(speech.engine.paused ? 'paused' : 'speaking'); };
       utterance.onpause = syncStatus;
       utterance.onresume = syncStatus;
@@ -296,7 +316,7 @@ export function speakAll(texts: readonly string[], { gap = 0, ...options }: Spea
           options.onEnd?.();
           return;
         }
-        const gapAfter = texts.length > 1 ? gap : 0;
+        const gapAfter = fragments[index]!.sourceIndex !== fragments[index + 1]!.sourceIndex ? gap : 0;
         if (gapAfter > 0) current.timer = window.setTimeout(() => { current.timer = null; say(index + 1); }, gapAfter);
         else say(index + 1);
       };
@@ -353,11 +373,12 @@ export function stopSpeaking() {
 
 /** Pauzeert een actieve opdracht; bij stilstand blijft de status idle. */
 export function pauseSpeaking(): boolean {
-  if (!activeSpeech) return false;
+  const current = activeSpeech;
+  if (!current) return false;
   if (speechStatus === 'paused') return true;
   try {
-    activeSpeech.engine.pause();
-    if (!activeSpeech.engine.paused) return false;
+    current.engine.pause();
+    if (activeSpeech !== current || !current.engine.paused) return false;
     setSpeechStatus('paused');
     return true;
   } catch { return false; }
@@ -369,7 +390,7 @@ export function resumeSpeaking(): boolean {
   if (!current || speechStatus !== 'paused') return false;
   try {
     current.engine.resume();
-    if (current.engine.paused) return false;
+    if (activeSpeech !== current || current.engine.paused) return false;
     setSpeechStatus('speaking');
     const pending = current.pending;
     current.pending = null;

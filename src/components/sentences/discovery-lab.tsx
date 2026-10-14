@@ -105,7 +105,7 @@ export function DiscoveryLab({ lesson, visited, onVisit }: DiscoveryProps) {
         className="w-full rounded-control border-2 border-line bg-surface p-3 text-body leading-relaxed focus:border-purple-ink" />
       {!prediction.compared ? <div className="flex flex-wrap items-center gap-3">
         <Button variant="secondary" disabled={!prediction.text.trim()} onClick={() => setPrediction({ compared: true })}>Vergelijk mijn verklaring</Button>
-        <Button variant="ghost" size="sm" onClick={() => setPrediction({ compared: true })}>Ik heb eerst een uitgewerkt voorbeeld nodig</Button>
+        <Button variant="ghost" size="sm" className="min-w-0 max-w-full whitespace-normal break-words text-left" onClick={() => setPrediction({ compared: true })}>Ik heb eerst een uitgewerkt voorbeeld nodig</Button>
       </div> : <p className="text-small leading-relaxed text-purple-ink">Vergelijk je verklaring met de uitwerking hieronder. Welk woord of blok ondersteunt haar? Pas je tekst aan als je een verschil ontdekt.</p>}
       <p className="text-caption text-ink-muted">Deze oefennotitie blijft op dit scherm. Bewaar je eigen toepassing bij de uitleg of samenvatting.</p>
     </section>

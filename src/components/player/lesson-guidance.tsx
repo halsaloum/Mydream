@@ -1,12 +1,13 @@
 'use client';
 
 import { ListChecks, Target } from 'lucide-react';
-import { useId, useState, type RefObject } from 'react';
+import { useId, useRef, useState, type RefObject } from 'react';
 import type { Accent } from '@/content/accent';
 import type { LessonGuidance } from '@/content/schema';
 import { Button } from '@/components/ui/button';
 import { Sheet } from '@/components/ui/dialog';
 import { Disclosure } from '@/components/ui/disclosure';
+import { LessonReader } from '@/components/reading/lesson-reader';
 
 /** Een leesbaar vertrekpunt, zonder een extra stap vóór de eerste oefening. */
 export function LessonIntroduction({ guidance }: { guidance: LessonGuidance }) {
@@ -53,6 +54,7 @@ export function LessonApproachSheet({
   onOpenChange: (open: boolean) => void;
   finalFocus: RefObject<HTMLElement | null>;
 }) {
+  const readingScope = useRef<HTMLDivElement>(null);
   return (
     <Sheet
       title="Aanpak voor deze les"
@@ -63,11 +65,14 @@ export function LessonApproachSheet({
       finalFocus={finalFocus}
       footer={<Button block variant="accent" onClick={() => onOpenChange(false)}>Terug naar de oefening</Button>}
     >
+      <div ref={readingScope}>
+      <LessonReader scopeRef={readingScope} contentKey={`aanpak:${title}:${open}`} title="Aanpak voor deze les" />
       <p className="font-semibold leading-relaxed text-ink">{guidance.goal}</p>
       <p className="mt-2 text-small leading-relaxed text-ink-muted">{guidance.startingPoint}</p>
       <h3 className="mt-5 mb-3 font-display text-title-sm font-bold">Stap voor stap</h3>
       <Strategy steps={guidance.strategy} />
       <p className="mt-5 text-small leading-relaxed text-ink-muted">Probeer daarna een opdracht zonder de aanpak erbij. Leg ook uit waarom je antwoord klopt.</p>
+      </div>
     </Sheet>
   );
 }

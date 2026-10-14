@@ -28,7 +28,7 @@ describe('opslag', () => {
     useSettings.getState().setSpeech({ readerRate: 1.25 });
     expect(useSettings.getState().speech.rate).toBe('langzaam');
     expect(SettingsDataSchema.safeParse({ ...DEFAULT_SETTINGS, speech: { ...DEFAULT_SETTINGS.speech, readerRate: 0.5 } }).success).toBe(false);
-    expect(SettingsDataSchema.safeParse({ ...DEFAULT_SETTINGS, speech: { ...DEFAULT_SETTINGS.speech, readerRate: 1.6 } }).success).toBe(false);
+    expect(SettingsDataSchema.safeParse({ ...DEFAULT_SETTINGS, speech: { ...DEFAULT_SETTINGS.speech, readerRate: 2.1 } }).success).toBe(false);
   });
 
   it('herstelt beschadigde gegevens met een reservekopie en een melding', async () => {

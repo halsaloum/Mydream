@@ -8,6 +8,7 @@ import { argumentLessons, argumentModuleById } from '@/content/argumentation';
 import type { ArgumentLesson } from '@/content/argumentation/types';
 import { Button, ButtonLink } from '@/components/ui/button';
 import { ProgressBar } from '@/components/ui/progress';
+import { LessonReader } from '@/components/reading/lesson-reader';
 import { cn } from '@/lib/cn';
 import { answerReady, emptyArgumentAnswer, gradeArgument, lessonPassed, lessonScore } from '@/lib/argumentation/learning';
 import { useCalmMotion } from '@/lib/motion';
@@ -56,7 +57,7 @@ function Finished({ lesson, session, headingRef }: { lesson: ArgumentLesson; ses
     {missed.length > 0 && <div className="rounded-card border border-line bg-sunken p-5"><h3 className="mb-3 font-display font-bold">Deze vragen verdienen nog aandacht</h3><ul className="space-y-2">{missed.map((exercise) => <li key={exercise.id} className="text-small leading-relaxed">• {exercise.prompt}</li>)}</ul></div>}
     {record && record.history.length > 0 && <details className="rounded-card border border-blue-line bg-surface p-5"><summary className="cursor-pointer font-display font-bold text-blue-ink">Jouw pogingen en geschreven analyses</summary><p className="mt-3 text-caption text-ink-muted">De laatste tien afgeronde pogingen blijven lokaal bewaard, ook wanneer je opnieuw oefent.</p><div className="mt-4 space-y-5">{record.history.map((attempt, index) => <article key={`${attempt.at}-${index}`} className="border-t border-line pt-4"><h3 className="text-small font-bold">{new Intl.DateTimeFormat('nl-NL', { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' }).format(new Date(attempt.at))} · {attempt.score}%</h3>{Object.entries(attempt.writings).map(([id, value]) => <div key={id} className="mt-3"><p className="text-caption font-bold text-ink-muted">{lesson.exercises.find((item) => item.id === id)?.prompt ?? 'Eerste analyse en herziening'}</p><p className="mt-2 whitespace-pre-line text-small leading-relaxed text-ink-soft">{value}</p></div>)}</article>)}</div></details>}
     <p className="text-center text-small text-ink-muted">{record?.reviewOn ? `Volgende herhaling: ${new Intl.DateTimeFormat('nl-NL', { day: 'numeric', month: 'long' }).format(new Date(`${record.reviewOn}T12:00:00`))}.` : ''} Je voortgang en aantekeningen zijn in deze browser bewaard.</p>
-    <div className="flex flex-wrap justify-center gap-3">
+    <div data-readaloud-ignore className="flex flex-wrap justify-center gap-3">
       <Button variant="secondary" onClick={() => useArgumentation.getState().start(lesson, true)}><RotateCcw aria-hidden className="size-4" />{passed ? 'Nogmaals oefenen' : 'Toets opnieuw maken'}</Button>
       {passed && next ? <ButtonLink href={argumentLessonHref(next.id)}>Volgende les<ArrowRight aria-hidden className="size-4" /></ButtonLink> : <ButtonLink href="/argumentatie">Naar het leerpad<ArrowRight aria-hidden className="size-4" /></ButtonLink>}
     </div>
@@ -72,6 +73,7 @@ export function ArgumentLessonPlayer({ lesson }: { lesson: ArgumentLesson }) {
   const headingRef = useRef<HTMLHeadingElement>(null);
   const exerciseHeadingRef = useRef<HTMLHeadingElement>(null);
   const resultHeadingRef = useRef<HTMLHeadingElement>(null);
+  const readerScope = useRef<HTMLElement>(null);
   const currentModule = argumentModuleById.get(lesson.moduleId);
   useEffect(() => { if (hydrated && available) useArgumentation.getState().start(lesson); }, [hydrated, available, lesson]);
   const cursor = session?.cursor ?? 0;
@@ -87,7 +89,7 @@ export function ArgumentLessonPlayer({ lesson }: { lesson: ArgumentLesson }) {
   if (!hydrated) return <div className="mx-auto max-w-3xl p-8"><p className="text-ink-muted" role="status">Je les wordt geladen…</p></div>;
   if (!available) {
     const prerequisite = nextPathLesson(argumentLessons, records)!;
-    return <main data-accent="blue" className="mx-auto max-w-2xl px-gutter py-16"><p className="mb-3 text-caption font-bold text-blue-ink">JOUW VOLGENDE STAP</p><h1 className="font-serif text-headline">Bouw eerst de voorgaande stap op.</h1><p className="mt-4 text-body leading-relaxed text-ink-muted">‘{lesson.title}’ bouwt voort op wat je eerder leert. Begin bij ‘{prerequisite.title}’. Daarna komen de volgende lessen vanzelf beschikbaar.</p><div className="mt-7 flex flex-wrap gap-3"><ButtonLink href={argumentLessonHref(prerequisite.id)}>Naar jouw volgende les<ArrowRight aria-hidden className="size-4" /></ButtonLink><ButtonLink href="/argumentatie" variant="secondary">Bekijk het leerpad</ButtonLink></div></main>;
+    return <main ref={readerScope} data-accent="blue" className="mx-auto max-w-2xl px-gutter py-16"><p className="mb-3 text-caption font-bold text-blue-ink">JOUW VOLGENDE STAP</p><h1 className="font-serif text-headline">Bouw eerst de voorgaande stap op.</h1><p className="mt-4 text-body leading-relaxed text-ink-muted">‘{lesson.title}’ bouwt voort op wat je eerder leert. Begin bij ‘{prerequisite.title}’. Daarna komen de volgende lessen vanzelf beschikbaar.</p><div className="mt-5"><LessonReader scopeRef={readerScope} contentKey={`argument:${lesson.id}:locked`} /></div><div data-readaloud-ignore className="mt-7 flex flex-wrap gap-3"><ButtonLink href={argumentLessonHref(prerequisite.id)}>Naar jouw volgende les<ArrowRight aria-hidden className="size-4" /></ButtonLink><ButtonLink href="/argumentatie" variant="secondary">Bekijk het leerpad</ButtonLink></div></main>;
   }
   if (!session) return <div className="mx-auto max-w-3xl p-8"><p className="text-ink-muted" role="status">Je les wordt geladen…</p></div>;
 
@@ -120,6 +122,9 @@ export function ArgumentLessonPlayer({ lesson }: { lesson: ArgumentLesson }) {
     else useArgumentation.getState().move(lesson.id, cursor + 1);
   };
   const selectedFeedback = exercise?.kind === 'choice' ? exercise.options.find((option) => option.id === answer.value)?.feedback : null;
+  const readingAnswerId = readingPage.kind === 'concept' ? `foundation-${readingPage.foundation.id}` : readingPage.kind === 'start' ? `warmup-${lesson.id}` : readingPage.kind === 'inquiry' ? `inquiry-${lesson.id}` : readingPage.kind === 'section' ? `core-${lesson.id}` : '';
+  const readingAnswer = session.answers[readingAnswerId];
+  const readerKey = `argument:${lesson.id}:${cursor}:${cursor === 0 ? readingPage.id : exercise?.id ?? 'review'}:${session.finished ? 'finished' : reviewing ? 'review' : answer.checked ? `feedback-${answer.score ?? 'reflection'}` : 'prompt'}:${cursor === 0 && readingAnswer?.checked ? `compared-${readingAnswer.score ?? 'reflection'}` : 'reading'}`;
 
   return <div data-accent="blue" className={cn(styles.root, styles.player, 'min-h-dvh')}>
     <header className="sticky top-0 z-30 border-b border-line bg-canvas/95 backdrop-blur-xl">
@@ -131,14 +136,15 @@ export function ArgumentLessonPlayer({ lesson }: { lesson: ArgumentLesson }) {
     </header>
     <div className={styles.learningLayout}>
 
-    <main className={styles.learningMain}>
+    <main ref={readerScope} className={styles.learningMain}>
       <div className="mb-8">
         {(cursor !== 0 || readingIndex === 0) && <p className="mb-3 text-caption font-bold tracking-wider text-blue-ink uppercase">Argumentatie & drogredenen · {currentModule?.title}</p>}
         <h1 ref={headingRef} tabIndex={-1} className={cn('outline-none', cursor === 0 && readingIndex > 0 ? 'font-display text-small font-semibold text-ink-muted' : 'font-display text-[clamp(1.8rem,1.4rem+1.4vw,2.7rem)] font-extrabold leading-tight tracking-tight')}>{lesson.title}</h1>
         {!session.finished && cursor === 0 && readingIndex === 0 && <p className="mt-3 text-lead leading-relaxed text-ink-muted">{lesson.teaser}</p>}
       </div>
-      {!lesson.checkpoint && !session.finished && (cursor > 0 || readingIndex === 0) && <ol aria-label="Steeds meer verantwoordelijkheid in deze les" className="mb-7 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">{phases.map((label, index) => <li key={label} className={cn('flex items-center gap-2 rounded-control border-2 px-3 py-2 text-caption', phase === index ? 'border-blue-line bg-blue-soft font-bold text-blue-ink shadow-slab-sm' : phase > index ? 'border-green-line bg-green-soft text-green-ink' : 'border-line bg-surface text-ink-muted')} aria-current={phase === index ? 'step' : undefined}>{index + 1}. {label}</li>)}</ol>}
-      {session.finished && cursor !== 0 ? <Finished lesson={lesson} session={session} headingRef={resultHeadingRef} /> : reviewing ? <><ArgumentCheckpointReview lesson={lesson} answers={session.answers} onChange={(id, patch) => useArgumentation.getState().answer(lesson.id, id, patch)} /><div className="mt-7"><Button disabled={!checkpointReady} onClick={() => useArgumentation.getState().finish(lesson)}>Zelfcontrole afronden<Check aria-hidden className="size-4" /></Button></div></> : <>
+      <div className="mb-6"><LessonReader scopeRef={readerScope} contentKey={readerKey} /></div>
+      {!lesson.checkpoint && !session.finished && (cursor > 0 || readingIndex === 0) && <ol data-readaloud-ignore aria-label="Steeds meer verantwoordelijkheid in deze les" className="mb-7 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">{phases.map((label, index) => <li key={label} className={cn('flex items-center gap-2 rounded-control border-2 px-3 py-2 text-caption', phase === index ? 'border-blue-line bg-blue-soft font-bold text-blue-ink shadow-slab-sm' : phase > index ? 'border-green-line bg-green-soft text-green-ink' : 'border-line bg-surface text-ink-muted')} aria-current={phase === index ? 'step' : undefined}>{index + 1}. {label}</li>)}</ol>}
+      {session.finished && cursor !== 0 ? <Finished lesson={lesson} session={session} headingRef={resultHeadingRef} /> : reviewing ? <><ArgumentCheckpointReview lesson={lesson} answers={session.answers} onChange={(id, patch) => useArgumentation.getState().answer(lesson.id, id, patch)} /><div data-readaloud-ignore className="mt-7"><Button disabled={!checkpointReady} onClick={() => useArgumentation.getState().finish(lesson)}>Zelfcontrole afronden<Check aria-hidden className="size-4" /></Button></div></> : <>
         {cursor === 0 && !lesson.checkpoint && <div className="mb-5 flex items-center justify-between gap-4"><span className="inline-flex items-center gap-2 rounded-chip border border-blue-line bg-blue-soft px-3 py-1.5 text-caption font-bold text-blue-ink"><BookOpen aria-hidden className="size-3.5" />Eén kern tegelijk</span><div aria-hidden="true" className="flex gap-1.5">{readingPages.map((page, index) => <span key={page.id} className={cn('h-1.5 rounded-full transition-all calm:transition-none', index === readingIndex ? 'w-6 bg-blue-ink' : index < readingIndex ? 'w-1.5 bg-blue' : 'w-1.5 bg-line-strong')} />)}</div></div>}
         <motion.div className={styles.learningCard} key={cursor === 0 ? `reading-${readingPage.id}` : cursor} initial={calm ? false : { opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: calm ? 0 : 0.18 }}>
           {cursor === 0 && lesson.checkpoint && !session.finished ? <section><h2 className="font-display text-title font-bold">Laat zien wat je zelf kunt toepassen</h2><p className="mt-4 text-body leading-relaxed">Maak de nieuwe gevallen zonder tussentijdse oplossingshulp. Elk ingeleverd antwoord blijft vastgelegd; uitleg over de juiste keuzes verschijnt nadat de ronde is afgerond.</p><p className="mt-3 text-small text-ink-muted">{hasCheckpointWriting ? 'Schrijf ook beide eigen analyses voordat de modellen verschijnen. Daarna vergelijk en herzie je je teksten met de rubric.' : 'Na afloop kun je alle feedback teruglezen en gericht opnieuw oefenen.'} Dit is een oefencheck op deze opdrachten, geen bewijs van algemene deskundigheid.</p></section> : cursor === 0 ? <TheoryReader lesson={lesson} session={session} pageIndex={readingIndex} onPageChange={(index) => useArgumentation.getState().setTheoryPage(lesson.id, index)} /> : exercise ? <ArgumentExerciseView headingRef={exerciseHeadingRef} exercise={exercise} answer={answer} onChange={(patch) => useArgumentation.getState().answer(lesson.id, exercise.id, patch)} showFeedback={!lesson.checkpoint} /> : null}
@@ -152,7 +158,7 @@ export function ArgumentLessonPlayer({ lesson }: { lesson: ArgumentLesson }) {
           {answer.score !== 1 && (answer.confidence ?? -1) >= 2 && <p className="mt-4 border-t border-orange-line pt-3 text-small leading-relaxed text-orange-ink">Je verwachtte dat je analyse klopte. Benoem vóór je nieuwe poging welke veronderstelling of verbinding de feedback bevraagt.</p>}
           {answer.score === 1 && (answer.confidence ?? 3) <= 1 && <p className="mt-4 border-t border-green-line pt-3 text-small leading-relaxed text-green-ink">Je analyse klopt, ook al twijfelde je. Benoem het criterium uit de uitleg dat de doorslag geeft en waarom de sterkste andere interpretatie afvalt.</p>}
         </div>}
-        <div className={styles.actionDock} data-ready={cursor === 0 ? (readingDone ? ready : mayReadForward) : mayAdvance}>
+        <div data-readaloud-ignore className={styles.actionDock} data-ready={cursor === 0 ? (readingDone ? ready : mayReadForward) : mayAdvance}>
         <div className="mx-auto flex max-w-3xl flex-wrap items-center justify-between gap-3">
           <p className={styles.dockHint} data-ready={cursor === 0 ? (readingDone ? ready : mayReadForward) : mayAdvance} aria-live="polite">{(cursor === 0 ? (readingDone ? ready : mayReadForward) : mayAdvance) ? <><CheckCircle2 aria-hidden className="size-4 shrink-0" />Klaar voor de volgende stap</> : <><Lightbulb aria-hidden className="size-4 shrink-0" />{cursor === 0 ? 'Beantwoord de vraag om verder te gaan' : 'Neem je tijd. Elke reden telt.'}</>}</p>
           {cursor > 0 && !lesson.checkpoint ? <Button variant="ghost" onClick={() => useArgumentation.getState().openTheory(lesson.id)}><BookOpen aria-hidden className="size-4" />Terug naar theorie</Button> : !lesson.checkpoint ? <Button aria-label="Vorige pagina" variant="secondary" disabled={readingIndex === 0} onClick={() => useArgumentation.getState().setTheoryPage(lesson.id, readingIndex - 1)}><ArrowLeft aria-hidden className="size-4" />Vorige</Button> : null}
@@ -162,17 +168,17 @@ export function ArgumentLessonPlayer({ lesson }: { lesson: ArgumentLesson }) {
           </div>}
         </div>
         </div>
-        {cursor === 0 && !readingDone && canResume && <Button variant="ghost" className="mt-4" onClick={() => useArgumentation.getState().resume(lesson.id)}>{resumeLabel}<ArrowRight aria-hidden className="size-4" /></Button>}
+        {cursor === 0 && !readingDone && canResume && <Button data-readaloud-ignore variant="ghost" className="mt-4" onClick={() => useArgumentation.getState().resume(lesson.id)}>{resumeLabel}<ArrowRight aria-hidden className="size-4" /></Button>}
         {cursor === 0 && !mayReadForward && <p className="mt-4 text-small text-ink-muted">{readingPage.kind === 'concept' ? 'Oefen dit begrip met het nieuwe geval. Gebruik de feedback voordat je de volgende stap zet.' : readingPage.kind === 'inquiry' ? 'Leg eerst je eigen analyse vast en vergelijk die met de uitwerking.' : readingPage.kind === 'section' ? 'Gebruik de feedback om deze denkstap te beoordelen voordat je verdergaat.' : 'Beantwoord eerst de startvraag om naar het volgende kernidee te gaan.'}</p>}
         {!lesson.checkpoint && exercise?.kind === 'reflection' && answer.checked && !reflectionDone && <p className="mt-4 text-small text-ink-muted">Herzie je analyse totdat je alle rubriccriteria kunt onderbouwen; vink ze daarna aan om verder te gaan.</p>}
         {exercise && exercise.kind !== 'reflection' && !answer.checked && answerReady(exercise, answer) && answer.confidence === null && <p className="mt-4 text-small text-purple-ink">Leg ook je zekerheid vast voordat je de analyse controleert.</p>}
         {cursor > 0 && !lesson.checkpoint && <BookFoundation lesson={lesson} />}
       </>}
-      {(!lesson.checkpoint || session.finished) && <details className="mt-10 rounded-control border border-line bg-sunken p-4">
+      {(!lesson.checkpoint || session.finished) && <details data-readaloud-ignore className="mt-10 rounded-control border border-line bg-sunken p-4">
         <summary className="flex cursor-pointer items-center gap-2 text-caption font-semibold text-ink-muted"><ChevronDown aria-hidden className="size-3" />Lesoverzicht</summary>
         <ol className="mt-3 space-y-2"><li><button onClick={() => useArgumentation.getState().openTheory(lesson.id)} className="min-h-9 text-left text-small text-blue-ink underline underline-offset-4">Verder lezen waar je was</button></li>{readingPages.map((page, index) => <li key={page.id}><button disabled={!canResume && index > readingIndex} onClick={() => { useArgumentation.getState().setTheoryPage(lesson.id, index); useArgumentation.getState().openTheory(lesson.id); }} className="min-h-9 text-left text-small text-blue-ink underline underline-offset-4 disabled:text-ink-muted disabled:no-underline">Leespagina {index + 1} · {page.title}</button></li>)}{lesson.exercises.map((item, index) => <li key={item.id} className="flex items-start gap-2 text-small text-ink-muted">{session.answers[item.id]?.checked ? <Check aria-hidden className="mt-1 size-4 shrink-0" /> : <span className="mt-1 size-4 shrink-0 text-caption">{index + 1}</span>}{item.prompt}</li>)}</ol>
       </details>}
-      <Link href="/argumentatie" className="mt-8 inline-flex min-h-11 items-center gap-2 text-small font-bold text-ink-muted"><X aria-hidden className="size-4" />Bewaren en terug naar het leerpad</Link>
+      <Link data-readaloud-ignore href="/argumentatie" className="mt-8 inline-flex min-h-11 items-center gap-2 text-small font-bold text-ink-muted"><X aria-hidden className="size-4" />Bewaren en terug naar het leerpad</Link>
     </main>
     </div>
   </div>;

@@ -62,7 +62,7 @@ describe('begeleiding in de lesplayer', () => {
     expect(screen.getByRole('button', { name: 'Controleer' })).toBeDisabled();
 
     await user.click(screen.getByRole('button', { name: 'Aanpak voor deze les' }));
-    expect(screen.getByRole('dialog', { name: 'Aanpak voor deze les' })).toBeVisible();
+    await waitFor(() => expect(screen.getByRole('dialog', { name: 'Aanpak voor deze les' })).toBeVisible());
     await user.click(screen.getByRole('button', { name: 'Terug naar de oefening' }));
     await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
     expect(screen.getByRole('heading', { name: 'Welke zin is een standpunt?' })).toBeVisible();

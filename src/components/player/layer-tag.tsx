@@ -62,7 +62,7 @@ export function LayerTag({
           ))}
         </span>
         <span className="leading-tight">
-          <span className="block text-caption font-bold text-ink-muted">Niveau {layerIndex + 1}</span>
+          <span className="block text-caption font-bold text-ink-muted">Niveau {layerIndex + 1}</span>{' '}
           {layer.id === 'zinnen' ? <Link href="/zinnen" className="block rounded-sm font-display text-body font-extrabold text-blue-ink underline decoration-blue-line underline-offset-4 focus-visible:outline-3 focus-visible:outline-focus">{layer.name}</Link> : <span className="block font-display text-body font-extrabold text-ink">{layer.name}</span>}
         </span>
       </div>
@@ -74,7 +74,7 @@ export function LayerTag({
           <DomainGlyph id={domain.id} className="size-[1.1rem]" />
         </span>
         <span className="leading-tight">
-          <span className="block text-caption font-bold">Vakgebied</span>
+          <span className="block text-caption font-bold">Vakgebied</span>{' '}
           <span className="block font-display text-body font-extrabold">{domain.name}</span>
         </span>
       </div>
@@ -84,7 +84,7 @@ export function LayerTag({
           className="flex items-center rounded-tile border-2 border-accent-line bg-accent-soft px-3.5 py-2 text-accent-ink"
         >
           <span className="leading-tight">
-            <span className="block text-caption font-bold">Stap</span>
+            <span className="block text-caption font-bold">Stap</span>{' '}
             <span className="block font-display text-body font-extrabold">{STAGE_LABELS[stage]}</span>
           </span>
         </div>

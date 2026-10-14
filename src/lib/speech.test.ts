@@ -19,6 +19,7 @@ class FakeUtterance {
   onstart: (() => void) | null = null;
   onpause: (() => void) | null = null;
   onresume: (() => void) | null = null;
+  onboundary: ((event: { charIndex: number; charLength?: number; name: string }) => void) | null = null;
   onerror: ((event: { error: string }) => void) | null = null;
   constructor(public text: string) {}
 }
@@ -91,6 +92,18 @@ describe('voorlezen', () => {
     expect(spoken.map((u) => u.text)).toEqual(['piet', 'pit']);
     vi.useRealTimers();
   });
+  it('houdt de contrastpauze tussen teksten, zonder een extra pauze tussen hun zinnen', () => {
+    vi.useFakeTimers();
+    const spoken = stubSpeech([FENNA]);
+    speakAll(['Eerste zin. Tweede zin.', 'Het contrast.'], { gap: 600 });
+    spoken[0]?.onend?.();
+    expect(spoken.map((utterance) => utterance.text)).toEqual(['Eerste zin.', 'Tweede zin.']);
+    spoken[1]?.onend?.();
+    vi.advanceTimersByTime(599);
+    expect(spoken).toHaveLength(2);
+    vi.advanceTimersByTime(1);
+    expect(spoken[2]?.text).toBe('Het contrast.');
+  });
   it('behoudt de gekozen Nederlandse stem en de vaste of relatieve snelheid', () => {
     const spoken = stubSpeech([FRANK, FENNA]);
     useSettings.getState().setSpeech({ voice: FRANK.voiceURI, rate: 'langzaam' });
@@ -98,6 +111,12 @@ describe('voorlezen', () => {
     speak('tweede', { slower: 0.8 });
     expect(spoken[0]).toMatchObject({ voice: FRANK, rate: 1.2 });
     expect(spoken[1]?.rate).toBeCloseTo(0.56);
+  });
+  it('ondersteunt het leestempo tot 2× en begrenst een hogere aanvraag op 2×', () => {
+    const spoken = stubSpeech([FENNA]);
+    speak('Tweemaal zo snel.', { rate: 2 });
+    speak('Geen hoger tempo.', { rate: 3 });
+    expect(spoken.map((utterance) => utterance.rate)).toEqual([2, 2]);
   });
   it('kan Nederlands aanvragen zolang stemmen nog laden en blijft stil bij anderstalige stemmen', () => {
     const spoken = stubSpeech([]);
@@ -126,6 +145,60 @@ describe('voorlezen', () => {
     spoken[1]?.onend?.();
     spoken[1]?.onend?.();
     expect(onEnd).toHaveBeenCalledOnce();
+  });
+  it('meldt uitsluitend native woordgrenzen van het werkelijk gestarte fragment', () => {
+    vi.useFakeTimers();
+    const spoken = stubSpeech([FENNA]);
+    const onBoundary = vi.fn();
+    speak('Eerste zin. Tweede zin.', { onBoundary });
+    spoken[0]?.onboundary?.({ charIndex: 0, charLength: 6, name: 'word' });
+    expect(onBoundary).not.toHaveBeenCalled();
+    spoken[0]?.onstart?.();
+    vi.advanceTimersByTime(5000);
+    expect(onBoundary).not.toHaveBeenCalled();
+    spoken[0]?.onboundary?.({ charIndex: 7, charLength: 3, name: 'word' });
+    expect(onBoundary).toHaveBeenCalledExactlyOnceWith({ index: 0, total: 2, text: 'Eerste zin.', charIndex: 7, charLength: 3, name: 'word' });
+    spoken[0]?.onend?.();
+    spoken[0]?.onboundary?.({ charIndex: 0, charLength: 6, name: 'word' });
+    expect(onBoundary).toHaveBeenCalledOnce();
+    spoken[1]?.onstart?.();
+    spoken[1]?.onboundary?.({ charIndex: 0, charLength: 6, name: 'word' });
+    expect(onBoundary).toHaveBeenLastCalledWith({ index: 1, total: 2, text: 'Tweede zin.', charIndex: 0, charLength: 6, name: 'word' });
+  });
+  it('bewaart native UTF-16-posities en geeft een onbekende woordlengte als nul door', () => {
+    const spoken = stubSpeech([FENNA]);
+    const onBoundary = vi.fn();
+    speak('🙂 huis.', { onBoundary });
+    spoken[0]?.onstart?.();
+    spoken[0]?.onboundary?.({ charIndex: 3, charLength: 4, name: 'word' });
+    expect(onBoundary).toHaveBeenLastCalledWith({ index: 0, total: 1, text: '🙂 huis.', charIndex: 3, charLength: 4, name: 'word' });
+    spoken[0]?.onboundary?.({ charIndex: 3, name: 'word' });
+    expect(onBoundary).toHaveBeenLastCalledWith({ index: 0, total: 1, text: '🙂 huis.', charIndex: 3, charLength: 0, name: 'word' });
+    spoken[0]?.onboundary?.({ charIndex: 3, charLength: 50, name: 'word' });
+    expect(onBoundary).toHaveBeenLastCalledWith({ index: 0, total: 1, text: '🙂 huis.', charIndex: 3, charLength: 0, name: 'word' });
+    for (const charIndex of [-1, 1.5, 9, Number.NaN, Number.POSITIVE_INFINITY]) {
+      spoken[0]?.onboundary?.({ charIndex, charLength: 1, name: 'word' });
+    }
+    expect(onBoundary).toHaveBeenCalledTimes(3);
+    spoken[0]?.onboundary?.({ charIndex: 8, charLength: 0, name: 'sentence' });
+    expect(onBoundary).toHaveBeenLastCalledWith({ index: 0, total: 1, text: '🙂 huis.', charIndex: 8, charLength: 0, name: 'sentence' });
+  });
+  it('negeert late woordgrenzen na stoppen, overnemen en native annulering', () => {
+    const spoken = stubSpeech([FENNA]);
+    const onBoundary = vi.fn();
+    speak('De eerste zin.', { onBoundary });
+    spoken[0]?.onstart?.();
+    stopSpeaking();
+    spoken[0]?.onboundary?.({ charIndex: 3, charLength: 6, name: 'word' });
+    speak('Een volgende zin.', { onBoundary });
+    spoken[1]?.onstart?.();
+    speak('Nieuwe eigenaar.');
+    spoken[1]?.onboundary?.({ charIndex: 4, charLength: 8, name: 'word' });
+    speak('Annuleer deze zin.', { onBoundary });
+    spoken[3]?.onstart?.();
+    spoken[3]?.onerror?.({ error: 'canceled' });
+    spoken[3]?.onboundary?.({ charIndex: 9, charLength: 4, name: 'word' });
+    expect(onBoundary).not.toHaveBeenCalled();
   });
   it('houdt een gedeelde, alleen-lezen status bij voor pauzeren, hervatten en afronden', () => {
     const spoken = stubSpeech([FENNA]);
@@ -157,6 +230,25 @@ describe('voorlezen', () => {
     act(() => { expect(resumeSpeaking()).toBe(false); });
     expect(status.result.current).toBe('paused');
     act(() => { stopSpeaking(); });
+    expect(status.result.current).toBe('idle');
+  });
+  it('blijft idle als de browser de opdracht tijdens pauzeren of hervatten annuleert', () => {
+    const spoken = stubSpeech([FENNA]);
+    const status = renderHook(() => useSpeechStatus());
+    act(() => { speak('Pauzeer deze zin.'); });
+    vi.mocked(window.speechSynthesis.pause).mockImplementationOnce(() => {
+      (window.speechSynthesis as unknown as { paused: boolean }).paused = true;
+      spoken[0]?.onerror?.({ error: 'canceled' });
+    });
+    act(() => { expect(pauseSpeaking()).toBe(false); });
+    expect(status.result.current).toBe('idle');
+    act(() => { speak('Hervat deze zin.'); pauseSpeaking(); });
+    expect(status.result.current).toBe('paused');
+    vi.mocked(window.speechSynthesis.resume).mockImplementationOnce(() => {
+      (window.speechSynthesis as unknown as { paused: boolean }).paused = false;
+      spoken[1]?.onerror?.({ error: 'canceled' });
+    });
+    act(() => { expect(resumeSpeaking()).toBe(false); });
     expect(status.result.current).toBe('idle');
   });
   it('laat een volgend fragment tijdens een pauze wachten en hervat dezelfde wachtrij', () => {

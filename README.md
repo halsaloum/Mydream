@@ -5,7 +5,7 @@ Nederlands op moedertaalniveau lezen en verstaan, en de schrijftaal willen behee
 
 De schrijflesbibliotheek bevat **138 lessen**: alle 113 bestaande lessen zijn uitgebreid met lesgebonden begeleiding en toepassingsopdrachten, aangevuld met negen schrijfmodules en zestien lessen argumentatie en drogredenen. De route loopt van taalbasis via helder schrijven naar zelfstandig argumenteren; specialistische taalkunde staat daarnaast als keuzeverdieping. Daarnaast biedt `/argumentatie` een afzonderlijk leerpad met 69 uitgebreide lessen voor leiders. Afronden en automatisch goed antwoorden zijn geen bewijs van blijvende beheersing.
 
-Alle **171 bibliotheeklessen en afzonderlijke modules** zijn inhoudelijk en didactisch gecontroleerd. De [lescontrole per les](docs/lesson-audit-2026-10-14.md) beschrijft de concrete verbeteringen en onderzoeksbasis. Nieuwe zelfstandige toepassingen, hulp na de eigen poging en specifieke foutuitleg richten de interactie op leren. De persoonlijke kennischecks in `/herhalen/kennis` halen afgeronde stof op latere dagen opnieuw op, met wisselende opdrachten en een bewaarde eerste poging. De eenvoudige intervallen zijn productkeuzes; er is geen leerexperiment met deze app uitgevoerd.
+De eerdere inhoudelijke en didactische controle omvatte **171 bibliotheeklessen en afzonderlijke modules**. De [lescontrole per les](docs/lesson-audit-2026-10-14.md) beschrijft de concrete verbeteringen en onderzoeksbasis; de 48 later toegevoegde drogredenenhoofdstukken vallen buiten die handmatige controle. Nieuwe zelfstandige toepassingen, hulp na de eigen poging en specifieke foutuitleg richten de interactie op leren. De persoonlijke kennischecks in `/herhalen/kennis` halen afgeronde stof op latere dagen opnieuw op, met wisselende opdrachten en een bewaarde eerste poging. De eenvoudige intervallen zijn productkeuzes; er is geen leerexperiment met deze app uitgevoerd.
 
 Voortgang en lopende kennischecks blijven lokaal bewaard onder `pennig:gespreid-ophalen` en gaan mee in export/import. Oudere exports zonder dit veld blijven bruikbaar. Historische lesresultaten en FSRS-woordkaarten blijven behouden; veranderde opdrachtinhoud krijgt een nieuwe vingerafdruk. Bij gecombineerde vormcorrecties kunnen `rewrite` en `fix` expliciet `strict: true` gebruiken, zodat gevraagde hoofdletters en leestekens ook echt worden beoordeeld.
 
@@ -62,6 +62,7 @@ gebruikt: `typescript-eslint` en de React-/a11y-plugins van `eslint-config-next`
 | @dnd-kit/core | 6.3.1 | Slepen van oefenblokken (altijd met klik-/toetsenbordalternatief) |
 | konva / react-konva | 10.7.1 / 19.3.0 | Interactieve 2D-argumentatie-, causaliteits- en Bayes-labs, met een volledig tekstalternatief |
 | zustand | 5.0.15 | Instellingen, voortgang, sessieherstel (localStorage) |
+| react-highlight-words | 1.0.0 | React 19-compatibele woordmarkering op echte spraakgrenzen |
 | zod | 4.6.5 | Lescontract en validatie van opgeslagen gegevens |
 | lucide-react | 1.52.0 | Iconen (naast eigen SVG voor Pim, niveaus en vakgebieden) |
 | canvas-confetti | 1.9.4 | Kleine beloning, pas geladen bij gebruik |
@@ -74,6 +75,13 @@ gebruikt: `typescript-eslint` en de React-/a11y-plugins van `eslint-config-next`
 Geluid gebruikt Web Audio (geen bestanden); fonts komen via `next/font` (Fraunces, Bricolage Grotesque, Figtree).
 Voorlezen gebruikt de Nederlandse stemmen van de browser (Web Speech API, `nl-NL`). Bij klanken verdwijnt de
 knop zonder spraakondersteuning; de leespagina’s vermelden wanneer Nederlands voorlezen niet beschikbaar is.
+
+Alle lesplayers hebben dezelfde **Leesmodus**: cataloguslessen, woorden en herhaling, Zinnen en Argumentatie.
+De modus toont de actuele lestekst groter, met ruimere regelafstand, en leest zichtbare uitleg, voorbeelden,
+opdrachten en vrijgegeven feedback. Nederlandse stemkeuze, proefluisteren, pauzeren en een apart tempo tot
+**2×** zijn beschikbaar. `react-highlight-words` markeert precies het door de stem gemelde woord; een optionele
+volgfunctie verschuift alleen het leesvak. Stemmen zonder woordgrenzen krijgen fragmentmarkering. Verborgen
+uitwerkingen, nog gesloten transcripties en privétekst in invulvelden worden niet aan de voorleeswachtrij toegevoegd.
 
 ## Architectuur
 
@@ -224,7 +232,7 @@ er zijn geen aparte tabs voor oefenvormen of handmatige niveaukeuze. Bij een gew
 het lezen opnieuw, terwijl oefenantwoorden en eerdere resultaten behouden blijven.
 
 Elke leespagina heeft een voorleesbediening: starten, pauzeren, hervatten en stoppen. De stemkiezer toont de
-beschikbare Nederlandse stemmen. Een schuifregelaar bewaart het aparte leestempo van 0,6× tot 1,5×; de instelling
+beschikbare Nederlandse stemmen. Een schuifregelaar bewaart het aparte leestempo van 0,6× tot 2×; de instelling
 voor losse klanken blijft behouden. Veranderen van tempo of stem hervat bij het actuele fragment. Korte fragmenten
 houden ook lange pagina’s leesbaar voor de spraakmotor. Wisselen van pagina stopt het voorlezen en start nooit
 automatisch. Alleen de huidige, zichtbare uitleg en vrijgegeven feedback worden gelezen; eigen teksten,

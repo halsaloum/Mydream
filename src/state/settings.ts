@@ -56,7 +56,7 @@ const SpeechSchema = z.object({
   voice: z.string().nullable(),
   rate: z.enum(['langzaam', 'rustig', 'normaal']),
   /** Apart spreektempo voor lange leespagina’s; oudere instellingen blijven geldig. */
-  readerRate: z.number().min(0.6).max(1.5).default(1),
+  readerRate: z.number().min(0.6).max(2).default(1),
   /** Taalvoorbeelden in de uitleg aantikken om ze te horen. */
   examples: z.boolean(),
 });

@@ -39,6 +39,7 @@ export function Disclosure({ summary, icon, children, defaultOpen, className }: 
         render={(props, state) => (
           <motion.div
             {...(props as HTMLMotionProps<'div'>)}
+            data-readaloud-hidden={!state.open ? 'true' : undefined}
             initial={false}
             animate={{ height: state.open ? 'auto' : 0, opacity: state.open ? 1 : 0 }}
             transition={calm ? { duration: 0 } : transition.base}

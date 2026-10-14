@@ -1,11 +1,12 @@
 'use client';
 
-import type { RefObject } from 'react';
+import { useRef, type RefObject } from 'react';
 import { getLessonEntry } from '@/content/catalog';
 import type { Lesson, Step } from '@/content/schema';
 import { Button } from '@/components/ui/button';
 import { Sheet } from '@/components/ui/dialog';
 import { RichText } from '@/components/ui/rich-text';
+import { LessonReader } from '@/components/reading/lesson-reader';
 import { Examples, RuleCard } from './steps/shared';
 
 type Teaching = Extract<Step, { kind: 'explain' | 'learn' }>;
@@ -29,6 +30,7 @@ export function RuleSheet({
   onOpenChange: (open: boolean) => void;
   finalFocus: RefObject<HTMLElement | null>;
 }) {
+  const readingScope = useRef<HTMLDivElement>(null);
   const content = lessonRules(lessonId);
   const accent = getLessonEntry(lessonId)?.domain.accent;
   return (
@@ -45,7 +47,8 @@ export function RuleSheet({
         </Button>
       }
     >
-      <div className="space-y-9">
+      <div ref={readingScope} className="space-y-9">
+        <LessonReader scopeRef={readingScope} contentKey={`regels:${lessonId}:${open}`} title="De regel" />
         {content?.rules.map((rule, i) => (
           <section key={i} className="space-y-4">
             <h3 className="font-serif text-[1.75rem] leading-tight text-ink">{rule.title}</h3>

@@ -55,7 +55,7 @@ test('voorlezen blijft op de huidige kern en bewaart stem en instelbaar tempo', 
   const concept = concepts[0]!;
   await page.goto(`/argumentatie/les/${lesson.id}`);
   const audio = page.getByRole('region', { name: 'Voorlezen', exact: true });
-  await audio.locator('summary').click();
+  await audio.locator('summary').filter({ hasText: 'Stem en tempo' }).click();
   const rate = audio.getByRole('slider', { name: 'Spreektempo', exact: true });
   const voice = audio.getByRole('combobox', { name: 'Nederlandse stem', exact: true });
   await expect(rate).toHaveValue('1');
@@ -92,15 +92,26 @@ test('voorlezen blijft op de huidige kern en bewaart stem en instelbaar tempo', 
   await audio.getByRole('button', { name: 'Stoppen', exact: true }).click();
   await expect(audio.getByRole('button', { name: 'Luisteren', exact: true })).toBeVisible();
   await page.reload();
-  await audio.locator('summary').click();
+  await audio.locator('summary').filter({ hasText: 'Stem en tempo' }).click();
   await expect(rate).toHaveValue('1.25');
   await expect(voice).toHaveValue('ellen');
   expect((await probe()).runs).toHaveLength(0);
   await page.screenshot({ path: test.info().outputPath('argumentatie-voorlezen.png') });
   const question = page.getByRole('region', { name: `Oefen het begrip ${concept.term}`, exact: true });
-  await question.getByRole('radio', { name: concept.options.find((option) => option.id === concept.answer)!.text, exact: true }).check();
+  const selected = concept.options.find((option) => option.id === concept.answer)!;
+  await question.getByRole('radio', { name: selected.text, exact: true }).check();
+  // Read the just-revealed feedback, then verify real playback before testing interruption.
+  // A click while that page is still being collected does not establish a running voice.
+  await audio.locator('summary').filter({ hasText: 'Leesmodus' }).click();
+  await expect(audio.getByLabel('Tekst om mee te lezen', { exact: true })).toBeVisible();
+  await expect.poll(async () => (await audio.getByLabel('Tekst om mee te lezen', { exact: true }).locator('p').allTextContents()).join(' ')).toContain(selected.feedback);
+  await expect(audio.getByRole('button', { name: 'Luisteren', exact: true })).toBeEnabled();
   await audio.getByRole('button', { name: 'Luisteren', exact: true }).click();
+  await expect(audio.getByRole('button', { name: 'Pauzeren', exact: true })).toBeVisible();
+  await expect.poll(async () => (await probe()).runs.length).toBe(1);
+  expect((await probe()).runs[0]).toMatchObject({ rate: 1.25, voice: 'ellen' });
   const cancellations = (await probe()).cancelled;
+  expect(cancellations).toBeGreaterThan(0);
   await page.getByRole('button', { name: 'Volgende pagina', exact: true }).click();
   await expect(page.getByRole('heading', { name: concepts[1]!.title, exact: true, level: 2 })).toBeVisible();
   await expect(audio.getByRole('button', { name: 'Luisteren', exact: true })).toBeVisible();

@@ -73,11 +73,12 @@ export function PracticeDnd({ children, disabled, onMove, onDrop, renderOverlay,
   );
 
   const handleStart = (event: DragStartEvent) => {
+    if (disabled) return;
     setActiveId(String(event.active.id));
     lastOver.current = null;
   };
   const handleMove = (event: DragMoveEvent) => {
-    if (!onMove || !event.over) return;
+    if (disabled || !onMove || !event.over) return;
     const over = String(event.over.id);
     const active = String(event.active.id);
     if (over === active || over === lastOver.current) return;
@@ -85,13 +86,14 @@ export function PracticeDnd({ children, disabled, onMove, onDrop, renderOverlay,
     onMove(active, over);
   };
   const handleEnd = (event: DragEndEvent) => {
-    onDrop(String(event.active.id), event.over ? String(event.over.id) : null);
+    if (!disabled) onDrop(String(event.active.id), event.over ? String(event.over.id) : null);
     setActiveId(null);
   };
 
   return (
     <DndContext
-      sensors={disabled ? [] : sensors}
+      // Sensor setup uses a fixed dependency list. Draggable targets handle the locked state.
+      sensors={sensors}
       collisionDetection={collision}
       measuring={{ droppable: { strategy: MeasuringStrategy.Always } }}
       accessibility={{

@@ -95,10 +95,11 @@ export function ExplainStep({ step, response, onChange, seed }: StepProps<'expla
         </nav>
       )}
 
-      <div className="relative mt-7">
+      <div className="relative mt-7" data-reading-panel={current}>
         <AnimatePresence mode="wait" initial={false} custom={direction}>
           <motion.section
             key={current}
+            data-reading-panel-index={current}
             aria-label={`Deel ${current + 1}`}
             initial={calm ? { opacity: 0 } : { opacity: 0, x: 26 * direction }}
             animate={{ opacity: 1, x: 0 }}

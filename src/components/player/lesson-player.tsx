@@ -13,6 +13,7 @@ import type { Response } from '@/engine/responses';
 import { currentKey, currentResponse, isRetry, sessionProgress, summarize, type SessionState } from '@/engine/session';
 import { Pim } from '@/components/brand/pim';
 import { Button, ButtonLink, type ButtonVariant } from '@/components/ui/button';
+import { LessonReader } from '@/components/reading/lesson-reader';
 import { ProgressBar } from '@/components/ui/progress';
 import { celebrate, originOf } from '@/lib/confetti';
 import { cn } from '@/lib/cn';
@@ -94,6 +95,7 @@ function isActivatable(target: HTMLElement): boolean {
  * voorbeelden speelt.
  */
 export function LessonPlayer({ controller, meta }: { controller: PlayerController; meta: PlayerMeta }) {
+  const readingScope = useRef<HTMLDivElement>(null);
   const { session, dispatch, lookup } = controller;
   const calm = useCalmMotion();
   const primaryRef = useRef<HTMLButtonElement>(null);
@@ -211,9 +213,10 @@ export function LessonPlayer({ controller, meta }: { controller: PlayerControlle
   if (session.phase === 'done') {
     const summary = summarize(session, lookup);
     return (
-      <div data-accent={meta.accent} className="flex min-h-dvh flex-col">
+      <div ref={readingScope} data-accent={meta.accent} className="flex min-h-dvh flex-col">
         <PlayerHeader meta={meta} progress={1} counter={null} />
         <main id="inhoud" className="flex-1">
+          <div className="mx-auto max-w-3xl px-gutter pt-5"><LessonReader scopeRef={readingScope} contentKey={`${meta.mode}:${session.startedAt}:done`} title={meta.title} /></div>
           <FinishScreen
             mode={meta.mode}
             title={meta.finish.title}
@@ -254,7 +257,7 @@ export function LessonPlayer({ controller, meta }: { controller: PlayerControlle
   const wrongNow = locked && session.lastCorrect === false;
 
   return (
-    <div data-accent={meta.accent} className="flex min-h-dvh flex-col">
+    <div ref={readingScope} data-accent={meta.accent} data-reading-step={pos} className="flex min-h-dvh flex-col">
       <PlayerHeader
         meta={meta}
         progress={sessionProgress(session)}
@@ -264,6 +267,7 @@ export function LessonPlayer({ controller, meta }: { controller: PlayerControlle
       />
 
       <main id="inhoud" className="relative mx-auto w-full max-w-3xl flex-1 px-3 pt-5 pb-10 sm:px-gutter sm:pt-9">
+        <LessonReader scopeRef={readingScope} contentKey={`${meta.mode}:${session.startedAt}:${pos}:${phase}:${rulesOpen}:${approachOpen}`} title={meta.title} />
         {pos === 0 && meta.guidance && <LessonIntroduction guidance={meta.guidance} />}
         {pos === 0 && meta.learningReference && <section aria-label="Uitleg bij deze zinoefening" className="mb-5 rounded-card border-2 border-blue-line bg-blue-soft p-5">
           <h2 className="font-display text-title-sm font-bold text-blue-ink">Eerst begrijpen, dan oefenen</h2>
@@ -331,6 +335,7 @@ export function LessonPlayer({ controller, meta }: { controller: PlayerControlle
           </div>
           <Button
             ref={primaryRef}
+            data-readaloud-ignore
             size="lg"
             variant={primary.variant}
             disabled={!primary.enabled}

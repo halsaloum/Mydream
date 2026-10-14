@@ -9,6 +9,7 @@ import type { SentenceLesson } from '@/content/sentences/types';
 import { Button, ButtonLink } from '@/components/ui/button';
 import { ProgressBar } from '@/components/ui/progress';
 import { PageSkeleton } from '@/components/ui/empty-state';
+import { LessonReader } from '@/components/reading/lesson-reader';
 import { cn } from '@/lib/cn';
 import { answerReady, emptySentenceAnswer, lessonAccuracy, lessonProgress, lessonSolved } from '@/lib/sentences/learning';
 import { sentenceLessonHref } from '@/lib/sentences/routes';
@@ -30,7 +31,7 @@ const TABS: { id: SentenceTab; title: string }[] = [
 function LessonNavigation({ lesson }: { lesson: SentenceLesson }) {
   const records = useSentences((state) => state.records);
   const sessions = useSentences((state) => state.sessions);
-  return <nav aria-label="Lessen over zinnen" className="hidden max-h-[calc(100dvh-7rem)] self-start overflow-y-auto rounded-card border border-line bg-white p-4 xl:sticky xl:top-24 xl:block">
+  return <nav data-readaloud-ignore aria-label="Lessen over zinnen" className="hidden max-h-[calc(100dvh-7rem)] self-start overflow-y-auto rounded-card border border-line bg-white p-4 xl:sticky xl:top-24 xl:block">
     <p className="mb-3 font-display font-bold text-blue-ink">De zin, van begin tot eind</p>
     <ol className="space-y-1">{sentenceLessons.map((item) => {
       const solved = records[item.id] ? 10 : lessonProgress(item, sessions[item.id]?.answers ?? {}).solved;
@@ -45,6 +46,7 @@ export function SentenceLessonPlayer({ lesson }: { lesson: SentenceLesson }) {
   const session = useSentences((state) => state.sessions[lesson.id]);
   const record = useSentences((state) => state.records[lesson.id]);
   const heading = useRef<HTMLHeadingElement>(null);
+  const readerScope = useRef<HTMLElement>(null);
   useEffect(() => { if (hydrated) useSentences.getState().start(lesson); }, [hydrated, lesson]);
   const tab = session?.tab ?? 'ontdek';
   const arenaIndex = session?.arenaIndex ?? 0;
@@ -78,15 +80,17 @@ export function SentenceLessonPlayer({ lesson }: { lesson: SentenceLesson }) {
   };
   const nextLesson = sentenceLessons.find((item) => item.number === lesson.number + 1);
   const teaching = sentenceTeachingById.get(lesson.id);
+  const readerKey = `sentence:${lesson.id}:${tab}:${tab === 'arena' || tab === 'debugger' ? exercise?.id ?? index : 'reading'}:${session.finished ? 'finished' : answer.checked ? answer.correct ? 'correct' : 'feedback' : 'prompt'}:${answer.diagnosisPassed ? 'diagnosed' : 'diagnose'}:${answer.segmentationPassed ? 'segmented' : 'segment'}`;
 
   return <div data-accent="navy" className="min-h-dvh bg-canvas">
     <header className="sticky top-0 z-30 border-b border-line bg-white/95 backdrop-blur-lg"><div className="mx-auto flex min-h-16 max-w-6xl items-center gap-3 px-gutter py-3"><Link href="/?niveau=zinnen#niveaus-titel" className="grid size-11 shrink-0 place-items-center rounded-control text-ink-soft hover:bg-sunken" aria-label="Bewaren en terug naar alle zinslessen"><ArrowLeft aria-hidden className="size-5" /></Link><div className="min-w-0 flex-1"><p className="truncate text-caption font-bold text-blue-ink">Zinnen · Les {lesson.number} van 12</p><ProgressBar value={progress.solved} max={10} size="sm" label="Opgeloste opdrachten in deze les" /></div><span className="text-caption font-semibold text-ink-muted">{progress.solved}/10</span></div></header>
     <div className="mx-auto grid max-w-6xl gap-7 px-gutter py-7 xl:grid-cols-[17rem_minmax(0,1fr)]">
       <LessonNavigation lesson={lesson} />
-      <main className="min-w-0">
+      <main ref={readerScope} className="min-w-0">
         <p className="text-caption font-bold tracking-wider text-blue-ink uppercase">Van woordgroep tot samengestelde zin</p>
         <h1 ref={heading} tabIndex={-1} className="mt-3 font-display text-[clamp(1.8rem,1.4rem+1.4vw,2.7rem)] leading-tight font-extrabold outline-none">{lesson.title}</h1>
         <p className="mt-4 text-lead leading-relaxed text-ink-soft">{lesson.teaser}</p>
+        <div className="mt-5"><LessonReader scopeRef={readerScope} contentKey={readerKey} /></div>
         <div role="tablist" aria-label="De vijf onderdelen van deze les" className="my-6 flex gap-2 overflow-x-auto pb-2">{TABS.map((item, position) => <button key={item.id} type="button" role="tab" id={`tab-${item.id}`} aria-controls={`paneel-${item.id}`} aria-selected={tab === item.id} tabIndex={tab === item.id ? 0 : -1} onClick={() => switchTab(item.id)} onKeyDown={(event) => {
           const current = TABS.findIndex((item) => item.id === tab);
           const target = event.key === 'ArrowRight' ? (current + 1) % 5 : event.key === 'ArrowLeft' ? (current + 4) % 5 : event.key === 'Home' ? 0 : event.key === 'End' ? 4 : null;
@@ -101,10 +105,10 @@ export function SentenceLessonPlayer({ lesson }: { lesson: SentenceLesson }) {
           </>}
           {(tab === 'arena' || tab === 'debugger') && exercise && <>
             <div className="mb-5"><h2 className="font-display text-title-sm font-extrabold">{tab === 'arena' ? 'Oefenen met hulp' : 'Zelf zinnen herstellen'}</h2><p className="mt-2 text-small leading-relaxed text-ink-soft">{tab === 'arena' ? index < 3 ? 'Je begint met hulp. Bekijk welke woorden bij elkaar horen en pas de uitleg toe in de zin.' : 'Nu maak je zelf de woordgroepen. Daarna pas je de regel toe.' : 'Zoek eerst wat er misgaat in de zin. Schrijf daarna de verbetering die de opdracht vraagt.'}</p></div>
-            <nav aria-label={tab === 'arena' ? 'Bouwopdrachten' : 'Reparatieopdrachten'} className="mb-6 flex flex-wrap gap-2">{exercises.map((item, itemIndex) => <Button key={item.id} size="sm" variant={itemIndex === index ? 'accent' : 'secondary'} aria-current={itemIndex === index ? 'step' : undefined} aria-label={`Opdracht ${itemIndex + 1}${session.answers[item.id]?.correct ? ', opgelost' : ''}`} onClick={() => useSentences.getState().setExerciseIndex(lesson.id, phase, itemIndex)} className="min-w-11 px-3">{session.answers[item.id]?.correct ? <Check aria-hidden className="size-4" /> : itemIndex + 1}</Button>)}</nav>
+            <nav data-readaloud-ignore aria-label={tab === 'arena' ? 'Bouwopdrachten' : 'Reparatieopdrachten'} className="mb-6 flex flex-wrap gap-2">{exercises.map((item, itemIndex) => <Button key={item.id} size="sm" variant={itemIndex === index ? 'accent' : 'secondary'} aria-current={itemIndex === index ? 'step' : undefined} aria-label={`Opdracht ${itemIndex + 1}${session.answers[item.id]?.correct ? ', opgelost' : ''}`} onClick={() => useSentences.getState().setExerciseIndex(lesson.id, phase, itemIndex)} className="min-w-11 px-3">{session.answers[item.id]?.correct ? <Check aria-hidden className="size-4" /> : itemIndex + 1}</Button>)}</nav>
             <SentenceExerciseView key={exercise.id} exercise={exercise} answer={answer} disabled={session.finished || (answer.checked && answer.correct)} onChange={(patch) => useSentences.getState().answer(lesson.id, exercise.id, patch)} onDiagnose={() => useSentences.getState().diagnose(lesson, exercise)} onSegment={() => useSentences.getState().segment(lesson, exercise)} />
             {answer.checked && <div role="status" className={cn('mt-6 rounded-card border-2 p-5', answer.correct ? 'border-green-line bg-green-soft' : 'border-orange-line bg-orange-soft')}><h3 className={cn('flex gap-2 font-display font-bold', answer.correct ? 'text-green-ink' : 'text-orange-ink')}>{answer.correct ? <CheckCircle2 aria-hidden className="size-5 shrink-0" /> : <Lightbulb aria-hidden className="size-5 shrink-0" />}{answer.correct ? 'Deze toepassing klopt.' : 'Onderzoek je toepassing opnieuw.'}</h3><p className="mt-3 text-body leading-relaxed text-ink-soft">{exercise.explanation}</p>{!answer.correct && exercise.kind === 'debug' && <details className="mt-4 rounded-control border border-orange-line bg-white p-3"><summary className="min-h-8 cursor-pointer font-semibold text-orange-ink">Vergelijk met een passende reparatie</summary><p className="mt-3 font-serif text-lead leading-relaxed">{exercise.repairs[0]}</p><p className="mt-2 text-small text-ink-muted">Pas de regel toe in je eigen antwoord. Deze oefening controleert de afgebakende reparatie; andere formuleringen oefen je bij de eigen schrijfopdracht in de samenvatting.</p></details>}</div>}
-            <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-line pt-5"><p className="text-caption text-ink-muted">Opdracht {index + 1} van {exercises.length} · voortgang wordt bewaard</p>{answer.checked && answer.correct ? <Button onClick={nextExercise}>{index === exercises.length - 1 ? tab === 'arena' ? 'Naar zelfstandig repareren' : 'Naar de samenvatting' : 'Volgende opdracht'}<ArrowRight aria-hidden className="size-4" /></Button> : <Button disabled={!answerReady(exercise, answer) || answer.checked || session.finished} onClick={() => useSentences.getState().check(lesson, exercise)}>Controleer mijn toepassing<Check aria-hidden className="size-4" /></Button>}</div>
+            <div data-readaloud-ignore className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-line pt-5"><p className="text-caption text-ink-muted">Opdracht {index + 1} van {exercises.length} · voortgang wordt bewaard</p>{answer.checked && answer.correct ? <Button onClick={nextExercise}>{index === exercises.length - 1 ? tab === 'arena' ? 'Naar zelfstandig repareren' : 'Naar de samenvatting' : 'Volgende opdracht'}<ArrowRight aria-hidden className="size-4" /></Button> : <Button disabled={!answerReady(exercise, answer) || answer.checked || session.finished} onClick={() => useSentences.getState().check(lesson, exercise)}>Controleer mijn toepassing<Check aria-hidden className="size-4" /></Button>}</div>
           </>}
           {tab === 'codex' && <section>
             <p className="text-caption font-bold text-blue-ink">Dit wil je onthouden</p>
@@ -119,7 +123,7 @@ export function SentenceLessonPlayer({ lesson }: { lesson: SentenceLesson }) {
               {session.finished ? <>
                 <p className="flex items-center gap-2 font-display font-bold text-green-ink"><CheckCircle2 aria-hidden className="size-5" />Module afgerond · samenvatting bewaard</p>
                 <p className="mt-3 text-small leading-relaxed text-ink-soft">{record?.lastAccuracy ?? lessonAccuracy(lesson, session.firstTry)}% van je eerste gecontroleerde toepassingen klopte. Je hebt alle tien opdrachten daarna opgelost. Dit beschrijft deze oefenronde. Zelfstandig toepassen en later herhalen helpen je verder.</p>
-                <div className="mt-5 flex flex-wrap gap-3">{nextLesson && <ButtonLink href={sentenceLessonHref(nextLesson.id)}>Naar les {nextLesson.number}<ArrowRight aria-hidden className="size-4" /></ButtonLink>}<ButtonLink href="/zinnen/codex" variant="secondary"><BookOpen aria-hidden className="size-4" />Mijn samenvattingen</ButtonLink><Button variant="ghost" onClick={() => useSentences.getState().restart(lesson)}><RotateCcw aria-hidden className="size-4" />Nieuwe oefenronde</Button></div>
+                <div data-readaloud-ignore className="mt-5 flex flex-wrap gap-3">{nextLesson && <ButtonLink href={sentenceLessonHref(nextLesson.id)}>Naar les {nextLesson.number}<ArrowRight aria-hidden className="size-4" /></ButtonLink>}<ButtonLink href="/zinnen/codex" variant="secondary"><BookOpen aria-hidden className="size-4" />Mijn samenvattingen</ButtonLink><Button variant="ghost" onClick={() => useSentences.getState().restart(lesson)}><RotateCcw aria-hidden className="size-4" />Nieuwe oefenronde</Button></div>
               </> : <>
                 <h3 className="font-display text-title-sm font-bold">Jouw oefenvoortgang</h3>
                 <p className="mt-3 text-body leading-relaxed text-ink-soft">{progress.solved} van 10 opdrachten opgelost. Na zes oefenopdrachten en vier zelfstandige verbeteringen kun je deze module afronden en de samenvatting bewaren bij je afgeronde lessen.</p>
@@ -128,7 +132,7 @@ export function SentenceLessonPlayer({ lesson }: { lesson: SentenceLesson }) {
             </section>
           </section>}
         </section>
-        <Link href="/?niveau=zinnen#niveaus-titel" className="mt-6 inline-flex min-h-11 items-center gap-2 font-semibold text-ink-muted"><ArrowLeft aria-hidden className="size-4" />Bewaren en terug naar alle zinslessen</Link>
+        <Link data-readaloud-ignore href="/?niveau=zinnen#niveaus-titel" className="mt-6 inline-flex min-h-11 items-center gap-2 font-semibold text-ink-muted"><ArrowLeft aria-hidden className="size-4" />Bewaren en terug naar alle zinslessen</Link>
       </main>
     </div>
   </div>;

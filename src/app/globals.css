@@ -643,3 +643,9 @@ html[data-motion='calm'] ::after {
   transition-duration: 1ms !important;
   scroll-behavior: auto !important;
 }
+
+[data-reading-active='true'] {
+  outline: 2px solid var(--color-blue);
+  outline-offset: 3px;
+  border-radius: 0.25rem;
+}
