@@ -447,8 +447,14 @@ export function argumentEvaluate(step: Step, r: ArgumentResponse): Outcome {
   }
 }
 
-export function argumentFeedback(step: Step, _r: ArgumentResponse, outcome: Outcome): Feedback {
+export function argumentFeedback(step: Step, r: ArgumentResponse, outcome: Outcome): Feedback {
   const done = 'done' in step && step.done ? { title: step.done.title, body: step.done.text } : null;
+  if ('mistakes' in r) {
+    return {
+      title: outcome.correct ? done?.title ?? 'Oefening afgerond' : 'Afgerond met oefenpunten',
+      body: [`${r.mistakes} verkeerde keuzes vóór afronding.`, done?.body].filter(Boolean).join(' '),
+    };
+  }
   return done ?? { title: outcome.correct ? 'Klaar!' : 'Klaar' };
 }
 

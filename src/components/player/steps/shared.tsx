@@ -28,6 +28,8 @@ export type StepProps<K extends StepKind> = {
   seed: string;
   /** Zelfde als de hoofdknop (bijv. Enter in een invulveld). */
   onSubmit: () => void;
+  /** Hulp bij leren mag op verzoek; herhaling en een nieuwe poging beginnen zonder aanwijzing. */
+  assistance?: 'guided' | 'retrieval';
 };
 
 /** De opdracht van de stap. Krijgt focus bij een nieuwe stap, zodat schermlezers hem voorlezen. */

@@ -26,7 +26,7 @@ export const LES_K38: LessonInput = {
           },
         },
         {
-          text: 'Hoor je *sj* in een leenwoord? Dan schrijf je meestal *ch*: *chef*, *douche*, *machine*, *chauffeur*, *chocola*, *brochure*. Hoor je *zj*? Dan schrijf je *g* of *j*: *garage*, *bagage*, *horloge*, *etage*, *massage*, *logeren*, en *journalist*, *journaal*. De leenwoorden op *-age* klinken allemaal als *aazje*.',
+          text: 'Hoor je *sj* in een leenwoord? Dan schrijf je meestal *ch*: *chef*, *douche*, *machine*, *chauffeur*, *chocola*, *brochure*. Hoor je *zj*? Dan schrijf je *g* of *j*: *garage*, *bagage*, *horloge*, *etage*, *massage*, *logeren*, en *journalist*, *journaal*. In deze Franse leenwoorden op *-age* hoor je vaak *aazje*. Dit is een groep bekende voorbeelden, geen uitspraakregel voor iedere letterreeks *age*: leer uitspraak en spelling van het volledige woord samen.',
           rule: 'sj-klank: *ch* (*chef*). zj-klank: *g* (*garage*) of *j* (*journalist*).',
           quiz: {
             q: 'Je hoort: "de sjef van het restaurant". Hoe schrijf je het?',

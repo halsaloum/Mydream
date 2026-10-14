@@ -3,11 +3,19 @@ import { FOUNDATION_UPGRADES } from './foundations';
 import { MORPHOLOGY_UPGRADES } from './morphology';
 import { WORD_UPGRADES } from './words';
 import { WRITING_UPGRADES } from './writing';
+import { SENTENCE_REVIEW_UPGRADES } from './sentences-review';
 import type { LessonUpgrade } from './types';
 
-export const LESSON_UPGRADES: Readonly<Record<string, LessonUpgrade>> = {
+const ORIGINAL_UPGRADES: Readonly<Record<string, LessonUpgrade>> = {
   ...FOUNDATION_UPGRADES, ...MORPHOLOGY_UPGRADES, ...WORD_UPGRADES, ...WRITING_UPGRADES,
 };
+export const LESSON_UPGRADES: Readonly<Record<string, LessonUpgrade>> = Object.fromEntries(
+  [...new Set([...Object.keys(ORIGINAL_UPGRADES), ...Object.keys(SENTENCE_REVIEW_UPGRADES)])].map((id) => {
+    const original = ORIGINAL_UPGRADES[id];
+    const additional = SENTENCE_REVIEW_UPGRADES[id];
+    return [id, original ? { ...original, steps: [...original.steps, ...(additional?.steps ?? [])] } : additional!];
+  }),
+);
 
 /** Bestaande stappen houden hun positie; nieuwe toepassing volgt op het oorspronkelijke materiaal. */
 export function withCurriculum(pack: CoursePackInput): CoursePackInput {

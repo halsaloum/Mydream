@@ -46,8 +46,8 @@ export const LES_G23: LessonInput = {
           },
         },
         {
-          text: 'Eindigt een woord op *a*, *i*, *o*, *u* of *y*, dan krijgt het *’s*: *auto’s*, *ski’s*, *menu’s*, *baby’s*, *pagina’s*, *foto’s*. De apostrof houdt de klinker lang. Zonder apostrof lees je *autos* met een korte o. Eindigt het woord op *é* of *eau*, dan is de klank al duidelijk en zet je alleen *-s*: *café*, *cafés*; *cadeau*, *cadeaus*; *bureau*, *bureaus*. En een doffe e aan het eind krijgt ook gewoon *-s*: *tante*, *tantes*; *garage*, *garages*.',
-          rule: '*a*, *i*, *o*, *u*, *y* aan het eind: *’s* (*auto’s*). *é*, *eau* en doffe e: *-s* (*cafés*, *cadeaus*, *tantes*).',
+          text: 'Eindigt een woord op een lange klinker geschreven met één *a*, *i*, *o*, *u* of *y*, dan krijgt het meervoud op s een apostrof: *auto’s*, *ski’s*, *menu’s*, *baby’s*, *pagina’s*, *foto’s*. De apostrof houdt de klinker lang. Zonder apostrof lees je *autos* met een korte o. Eindigt het woord op *é* of *eau*, dan is de klank al duidelijk en zet je alleen *-s*: *café*, *cafés*; *cadeau*, *cadeaus*; *bureau*, *bureaus*. En een doffe e aan het eind krijgt ook gewoon *-s*: *tante*, *tantes*; *garage*, *garages*.',
+          rule: 'Enkele eindklinkerletter met lange klank: *’s* (*auto’s*). Een lettergroep als *ay* niet (*sprays*). *é*, *eau* en doffe e: *-s* (*cafés*, *cadeaus*, *tantes*).',
           quiz: {
             q: 'Wat is het meervoud van ‘cadeau’?',
             options: ['cadeaus', 'cadeau’s', 'cadeauen'],
@@ -60,7 +60,7 @@ export const LES_G23: LessonInput = {
           },
         },
         {
-          text: 'Twijfel je? Volg dit stappenplan. Stap 1: eindigt het woord op *-el*, *-em*, *-en*, *-er* of *-je* zonder klemtoon? Dan meestal *-s*. Stap 2: eindigt het op *a*, *i*, *o*, *u* of *y*? Dan *’s*. Stap 3: eindigt het op *é*, *eau* of een doffe e? Dan *-s*. Stap 4: in de andere gevallen meestal *-en*, en dan let je op één letter of twee, op verdubbelen en op z en v.',
+          text: 'Twijfel je? Volg dit stappenplan. Stap 1: eindigt het woord op *-el*, *-em*, *-en*, *-er* of *-je* zonder klemtoon? Dan meestal *-s*. Stap 2: eindigt het op een lange klinker geschreven met één *a*, *i*, *o*, *u* of *y*? Dan *’s*. Een combinatie als *ay* krijgt geen apostrof: *sprays*. Stap 3: eindigt het op *é*, *eau* of een doffe e? Dan *-s*. Stap 4: in de andere gevallen meestal *-en*, en dan let je op één letter of twee, op verdubbelen en op z en v.',
           rule: '-el, -em, -en, -er, -je: meestal *-s*. Klinker a, i, o, u, y: *’s*. Anders meestal *-en*.',
           mark: {
             q: 'Tik de woorden die in het meervoud alleen -s krijgen (zonder apostrof)',

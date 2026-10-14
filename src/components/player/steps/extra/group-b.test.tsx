@@ -34,6 +34,24 @@ function perSeed<K extends 'ladder' | 'conjunction' | 'highlight', T>(Component:
 const highlightSteps = lessonEntries.flatMap(({ lesson }) => lesson.steps.flatMap((step) => (step.kind === 'highlight' ? [{ lesson: lesson.id, step }] : [])));
 
 describe('groep B extra oefeningen', () => {
+  it('laat afleiders ook aanwijzen en telt een verkeerde markering zonder het antwoord vooraf te verraden', async () => {
+    const user = userEvent.setup();
+    const step: StepOf<'highlight'> = {
+      kind: 'highlight', prompt: 'Markeer het onderwerp.',
+      pens: [{ id: 'onderwerp', label: 'Onderwerp', tag: 'OW', accent: 'blue', ask: 'Wie of wat wandelt?' }],
+      words: [{ t: 'Noor', role: 'onderwerp' }, { t: 'wandelt.' }],
+    };
+    const view = renderStep(HighlightStep, step);
+    const distraction = screen.getByRole('button', { name: 'wandelt.' });
+    expect(distraction).toBeEnabled();
+    expect(distraction.dataset.accent).toBe('slate');
+    expect(screen.getByRole('button', { name: 'Noor' }).dataset.accent).toBe('slate');
+    await user.click(distraction);
+    expect(view.state.response).toMatchObject({ painted: [], mistakes: 1 });
+    await user.click(screen.getByRole('button', { name: 'Noor' }));
+    expect(view.state.correct).toBe(false);
+    expect(view.state.response.painted).toEqual([0]);
+  });
   it('kleurt zinsdelen met markeerstiften en telt fouten', async () => {
     const user = userEvent.setup();
     const step = demo('markeerstiften');
@@ -89,6 +107,14 @@ describe('groep B extra oefeningen', () => {
     expect(view.state.locked).toBe(true);
     expect(view.state.response.pos.c).toBe('after');
     expect(view.state.response.pos.d).toBe('after');
+  });
+
+  it('laat een kleiner authored tangdoel niet als acht woorden zien', () => {
+    const step = demo('zinstang');
+    if (step.kind !== 'clamp') throw new Error('wrong demo');
+    renderStep(ClampStep, { ...step, goal: 2 });
+    expect(screen.getByText('doel: 2 woorden')).toBeVisible();
+    expect(screen.queryByText('doel: 8 woorden')).not.toBeInTheDocument();
   });
 
   it('spant verwijsdraden in volgorde', async () => {

@@ -28,6 +28,11 @@ function solve(lesson: ArgumentLesson, firstWrong = false) {
       useArgumentation.getState().check(lesson.id, exercise.id, 1);
     }
   }
+  if (lesson.checkpoint) {
+    for (const exercise of lesson.exercises) {
+      if (exercise.kind === 'reflection') useArgumentation.getState().answer(lesson.id, exercise.id, { rubric: Object.fromEntries(exercise.rubric.map((_, index) => [String(index), true])) });
+    }
+  }
   useArgumentation.getState().finish(lesson);
 }
 
@@ -279,5 +284,42 @@ describe('argumentatievoortgang', () => {
     expect(session.firstConfidence.choice).toBe(3);
     expect(session.answers.choice?.confidence).toBe(0);
     expect(session.answers.choice?.reasoning).toContain('eerste lezing');
+  });
+
+  it('houdt toetsantwoorden vast en berekent de score uit het echte antwoord', () => {
+    const checkpoint = { ...testArgumentLesson, checkpoint: true };
+    useArgumentation.getState().start(checkpoint);
+    useArgumentation.getState().move(checkpoint.id, checkpoint.exercises.length + 1);
+    expect(useArgumentation.getState().sessions[checkpoint.id]?.cursor).toBe(0);
+    useArgumentation.getState().answer(checkpoint.id, 'choice', { value: 'a', confidence: 3, checked: true, score: 1 });
+    expect(useArgumentation.getState().sessions[checkpoint.id]?.answers.choice).toMatchObject({ checked: false, score: null });
+    useArgumentation.getState().check(checkpoint.id, 'choice', 1);
+    expect(useArgumentation.getState().sessions[checkpoint.id]?.answers.choice).toMatchObject({ value: 'a', checked: true, score: 0 });
+    useArgumentation.getState().answer(checkpoint.id, 'choice', { value: 'b', checked: false, score: 1, confidence: 0 });
+    expect(useArgumentation.getState().sessions[checkpoint.id]?.answers.choice).toMatchObject({ value: 'a', checked: true, score: 0, confidence: 3 });
+    expect(useArgumentation.getState().sessions[checkpoint.id]?.firstTry.choice).toBe(0);
+  });
+
+  it('bewaart eerste zelfstandige teksten en laat pas daarna modelherziening toe', async () => {
+    const checkpoint = { ...testArgumentLesson, checkpoint: true };
+    useArgumentation.getState().start(checkpoint);
+    useArgumentation.getState().answer(checkpoint.id, 'reflection', { value: 'Eerste zelfstandige versie', rubric: { '0': true } });
+    useArgumentation.getState().check(checkpoint.id, 'reflection', null);
+    useArgumentation.getState().answer(checkpoint.id, 'reflection', { value: 'Nog te vroege herziening', rubric: { '0': true } });
+    expect(useArgumentation.getState().sessions[checkpoint.id]?.answers.reflection).toMatchObject({ value: 'Eerste zelfstandige versie', reasoning: 'Eerste zelfstandige versie', rubric: {} });
+    useArgumentation.getState().answer(checkpoint.id, 'choice', { value: 'b' });
+    useArgumentation.getState().check(checkpoint.id, 'choice', 1);
+    useArgumentation.getState().answer(checkpoint.id, 'map', { placements: { '1': 'premise', '2': 'conclusion' } });
+    useArgumentation.getState().check(checkpoint.id, 'map', 1);
+    const saved = window.localStorage.getItem(ARGUMENTS_KEY)!;
+    useArgumentation.setState(EMPTY_ARGUMENTS);
+    window.localStorage.setItem(ARGUMENTS_KEY, saved);
+    await useArgumentation.persist.rehydrate();
+    useArgumentation.getState().start(checkpoint);
+    useArgumentation.getState().answer(checkpoint.id, 'reflection', { value: 'Herziene zelfstandige tekst', rubric: { '0': true }, reasoning: 'Overschreven eerste versie' });
+    useArgumentation.getState().finish(checkpoint);
+    expect(useArgumentation.getState().sessions[checkpoint.id]?.answers.reflection?.reasoning).toBe('Eerste zelfstandige versie');
+    expect(useArgumentation.getState().records[checkpoint.id]?.history[0]?.writings.reflection).toContain('Eerste zelfstandige versie');
+    expect(useArgumentation.getState().records[checkpoint.id]?.history[0]?.writings.reflection).toContain('Herziene zelfstandige tekst');
   });
 });

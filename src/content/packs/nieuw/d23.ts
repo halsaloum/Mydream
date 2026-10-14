@@ -22,8 +22,8 @@ export const LES_D23: LessonInput = {
       title: 'Eén begrip, één woord',
       panels: [
         {
-          text: 'De grondregel van de Nederlandse spelling is simpel en streng: wat één woord is, schrijf je als één woord. Een samenstelling is één woord, hoe lang ook, en hoe Engels het eerste deel ook klinkt. *Privacy verklaring* met een spatie is fout, en een streepje is hier overbodig: dat zet je alleen als een regel erom vraagt. In de les over samenstellingen zag je de toets: één hoofdklemtoon, en je kunt er niets tussen zetten. Hier leer je wat er daarna komt: aaneen, met een streepje, of toch los. Begin met de voorwerpen. Iemand schreef hun naam los.',
-          rule: 'Een samenstelling schrijf je aaneen. Een koppelteken komt er alleen als een regel dat vraagt.',
+          text: 'Een gewone samenstelling schrijf je als één woord, hoe lang zij ook is en hoe Engels een deel ook klinkt: *privacyverklaring*. Sommige regels vragen een koppelteken; daarnaast mag een facultatief koppelteken soms de leesbaarheid verbeteren. Dat is iets anders dan een vrije spatie binnen een samenstelling. Gebruik betekenis, woordbouw en klemtoon samen als aanwijzingen. Begin nu met de voorwerpen: iemand schreef hun samengestelde naam los.',
+          rule: 'Een samenstelling schrijf je in beginsel aaneen. Een koppelteken kan verplicht zijn of facultatief helpen bij de leesbaarheid.',
           cast: {
             q: 'Tik wat de schrijver bedoelt, kies dan de spelling',
             rounds: [
@@ -226,7 +226,7 @@ export const LES_D23: LessonInput = {
           },
         },
         {
-          text: 'Ook buiten de samenstelling kan de spatie betekenis dragen. *Ten slotte* is ‘als laatste’, *tenslotte* is ‘per slot van rekening’. *Ten minste* is ‘minimaal’, *tenminste* ‘in elk geval’. *Te veel* is ‘meer dan goed is’, *het teveel* is ‘het overschot’. *Al lang* is ‘sinds lange tijd’, *allang* is ‘heus wel, zeker’. In elk paar is de losse vorm letterlijk en de aaneengeschreven vorm een eigen woord met een eigen betekenis. Kies de vorm die de zin vraagt.',
+          text: 'Een spatie kan betekenisverschil markeren. *Ten slotte* betekent als laatste; *tenslotte* per slot van rekening. *Ten minste* geeft een minimum aan; *tenminste* kan bijvoorbeeld althans of op voorwaarde dat betekenen. *Te veel* noemt een hoeveelheid; *het teveel* is een naamwoord voor het overschot. Bij *al lang/allang* overlapt het gebruik: allang kan ook sinds lange tijd betekenen en heeft daarnaast een versterkende lezing zoals heus wel. Maak van die paren dus geen universele regel dat los letterlijk en aaneen figuurlijk is.',
           rule: 'Los is letterlijk (*ten slotte*: als laatste), aaneen is een eigen woord (*tenslotte*: per slot van rekening).',
           quiz: {
             q: 'Welke zin zegt dat hij minimaal drie uur wachtte?',

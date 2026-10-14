@@ -29,7 +29,7 @@ export const LES_K40: LessonInput = {
           },
         },
         {
-          text: 'De medeklinkers. Aan het eind hoor je bij een d altijd een *t*-klank en bij een b een *p*-klank: maak het woord langer om te horen wat je schrijft (*hond* → *honden*, *web* → *webben*). Aan het eind schrijf je geen *z* of *v* (alleen in een paar leenwoorden, zoals *quiz*), maar *s* en *f*: *huis* → *huizen*, *brief* → *brieven*, *ik reis*, *ik leef*. Je hoort *cht*: meestal *ch* (*lucht*, *nacht*, *de klacht*), behalve bij een vorm van een werkwoord met g (*ligt* van *liggen*, *zegt* van *zeggen*). Nooit *ngk*: *bank*, *denken*. En *-isch*: *logisch*, *praktisch*.',
+          text: 'De medeklinkers. Aan het eind hoor je bij een d altijd een *t*-klank en bij een b een *p*-klank: maak het woord langer om te horen wat je schrijft (*hond* → *honden*, *web* → *webben*). Aan het eind schrijf je geen *z* of *v* (alleen in een paar leenwoorden, zoals *quiz*), maar *s* en *f*: *huis* → *huizen*, *brief* → *brieven*, *ik reis*, *ik leef*. Je hoort *cht*: meestal *ch* (*lucht*, *nacht*, *de klacht*), behalve bij een vorm van een werkwoord met g (*ligt* van *liggen*, *zegt* van *zeggen*). In basiswoorden met deze klankgroep: *nk*, zoals *bank* en *denken*. Samenstellingen bewaren hun delen, zoals *hangkast*. En *-isch*: *logisch*, *praktisch*.',
           rule: 'Langer maken: *hond* → *honden*. Aan het eind s en f: *huis*, *brief*. *ligt* van liggen, *licht* van het licht.',
           quiz: {
             q: 'Je sleutel … nog op tafel.',

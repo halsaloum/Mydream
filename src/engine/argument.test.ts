@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { ARGUMENT_DEMOS } from '@/content/demo/argumenten';
 import { StepSchema, type Step, type StepOf } from '@/content/schema';
 import {
-  argumentEvaluate, argumentFits, argumentInitialResponse, argumentIsComplete,
+  argumentEvaluate, argumentFeedback, argumentFits, argumentInitialResponse, argumentIsComplete,
   dilemmaAdd, dilemmaAllAdded, dilemmaPick, dilemmaSigns,
   evidenceBar, evidenceChoose, evidenceFitting, evidenceStatus,
   inspectFix, inspectFlawed, inspectLabel, inspectSelect, inspectVerdictOf,
@@ -34,6 +34,14 @@ function reload<R extends ArgumentResponse>(step: Step, response: R): R {
 }
 
 describe('Want of dus: twee richtingen en meerdere paren', () => {
+  it('houdt de verkeerde keuzes zichtbaar naast authored uitleg na afronding', () => {
+    const step = { ...demo('reason'), done: { title: 'Perfect!', text: 'Een reden ondersteunt het standpunt.' } };
+    const response = { ...initial(step), pair: step.pairs.length - 1, found: ['want', 'dus'] as const, mistakes: 2 };
+    const feedback = argumentFeedback(step, { ...response, found: [...response.found] }, { correct: false, score: 0.5, requeue: false, review: 'miss' });
+    expect(feedback.title).toBe('Afgerond met oefenpunten');
+    expect(feedback.body).toContain('2 verkeerde keuzes');
+    expect(feedback.body).toContain(step.done.text);
+  });
   it('vraagt beide correcte richtingen per paar en bewaart fouten na de overgang', () => {
     const step = demo('reason');
     let state = initial(step);

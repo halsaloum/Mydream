@@ -155,8 +155,8 @@ export const LES_K37: LessonInput = {
           },
         },
         {
-          text: 'Niet elke *ij* is een doffe e. In *-lijk* aan het eind wel, en ook in een paar woorden op *-rijk*: *belangrijk*, *Frankrijk*, *koninkrijk*. Maar in *gelijk*, *rijk*, *kijk* en *blij* hoor je een gewone *ij*, want daar ligt de klemtoon op. En een paar zelfstandige naamwoorden eindigen op *-ik*, niet op *-ig*: *perzik*, *monnik*, *havik*. Die moet je kennen. Woorden op *-ing* (*koning*, *woning*, *honing*) hebben weer een andere klank: daar hoor je de *ng*.',
-          rule: 'Doffe ij vooral in *-lijk* en *-lijks*, en in *belangrijk*, *Frankrijk* en *koninkrijk*. In *gelijk* en *rijk* hoor je een gewone *ij*.',
+          text: 'Niet elke *ij* is een doffe e. In het achtervoegsel *-lijk* vaak wel. In *gelijk*, *rijk*, *kijk* en *blij* hoor je een gewone *ij*. De ij in *-rijk*, zoals in *Frankrijk* en *koninkrijk*, mag je niet als vaste doffe-e-regel leren; uitspraakvarianten zijn geen spellingregel. En een paar zelfstandige naamwoorden eindigen op *-ik*, niet op *-ig*: *perzik*, *monnik*, *havik*. Die moet je kennen. Woorden op *-ing* (*koning*, *woning*, *honing*) hebben weer een andere klank: daar hoor je de *ng*.',
+          rule: 'Het achtervoegsel *-lijk* en *-lijks* heeft doorgaans een doffe klank. De ij in *gelijk*, *rijk*, *kijk* en *blij* volgt die regel niet.',
           mark: {
             q: 'Tik de woorden waarin de ij als doffe e klinkt',
             sentence: 'Het is eerlijk gezegd moeilijk om gelijk te krijgen bij een rijke klant.',

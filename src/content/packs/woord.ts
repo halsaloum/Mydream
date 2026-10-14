@@ -304,10 +304,10 @@ export const WOORD_LESSONS: LessonInput[] = [
       {
         kind: 'bet',
         id: 'rennen',
-        prompt: 'Waarom is ‘rennen’ in ‘Het rennen is gezond’ een zelfstandig naamwoord?',
-        options: ['Het staat na een lidwoord', 'Het betekent een handeling', 'Het eindigt op -en'],
-        answer: 'Het staat na een lidwoord',
-        why: 'De plek beslist. De betekenis (een handeling) zou juist op een werkwoord wijzen.',
+        prompt: 'Welke aanwijzing ondersteunt het naamwoordelijke gebruik van rennen in “Het rennen is gezond”?',
+        options: ['Het is de kern van het rennen; die hele groep is hier onderwerp.', 'Het betekent een handeling', 'Het eindigt op -en'],
+        answer: 'Het is de kern van het rennen; die hele groep is hier onderwerp.',
+        why: 'Je bekijkt de hele groep, niet alleen het woord direct na het lidwoord. De infinitief wordt hier naamwoordelijk gebruikt en kan in andere constructies werkwoordelijke eigenschappen behouden. Betekenis of -en alleen beslist de analyse niet.',
       },
       {
         kind: 'explain',

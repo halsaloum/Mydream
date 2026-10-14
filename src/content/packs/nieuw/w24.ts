@@ -67,8 +67,8 @@ export const LES_W24: LessonInput = {
           },
         },
         {
-          text: 'Soms is er geen zelfstandig naamwoord om naar terug te kijken. Dan komt *wat*: na *alles*, *iets*, *niets*, *veel* en *weinig* (*alles wat je zegt*), na *het* met een overtreffende trap (*het mooiste wat ik ken*) en na een hele zin (*Hij kwam te laat, wat me ergerde.*). Wat niet hoort in verzorgde taal: *wat* na een het-woord. *Het boek wat ik lees* hoor je overal, maar de norm zegt *het boek dat ik lees*.',
-          rule: 'wat: na alles, iets, niets, veel, weinig, het mooiste en een hele zin. Na een het-woord: dat.',
+          text: '*Wat* is gebruikelijk na onbepaalde woorden zoals *alles*, *iets* en *niets*, na *het mooiste* en bij verwijzing naar een hele zin: *Hij kwam te laat, wat me ergerde.* Na bijvoorbeeld *iets* of *het mooiste* is ook *dat* mogelijk; betekenis en context spelen mee. Bij een concreet het-woord in het enkelvoud is *dat* de gewone verzorgde schrijftaalvorm: *het boek dat ik lees*. *Het boek wat* komt vooral informeel voor. Beschrijf registerverschillen zonder elke andere vorm een algemene grammaticafout te noemen.',
+          rule: 'Gebruikelijk: alles wat, iets wat/dat, het mooiste wat/dat; bij een hele zin wat. Gewone schrijftaal: het boek dat.',
           lab: {
             label: 'Tik een antecedent',
             chips: [
@@ -152,10 +152,10 @@ export const LES_W24: LessonInput = {
       kind: 'fix',
       id: 'boek-wat',
       prompt: 'Tik het foute woord aan en verbeter het.',
-      sentence: 'Het boek wat ik nu lees, is erg spannend.',
+      sentence: 'Het boek die ik nu lees, is erg spannend.',
       wrong: 2,
       answer: 'dat',
-      why: 'Boek is een het-woord met een geslacht om te volgen: dat. Wat na een het-woord is spreektaal.',
+      why: 'Boek is hier een het-woord in het enkelvoud: het boek dat. Wat komt na zulke naamwoorden ook in taalgebruik voor, vooral informeel; deze oefening corrigeert die naar de gewone dat-vorm, zonder wat in alle contexten een fout te noemen.',
     },
     {
       kind: 'type',

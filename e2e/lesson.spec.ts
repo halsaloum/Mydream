@@ -35,6 +35,10 @@ async function finishTonePractice(page: Page) {
   }
   await primary.click();
   await primary.click();
+  await expect(page.getByRole('heading', { name: 'De secretaresse vraagt de klant om een datum. Gebruik gewone hoofdletters en één vraagteken; behoud precies deze woorden.' })).toBeVisible();
+  await page.getByRole('textbox', { name: 'Jouw versie' }).fill('Welke datum past u?');
+  await primary.click();
+  await primary.click();
 }
 
 test('les direct openen, met het toetsenbord doen en na verversen hervatten', async ({ page }) => {

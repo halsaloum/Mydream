@@ -6,6 +6,7 @@ import { pickWordsData, useWordRound, useWords, WordsDataSchema } from './words'
 import { EMPTY_WORDS, type WordsData } from '@/lib/words/memory';
 import { ArgumentDataSchema, EMPTY_ARGUMENTS, pickArgumentData, useArgumentation, type ArgumentData } from './argumentation';
 import { SentenceDataSchema, EMPTY_SENTENCES, pickSentenceData, useSentences, type SentenceData } from './sentences';
+import { PracticeDataSchema, EMPTY_PRACTICE, pickPracticeData, usePractice, type PracticeData } from './practice';
 
 /** Exporteren, importeren en wissen van lokale gegevens. Import wordt volledig gevalideerd. */
 const ExportSchema = z.object({
@@ -18,9 +19,10 @@ const ExportSchema = z.object({
   words: WordsDataSchema.optional(),
   arguments: ArgumentDataSchema.optional(),
   sentences: SentenceDataSchema.optional(),
+  practice: PracticeDataSchema.optional(),
 });
 
-export type ImportData = { exportedAt: string; settings: SettingsData; progress: ProgressData; words: WordsData | null; arguments?: ArgumentData | null; sentences?: SentenceData | null };
+export type ImportData = { exportedAt: string; settings: SettingsData; progress: ProgressData; words: WordsData | null; arguments?: ArgumentData | null; sentences?: SentenceData | null; practice?: PracticeData | null };
 
 export function exportData(now = new Date()): string {
   return JSON.stringify(
@@ -33,6 +35,7 @@ export function exportData(now = new Date()): string {
       words: pickWordsData(useWords.getState()),
       arguments: pickArgumentData(useArgumentation.getState()),
       sentences: pickSentenceData(useSentences.getState()),
+      practice: pickPracticeData(usePractice.getState()),
     },
     null,
     2,
@@ -48,8 +51,8 @@ export function parseImport(text: string): { ok: true; data: ImportData } | { ok
   }
   const result = ExportSchema.safeParse(json);
   if (!result.success) return { ok: false, error: 'Dit is geen geldig pennig-bestand, of het is beschadigd.' };
-  const { exportedAt, settings, progress, words, arguments: argumentData, sentences } = result.data;
-  return { ok: true, data: { exportedAt, settings, progress, words: words ?? null, arguments: argumentData ?? null, sentences: sentences ?? null } };
+  const { exportedAt, settings, progress, words, arguments: argumentData, sentences, practice } = result.data;
+  return { ok: true, data: { exportedAt, settings, progress, words: words ?? null, arguments: argumentData ?? null, sentences: sentences ?? null, practice: practice ?? null } };
 }
 
 export function applyImport(data: ImportData) {
@@ -60,6 +63,7 @@ export function applyImport(data: ImportData) {
   useWordRound.getState().reset();
   useArgumentation.getState().replace(data.arguments ?? EMPTY_ARGUMENTS);
   useSentences.getState().replace(data.sentences ?? EMPTY_SENTENCES);
+  usePractice.getState().replace(data.practice ?? EMPTY_PRACTICE);
 }
 
 export function resetProgress() {
@@ -69,6 +73,7 @@ export function resetProgress() {
   useWordRound.getState().reset();
   useArgumentation.getState().reset();
   useSentences.getState().reset();
+  usePractice.getState().reset();
 }
 
 export function resetEverything() {

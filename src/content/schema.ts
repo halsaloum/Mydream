@@ -750,7 +750,8 @@ const FixStep = z.object({
   prompt,
   sentence: Text,
   wrong: z.int().nonnegative().describe('Index van het foute woord (op spaties geteld, vanaf 0).'),
-  answer: Text.describe('Verbetering van dat woord; hoofdletters en leestekens tellen niet mee.'),
+  answer: Text.describe('Verbetering van dat woord; hoofdletters en leestekens tellen standaard niet mee, tenzij strict is ingeschakeld.'),
+  strict: z.boolean().optional().describe('Controleer ook hoofdletters en leestekens wanneer die het doel van deze woordcorrectie zijn.'),
   why,
 });
 const RewriteStep = z.object({
@@ -759,6 +760,7 @@ const RewriteStep = z.object({
   prompt,
   source: Text,
   accept: z.array(Text).min(1).describe('Alle goede antwoorden.'),
+  strict: z.boolean().optional().describe('Controleer ook hoofdletters en leestekens bij gecombineerde vorm- en spellingopdrachten. Zonder waarde worden zuivere vormopdrachten automatisch herkend.'),
   why,
 });
 const WriteStep = z.object({

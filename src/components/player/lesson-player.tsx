@@ -39,6 +39,8 @@ export type PlayerMeta = {
   /** Niveau en vakgebied, getoond bij de eerste stap. */
   tag?: { layer: Layer; layerIndex: number; domain: Domain; stage?: Stage | undefined; icon?: string | undefined };
   guidance?: LessonGuidance;
+  /** Bij een zelfstandige kennischeck opent de regel pas na de eerste poging. */
+  independent?: boolean;
 };
 
 const PRAISE = ['Precies!', 'Klopt!', 'Mooi zo!', 'Helemaal goed!'];
@@ -199,7 +201,8 @@ export function LessonPlayer({ controller, meta }: { controller: PlayerControlle
   };
 
   const ruleLessonId = item?.lessonId ?? null;
-  const hasRules = meta.mode !== 'demo' && ruleLessonId !== null && lessonRules(ruleLessonId) !== null;
+  const hasRules = meta.mode !== 'demo' && ruleLessonId !== null && lessonRules(ruleLessonId) !== null
+    && (!meta.independent || (key !== undefined && session !== null && key in session.firstTry));
   const teaching = item ? stepMode(item.step) === 'teach' : false;
 
   if (!session) return <PlayerSkeleton meta={meta} />;
@@ -272,7 +275,7 @@ export function LessonPlayer({ controller, meta }: { controller: PlayerControlle
             className="rounded-sheet border-2 border-line bg-surface px-5 pt-7 pb-9 shadow-sheet sm:px-10 sm:pt-10 sm:pb-11"
           >
             {pos === 0 && meta.tag && <LayerTag {...meta.tag} />}
-            {meta.mode === 'review' && <ReviewSource lessonId={item.lessonId} />}
+            {meta.mode === 'review' && (!meta.independent || item.key in session.firstTry) && <ReviewSource lessonId={item.lessonId} />}
             {isRetry(session) && <RetryBadge />}
             <motion.div animate={wrongNow && !calm ? { x: [0, -8, 8, -5, 5, 0] } : { x: 0 }} transition={{ duration: 0.36 }}>
               <StepView
@@ -283,6 +286,7 @@ export function LessonPlayer({ controller, meta }: { controller: PlayerControlle
                 correct={locked ? session.lastCorrect : null}
                 stepKey={item.key}
                 seed={`${session.startedAt}:${pos}:${item.key}`}
+                assistance={meta.mode === 'review' || isRetry(session) ? 'retrieval' : 'guided'}
                 onSubmit={() => {
                   if (primaryRun.current.enabled && phase === 'answering') primaryRun.current.run();
                 }}

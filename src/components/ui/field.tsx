@@ -17,6 +17,7 @@ type TextFieldProps = {
   type?: 'text' | 'search';
   icon?: ReactNode;
   disabled?: boolean;
+  readOnly?: boolean;
   className?: string;
   inputClassName?: string;
   inputRef?: Ref<HTMLInputElement>;
@@ -35,6 +36,7 @@ export function TextField({
   type = 'text',
   icon,
   disabled,
+  readOnly,
   className,
   inputClassName,
   inputRef,
@@ -55,6 +57,7 @@ export function TextField({
           autoComplete="off"
           autoFocus={autoFocus}
           onKeyDown={onKeyDown}
+          readOnly={readOnly}
           className={cn(control, 'min-h-12', icon ? 'pl-11' : undefined, inputClassName)}
         />
       </div>

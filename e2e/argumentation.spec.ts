@@ -136,17 +136,19 @@ test('checkpoint onder 80% blijft open, herhaling start een nieuwe poging', asyn
     if (!localStorage.getItem('pennig:argumentatie')) localStorage.setItem('pennig:argumentatie', JSON.stringify({ state: { records, sessions: {} }, version: 1 }));
   }, argumentLessons.slice(0, argumentLessons.indexOf(lesson)).map((item) => item.id));
   await page.goto(`/argumentatie/les/${lesson.id}`);
-  await learnFoundations(page, lesson);
-  const starter = lessonScaffolds[lesson.id]!;
-  await page.getByRole('region', { name: 'Begin met één kleine stap', exact: true }).getByRole('radio', { name: starter.options.find((option) => option.id === starter.answer)!.text, exact: true }).check();
-  await readToPractice(page, lesson);
+  await expect(page.getByRole('heading', { name: 'Laat zien wat je zelf kunt toepassen' })).toBeVisible();
+  await expect(page.getByRole('region', { name: 'Begin met één kleine stap', exact: true })).toHaveCount(0);
+  await page.getByRole('button', { name: 'Start de toetsronde', exact: true }).click();
   for (const [index, exercise] of lesson.exercises.entries()) {
     if (exercise.kind !== 'choice') throw new Error('This checkpoint test expects a case-question assessment.');
     const option = exercise.options.find((item) => index < 3 ? item.id !== exercise.answer : item.id === exercise.answer)!;
     await page.getByRole('radio', { name: option.text, exact: false }).check();
     await page.getByRole('radio', { name: 'Redelijk zeker', exact: true }).check();
-    await page.getByRole('button', { name: 'Controleer je analyse' }).click();
-    await page.getByRole('button', { name: index === lesson.exercises.length - 1 ? 'Les afronden' : 'Volgende opdracht' }).click();
+    await page.getByRole('button', { name: 'Leg je antwoord vast' }).click();
+    await expect(page.getByLabel('Juist antwoord', { exact: true })).toHaveCount(0);
+    await expect(page.getByLabel('Onjuist antwoord', { exact: true })).toHaveCount(0);
+    await expect(page.getByText(exercise.explanation, { exact: true })).toHaveCount(0);
+    await page.getByRole('button', { name: index === lesson.exercises.length - 1 ? 'Toetsronde afronden' : 'Volgende opdracht' }).click();
   }
   await expect(page.getByRole('heading', { name: 'Je redenering kan nog scherper.' })).toBeVisible();
   const stored = await page.evaluate(() => JSON.parse(localStorage.getItem('pennig:argumentatie')!).state.records);
@@ -362,26 +364,71 @@ test('het expertcheckpoint vraagt twee zelfstandige werkstukken en telt alleen d
     if (!localStorage.getItem('pennig:argumentatie')) localStorage.setItem('pennig:argumentatie', JSON.stringify({ state: { records, sessions: {} }, version: 1 }));
   }, argumentLessons.slice(0, argumentLessons.indexOf(lesson)).map((item) => item.id));
   await page.goto(`/argumentatie/les/${lesson.id}`);
-  await learnFoundations(page, lesson);
-  const scaffold = lessonScaffolds[lesson.id]!;
-  await page.getByRole('region', { name: 'Begin met één kleine stap', exact: true }).getByRole('radio', { name: scaffold.options.find((option) => option.id === scaffold.answer)!.text, exact: true }).check();
-  await readToPractice(page, lesson);
+  await page.getByRole('button', { name: 'Start de toetsronde', exact: true }).click();
   for (const [index, exercise] of lesson.exercises.entries()) {
     if (exercise.kind === 'choice') {
       await page.getByRole('radio', { name: exercise.options.find((option) => option.id === exercise.answer)!.text, exact: false }).check();
       await page.getByRole('radio', { name: 'Redelijk zeker', exact: true }).check();
-      await page.getByRole('button', { name: 'Controleer je analyse', exact: true }).click();
+      await page.getByRole('button', { name: 'Leg je antwoord vast', exact: true }).click();
     } else if (exercise.kind === 'reflection') {
+      await page.getByRole('textbox', { name: 'Jouw analyse', exact: true }).fill('Een te korte analyse.');
+      await expect(page.getByRole('button', { name: 'Leg je antwoord vast', exact: true })).toBeDisabled();
       await page.getByRole('textbox', { name: 'Jouw analyse', exact: true }).fill(exercise.model);
-      await page.getByRole('button', { name: 'Vergelijk met het model', exact: true }).click();
-      await expect(page.getByRole('button', { name: index === lesson.exercises.length - 1 ? 'Les afronden' : 'Volgende opdracht', exact: true })).toBeDisabled();
-      for (const criterion of exercise.rubric) await page.getByRole('checkbox', { name: criterion, exact: true }).check();
+      await page.getByRole('button', { name: 'Leg je antwoord vast', exact: true }).click();
+      await expect(page.getByRole('heading', { name: 'Een mogelijke uitwerking', exact: true })).toHaveCount(0);
+      await expect(page.getByRole('checkbox')).toHaveCount(0);
     } else throw new Error('Deze eindtoets heeft alleen kennisvragen en expertwerkstukken.');
-    await page.getByRole('button', { name: index === lesson.exercises.length - 1 ? 'Les afronden' : 'Volgende opdracht', exact: true }).click();
+    await page.getByRole('button', { name: index === lesson.exercises.length - 1 ? 'Naar zelfcontrole' : 'Volgende opdracht', exact: true }).click();
   }
+  await expect(page.getByRole('button', { name: 'Zelfcontrole afronden', exact: true })).toBeDisabled();
+  for (const exercise of lesson.exercises) {
+    if (exercise.kind === 'reflection') for (const criterion of exercise.rubric) await page.getByRole('checkbox', { name: criterion, exact: true }).check();
+  }
+  await page.getByRole('button', { name: 'Zelfcontrole afronden', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'Checkpoint behaald.', exact: true })).toBeVisible();
   const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('pennig:argumentatie')!).state);
   expect(Object.keys(saved.sessions[lesson.id].firstTry)).toHaveLength(8);
   expect(saved.records[lesson.id].lastScore).toBe(100);
   expect(Object.keys(saved.records[lesson.id].history[0].writings)).toEqual(expect.arrayContaining(lesson.exercises.filter((item) => item.kind === 'reflection').map((item) => item.id)));
+});
+
+
+test('expertcheckpoint bewaart beide eigen teksten vóór modellen en herziening', async ({ page }) => {
+  test.setTimeout(90_000);
+  const lesson = argumentLessons.find((item) => item.id === 'master-checkpoint')!;
+  await page.addInitScript((ids) => {
+    const records = Object.fromEntries(ids.map((id) => [id, { attempts: 1, bestScore: 100, lastScore: 100, completedAt: '2026-10-12T08:00:00.000Z', lastPracticedAt: '2026-10-12T08:00:00.000Z', reviewOn: '2099-01-01' }]));
+    if (!localStorage.getItem('pennig:argumentatie')) localStorage.setItem('pennig:argumentatie', JSON.stringify({ state: { records, sessions: {} }, version: 1 }));
+  }, argumentLessons.slice(0, argumentLessons.indexOf(lesson)).map((item) => item.id));
+  await page.goto(`/argumentatie/les/${lesson.id}`);
+  await page.getByRole('button', { name: 'Start de toetsronde', exact: true }).click();
+  const writings: Record<string, string> = {};
+  for (const [index, exercise] of lesson.exercises.entries()) {
+    if (exercise.kind === 'choice') {
+      await page.getByRole('radio', { name: exercise.options.find((option) => option.id === exercise.answer)!.text, exact: false }).check();
+      await page.getByRole('radio', { name: 'Redelijk zeker', exact: true }).check();
+    } else if (exercise.kind === 'reflection') {
+      const draft = `Mijn eerste zelfstandige versie voor ${exercise.id}. ` + 'Ik toets het gegeven en de ontbrekende verbinding. '.repeat(exercise.minWords);
+      writings[exercise.id] = draft;
+      await page.getByRole('textbox', { name: 'Jouw analyse', exact: true }).fill(draft);
+    } else throw new Error('Dit checkpoint gebruikt keuzes en twee eigen analyses.');
+    await page.getByRole('button', { name: 'Leg je antwoord vast', exact: true }).click();
+    await expect(page.getByRole('heading', { name: 'Een mogelijke uitwerking', exact: true })).toHaveCount(0);
+    await expect(page.getByRole('checkbox')).toHaveCount(0);
+    if (index === lesson.exercises.length - 1) await page.reload();
+    await page.getByRole('button', { name: index === lesson.exercises.length - 1 ? 'Naar zelfcontrole' : 'Volgende opdracht', exact: true }).click();
+  }
+  await expect(page.getByRole('heading', { name: 'Een mogelijke uitwerking', exact: true })).toHaveCount(2);
+  const first = lesson.exercises.find((item) => item.kind === 'reflection')!;
+  const revision = writings[first.id] + ' Na vergelijking maak ik mijn startvoorwaarden concreter.';
+  await page.getByRole('textbox', { name: 'Jouw analyse', exact: true }).first().fill(revision);
+  for (const checkbox of await page.getByRole('checkbox').all()) await checkbox.check();
+  await page.getByRole('button', { name: 'Zelfcontrole afronden', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'Checkpoint behaald.', exact: true })).toBeVisible();
+  const saved = await page.evaluate((id) => JSON.parse(localStorage.getItem('pennig:argumentatie')!).state.records[id], lesson.id);
+  expect(saved.bestScore).toBe(100);
+  expect(saved.history.at(-1).writings[first.id]).toContain(writings[first.id]);
+  expect(saved.history.at(-1).writings[first.id]).toContain(revision);
+  await page.getByText('Bekijk de feedback op alle toetsvragen', { exact: true }).click();
+  await expect(page.getByText(lesson.exercises[0]!.explanation, { exact: true })).toBeVisible();
 });

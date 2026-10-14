@@ -15,7 +15,7 @@ import { composeItem, GENERAL_SITUATIONS, lookupWordStep, parseWordKey, situatio
  *   benoemen, een eigen zin, de betekenis met inzet), zodat je het woord steeds anders ophaalt.
  * - Nieuw: per woord eerst raden uit de zin, dan de kaart, en daarna met tussenpozen ophalen,
  *   meedenken in een gesprek en een eigen zin. Andere woorden en herhalingen vullen de tussenpozen,
- *   zodat je het woord pas weer ziet als het niet meer vers in je hoofd zit.
+ *   zodat opeenvolgende oefeningen niet altijd direct naast elkaar staan. Dit meet geen vergeten.
  * - Aan het eind schrijf je een korte tekst met een paar nieuwe woorden samen, en haal je elk
  *   nieuw woord nog één keer op.
  */
@@ -27,13 +27,12 @@ const NEW_TASKS: readonly Task[] = ['guess', 'card', 'recall0', 'chat', 'use0'];
 /** Minimaal aantal andere opdrachten tussen twee taken van hetzelfde nieuwe woord. */
 const MIN_GAP: readonly number[] = [0, 0, 2, 2, 2];
 /**
- * Wisselende herhaalopdrachten, op volgorde van het aantal keren dat je het woord herhaalde. Bijna
- * allemaal zelf maken (typen, schrijven) in plaats van herkennen: wat je wilt kunnen gebruiken,
- * moet je ook zelf leren ophalen. Elke keer een andere zin of situatie.
+ * Wisselende herhaalopdrachten volgens het aantal eerdere beoordelingen. Productie (typen,
+ * schrijven) wisselt met herkenning. De eindige bank kan dezelfde context later opnieuw tonen.
  */
 const REVIEW_ROTATION: readonly Task[] = ['recall2', 'colloc', 'use1', 'name', 'recall0', 'chat', 'recall1', 'meaning'];
 const RECALLS: readonly Task[] = ['recall0', 'recall1', 'recall2'];
-/** Zit een woord al een week of langer vast, dan haal je het op zonder beginletter. */
+/** Bij geschatte FSRS-stabiliteit vanaf zeven dagen vervalt de beginletterhulp. */
 const FREE: Partial<Record<Task, Task>> = { recall0: 'free0', recall1: 'free1', recall2: 'free2' };
 const FREE_FROM = 7;
 
@@ -63,9 +62,8 @@ function lastTheme(days: Record<string, DayLog>, group: readonly string[]): stri
 const bare = (text: string) => text.toLocaleLowerCase('nl').replace(/^(de|het|een)\s+/, '').trim();
 
 /**
- * Zitten twee woorden zo dicht bij elkaar dat je ze beter niet op dezelfde dag leert? Synoniemen,
- * tegenstellingen en woorden die op elkaar lijken, verwar je als je ze samen leert; leer ze op
- * verschillende dagen, en oefen het verschil pas later.
+ * De bank markeert verwante woorden voor spreiding bij eerste aanbieding. Sommige studies vinden
+ * interferentie bij semantisch gegroepeerde nieuwe woorden; dit is geen wet voor elke leerling.
  */
 export function clash(a: BankWord, b: BankWord): boolean {
   const near = (x: BankWord, y: BankWord) => {

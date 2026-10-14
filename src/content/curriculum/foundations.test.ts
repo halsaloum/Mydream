@@ -2,9 +2,11 @@
 import { describe, expect, it } from 'vitest';
 import { clozeOf, clozeSolution, matchesAnswer } from '../cloze';
 import { StepSchema } from '../schema';
-import { criteriaStatus, isComplete } from '../../engine/grade';
+import { criteriaStatus, isComplete, isCorrect } from '../../engine/grade';
 import { proofreadAccepts } from '../../engine/kinds';
 import { FOUNDATION_UPGRADES } from './foundations';
+import { LES_L26 } from '../packs/praktijk/l26';
+import { LES_L27 } from '../packs/praktijk/l27';
 
 const sequence = (prefix: string, from: number, to: number) =>
   Array.from({ length: to - from + 1 }, (_, index) => `${prefix}${from + index}`);
@@ -98,5 +100,97 @@ describe('Antwoorden en zelfcontrole sluiten aan op de bedoelde spelling', () =>
       expect(isComplete(step, { kind: 'write', value: sample }), 'Alleen een tekst typen rondt de zelfcontrole niet af').toBe(false);
       expect(isComplete(step, { kind: 'write', value: sample, reviewed: true, selfChecks: step.rubric!.criteria.map(() => true) })).toBe(true);
     }
+  });
+});
+
+describe('Zelfstandig ophalen in een andere situatie', () => {
+  it.each(requiredLessons)('%s eindigt met een korte eigen poging zonder antwoordkeuzes', (lessonId) => {
+    const input = FOUNDATION_UPGRADES[lessonId]!.steps.at(-1)!;
+    const step = StepSchema.parse(input);
+    expect(step.id).toBe('transfer-zelfstandig-in-een-nieuwe-situatie');
+    expect(['type', 'rewrite', 'proofread']).toContain(step.kind);
+    if (step.kind === 'type') {
+      expect(step.hint).toBe('');
+      const taskText = `${step.prompt} ${step.before} ${step.after}`.toLocaleLowerCase('nl');
+      const answer = step.answer.toLocaleLowerCase('nl');
+      const escaped = answer.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const wholeAnswer = new RegExp(`(?<![\\p{L}\\p{N}])${escaped}(?![\\p{L}\\p{N}])`, 'u');
+      expect(wholeAnswer.test(taskText), `${lessonId}: de eindtaak geeft het antwoord weg`).toBe(false);
+    }
+    if (step.kind === 'proofread') {
+      expect(step.blind).toBe(true);
+      expect(step.tokens.some((token) => 'fix' in token)).toBe(true);
+      expect(step.tokens.some((token) => 'trap' in token)).toBe(true);
+      for (const token of step.tokens) {
+        if (!('fix' in token)) continue;
+        expect(proofreadAccepts(token, token.fix), `${lessonId}: correcte reparatie`).toBe(true);
+        expect(proofreadAccepts(token, token.t), `${lessonId}: fout overtypen mag niet slagen`).toBe(false);
+      }
+    }
+  });
+
+  it.each([
+    ['l1', '5'], // oe als één geschreven letter tellen
+    ['l20', 'mila.bos@web.nl'], // een punt is geen laag streepje
+    ['l23', 'premiere'],
+    ['l24', 'geirriteerd'],
+    ['l25', 'spray’s'], // geen apostrof na de klinkercombinatie ay
+    ['l26', 'een bezoekersingang en uitgang'], // de weglating wordt onzichtbaar
+    ['k1', 'u'],
+    ['k30', 'zon'],
+    ['k31', 'lijden'],
+    ['k32', 'douw'],
+    ['k33', 'groejt'],
+    ['k34', 'bragt'],
+    ['k35', 'wep'],
+    ['k36', 'positiefe'],
+    ['k37', 'geduldug'],
+    ['k38', 'enquete'],
+    ['k39', 'proefte'],
+    ['g1', 'muuren'],
+    ['g2', 'panen'],
+    ['g3', 'gaat onder'],
+    ['g20', 'wacht-ru-im-te'],
+    ['g21', 'vaazen'],
+    ['g22', 'kastten'],
+    ['g23', 'schippen'],
+    ['g24', 'probleemje'],
+    ['g25', 'vind'], // je betekent jouw, de collega is het onderwerp
+    ['g26', 'breede'],
+    ['g27', 'ïne'], // trema vervalt op de opgegeven afbreekgrens
+  ])('%s onderscheidt de bedoelde vorm van de concrete denkfout %s', (lessonId, misconception) => {
+    const step = StepSchema.parse(FOUNDATION_UPGRADES[lessonId]!.steps.at(-1));
+    expect(step.kind).toBe('type');
+    if (step.kind !== 'type') return;
+    expect(isCorrect(step, { kind: 'type', value: step.answer })).toBe(true);
+    expect(isCorrect(step, { kind: 'type', value: misconception })).toBe(false);
+  });
+
+  it('controleert hoofdletters en apostrofs ook als de eindredactie tegelijk woordspelling herstelt', () => {
+    const step = StepSchema.parse(FOUNDATION_UPGRADES.l27!.steps.find((input) => input.id === 'transfer-eindredactie-zonder-hulp'));
+    expect(step.kind).toBe('rewrite');
+    if (step.kind !== 'rewrite') return;
+    expect(step.strict).toBe(true);
+    const model = step.accept[0]!;
+    expect(isCorrect(step, { kind: 'rewrite', value: model })).toBe(true);
+    expect(isCorrect(step, { kind: 'rewrite', value: model.toLocaleLowerCase('nl') })).toBe(false);
+    expect(isCorrect(step, { kind: 'rewrite', value: model.replace('Mila’s', 'Milas') })).toBe(false);
+  });
+
+  it.each([LES_L26, LES_L27])('$id gebruikt toegestane leesbaarheidskoppeltekens niet als spelfout', (lesson) => {
+    const wrongForms: string[] = [];
+    const visit = (value: unknown) => {
+      if (Array.isArray(value)) {
+        value.forEach(visit);
+        return;
+      }
+      if (!value || typeof value !== 'object') return;
+      const record = value as Record<string, unknown>;
+      if (typeof record.wrong === 'string') wrongForms.push(record.wrong);
+      if (typeof record.t === 'string' && (record.ok === false || typeof record.fix === 'string')) wrongForms.push(record.t);
+      Object.values(record).forEach(visit);
+    };
+    visit(lesson);
+    expect(wrongForms.filter((form) => /\b(politie-agent|fietsen-rek|klanten-service|energie-leverancier)\b/.test(form))).toEqual([]);
   });
 });

@@ -19,6 +19,7 @@ import { useHydrated } from '@/state/hydration';
 import { useProgress, type ReviewItem } from '@/state/progress';
 import { REVIEW_BATCH, reviewList } from '@/state/selectors';
 import { REVIEW_SESSION_ID, useSessions } from '@/state/sessions';
+import { SpacedPracticeCard } from './spaced-practice';
 
 /** Korte omschrijving van een opdracht: de opdrachtzin, of de titel bij uitleg. */
 function stepSummary(step: Step): { prompt: string; sample: string | null } {
@@ -54,7 +55,7 @@ export function ReviewView() {
     <div>
       <PageHeader
         title="Herhalen"
-        description="Opdrachten die je de eerste keer miste, komen hier terug. Een ronde heeft er maximaal acht; wat je dan goed doet, gaat van de stapel."
+        description="Bekijk je gespreide kennischecks en oefen opnieuw wat je eerder miste. Elke ronde heeft maximaal acht opdrachten."
         action={
           running ? (
             <ButtonLink href="/herhalen/sessie" variant="accent" size="lg" data-accent="orange">
@@ -70,6 +71,8 @@ export function ReviewView() {
         }
       />
 
+      <SpacedPracticeCard />
+
       {running && (
         <p className="mb-6 rounded-tile border-2 border-orange-line bg-orange-soft px-4 py-3 text-small font-semibold text-orange-ink">
           Je ronde staat open bij stap {Math.min(running.pos + 1, running.queue.length)} van {running.queue.length}.
@@ -78,7 +81,7 @@ export function ReviewView() {
 
       {items.length === 0 ? (
         <EmptyState
-          title="Geen oefenpunten"
+          title="Geen foutgerichte oefenpunten"
           mood="happy"
           action={
             <ButtonLink href="/" size="lg">
@@ -86,7 +89,7 @@ export function ReviewView() {
             </ButtonLink>
           }
         >
-          Mis je een opdracht de eerste keer, dan komt hij hier vanzelf terug. Op dit moment staat er niets klaar.
+          Opdrachten die je tijdens een les miste, komen op deze stapel. Je geplande kennischecks vind je hierboven.
         </EmptyState>
       ) : (
         <ol className="flex flex-col gap-3">

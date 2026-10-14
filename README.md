@@ -5,6 +5,10 @@ Nederlands op moedertaalniveau lezen en verstaan, en de schrijftaal willen behee
 
 De schrijflesbibliotheek bevat **138 lessen**: alle 113 bestaande lessen zijn uitgebreid met lesgebonden begeleiding en toepassingsopdrachten, aangevuld met negen schrijfmodules en zestien lessen argumentatie en drogredenen. De route loopt van taalbasis via helder schrijven naar zelfstandig argumenteren; specialistische taalkunde staat daarnaast als keuzeverdieping. Daarnaast biedt `/argumentatie` een afzonderlijk leerpad met 69 uitgebreide lessen voor leiders. Afronden en automatisch goed antwoorden zijn geen bewijs van blijvende beheersing.
 
+Alle **171 bibliotheeklessen en afzonderlijke modules** zijn inhoudelijk en didactisch gecontroleerd. De [lescontrole per les](docs/lesson-audit-2026-10-14.md) beschrijft de concrete verbeteringen en onderzoeksbasis. Nieuwe zelfstandige toepassingen, hulp na de eigen poging en specifieke foutuitleg richten de interactie op leren. De persoonlijke kennischecks in `/herhalen/kennis` halen afgeronde stof op latere dagen opnieuw op, met wisselende opdrachten en een bewaarde eerste poging. De eenvoudige intervallen zijn productkeuzes; er is geen leerexperiment met deze app uitgevoerd.
+
+Voortgang en lopende kennischecks blijven lokaal bewaard onder `pennig:gespreid-ophalen` en gaan mee in export/import. Oudere exports zonder dit veld blijven bruikbaar. Historische lesresultaten en FSRS-woordkaarten blijven behouden; veranderde opdrachtinhoud krijgt een nieuwe vingerafdruk. Bij gecombineerde vormcorrecties kunnen `rewrite` en `fix` expliciet `strict: true` gebruiken, zodat gevraagde hoofdletters en leestekens ook echt worden beoordeeld.
+
 ```bash
 npm install
 npm run dev          # http://localhost:3000
@@ -31,6 +35,7 @@ Eerste keer e2e: `npx playwright install chromium`. Een draaiende server hergebr
 | `/lessen`                 | Bibliotheek: zoeken en filteren op niveau, vakgebied, status en oefenvorm (in de URL) |
 | `/les/[lessonId]`         | Lesplayer; direct te openen, hervat na verversen                           |
 | `/herhalen`, `/herhalen/sessie` | Opgeslagen oefenpunten en een herhaalronde (max. 8)                 |
+| `/herhalen/kennis`         | Gespreide kennischecks over afgeronde lessen uit schrijven, Zinnen en argumentatie; bewaard en te hervatten |
 | `/voortgang`              | Per niveau en vakgebied, oefentijd, laatst geoefend                        |
 | `/instellingen`           | Geluid, rustige beweging, confetti, leerprofiel, export/import/wissen      |
 | `/oefenvormen`            | Galerij van de nieuwe oefenvormen met voorbeeldinhoud (telt niet mee)      |

@@ -11,13 +11,13 @@ export const LAYERS: Layer[] = [
       { kind: 'explain', title: 'Twee soorten letters', panels: [
         { text: 'Het Nederlandse alfabet heeft 26 letters. Letters zijn tekens; klanken spreek je uit. Bij een *klinkerklank* stroomt de lucht vrij door je mond. Bij een *medeklinkerklank* vernauw of blokkeer je de lucht met bijvoorbeeld je lippen of tong. Zeg eens *aaa* en dan *p*: voel je het verschil?', rule: 'De vijf gewone klinkerletters zijn *a e i o u*. Ook de *y* kan een klinker weergeven, zoals in *baby*.', alpha: { q: 'Tik de vijf gewone klinkerletters aan', targets: ['a', 'e', 'i', 'o', 'u'], note: 'a, e, i, o, u zijn de vijf gewone klinkerletters. De y heeft verschillende rollen.' } },
         { text: 'Een klinkerklank vormt meestal de kern van een lettergreep; er kunnen medeklinkers omheen staan. Wissel je de klinker, dan kan een ander woord ontstaan. Probeer alle vijf mogelijkheden.', deep: { q: 'En de y dan?', a: 'De rol van de *y* hangt af van het woord. In *baby* of *hobby* geeft hij een klinkerklank weer (*ie*). Aan het begin van *yoghurt* klinkt hij als de medeklinker *j*. Kijk dus naar de klank die de letter daar weergeeft.' }, wheel: { start: 'b', end: 'k', need: 5, note: 'Vijf klinkers, vijf bestaande woorden: ook bik bestaat, zoals in ik bik de verf af.', options: [{ v: 'a', mean: 'bak: een bak met water' }, { v: 'e', mean: 'bek: de mond van een dier' }, { v: 'i', mean: 'bik: ik bik de oude verf af' }, { v: 'o', mean: 'bok: een mannetjesgeit' }, { v: 'u', mean: 'buk: buig voorover!' }] } },
-        { text: 'Waarom is dit handig? Of een woord met een klinker begint, bepaalt soms de spelling eromheen. Je zegt *een appel*, maar in een samenstelling zie je dat ook terug: *zee-egel*, met een streepje tussen twee klinkers die anders samensmelten.', deep: { q: 'Waarom dat streepje in zee-egel?', a: 'Zonder streepje lees je *zeeegel* als *zeeë-gel* of *zeeeg-el*. Het streepje laat zien waar het ene woord stopt en het andere begint. Dat zie je bij botsende klinkers: *auto-ongeluk*, *zee-eend*.' }, mark: { q: 'Tik de woorden die met een klinker beginnen', sentence: 'appel peer ui druif oliebol', targets: [0, 2, 4], note: 'a, u en o: klinkers.' } },
+        { text: 'Waarom is dit handig? Bij een samenstelling kunnen klinkerletters op de grens verkeerd samen gelezen worden. In *zee-egel* scheidt een koppelteken de grondwoorden. In het Nederlands hangt het lidwoord *een* niet af van de beginletter: een appel, een peer.', deep: { q: 'Waarom dat streepje in zee-egel?', a: 'Het koppelteken voorkomt klinkerbotsing op de grens van twee grondwoorden. Ook *auto-ongeluk* en *zee-eend* hebben zo een duidelijke grens. Niet elke ontmoeting van twee klinkerletters is een klinkerbotsing; de spellingregel kijkt naar combinaties die verkeerd samen gelezen kunnen worden.' }, mark: { q: 'Tik de woorden die met een klinker beginnen', sentence: 'appel peer ui druif oliebol', targets: [0, 2, 4], note: 'a, u en o: klinkerletters.' } },
       ] },
     ] },
     { id: 'l2', domain: 'orth', title: 'Hoofdletters en tekens', skill: 'Spelling', icon: 'A', steps: [
       { kind: 'explain', title: 'Grote letters, kleine tekens', panels: [
         { text: 'Een hoofdletter krijgt: het begin van een zin, een naam, een plaats, een land. Dagen en maanden niet.', mark: { q: 'Tik wat een hoofdletter moet krijgen', sentence: 'op maandag reist eva naar parijs.', targets: [0, 3, 5], note: 'Op, Eva en Parijs. Maandag blijft klein.' } },
-        { text: 'Een trema (¨) laat zien dat een nieuwe lettergreep begint: ruïne, zeeën. Zonder trema lees je het als één klank.', lab: { label: 'Tik een woord', chips: [
+        { text: 'Een trema (¨) helpt voorkomen dat klinkerletters verkeerd samen gelezen worden: ruïne, zeeën. Het markeert waar een nieuwe lettergreep begint. Het is een spellingteken, geen aparte klank.', lab: { label: 'Tik een woord', chips: [
           { k: 'zeeën', out: 'zee · en', note: 'Zonder trema: zeeen → onleesbaar.' },
           { k: 'ruïne', out: 'ru · i · ne', note: 'Zonder trema lees je ui.' },
           { k: 'België', out: 'Bel · gi · e', note: 'Anders lees je ie.' },
@@ -39,7 +39,7 @@ export const LAYERS: Layer[] = [
   { id: 'klank', name: 'Klank en letter', icon: 'oe', made: 'tekens die een klank vormen', color: 'bg-[#00c2a8]', shade: '#00a08b', learn: 'Hoe Nederlandse klanken samenhangen met de tekens die je schrijft.', fields: ['fon', 'orth'], example: '*oe* bestaat uit twee letters en geeft één klinkerklank weer.', lessons: [
     { id: 'k1', domain: 'fon', also: ['orth'], title: 'Twee letters, één klank', skill: 'Spelling', icon: 'oe', steps: [
       { kind: 'explain', title: 'Twee letters, één klank', panels: [
-        { text: 'Er zijn meer klanken dan klinkers. Daarom schrijven we sommige klanken met twee letters. Je hoort één klank, je ziet twee letters. Die combinaties heten *tweeklanken* en *klinkercombinaties*.', rule: 'Twee letters, één klank: *ij ei ui ou au eu oe*.', blend: { letters: ['i', 'j', 'e', 'u', 'o'], pairs: [{ s: 'ij', ex: 'wijn, tijd' }, { s: 'ei', ex: 'klein, trein' }, { s: 'ui', ex: 'huis, uit' }, { s: 'ou', ex: 'koud, oud' }, { s: 'eu', ex: 'deur, neus' }, { s: 'oe', ex: 'boek, goed' }], note: 'Zes klanken, telkens twee letters.' } },
+        { text: 'Sommige klinkerklanken schrijven we met twee letters. Dat zijn *klinkercombinaties*. Een *tweeklank* is een klank waarbij de mondstand tijdens het uitspreken verandert, zoals bij ei, ui en au. Eu en oe zijn in de gewone standaarduitspraak geen tweeklanken. Ij en ei klinken doorgaans hetzelfde, net als ou en au; hun spelling leer je per woord.', rule: 'Klinkercombinatie = letters in de spelling; tweeklank = een bewegende klinkerklank in de uitspraak.', blend: { letters: ['i', 'j', 'e', 'u', 'o'], pairs: [{ s: 'ij', ex: 'wijn, tijd' }, { s: 'ei', ex: 'klein, trein' }, { s: 'ui', ex: 'huis, uit' }, { s: 'ou', ex: 'koud, oud' }, { s: 'eu', ex: 'deur, neus' }, { s: 'oe', ex: 'boek, goed' }], note: 'Zes lettercombinaties; ij en ei geven in de standaarduitspraak doorgaans dezelfde tweeklank weer.' } },
         { text: 'Hier zit de valkuil. *ij* en *ei* klinken precies hetzelfde, net als *ou* en *au*. Er is geen klankregel die je helpt: je moet het woordbeeld onthouden. Gelukkig helpt lezen enorm, want je ogen zien een fout eerder dan je oren.', deep: { q: 'Is er echt geen trucje?', a: 'Een paar houvasten: aan het eind van een woord staat vaak *-ij* (*bakkerij*, *partij*), en de uitgang *-lijk* is altijd met *ij* (*moeilijk*, *eerlijk*). Ook *-heid* is altijd met *ei* (*vrijheid*). Verder: woordbeeld.' }, lab: { label: 'Tik een paar', chips: [
           { k: 'ij / ei', out: 'wijn · klein', note: 'Zelfde klank. Onthoud het woordbeeld.' },
           { k: 'ou / au', out: 'koud · blauw', note: 'Ook hier: onthouden.' },
@@ -65,8 +65,8 @@ export const LAYERS: Layer[] = [
   { id: 'greep', name: 'De lettergreep', icon: 'ba', made: 'letters rond één klinker', color: 'bg-[#ff9600]', shade: '#cd7900', learn: 'Klankgroepen binnen woorden en hoe die samenhangen met spelling en afbreken.', fields: ['fon', 'orth'], example: '*boe-ken*', lessons: [
     { id: 'g1', domain: 'fon', also: ['orth'], title: 'Open en dicht', skill: 'Spelling', icon: 'bo', steps: [
       { kind: 'explain', title: 'Waarom bomen één o heeft', panels: [
-        { text: 'Een lettergreep is een klinker met de medeklinkers eromheen. Knip een woord in stukjes zoals je het uitspreekt.', split: { word: 'bomen', answer: 'bo-men', note: 'bo eindigt op een klinker: open.' } },
-        { text: 'Een open lettergreep eindigt op een klinker. Dan klinkt één letter al lang. Een dichte eindigt op een medeklinker.', split: { word: 'manen', answer: 'ma-nen', note: 'ma is open: één a is lang genoeg.' }, quiz: { q: 'Meervoud van raam?', options: ['raamen', 'ramen', 'rammen'], answer: 'ramen', why: 'ra-men: open, dus één a.' } },
+        { text: 'Een lettergreep is een uitgesproken deel van een woord met meestal één klinkerklank als kern. In de spelling zie je hoe het woord in geschreven lettergrepen verdeeld is.', split: { word: 'bomen', answer: 'bo-men', note: 'bo eindigt op een klinkerletter: open.' } },
+        { text: 'Een geschreven open lettergreep eindigt op een klinkerletter; een gesloten lettergreep eindigt op een medeklinkerletter. Een lange a, e, o of u schrijf je in een gewone open lettergreep meestal met één letter. Open betekent niet dat elke klinker lang is: de doffe e in de is ook mogelijk.', split: { word: 'manen', answer: 'ma-nen', note: 'ma is open: één a schrijft hier de lange klinker.' }, quiz: { q: 'Meervoud van raam?', options: ['raamen', 'ramen', 'rammen'], answer: 'ramen', why: 'ra-men: open, dus één a.' } },
       ] },
       { kind: 'type', prompt: 'Typ het meervoud.', before: 'Eén laan, twee', after: '.', hint: 'laan', answer: 'lanen', why: 'la-nen: open lettergreep, één a.' },
       { kind: 'type', prompt: 'Typ het meervoud.', before: 'Eén muur, twee', after: '.', hint: 'muur', answer: 'muren', why: 'mu-ren.' },
@@ -119,14 +119,14 @@ export const LAYERS: Layer[] = [
           { k: 'voet + bal', out: 'voetbal', note: 'Een soort bal.' },
           { k: 'kinder + boek', out: 'kinderboek', note: 'Een soort boek.' },
           { k: 'boek + kinder', out: '—', note: 'Bestaat niet: de kern staat achteraan.' },
-        ] }, quiz: { q: 'Welke is goed?', options: ['ziekenhuis bed', 'ziekenhuisbed', 'ziekenhuis-bed'], answer: 'ziekenhuisbed', why: 'Samenstelling = aan elkaar.' } },
+        ] }, quiz: { q: 'Welke is de gewone aaneengeschreven spelling?', options: ['ziekenhuis bed', 'ziekenhuisbed', 'ziekenhuis-bed'], answer: 'ziekenhuisbed', why: 'De gewone spelling is ziekenhuisbed. Een facultatief koppelteken kan soms de leesbaarheid helpen; deze vraag vraagt de aaneengeschreven vorm.' } },
         { text: 'Soms hoort er een tussen-s of -en- tussen. Hoor je een s? Schrijf hem. Pannenkoek krijgt -en-.', build: { before: 'Een koek uit de pan is een…', stem: 'pann', endings: ['ekoek', 'enkoek', 'skoek'], answer: 'enkoek', note: 'pannenkoek.' } },
       ] },
-      { kind: 'fix', prompt: 'Tik het foute woord aan en verbeter het.', sentence: 'We hebben een nieuwe tuin stoel gekocht.', wrong: 4, answer: 'tuinstoel', why: 'Samenstelling aan elkaar. (Tik het eerste deel.)' },
+      { kind: 'rewrite', prompt: 'Schrijf de hele zin opnieuw en verbeter de samenstelling.', source: 'We hebben een nieuwe tuin stoel gekocht.', accept: ['We hebben een nieuwe tuinstoel gekocht.'], why: 'Tuinstoel is één samenstelling. Je voegt beide losse delen samen; stoel blijft niet nog eens achter tuinstoel staan.' },
     ] },
     { id: 'd3', domain: 'morf', also: ['sem'], title: 'Voorvoegsels sturen betekenis', skill: 'Woorden', icon: 'on-', steps: [
       { kind: 'explain', title: 'Eén stukje ervoor, nieuwe betekenis', panels: [
-        { text: 'Een voorvoegsel verandert wat een woord betekent. on- draait om, ver- verandert, her- doet opnieuw.', lab: { label: 'Tik een voorvoegsel', chips: [
+        { text: 'Een voorvoegsel kan de betekenis van een woord veranderen. In oneerlijk ontkent on- de eigenschap, in verbouwen betekent ver- anders maken en in herschrijven betekent her- opnieuw. De functie hangt af van het hele woord: bijvoorbeeld ontdekken betekent niet het tegendeel van dekken.', lab: { label: 'Tik een voorvoegsel', chips: [
           { k: 'on-', out: 'ongeduldig', note: 'het tegendeel' }, { k: 'her-', out: 'herschrijven', note: 'opnieuw' }, { k: 'ver-', out: 'verbouwen', note: 'anders maken' },
         ] } },
       ] },
@@ -135,7 +135,7 @@ export const LAYERS: Layer[] = [
     ] },
     { id: 'd4', domain: 'prag', also: ['morf'], title: 'Het verkleinwoord als toon', skill: 'Woorden', icon: '-tje', steps: [
       { kind: 'explain', title: 'Klein is niet altijd klein', panels: [
-        { text: 'Met -je maak je iets niet alleen kleiner. Het maakt ook zachter, gezelliger of juist kleinerend. "Een momentje" is beleefd, "een mannetje" kan spottend zijn.', lab: { label: 'Tik een zin', chips: [
+        { text: 'Met -je maak je iets niet alleen kleiner. Een verkleinwoord kan ook zachter, gezelliger of juist kleinerend klinken. "Een momentje alstublieft" kan een verzoek verzachten; "een mannetje" kan spottend klinken. De situatie en toon bepalen mede het effect.', lab: { label: 'Tik een zin', chips: [
           { k: 'beleefd', out: 'Heeft u een momentje?', note: 'Verzacht het verzoek.' }, { k: 'gezellig', out: 'Zullen we een biertje doen?', note: 'Ontspannen, uitnodigend.' }, { k: 'spottend', out: 'Wat een baantje heeft hij.', note: 'Maakt het minder waard.' },
         ] } },
       ] },
@@ -147,7 +147,7 @@ export const LAYERS: Layer[] = [
     { id: 'w1', domain: 'morf', also: ['orth'], title: 'Werkwoorden: d of t', skill: 'Spelling', icon: 'dt', steps: [
       { kind: 'explain', title: 'Je hoort het niet, je schrijft het wel', panels: [
         { text: 'Wordt en word klinken hetzelfde. Vervang het werkwoord door lopen. Hoor je loopt? Schrijf een t.', build: { before: 'Hij (vinden)…', stem: 'vind', endings: ['', 't', 'd'], answer: 't', note: 'Hij loopt → vindt.' } },
-        { text: 'Staat jij achter het werkwoord, dan valt de t weg.', build: { before: '(worden) … jij ook moe?', stem: 'Word', endings: ['', 't', 'dt'], answer: '', note: 'Loop jij? → Word jij?' } },
+        { text: 'Is jij of je het onderwerp en staat het achter de persoonsvorm in de tegenwoordige tijd, dan gebruik je de ik-vorm zonder extra t: word jij? Een t die al bij de stam hoort blijft staan: wacht jij? Bij uw collega of je broer geldt deze uitzondering niet.', build: { before: '(worden) … jij ook moe?', stem: 'Word', endings: ['', 't', 'dt'], answer: '', note: 'Loop jij? → Word jij? Jij is hier het onderwerp.' } },
         { text: "Bij zwakke werkwoorden maak je de verleden tijd met de stam + -te of -de. Kijk voor de keuze naar de eindklank vóór -en in het hele werkwoord. Een stemloze eindklank uit 't kofschip (t-k-f-s-ch-p) geeft -te; anders -de. Behoud daarbij de v of z uit het hele werkwoord: leven → v → leefde, reizen → z → reisde. Ga dus niet alleen af op de geschreven ik-vorm.", lab: { label: 'Tik een werkwoord', chips: [
           { k: 'werken', out: 'werkte', note: 'k → -te' }, { k: 'spelen', out: 'speelde', note: 'l → -de' }, { k: 'leven', out: 'leefde', note: 'v (niet f) → -de' },
         ] } },
@@ -157,10 +157,10 @@ export const LAYERS: Layer[] = [
     ] },
     { id: 'w2', domain: 'morf', also: ['syn'], title: 'de, het en de -e', skill: 'Woorden', icon: 'de', steps: [
       { kind: 'explain', title: 'Woorden passen zich aan', panels: [
-        { text: 'Een zelfstandig naamwoord is een de-woord of een het-woord. Verkleinwoorden zijn altijd het, meervoud altijd de.', lab: { label: 'Tik een woord', chips: [
+        { text: 'Bij een zelfstandig naamwoord leer je het passende lidwoord. Enkelvoudige verkleinwoorden krijgen het: het boompje. In het meervoud gebruik je de: de boompjes. Ook gewone meervouden krijgen de.', lab: { label: 'Tik een woord', chips: [
           { k: 'huis', out: 'het huis → de huizen', note: 'Meervoud: de.' }, { k: 'boompje', out: 'het boompje', note: 'Verkleinwoord: het.' }, { k: 'tafel', out: 'de tafel', note: 'de-woord.' },
         ] } },
-        { text: 'Een bijvoeglijk naamwoord krijgt bijna altijd een -e. Behalve: een + het-woord.', lab: { label: 'Tik een combinatie', chips: [
+        { text: 'Een gewoon bijvoeglijk naamwoord vóór een zelfstandig naamwoord krijgt meestal -e: de grote man, het grote huis. Bij een onbepaald het-woord in het enkelvoud blijft die -e vaak weg: een groot huis, mooi weer. Stoffelijke vormen zoals houten en vaste verbindingen kunnen andere patronen volgen.', lab: { label: 'Tik een combinatie', chips: [
           { k: 'de man', out: 'de grote man', note: '-e' }, { k: 'het huis', out: 'het grote huis', note: '-e' }, { k: 'een huis', out: 'een groot huis', note: 'géén -e' },
         ] }, quiz: { q: 'Ze woont in een … dorp.', options: ['klein', 'kleine'], answer: 'klein', why: 'een + het dorp → geen -e.' } },
       ] },
@@ -169,26 +169,26 @@ export const LAYERS: Layer[] = [
     { id: 'w3', domain: 'syn', also: ['sem'], title: 'Woordsoorten', skill: 'Woorden', icon: '◆', steps: [
       { kind: 'explain', title: 'Elk woord heeft een rol', panels: [
         { text: 'Woorden hebben een soort. Een zelfstandig naamwoord noemt iets, een werkwoord zegt wat er gebeurt, een bijvoeglijk naamwoord kleurt het naamwoord.', lab: { label: 'Tik een soort', chips: [
-          { k: 'naamwoord', out: 'fiets · liefde · Anna', note: 'Je kunt er de, het of een voor zetten.' },
+          { k: 'naamwoord', out: 'fiets · liefde · Anna', note: 'Een naamwoord kan een zaak, gevoel of persoon benoemen. Bij gewone soortnamen past vaak een lidwoord; een persoonsnaam als Anna staat meestal zonder lidwoord.' },
           { k: 'werkwoord', out: 'fietsen · denken · zijn', note: 'Je kunt het vervoegen: ik fiets, ik fietste.' },
           { k: 'bijvoeglijk', out: 'snel · rood · moe', note: 'Past tussen de en een naamwoord: de rode fiets.' },
         ] } },
         { text: 'Hetzelfde woord kan van soort wisselen. Dat zie je aan zijn plek.', mark: { q: 'Tik de werkwoorden', sentence: 'Wij fietsen naar de winkel en kopen twee fietsen.', targets: [1, 6], note: 'Het tweede fietsen is een naamwoord: twee fietsen.' } },
       ] },
-      { kind: 'sort', prompt: 'Naamwoord of werkwoord?', buckets: ['naamwoord', 'werkwoord'], items: [{ t: 'het eten', b: 0 }, { t: 'wij eten', b: 1 }, { t: 'de wandeling', b: 0 }, { t: 'ze wandelt', b: 1 }, { t: 'een droom', b: 0 }, { t: 'ik droom', b: 1 }], why: 'Lidwoord ervoor → naamwoord. Persoon ervoor → werkwoord.' },
+      { kind: 'sort', prompt: 'Naamwoordelijk gebruik of een vervoegd werkwoord?', buckets: ['naamwoordelijk gebruik', 'vervoegd werkwoord'], items: [{ t: 'het eten', b: 0 }, { t: 'wij eten', b: 1 }, { t: 'de wandeling', b: 0 }, { t: 'ze wandelt', b: 1 }, { t: 'een droom', b: 0 }, { t: 'ik droom', b: 1 }], why: 'In deze voorbeelden verwijzen het eten, de wandeling en een droom naar iets als naamwoordelijke groep. Wij eten, ze wandelt en ik droom bevatten een persoonsvorm. Kijk naar het gebruik van de hele groep; één woord ervoor bewijst niet automatisch de woordsoort.' },
     ] },
-    { id: 'w4', domain: 'sem', title: 'Synoniemen zijn nooit gelijk', skill: 'Woorden', icon: '≈', steps: [
+    { id: 'w4', domain: 'sem', title: 'Synoniemen en gevoelswaarde', skill: 'Woorden', icon: '≈', steps: [
       { kind: 'explain', title: 'Zelfde ding, ander gevoel', panels: [
         { text: 'Huis, woning, optrekje, krot: allemaal een plek om te wonen. Toch roept elk woord iets anders op. Woordkeuze is betekenis kiezen.', lab: { label: 'Tik een woord', chips: [
           { k: 'woning', out: 'Te koop: ruime woning.', note: 'Zakelijk, neutraal.' }, { k: 'optrekje', out: 'Een knus optrekje aan zee.', note: 'Klein en gezellig.' }, { k: 'krot', out: 'Ze woonden in een krot.', note: 'Vervallen, negatief.' },
         ] } },
       ] },
-      { kind: 'choice', prompt: 'Welk woord is positief?', before: 'Hij is erg', after: '.', options: ['zuinig', 'gierig', 'krenterig'], answer: 'zuinig', why: 'Gierig en krenterig zijn verwijten.' },
-      { kind: 'choice', prompt: 'Welk woord is negatief?', before: 'Ze is heel', after: '.', options: ['vastberaden', 'koppig', 'standvastig'], answer: 'koppig', why: 'Zelfde eigenschap, negatieve lading.' },
+      { kind: 'choice', prompt: 'Je wilt waarderend zeggen dat een collega verstandig met geld omgaat. Welk woord past hier het best?', before: 'Hij is erg', after: '.', options: ['zuinig', 'gierig', 'krenterig'], answer: 'zuinig', why: 'Zuinig heeft hier de bedoelde waarderende toon. Gierig en krenterig klinken doorgaans verwijtend. Een andere context of ironische toon kan de gevoelswaarde veranderen.' },
+      { kind: 'choice', prompt: 'Je wilt kritisch zeggen dat iemand niet naar een goede tegenwerping luistert. Welk woord past hier het best?', before: 'Ze is heel', after: '.', options: ['vastberaden', 'koppig', 'standvastig'], answer: 'koppig', why: 'Koppig past hier bij de kritische bedoeling. Vastberaden en standvastig klinken doorgaans waarderend. Woorden overlappen in betekenis, maar hun effect hangt mede van de context af.' },
     ] },
     { id: 'w5', domain: 'prag', also: ['sem'], title: 'U of jij', skill: 'Woorden', icon: 'u', steps: [
       { kind: 'explain', title: 'Het voornaamwoord zet de afstand', panels: [
-        { text: 'Met u houd je afstand en toon je respect; met jij ben je dichtbij. Welk woord je kiest, hangt af van wie je aanspreekt en waar.', lab: { label: 'Tik een situatie', chips: [
+        { text: 'U klinkt vaak formeler of afstandelijker; jij is vaak informeler. Beide kunnen respectvol zijn. Kies op basis van de situatie, de relatie, de voorkeur van de ander en eventuele afspraken. De voorbeelden hieronder tonen gebruikelijke keuzes, geen universele regels.', lab: { label: 'Tik een situatie', chips: [
           { k: 'sollicitatie', out: 'Graag hoor ik van u.', note: 'Formeel: u.' }, { k: 'collega', out: 'Heb jij die mail gezien?', note: 'Informeel: jij.' }, { k: 'klantenservice', out: 'Kunt u uw nummer geven?', note: 'Vaak u, soms bewust jij.' },
         ] } },
       ] },

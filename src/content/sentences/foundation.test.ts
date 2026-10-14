@@ -39,7 +39,7 @@ describe('Dutch grammar in the sentence foundations', () => {
     const item = exercise(2, 6);
     if (item.kind !== 'gate') throw new Error('Expected an agreement gate');
     expect(item.answer).toBe('beide');
-    expect(lesson(2).debugger.find((entry) => entry.prompt === 'Het aantal bezoekers nemen toe.')?.repairs)
+    expect(lesson(2).debugger.find((entry) => entry.id === 'zinnen-02-debugger-2')?.repairs)
       .toEqual(['Het aantal bezoekers neemt toe.']);
   });
 

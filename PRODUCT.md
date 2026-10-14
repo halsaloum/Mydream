@@ -49,14 +49,14 @@ Niet een losse verzameling taalregels, maar één doorlopende constructie: hetze
 
 ## Evidence on Hand
 
-- 138 lessen in 9 bouwlagen en 7 vakgebieden via `src/content/catalog.ts`, inclusief begeleiding, toepassingsopgaven en argumentatie. Het groeiende voorbeeld per laag staat in `src/content/legacy/layer-examples.ts`.
+- 138 lessen in 7 zichtbare bouwlagen en 7 vakgebieden via `src/content/catalog.ts`, inclusief begeleiding, toepassingsopgaven en argumentatie. Het groeiende voorbeeld per laag staat in `src/content/legacy/layer-examples.ts`.
 - Er zijn geen gebruikersresultaten, testimonials of statistieken; toon nooit verzonnen voortgang of resultaten.
 
 ## Product Principles
 
 1. Precisie boven aanmoediging: feedback legt uit waarom iets goed of fout is en blijft staan tot de leerling verdergaat.
 2. Eén doorlopende constructie: elke les en elk voorbeeld laat zien op welke bouwlaag en in welk domein het zit.
-3. Doen boven lezen: uitleg wordt pas begrepen door ermee te experimenteren.
+3. Uitleg met toepassing: uitgewerkte voorbeelden begeleiden het leren; daarna haalt de leerling de kennis op en past die steeds zelfstandiger toe.
 4. Fouten zijn materiaal: wat misgaat, komt gericht terug in de herhaling.
 5. Inhoud, beoordeling, voortgang en presentatie blijven gescheiden, zodat nieuwe lessen zonder codewijziging kunnen worden aangesloten.
 

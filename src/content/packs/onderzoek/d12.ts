@@ -67,7 +67,7 @@ export const ONDERZOEK_D12: StepInput[] = [
         },
       },
       {
-        text: 'Klinken *rad* en *rat* echt hetzelfde? Volgens de verscherping wel: aan het eind wordt elke medeklinker stemloos. Natasha Warner en collega’s (2004) maten het na bij Nederlandse sprekers. Vóór een onderliggende *d* bleek de klinker een fractie langer dan vóór een *t*. Het verschil is klein en omstreden: misschien laat het vooral de invloed van de spelling zien. Zo’n half verdwenen verschil heet *onvolledige neutralisatie*.',
+        text: 'Klinken *rad* en *rat* echt hetzelfde? Eindverscherping betreft stemhebbende obstruenten zoals d, die aan het woordeinde als t klinken; niet alle medeklinkers verliezen hun stem. Natasha Warner en collega’s onderzochten kleine resterende uitspraakverschillen tussen zulke woordparen. Vóór een onderliggende d was de klinker in sommige metingen een fractie langer. Zulke effecten kunnen mede door spelling en taakcontext ontstaan. Een niet volledig verdwenen contrast heet onvolledige neutralisatie.',
         quiz: {
           q: 'Wat betekent onvolledige neutralisatie?',
           options: [

@@ -16,7 +16,7 @@ export const LES_K30: LessonInput = {
       title: 'Eén letter of twee?',
       panels: [
         {
-          text: 'Het Nederlands heeft vijf *korte klanken*. Je schrijft ze met één letter: *a* in *bal*, *e* in *bed*, *i* in *pit*, *o* in *pot* en *u* in *put*. Een korte klank is kort en snel. Er staat bijna altijd een medeklinker achter. Tik op de kaart de vijf korte klanken aan en luister goed.',
+          text: 'Het Nederlands heeft vijf *korte klanken*. Je schrijft ze met één letter: *a* in *bal*, *e* in *bed*, *i* in *pit*, *o* in *pot* en *u* in *put*. De naam kort gaat over deze klinkersoort; alleen langer of korter rekken is geen betrouwbare spellingtest. Er staat bijna altijd een medeklinker achter. Tik op de kaart de vijf korte klanken aan en luister goed.',
           rule: 'Korte klank = één letter: *a*, *e*, *i*, *o*, *u* (*bal*, *bed*, *pit*, *pot*, *put*).',
           vowels: {
             q: 'Tik de vijf korte klanken: a (bal), e (bed), i (pit), o (pot), u (put)',
@@ -25,7 +25,7 @@ export const LES_K30: LessonInput = {
           },
         },
         {
-          text: 'Daarnaast zijn er vier *lange klanken*: *aa* in *baal*, *ee* in *beet*, *oo* in *boot* en *uu* in *muur*. Je houdt ze langer aan. Het verschil is belangrijk, want het maakt een ander woord: *man* is een persoon, *maan* staat aan de hemel. *bot* zit in je lichaam, met een *boot* vaar je.',
+          text: 'In deze les vergelijken we daarmee vier traditioneel *lang* genoemde klinkers: *aa* in *baal*, *ee* in *beet*, *oo* in *boot* en *uu* in *muur*. De klinkerkwaliteit verschilt ook; alleen spreekduur bepaalt het verschil niet. Dat verschil is belangrijk, want het maakt een ander woord: *man* is een persoon, *maan* staat aan de hemel. *bot* zit in je lichaam, met een *boot* vaar je.',
           rule: 'Lange klank met een medeklinker erachter = twee letters: *aa*, *ee*, *oo*, *uu* (*maan*, *been*, *boom*, *muur*).',
           lab: {
             label: 'Tik een paar en zeg beide woorden hardop',

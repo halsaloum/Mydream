@@ -133,7 +133,8 @@ test('vijf echte lesonderdelen werken met toetsenbord en het lab bewaart het gek
   await tabs.nth(2).press('ArrowRight');
   await expect(tabs.nth(3)).toBeFocused();
   await expect(page.getByRole('heading', { name: firstLesson.debugger[0]!.prompt, exact: true })).toBeVisible();
-  await expect(page.getByRole('textbox', { name: firstLesson.debugger[0]!.instruction, exact: true })).toBeDisabled();
+  await expect(page.getByRole('textbox', { name: 'Jouw reparatie: eerst zelfstandig de fout vinden', exact: true })).toBeDisabled();
+  await expect(page.getByText(firstLesson.debugger[0]!.instruction, { exact: true })).toHaveCount(0);
   await tabs.nth(3).press('End');
   await expect(tabs.nth(4)).toBeFocused();
   await expect(page.getByRole('heading', { name: 'Verdien je spiekkaart.', exact: true })).toBeVisible();
@@ -210,8 +211,9 @@ test('een volledige module vereist zes bouwopdrachten en vier eigen reparaties v
   }
 
   for (const [index, exercise] of firstLesson.debugger.entries()) {
-    const repair = page.getByRole('textbox', { name: exercise.instruction, exact: true });
+    const repair = page.getByRole('textbox', { name: 'Jouw reparatie: eerst zelfstandig de fout vinden', exact: true });
     await expect(repair).toBeDisabled();
+    await expect(page.getByText(exercise.instruction, { exact: true })).toHaveCount(0);
     await expect(page.getByRole('button', { name: 'Controleer mijn toepassing', exact: true })).toBeDisabled();
     await expect(page.getByText(exercise.repairs[0]!, { exact: true })).toHaveCount(0);
     await solveExercise(page, exercise);

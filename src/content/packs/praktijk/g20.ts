@@ -35,17 +35,17 @@ export const LES_G20: LessonInput = {
           },
         },
         {
-          text: 'Elke lettergreep heeft precies één *klinkerklank*. Dat kan één letter zijn (*a*, *e*, *i*, *o*, *u*, ook de doffe e in *de*), maar ook twee of meer letters die samen één klank maken: *aa*, *ee*, *oo*, *uu*, *ie*, *oe*, *eu*, *ui*, *ei*, *ij*, *au*, *ou*. Zelfs *aai*, *ooi*, *oei*, *eeuw* en *ieuw* tellen als één klank. Tel dus de klinkerklanken, niet de klinkerletters.',
+          text: 'Elke lettergreep heeft precies één *klinkerklank*. Dat kan één letter zijn (*a*, *e*, *i*, *o*, *u*, ook de doffe e in *de*), maar ook twee of meer letters die samen één klank maken: *aa*, *ee*, *oo*, *uu*, *ie*, *oe*, *eu*, *ui*, *ei*, *ij*, *au*, *ou*. Ook *aai*, *ooi*, *oei*, *eeuw* en *ieuw* passen elk binnen één lettergreep: een klinker met een j- of w-achtige uitloop. Tel de uitgesproken lettergrepen, niet de klinkerletters; één lettergreep betekent niet dat je maar één afzonderlijke klank hoort.',
           rule: 'Aantal klinkerklanken = aantal lettergrepen.',
           lab: {
             label: 'Tik een woord',
             chips: [
               { k: 'fietsen', out: 'fiet-sen: 2', note: 'ie is één klank, de doffe e de tweede.' },
-              { k: 'sneeuw', out: 'sneeuw: 1', note: 'eeuw is één klank: één lettergreep.' },
+              { k: 'sneeuw', out: 'sneeuw: 1', note: 'De klinker met w-uitloop vormt samen één lettergreep.' },
               { k: 'leeuwen', out: 'leeu-wen: 2', note: 'eeuw + de doffe e van -en.' },
-              { k: 'draaien', out: 'draai-en: 2', note: 'aai is één klank, en dan nog -en.' },
+              { k: 'draaien', out: 'draai-en: 2', note: 'aai blijft binnen één lettergreep, en dan komt nog -en.' },
               { k: 'eieren', out: 'ei-e-ren: 3', note: 'ei, e, e: drie klinkerklanken.' },
-              { k: 'moeilijk', out: 'moei-lijk: 2', note: 'oei is één klank. In -lijk klinkt ij als een doffe e.' },
+              { k: 'moeilijk', out: 'moei-lijk: 2', note: 'oei blijft binnen één lettergreep. In -lijk klinkt ij als een doffe e.' },
             ],
           },
           quiz: {
@@ -152,7 +152,7 @@ export const LES_G20: LessonInput = {
           why: 'Eén medeklinker (n) tussen o en i: die gaat mee. De ng aan het eind blijft samen, want er komt geen klinker meer.',
         },
         { t: 'eeuwig → eeuw-ig', ok: false, fix: 'eeu-wig', why: 'De w gaat mee naar de volgende lettergreep, net als in leeu-wen en nieu-we.' },
-        { t: 'draaien → draai-en', ok: true, why: 'aai is één klank en blijft heel. Daarna komt -en.' },
+        { t: 'draaien → draai-en', ok: true, why: 'aai vormt hier één lettergreepkern met een j-uitloop en blijft als lettergroep heel. Daarna komt -en.' },
         { t: 'kinderen → kin-der-en', ok: false, fix: 'kin-de-ren', why: 'Eén medeklinker (r) tussen de twee e’s: die gaat mee. kin-de-ren.' },
         { t: 'wachten → wach-ten', ok: true, why: 'ch en t: knip ertussen. ch blijft heel.' },
         {
@@ -187,8 +187,8 @@ export const LES_G20: LessonInput = {
       title: 'Lastige gevallen',
       panels: [
         {
-          text: 'Valkuil 1: veel klinkerletters achter elkaar. Lees ze niet als losse klanken. *aai* in *draaien*, *ooi* in *nooit*, *oei* in *roeien*, *eeuw* in *meeuwen* en *ieuw* in *nieuwe* zijn elk één klank. Een trema laat juist zien dat er een nieuwe lettergreep begint: *i-dee-ën*, *knie-ën*, *Bel-gi-ë*.',
-          rule: 'aai, ooi, oei, eeuw, ieuw: één klank. Een trema: een nieuwe lettergreep.',
+          text: 'Valkuil 1: veel klinkerletters achter elkaar. Lees ze niet als losse klanken. *aai* in *draaien*, *ooi* in *nooit*, *oei* in *roeien*, *eeuw* in *meeuwen* en *ieuw* in *nieuwe* vormen elk één lettergreep met een j- of w-achtige uitloop. Een trema laat juist zien dat er een nieuwe lettergreep begint: *i-dee-ën*, *knie-ën*, *Bel-gi-ë*.',
+          rule: 'aai, ooi, oei, eeuw, ieuw: elk binnen één lettergreep. Een trema: een nieuwe lettergreep.',
           quiz: {
             q: 'Hoeveel lettergrepen heeft ideeën?',
             options: ['3', '2', '4'],
@@ -289,7 +289,7 @@ export const LES_G20: LessonInput = {
         { t: 'bacteriën', b: 3 },
         { t: 'financiële', b: 3 },
       ],
-      why: 'Eén: nooit, meeuw, nieuws (ooi, eeuw, ieuw zijn één klank). Twee: kooi-en, mooi-e, knie-ën, zee-ën. Drie: ei-e-ren, e-go-ïst, re-ü-nie, po-ë-zie. Vier of meer: ko-pi-ë-ren (4), bac-te-ri-ën (4), fi-nan-ci-ë-le (5). Een trema begint altijd een nieuwe lettergreep.',
+      why: 'Eén: nooit, meeuw, nieuws (ooi, eeuw, ieuw blijven elk binnen één lettergreep). Twee: kooi-en, mooi-e, knie-ën, zee-ën. Drie: ei-e-ren, e-go-ïst, re-ü-nie, po-ë-zie. Vier of meer: ko-pi-ë-ren (4), bac-te-ri-ën (4), fi-nan-ci-ë-le (5). Een trema begint altijd een nieuwe lettergreep.',
     },
     {
       kind: 'order',
@@ -311,7 +311,7 @@ export const LES_G20: LessonInput = {
           t: 'Het woord sneeuwt heeft twee lettergrepen.',
           ok: false,
           fix: 'Het woord sneeuwt heeft één lettergreep.',
-          why: 'eeuw is één klank: sneeuwt heeft één klinkerklank, dus één lettergreep.',
+          why: 'De klinker met w-uitloop blijft binnen één lettergreep: sneeuwt heeft één lettergreep.',
         },
         { t: 'onderzoek → on-der-zoek', ok: true, why: 'onder + zoek. n en d uit elkaar: on-der.' },
         { t: 'pechvogel → pe-chvo-gel', ok: false, fix: 'pech-vo-gel', why: 'pech + vogel: eerst tussen de delen. ch blijft bij pech.' },
@@ -437,7 +437,7 @@ export const LES_G20: LessonInput = {
           q: 'Hoeveel lettergrepen heeft *nieuwsgierig*? Typ het getal.',
           a: '3',
           also: ['drie'],
-          why: 'nieuws-gie-rig: ieuw is één klank. Drie klinkerklanken.',
+          why: 'nieuws-gie-rig: ieuw blijft binnen de eerste lettergreep. Het woord heeft drie lettergrepen.',
         },
         {
           q: 'Schrijf het getal 1 in letters, met nadruk',
@@ -472,7 +472,7 @@ export const LES_G20: LessonInput = {
       prompt: 'Vul de mail van je taaldocent aan. Knip met streepjes (zoals bo-men), typ een aantal als getal, en typ de andere woorden helemaal.',
       intro: 'Kijk goed naar de zin om het gat heen. In het grijs staat soms een hint.',
       title: 'Mail van je taaldocent',
-      text: 'Beste cursisten,\n\nBedankt voor jullie {ideeën|meervoud van idee|idee, ideeën: de ee blijft, en het trema laat zien dat er een nieuwe lettergreep begint.} van vorige week. Deze week knippen we lange woorden uit echte {brieven|meervoud van brief|Eén brief, twee brieven: in het langere woord hoor je een v.} van de gemeente en de huisarts. Zulke lange woorden lees je makkelijker als je ze eerst in stukjes knipt.\n\nDe gemeente schrijft over je ‘inschrijving’: {in-schrij-ving|met streepjes|in + schrijving: eerst tussen de delen. ij blijft heel, en de v gaat mee.}. In dezelfde brief staat ‘verhuizing’: {ver-hui-zing|met streepjes|ver- is een eigen lettergreep. ui blijft heel, en de z gaat mee.}. En ‘aanvraag’ knip je tussen de delen: {aan-vraag|met streepjes|aan + vraag: twee delen, twee lettergrepen.}.\n\nDe huisarts stuurt een ‘herinnering’: {her-in-ne-ring|met streepjes|her- is een eigen lettergreep, dus niet he-rin. Dan in-ne-ring: de dubbele n gaat uit elkaar.}. Hij wil een ‘onderzoek’ doen: {on-der-zoek|met streepjes|onder + zoek: eerst tussen de delen. Dan on-der: n en d uit elkaar.}. ‘Medicijnen’ knip je als {me-di-cij-nen|met streepjes|Telkens één medeklinker tussen de klinkerklanken: die gaat mee. ij blijft heel.}, en ‘wachtkamer’ als {wacht-ka-mer|met streepjes|wacht + kamer: eerst tussen de delen. ch blijft heel.}. De apotheek is door een ‘verbouwing’ tijdelijk dicht: {ver-bou-wing|met streepjes|ver- is een eigen lettergreep. ou blijft heel, en de w gaat mee.}.\n\nTel ook de klinkerklanken. ‘Schreeuwen’ heeft {twee~2|getal|schreeu-wen: eeuw is één klank. Twee klinkerklanken, dus twee lettergrepen.} lettergrepen. ‘Ruïne’ heeft er {drie~3|getal|ru-ï-ne: het trema begint een nieuwe lettergreep.}.\n\n{Zo’n|zo een, korter|zo’n is zo een: de weggelaten letters worden een apostrof.} lijst is veel werk, dat weet ik. Ben je {geïnteresseerd|ge + interesseren|ge- + een woord dat met i begint: trema op de i, zodat je ge-ïn leest.} in een extra les? Mail me dan {uiterlijk|op z’n laatst|uiterlijk: ‘luhk’ schrijf je -lijk, met ij.} vrijdag. Ik {antwoord|antwoorden, ik-vorm|antwoorden: stam antwoord, met d. Bij ik komt er niets achter.} binnen twee dagen.\n\nMet vriendelijke groet,\nMarleen de Wit',
+      text: 'Beste cursisten,\n\nBedankt voor jullie {ideeën|meervoud van idee|idee, ideeën: de ee blijft, en het trema laat zien dat er een nieuwe lettergreep begint.} van vorige week. Deze week knippen we lange woorden uit echte {brieven|meervoud van brief|Eén brief, twee brieven: in het langere woord hoor je een v.} van de gemeente en de huisarts. Zulke lange woorden lees je makkelijker als je ze eerst in stukjes knipt.\n\nDe gemeente schrijft over je ‘inschrijving’: {in-schrij-ving|met streepjes|in + schrijving: eerst tussen de delen. ij blijft heel, en de v gaat mee.}. In dezelfde brief staat ‘verhuizing’: {ver-hui-zing|met streepjes|ver- is een eigen lettergreep. ui blijft heel, en de z gaat mee.}. En ‘aanvraag’ knip je tussen de delen: {aan-vraag|met streepjes|aan + vraag: twee delen, twee lettergrepen.}.\n\nDe huisarts stuurt een ‘herinnering’: {her-in-ne-ring|met streepjes|her- is een eigen lettergreep, dus niet he-rin. Dan in-ne-ring: de dubbele n gaat uit elkaar.}. Hij wil een ‘onderzoek’ doen: {on-der-zoek|met streepjes|onder + zoek: eerst tussen de delen. Dan on-der: n en d uit elkaar.}. ‘Medicijnen’ knip je als {me-di-cij-nen|met streepjes|Telkens één medeklinker tussen de klinkerklanken: die gaat mee. ij blijft heel.}, en ‘wachtkamer’ als {wacht-ka-mer|met streepjes|wacht + kamer: eerst tussen de delen. ch blijft heel.}. De apotheek is door een ‘verbouwing’ tijdelijk dicht: {ver-bou-wing|met streepjes|ver- is een eigen lettergreep. ou blijft heel, en de w gaat mee.}.\n\nTel ook de klinkerklanken. ‘Schreeuwen’ heeft {twee~2|getal|schreeu-wen: De klinker met w-uitloop blijft binnen de eerste lettergreep. Schreeu-wen heeft twee lettergrepen.} lettergrepen. ‘Ruïne’ heeft er {drie~3|getal|ru-ï-ne: het trema begint een nieuwe lettergreep.}.\n\n{Zo’n|zo een, korter|zo’n is zo een: de weggelaten letters worden een apostrof.} lijst is veel werk, dat weet ik. Ben je {geïnteresseerd|ge + interesseren|ge- + een woord dat met i begint: trema op de i, zodat je ge-ïn leest.} in een extra les? Mail me dan {uiterlijk|op z’n laatst|uiterlijk: ‘luhk’ schrijf je -lijk, met ij.} vrijdag. Ik {antwoord|antwoorden, ik-vorm|antwoorden: stam antwoord, met d. Bij ik komt er niets achter.} binnen twee dagen.\n\nMet vriendelijke groet,\nMarleen de Wit',
       why: 'Knippen: voorvoegsels (in-, ver-, her-) en delen van een samenstelling (aan-vraag, on-der-zoek, wacht-ka-mer) eerst. Dan één medeklinker mee (me-di-cij-nen), en klanken als eeuw tellen als één. Uit eerdere lessen: ideeën en geïnteresseerd met een trema, brieven met v, zo’n met een apostrof, uiterlijk met -lijk en antwoord met d.',
     },
     {

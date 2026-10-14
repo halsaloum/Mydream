@@ -120,10 +120,10 @@ export const ONDERZOEK_D7: StepInput[] = [
   {
     kind: 'bet',
     id: 'flexboard',
-    prompt: 'Een verzonnen leenwoord: een ‘flexboard’, een buigbare plank. De of het?',
+    prompt: 'Voorspel alleen volgens de vertaalde-hoofdvuistregel: welk lidwoord geeft het Nederlandse “het bord” aan het verzonnen flexboard?',
     options: ['het', 'de'],
     answer: 'het',
-    why: 'board is bord, en het is het bord: het flexboard, net als het keyboard, het skateboard en het dashboard. Het hoofd wijst de weg, ook door een taalgrens heen.',
+    why: 'Deze vuistregel voorspelt het flexboard, zoals het keyboard en het skateboard. Het is geen vastgestelde norm voor een nieuw woord: het werkelijk gebruikte lidwoord kan door andere analogieën en conventies beïnvloed worden.',
   },
   {
     kind: 'sort',
@@ -160,7 +160,7 @@ export const ONDERZOEK_D7: StepInput[] = [
         ok: true,
         why: 'De is-een-toets faalt, maar meervoud en lidwoord komen van rechts. Hier rafelt de bundel aan de kant van de betekenis.',
       },
-      { t: 'Weekend is een het-woord omdat end in het Nederlands het einde is.', ok: true, why: 'Het lidwoord van het vertaalde hoofd sijpelt omhoog.' },
+      { t: 'Het lidwoord van het einde is een mogelijke analogie voor het weekend.', ok: true, why: 'Een vertaald hoofd kan bijdragen aan het gekozen lidwoord. Daarmee is niet bewezen dat het de enige historische of psychologische oorzaak is.' },
       {
         t: 'Zonder herkenbaar hoofd wordt een leenwoord meestal een het-woord.',
         ok: false,

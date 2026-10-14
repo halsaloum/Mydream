@@ -43,7 +43,7 @@ export function ProgressView() {
       <div>
         <PageHeader title="Voortgang" description="Hier zie je straks per niveau en vakgebied hoe ver je bent. Alles komt uit je eigen oefenen in deze browser." />
         <EmptyState title="Nog geen voortgang" mood="idle" action={action}>
-          Rond je eerste les af; daarna verschijnen hier je lessen, je oefentijd en hoe vaak je iets in één keer goed had.
+          Rond je eerste les af; daarna verschijnen hier je lessen, je oefentijd en je rondescores.
         </EmptyState>
       </div>
     );
@@ -61,7 +61,7 @@ export function ProgressView() {
           {total.done}
           <span className="text-body font-bold text-ink-muted"> / {totalLessons}</span>
         </Stat>
-        <Stat icon={<Target aria-hidden className="size-4" strokeWidth={2.5} />} label="Gemiddeld in één keer goed">
+        <Stat icon={<Target aria-hidden className="size-4" strokeWidth={2.5} />} label="Gemiddelde beste rondescore">
           {accuracy === null ? '–' : `${accuracy}%`}
         </Stat>
         <Stat icon={<Flame aria-hidden className="size-4" strokeWidth={2.5} />} label="Dagen op rij">

@@ -76,8 +76,8 @@ export const ONDERZOEK_D15: StepInput[] = [
         },
       },
       {
-        text: 'Een hapax is niet automatisch een nieuw woord. In een echt corpus zitten tussen de eenmalige woorden ook tikfouten, namen, vreemde woorden en oude woorden die toevallig maar één keer voorkomen. Harald Baayen en Rochelle Lieber (1991) berekenden P voor Engelse achtervoegsels in een groot corpus; zulke lijsten moeten eerst worden opgeschoond. Wie dat overslaat, telt *bereikbaarhied* als bewijs voor de productiviteit van *-heid*. Doe de schoonmaak zelf.',
-        rule: 'Schoon de hapaxen op: alleen een echte nieuwe afleiding telt als bewijs van productiviteit.',
+        text: 'Een hapax is niet automatisch een nieuw woord. In een echt corpus zitten tussen de eenmalige woorden ook tikfouten, namen, vreemde woorden en oude woorden die toevallig maar één keer voorkomen. Voor *P = n₁/N* tel je geldige woordtypen binnen het onderzochte afleidingspatroon die precies eenmaal in dit corpus voorkomen. Een oude afleiding blijft dus meetellen als zij een hapax is. Verwijder tikfouten en vormen buiten het afgesproken patroon uit zowel teller als noemer. Of een woord historisch nieuw is, onderzoek je afzonderlijk.',
+        rule: 'Voor P telt eenmaal voorkomen in het corpus, niet historische nieuwheid. Maak de selectie van het afleidingspatroon expliciet.',
         mark: {
           q: 'Tik de hapaxen die echt een nieuwe afleiding met -heid zijn',
           sentence: 'appbaarheid bereikbaarhied swipebaarheid waarheid kuisheid',
@@ -107,10 +107,10 @@ export const ONDERZOEK_D15: StepInput[] = [
       },
       {
         say: 'En elke hapax tel ik als nieuw woord, toch?',
-        options: ['Ja, een hapax is per definitie nieuw.', 'Nee, eerst tikfouten, namen en oude zeldzame woorden eruit.'],
+        options: ['Ja, een hapax is per definitie nieuw.', 'Nee: hapax betekent eenmaal in dit corpus. Geldige oude afleidingen blijven voor P meetellen.'],
         right: 1,
-        fix: 'hapaxen eerst opschonen',
-        why: 'bereikbaarhied en waarheid kunnen allebei één keer voorkomen; alleen de echte nieuwvormingen tellen.',
+        fix: 'frequentie in dit corpus onderscheiden van woordgeschiedenis',
+        why: 'Bereikbaarhied is een tikfout; waarheid is een geldige -heid-afleiding en telt mee als zij eenmaal in het corpus staat. Een hapax is niet noodzakelijk een nieuw woord.',
       },
       {
         say: 'Vlakte en groente staan er ook in. Bewijs dat -te nog leeft?',
@@ -160,10 +160,10 @@ export const ONDERZOEK_D15: StepInput[] = [
   {
     kind: 'bet',
     id: 'schoon-p',
-    prompt: 'In 1000 voorkomens van -heid vind je 25 hapaxen. Vijf blijken tikfouten, twee zijn oude woorden. Wat is P na opschoning?',
-    options: ['0,018', '0,025', '0,007'],
-    answer: '0,018',
-    why: '25 min 5 min 2 = 18 echte nieuwvormingen. 18 / 1000 = 0,018. Zonder opschonen had je 0,025 gemeld.',
+    prompt: 'Na controle zijn er 1000 geldige voorkomens van -heid. Een kandidatenlijst bevat 25 eenmalige vormen: vijf tikfouten en twintig geldige hapaxen, waaronder twee oude woorden. Wat is P?',
+    options: ['0,020', '0,018', '0,025'],
+    answer: '0,020',
+    why: 'De twintig geldige hapaxen tellen mee, ook de twee oude woorden: 20 / 1000 = 0,020. De noemer bevat hier al uitsluitend geldige voorkomens. P meet een corpusverhouding; het is geen telling van uitsluitend historisch nieuwe woorden.',
   },
   {
     kind: 'swipe',

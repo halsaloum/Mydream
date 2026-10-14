@@ -79,7 +79,7 @@ export function RecentProgress({ progress }: { progress: ProgressData }) {
                   </div>
                   <p className="text-right">
                     <span className="block font-display text-title-sm font-extrabold text-ink tabular-nums">{item.accuracy}%</span>
-                    <span className="block text-caption text-ink-muted">in één keer goed</span>
+                    <span className="block text-caption text-ink-muted">rondescore</span>
                   </p>
                 </li>
               );

@@ -16,8 +16,8 @@ export const LES_L26: LessonInput = {
       title: 'Eerst aan elkaar, soms een streepje',
       panels: [
         {
-          text: 'Eerst de belangrijkste regel. Plak je twee woorden aan elkaar tot één nieuw woord (een samenstelling), dan schrijf je ze *aan elkaar*. Niet los, en ook niet met een koppelteken: *fietsenrek*, *zonnebril*, *boekenkast*, *ziekenhuis*, *verjaardagsfeest*, *boodschappenlijst*. Ook lange woorden schrijf je in één keer: *verjaardagscadeau*, *klantenservicemedewerker*. Een koppelteken zet je alleen in de gevallen die hierna komen.',
-          rule: 'Een samenstelling schrijf je aan elkaar: *fietsenrek*, *ziekenhuis*. Niet *fietsen rek*, niet *fietsen-rek*.',
+          text: 'Eerst de belangrijkste regel. Plak je twee woorden aan elkaar tot één nieuw woord (een samenstelling), dan schrijf je ze *aan elkaar*. De gewone basisvorm heeft geen spatie en geen extra koppelteken: *fietsenrek*, *zonnebril*, *boekenkast*, *ziekenhuis*, *verjaardagsfeest*, *boodschappenlijst*. Ook lange woorden schrijf je in één keer: *verjaardagscadeau*, *klantenservicemedewerker*. Verderop leer je wanneer een koppelteken verplicht is. Daarnaast mag een extra koppelteken de leesbaarheid van een samenstelling verduidelijken; die keuze is geen spelfout.',
+          rule: 'Basisvorm van een samenstelling: aaneen (*fietsenrek*, *ziekenhuis*). Een extra koppelteken voor leesbaarheid mag; een gewone spatie tussen de delen niet.',
           compound: {
             q: 'Bouw de samenstelling en kies de goede spelling',
             rounds: [
@@ -104,7 +104,7 @@ export const LES_L26: LessonInput = {
             why: 'voor- staat voor voordelen: het koppelteken staat direct achter voor, en dan volgt een spatie.',
           },
           deep: {
-            q: 'En als het laatste deel wegvalt?',
+            q: 'En als het eerste deel wegvalt?',
             a: 'Dan staat het koppelteken vóór het deel dat overblijft: *tuinstoelen en -tafels* (tuintafels), *zomerjassen en -broeken*.',
           },
         },
@@ -200,10 +200,10 @@ export const LES_L26: LessonInput = {
       id: 'politieagent',
       prompt: 'Welke rij is helemaal goed?',
       options: [
-        'politie-agent – fotoalbum – zee-egel',
+        'politie agent – fotoalbum – zee-egel',
         'politieagent – foto-album – zeeëgel',
         'politieagent – fotoalbum – zee-egel',
-        'politie-agent – foto-album – zee-egel',
+        'politie agent – foto album – zee-egel',
       ],
       answer: 'politieagent – fotoalbum – zee-egel',
       why: 'In politieagent en fotoalbum vormen de klinkers (e + a, o + a) geen klank: aan elkaar. In zee-egel botsen ee + e: koppelteken. Een trema komt alleen binnen één woord.',
@@ -214,8 +214,8 @@ export const LES_L26: LessonInput = {
       title: 'De drie grootste fouten',
       panels: [
         {
-          text: 'Fout één, en de meest gemaakte: een samenstelling los schrijven. Je ziet het overal, op borden en in mails: *zieken huis*, *klanten service*, *verjaardags feest*. Fout. Is het één ding, dan is het één woord. Twijfel je? Zet *de* of *het* ervoor en kijk of het één ding is: *de klantenservice*, *het ziekenhuis*. En de klemtoon ligt meestal op het eerste deel: *ZIEkenhuis*, *KLANtenservice*.',
-          rule: 'Eén ding = één woord: *ziekenhuis*, *klantenservice*, *belastingdienst*.',
+          text: 'Fout één, en de meest gemaakte: een samenstelling los schrijven. Je ziet het overal, op borden en in mails: *zieken huis*, *klanten service*, *verjaardags feest*. Bij een samenstelling schrijf je de delen aaneen. Eén ding bedoelen is geen beslisregel: *de rode fiets* benoemt ook één ding, maar is een woordgroep. Vraag of het eerste deel samen met het tweede een vaste soortnaam vormt: *de klantenservice*, *het ziekenhuis*. En de klemtoon ligt meestal op het eerste deel: *ZIEkenhuis*, *KLANtenservice*.',
+          rule: 'Herken de samenstelling, niet alleen één ding: *ziekenhuis*, *klantenservice*. Een woordgroep als *de rode fiets* houdt spaties.',
           show: [
             { wrong: 'zieken huis', right: 'ziekenhuis' },
             { wrong: 'klanten service', right: 'klantenservice' },
@@ -227,15 +227,15 @@ export const LES_L26: LessonInput = {
             options: [
               'Bel de klantenservice van de energieleverancier.',
               'Bel de klanten service van de energie leverancier.',
-              'Bel de klanten-service van de energie-leverancier.',
+              'Bel de klantensservice van de energieleverancieer.',
             ],
             answer: 'Bel de klantenservice van de energieleverancier.',
             why: 'Twee samenstellingen, allebei aan elkaar. In energieleverancier botsen e en l niet, dus geen koppelteken.',
           },
         },
         {
-          text: 'Fout twee: een koppelteken waar het niet hoort. Veel mensen zetten een streepje in een lang woord, maar dat is alleen goed in de gevallen die je net leerde. Dus *fietsenrek*, niet *fietsen-rek*. *Politieagent*, niet *politie-agent*. En binnen één woord met een uitgang of met *ge-* of *be-* komt er geen koppelteken, maar een trema: *zeeën*, *beëindigen*. Alleen voor een woord dat met een losse letter begint, zoals *e-mail*, komt na *ge-* een koppelteken: *ge-e-maild*.',
-          rule: 'Geen klinkerbotsing, afkorting, cijfer, naam, *ex-*/*oud-*/*niet-* of weglating? Dan geen koppelteken.',
+          text: 'Controle twee: verplicht of facultatief? De basisvormen zijn *fietsenrek* en *politieagent*. Een extra koppelteken kan voor leesbaarheid gekozen worden: *politie-agent* is daarom geen spelfout. In deze les oefenen we de gewone basisvorm waar geen koppelteken verplicht is. En binnen één woord met een uitgang of met *ge-* of *be-* komt er geen koppelteken, maar een trema: *zeeën*, *beëindigen*. Alleen voor een woord dat met een losse letter begint, zoals *e-mail*, komt na *ge-* een koppelteken: *ge-e-maild*.',
+          rule: 'Geen verplicht geval? De basisvorm is aaneen; een extra koppelteken voor leesbaarheid blijft mogelijk.',
           lab: {
             label: 'Tik een woord',
             chips: [
@@ -258,7 +258,7 @@ export const LES_L26: LessonInput = {
           },
         },
         {
-          text: 'Twijfel je? Loop dit stappenplan langs. 1. Is het één ding? Dan aan elkaar. 2. Botsen er klinkers die je samen verkeerd leest? Koppelteken. 3. Zit er een afkorting, losse letter of cijfer in? Koppelteken. 4. *Noord-*, *Zuid-*, *Oost-*, *West-* voor een naam, of *ex-*, *oud-*, *niet-*? Koppelteken. 5. Laat je in een opsomming een deel weg? Koppelteken. Is het nergens ja? Dan gewoon aan elkaar.',
+          text: 'Twijfel je? Loop dit stappenplan langs. 1. Is het een samenstelling? Begin met de aaneengeschreven basisvorm. 2. Botsen er klinkers die je samen verkeerd leest? Koppelteken. 3. Zit er een afkorting, losse letter of cijfer in? Koppelteken. 4. *Noord-*, *Zuid-*, *Oost-*, *West-* voor een naam, of *ex-*, *oud-*, *niet-*? Koppelteken. 5. Laat je in een opsomming een deel weg? Koppelteken. Is het nergens ja? Dan gewoon aan elkaar.',
           rule: 'Basis: aan elkaar. Koppelteken alleen bij botsing, afkorting/cijfer, naam, *ex-*/*oud-*/*niet-* of weglating.',
           lab: {
             label: 'Tik een woord en loop het stappenplan langs',
@@ -307,7 +307,7 @@ export const LES_L26: LessonInput = {
         { t: 'heb' },
         { t: 'ervaring' },
         { t: 'met' },
-        { t: 'klanten-service', fix: 'klantenservice', why: 'Aan elkaar: n + s botsen niet.' },
+        { t: 'klanten service', fix: 'klantenservice', why: 'Aan elkaar: n + s botsen niet.' },
         { t: 'en' },
         { t: 'met' },
         { t: 'het' },
@@ -380,7 +380,7 @@ export const LES_L26: LessonInput = {
         { t: 'De Nederlands-Marokkaanse buurtvereniging zoekt vrijwilligers.', ok: true, why: 'Twee gelijkwaardige delen: koppelteken, en allebei met een hoofdletter.' },
         { t: 'De oud-burgemeester opende het nieuwe gemeentehuis.', ok: true, why: 'oud- in de betekenis van vroeger: koppelteken. gemeentehuis aan elkaar.' },
         { t: 'Stuur je cv als pdf-bestand mee met je sollicitatie.', ok: true, why: 'pdf is een afkorting: koppelteken. cv schrijf je klein, zonder punten.' },
-        { t: 'De politie-agent vroeg om mijn rijbewijs.', ok: false, fix: 'politie-agent → politieagent', why: 'e + a is geen klank: je leest het goed zonder streepje. Aan elkaar.' },
+        { t: 'De politie agent vroeg om mijn rijbewijs.', ok: false, fix: 'politie agent → politieagent', why: 'e + a is geen klank: je leest het goed zonder streepje. Aan elkaar.' },
       ],
     },
     {
@@ -689,10 +689,10 @@ export const LES_L26: LessonInput = {
         { t: 'deur' },
         { t: 'bij' },
         { t: 'de' },
-        { t: 'klanten-service.', fix: 'klantenservice.', why: 'Gewone samenstelling zonder botsing of afkorting: aan elkaar.' },
+        { t: 'klanten service.', fix: 'klantenservice.', why: 'Gewone samenstelling zonder botsing of afkorting: aan elkaar.' },
         { t: 'Ook' },
         { t: 'de' },
-        { t: 'politie-agent', fix: 'politieagent', why: 'e + a is geen klank: aan elkaar, zonder streepje.' },
+        { t: 'politie agent', fix: 'politieagent', why: 'e + a is geen klank: aan elkaar, zonder streepje.' },
         { t: 'die' },
         { t: 'zijn' },
         { t: 'auto' },

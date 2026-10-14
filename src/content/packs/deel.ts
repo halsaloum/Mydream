@@ -29,7 +29,7 @@ export const DEEL_LESSONS: LessonInput[] = [
             rule: 'Een morfeem is de kleinste vorm met een eigen betekenis of grammaticale functie.',
           },
           {
-            text: 'Sommige morfemen kunnen alleen staan: *boek*, *lees*, *rood*. Dat zijn *vrije* morfemen. Andere bestaan alleen als aanhangsel: *-heid*, *ver-*, *-en*. Dat zijn *gebonden* morfemen, of *affixen*. Een stam is meestal vrij, een affix altijd gebonden.',
+            text: 'Sommige morfemen kunnen alleen staan: *boek*, *lees*, *rood*. Dat zijn *vrije* morfemen. Andere zijn gebonden: *-heid*, *ver-*, *-en*. Deze voorbeelden zijn ook *affixen*. Niet elk gebonden deel is een affix: een gebonden wortel kan evenmin los voorkomen. Een affix is gebonden; een stam kan vrij of gebonden zijn.',
             lab: {
               label: 'Tik een morfeem',
               chips: [
@@ -258,8 +258,8 @@ export const DEEL_LESSONS: LessonInput[] = [
             },
           },
           {
-            text: 'Drie toetsen. *Woordsoort*: afleiding kan die veranderen (*lees* → *lezer*), buiging nooit. *Zin*: buiging is wat de zinsbouw eist (*hij loop-t*, *een mooi-e fiets*); afleiding kiest de spreker. *Plek*: buiging staat buitenaan. *Lezer-s* kan, *lezen-er* niet.',
-            rule: 'Buiging: zelfde woord, de zin vraagt erom, staat buitenaan. Afleiding: nieuw woord, vaak nieuwe woordsoort, staat binnenin.',
+            text: 'Drie aanwijzingen. *Woordsoort*: afleiding kan die veranderen (*lees* → *lezer*), maar ook behouden (*rust* → *onrust*). Buiging levert vormen van hetzelfde lexeem; deelwoorden en infinitieven zijn grensgevallen. *Zin*: sommige buiging past zich aan de omgeving aan (*hij loop-t*, *een mooi-e fiets*), terwijl je andere kenmerken voor de betekenis kiest. *Plek*: buiging staat in gewone gevallen buiten de afleiding: *lezer-s*. Gebruik deze aanwijzingen samen, niet als drie uitzonderingsloze definities.',
+            rule: 'Afleiding maakt een nieuw lexeem; buiging maakt grammaticale vormen. Woordsoort, zinsomgeving en positie geven aanwijzingen, met grensgevallen.',
             quiz: {
               q: 'Welke vorm is onmogelijk?',
               options: ['lezers', 'lezener'],
@@ -768,7 +768,7 @@ export const DEEL_LESSONS: LessonInput[] = [
         title: 'De volgorde van plakken',
         panels: [
           {
-            text: 'Een woord is geen ketting maar een boom. Je plakt steeds twee stukken aan elkaar, en elke tussenstap moet zelf een mogelijk woord zijn. Welke twee stukken van *onleesbaarheid* horen als eerste bij elkaar? Probeer het: een verkeerde stap legt uit waarom hij niet kan.',
+            text: 'Een rijtje delen laat nog niet zien welke delen eerst samenhoren. In het hier gebruikte binaire boommodel combineer je telkens twee bouwstenen. Bij *onleesbaarheid* zijn de tussenstappen herkenbare woorden; in andere patronen kunnen ook gebonden bases voorkomen. Welke twee stukken horen hier als eerste bij elkaar? Probeer het: een verkeerde stap legt uit waarom hij bij deze analyse niet past.',
             bracket: {
               tree: '[[on [lees baar]] heid]',
               nodes: [
@@ -829,10 +829,10 @@ export const DEEL_LESSONS: LessonInput[] = [
         id: 'bomen',
         prompt: 'Klopt deze zin?',
         cards: [
-          { t: 'Elke tussenstap in een woordboom is zelf een mogelijk woord.', ok: true, why: 'leesbaar en onleesbaar bestaan, onlees niet.' },
+          { t: 'Bij de hier gebruikte analyse van onleesbaarheid zijn leesbaar en onleesbaar mogelijke tussenstappen.', ok: true, why: 'On- sluit hier aan bij het bijvoeglijk naamwoord leesbaar. Dat bewijst niet dat elke woordboom uitsluitend uit zelfstandige woorden bestaat.' },
           { t: 'Kinderboekenschrijver kan maar één ding betekenen.', ok: false, fix: 'Het heeft twee bomen en dus twee betekenissen', why: 'Een schrijver van kinderboeken, of een kind dat boeken schrijft.' },
           { t: 'In onleesbaarheid plak je on- als laatste.', ok: false, fix: 'heid komt als laatste', why: 'on- plakt aan leesbaar; pas daarna maakt -heid er een zelfstandig naamwoord van.' },
-          { t: 'Elke knoop in een woordboom heeft precies twee takken.', ok: true, why: 'Daarom bevat elk paar haakjes precies twee stukken.' },
+          { t: 'In het binaire boommodel van deze oefening heeft elke samenvoegknoop twee takken.', ok: true, why: 'Daarom bevat elk paar haakjes hier twee stukken. Andere constructies, zoals circumfixen, vragen soms om een andere analyse.' },
           { t: 'De boom van een woord zie je aan de spelling.', ok: false, fix: 'De spelling laat de boom niet zien', why: 'kinderboekenschrijver schrijf je altijd hetzelfde, welke boom je ook bedoelt.' },
           { t: 'Het hoofd van onleesbaarheid is -heid.', ok: true, why: 'Het meest rechtse stuk van de hoogste knoop: daarom is het de onleesbaarheid.' },
         ],
@@ -1062,13 +1062,12 @@ export const DEEL_LESSONS: LessonInput[] = [
         ],
       },
       {
-        kind: 'fix',
+        kind: 'rewrite',
         id: 'los',
-        prompt: 'Tik het foute woord aan en verbeter het.',
-        sentence: 'De belasting dienst stuurde een brief.',
-        wrong: 1,
-        answer: 'belastingdienst',
-        why: 'Een samenstelling schrijf je aan elkaar: belastingdienst. (Tik het eerste deel.)',
+        prompt: 'Verbeter uitsluitend de spatie binnen de samenstelling. Behoud alle andere woorden.',
+        source: 'De belasting dienst stuurde een brief.',
+        accept: ['De belastingdienst stuurde een brief.'],
+        why: 'Belastingdienst is één samenstelling. De twee losse stukken worden samen één woord; er blijft geen extra dienst in de zin staan.',
       },
       {
         kind: 'sort',
@@ -1195,9 +1194,9 @@ export const DEEL_LESSONS: LessonInput[] = [
         prompt: 'In welk woord is het eerste deel het lijdend voorwerp?',
         before: '',
         after: '',
-        options: ['vrachtwagenchauffeur', 'vrachtwagenband', 'vrachtwagenparkeerplaats'],
-        answer: 'vrachtwagenchauffeur',
-        why: 'Een chauffeur bestuurt iets: de vrachtwagen. Bij band en parkeerplaats zit geen handeling in het hoofd.',
+        options: ['ramenwasser', 'raamkozijn', 'tuinkozijn'],
+        answer: 'ramenwasser',
+        why: 'Een ramenwasser wast ramen: ramen vervult de objectrol bij wassen, en wasser is zichtbaar van dat werkwoord afgeleid. Bij raamkozijn en tuinkozijn is kozijn een gewoon naamwoord. Een chauffeur heeft wel een bestuurdersrol, maar chauffeur is geen Nederlandse afleiding van een werkwoord met -er.',
       },
       {
         kind: 'rewrite',
@@ -1751,7 +1750,7 @@ export const DEEL_LESSONS: LessonInput[] = [
         title: 'Als de stam van vorm wisselt',
         panels: [
           {
-            text: 'Niet alleen uitgangen hebben allomorfen; stammen ook. *Glas* wordt *glazen*, *huis* wordt *huizen*: de s wordt z zodra er een klinker achter komt. In *glas* hoor je geen z omdat een Nederlandse slotmedeklinker altijd stemloos is (de verscherping uit Klank en letter).',
+            text: 'Niet alleen uitgangen hebben allomorfen; stammen ook. Bij *glas → glazen* en *huis → huizen* zie je s tegenover z. Aan het woordeinde worden stemhebbende obstruenten zoals d, v en z in de standaarduitspraak stemloos. Dat geldt niet voor alle medeklinkers: m, n en l blijven bijvoorbeeld stemhebbend. Een s wordt ook niet bij elk woord z voor een klinker: *kruis → kruisen*.',
             lab: {
               label: 'Tik een woord',
               chips: [

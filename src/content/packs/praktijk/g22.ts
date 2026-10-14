@@ -190,8 +190,8 @@ export const LES_G22: LessonInput = {
           },
         },
         {
-          text: 'Twijfel je? Stel drie vragen. Vraag 1: is de klank kort (*a*, *e*, *i*, *o*, *u*)? Vraag 2: staat er maar één medeklinker achter? Vraag 3: komt er een klinker achter, zoals *-en*, *-e*, *-er* of *-ig*? Drie keer ja: verdubbelen. Eén keer nee: niet verdubbelen. Let op: bij *s* en *f* wordt het gewoon *ss* en *ff*: *les*, *lessen*; *straf*, *straffen*.',
-          rule: 'Kort? Eén medeklinker? Klinker erachter? Drie keer ja: verdubbelen.',
+          text: 'Twijfel je? Stel drie vragen. Vraag 1: is de klank kort (*a*, *e*, *i*, *o*, *u*)? Vraag 2: staat er maar één medeklinker achter? Vraag 3: komt er een klinker achter, zoals *-en*, *-e*, *-er* of *-ig*? Drie keer ja: meestal verdubbelen. Controleer de genoemde uitzonderingen, zoals monniken en perziken, afzonderlijk. Eén keer nee: in deze gewone gevallen niet verdubbelen. Let op: bij *s* en *f* wordt het gewoon *ss* en *ff*: *les*, *lessen*; *straf*, *straffen*.',
+          rule: 'Kort? Eén medeklinker? Klinker erachter? Drie keer ja: meestal verdubbelen; de besproken uitzonderingen controleer je apart.',
           lab: {
             label: 'Tik een woord en stel de drie vragen',
             chips: [

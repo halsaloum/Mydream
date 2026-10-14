@@ -20,7 +20,7 @@ const rewrite = (lessonId: string, source: string) =>
 describe('lesplan', () => {
   it('haalt snelle checks uit de uitleg en zet ze direct erachter', () => {
     const plan = buildPlan(getLessonEntry('k1')!.lesson);
-    expect(plan.map((item) => item.step.kind)).toEqual(['explain', 'choice', 'sort', 'choice', 'type', 'fix', 'explain', 'sort', 'cloze', 'choice', 'proofread']);
+    expect(plan.map((item) => item.step.kind)).toEqual(['explain', 'choice', 'sort', 'choice', 'type', 'fix', 'explain', 'sort', 'cloze', 'choice', 'proofread', 'type']);
     const explain = plan[0]!.step;
     expect(explain.kind === 'explain' && explain.panels.every((panel) => !panel.quiz)).toBe(true);
     expect(plan[1]!.step).toMatchObject({ kind: 'choice', prompt: 'Welke is goed gespeld?', answer: 'klein' });
@@ -104,6 +104,19 @@ describe('beoordeling', () => {
     const capitals = rewrite('z3', 'ga je mee naar utrecht');
     expect(isCorrect(capitals, { kind: 'rewrite', value: 'Ga je mee naar Utrecht ?' })).toBe(true);
     expect(isCorrect(capitals, { kind: 'rewrite', value: 'ga je mee naar utrecht?' })).toBe(false);
+  });
+
+  it('controleert hoofdletters ook als een herschrijfopdracht tegelijk een spellingfout verbetert', () => {
+    const step: StepOf<'rewrite'> = { kind: 'rewrite', prompt: 'Verbeter de spelling en hoofdletters.', source: 'noor fietsd naar utrecht.', accept: ['Noor fietst naar Utrecht.'], why: 'Naam en plaats krijgen een hoofdletter.', strict: true };
+    expect(isFormExercise(step)).toBe(false);
+    expect(isCorrect(step, { kind: 'rewrite', value: 'noor fietst naar utrecht.' })).toBe(false);
+    expect(isCorrect(step, { kind: 'rewrite', value: 'Noor fietst naar Utrecht.' })).toBe(true);
+  });
+
+  it('laat een fout met alleen hoofdletters niet ongewijzigd slagen wanneer strikte correctie gevraagd is', () => {
+    const step: StepOf<'fix'> = { kind: 'fix', prompt: 'Verbeter de hoofdletter.', sentence: 'noor leest.', wrong: 0, answer: 'Noor', why: 'Een eigennaam krijgt een hoofdletter.', strict: true };
+    expect(isCorrect(step, { kind: 'fix', index: 0, value: 'noor' })).toBe(false);
+    expect(isCorrect(step, { kind: 'fix', index: 0, value: 'Noor' })).toBe(true);
   });
 
   it('vrij schrijven: woorden tellen en taakeisen afvinken', () => {

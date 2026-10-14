@@ -150,10 +150,10 @@ export const DEEL_3D_LESSONS: LessonInput[] = [
         kind: 'fix',
         id: 'pomp',
         prompt: 'Tik het foute woord aan en verbeter het.',
-        sentence: 'Ik pomp mijn achterband op met de bandpomp van de buren.',
+        sentence: 'Ik pomp mijn achterband op met de bandepomp van de buren.',
         wrong: 7,
         answer: 'bandenpomp',
-        why: 'Band heeft het meervoud banden: bandenpomp, met -en-.',
+        why: 'De gewone samenstelling is bandenpomp. In de aanwezige tussen-e schrijf je de n: band heeft alleen het meervoud banden. Het meervoud verplicht niet in elke samenstelling met band tot een tussenklank.',
       },
       {
         kind: 'bet',

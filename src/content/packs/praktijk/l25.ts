@@ -16,8 +16,8 @@ export const LES_L25: LessonInput = {
       title: 'Een klein teken dat een klank beschermt',
       panels: [
         {
-          text: 'Eindigt een woord op *a*, *i*, *o*, *u* of *y*, dan krijgt het meervoud *’s*. Zonder apostrof zou je de klinker kort lezen: *autos* lees je als *au-tos*, met de korte *o* van *pot*. De apostrof houdt de klank lang: *auto’s*. Zo ook *pizza’s*, *pagina’s*, *ski’s*, *taxi’s*, *foto’s*, *euro’s*, *menu’s*, *paraplu’s*, *baby’s* en *hobby’s*.',
-          rule: 'Woord op *a*, *i*, *o*, *u* of *y*: meervoud met *’s* (*auto’s*, *menu’s*, *baby’s*).',
+          text: 'Eindigt een woord op een lange klinker die met één *a*, *i*, *o*, *u* of *y* is geschreven, dan krijgt het meervoud op s een apostrof: *’s*. Een lettergroep als *ay* blijft zonder apostrof: *spray*, *sprays*. Zonder apostrof zou je de klinker kort lezen: *autos* lees je als *au-tos*, met de korte *o* van *pot*. De apostrof houdt de klank lang: *auto’s*. Zo ook *pizza’s*, *pagina’s*, *ski’s*, *taxi’s*, *foto’s*, *euro’s*, *menu’s*, *paraplu’s*, *baby’s* en *hobby’s*.',
+          rule: 'Enkele klinkerletter met lange klank: meervoud op s met apostrof (*auto’s*, *menu’s*, *baby’s*). Klinkercombinatie: zonder (*sprays*).',
           show: [
             { wrong: 'autos', right: 'auto’s' },
             { wrong: 'menus', right: 'menu’s' },
@@ -47,7 +47,7 @@ export const LES_L25: LessonInput = {
           },
         },
         {
-          text: 'Bij een naam zet je een *s* om te laten zien van wie iets is: *Jans fiets*, *Hasans auto*, *Sannes jas*, *Renés boek*. Een apostrof komt er alleen in twee gevallen. Eindigt de naam op *a*, *i*, *o*, *u* of *y*, dan schrijf je *’s*: *Anna’s fiets*, *Hugo’s jas*, *Willy’s kamer*. Eindigt de naam op een *s*, *x* of *z*, dan zet je alleen een apostrof: *Klaas’ auto*, *Max’ jas*, *Thomas’ telefoon*, *Inez’ tas*.',
+          text: 'Bij een naam zet je een *s* om te laten zien van wie iets is: *Jans fiets*, *Hasans auto*, *Sannes jas*, *Renés boek*. Een apostrof komt er alleen in twee gevallen. Eindigt de naam op een lange klinker geschreven met één *a*, *i*, *o*, *u* of *y*, dan schrijf je *’s*: *Anna’s fiets*, *Hugo’s jas*, *Willy’s kamer*. Eindigt de naam op een uitgesproken s-klank, vaak geschreven als *s*, *x* of *z*, dan zet je alleen een apostrof: *Klaas’ auto*, *Max’ jas*, *Thomas’ telefoon*, *Inez’ tas*.',
           rule: 'Bezit bij een naam: gewoon *s* (*Jans*). Op *a, i, o, u, y*: *’s* (*Anna’s*). Op *s, x, z*: alleen *’* (*Max’*).',
           paradigm: {
             q: 'Van wie is de fiets?',
@@ -345,6 +345,7 @@ export const LES_L25: LessonInput = {
     {
       kind: 'rewrite',
       id: 'apostrofs-terug',
+      strict: true,
       prompt: 'Zet de apostrofs en de hoofdletters goed. Verander verder niets.',
       source: 's zomers maakt Hugos zus fotos van de cafés en taxis voor Peters website.',
       accept: ['’s Zomers maakt Hugo’s zus foto’s van de cafés en taxi’s voor Peters website.'],

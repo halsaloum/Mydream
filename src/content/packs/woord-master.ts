@@ -545,7 +545,7 @@ export const WOORD_MASTER_LESSONS: LessonInput[] = [
               answer: 'de roodborst',
               why: 'Het prototype zit in het midden van de categorie; de pinguïn hangt aan de rand.',
             },
-            rule: 'Een categorie is geen lijstje eisen maar een middelpunt met een vage rand.',
+            rule: 'Typicaliteit kan gradueel zijn. Dat bewijst op zichzelf niet dat het categorielidmaatschap of de categoriegrens vaag is.',
             deep: {
               q: 'Kopje of kom?',
               a: 'William Labov (1973) liet tekeningen zien van bakjes die steeds breder werden. Bij een smal bakje zeiden mensen *kopje*, bij een breed *kom*. Maar de grens verschoof met de context: stond er soep in, dan werd hetzelfde bakje eerder een kom. Al eerder schreef Ludwig Wittgenstein dat de leden van *spel* (schaken, voetbal, kiekeboe) geen gemeenschappelijk kenmerk delen, alleen een *familiegelijkenis*.',
@@ -584,14 +584,14 @@ export const WOORD_MASTER_LESSONS: LessonInput[] = [
       {
         kind: 'ladder',
         id: 'vogel',
-        prompt: 'Hoe vogelig is deze vogel?',
-        intro: 'Zet de vogels op de ladder, van rand naar prototype. Zo scoorden ze ongeveer bij Rosch.',
+        prompt: 'Rangschik de vogels volgens de opgegeven typischheidsoordelen.',
+        intro: 'Verzonnen oefengegevens op een schaal van 1 tot 7: pinguïn 2, kip 3, eend 5, roodborst 6. Zet van laag naar hoog. Alle vier horen volledig bij de biologische categorie vogel; deze cijfers meten alleen een oordeel over typischheid.',
         sentence: { before: 'Een', after: 'is een vogel.' },
         steps: [{ t: 'pinguïn' }, { t: 'kip' }, { t: 'eend' }, { t: 'roodborst' }],
         low: 'rand',
         high: 'prototype',
         startHint: 'Begin met de vogel die niet vliegt en zwemt als een vis.',
-        done: { title: 'Gradiënt', text: 'Alle vier zijn vogels, maar niet allemaal even goed. Dat verschil zit in je hoofd en je kunt het meten.' },
+        done: { title: 'Gradiënt', text: 'Alle vier zijn volwaardige vogels. In deze voorbeeldrangschikking verschillen ze in typischheid; die beoordeling kan per persoon, ervaring en onderzoek variëren.' },
       },
       {
         kind: 'choice',
@@ -1148,13 +1148,13 @@ export const WOORD_MASTER_LESSONS: LessonInput[] = [
             },
           },
           {
-            text: 'Hoe rijk is de woordenschat van een tekst? De eenvoudigste maat is de *type-tokenverhouding*: types gedeeld door tokens. Maar die daalt altijd als een tekst langer wordt, want nieuwe woorden komen steeds trager: dat heet de *wet van Heaps*. Een tekst van 100 woorden en een van 10.000 vergelijk je dus niet met deze maat. Philip McCarthy en Scott Jarvis (2010) ontwikkelden maten zoals *MTLD* die minder van de lengte afhangen.',
-            rule: 'Type-tokenverhouding daalt met de lengte. Vergelijk alleen even lange teksten, of gebruik een gecorrigeerde maat.',
+            text: 'De *type-tokenverhouding* is het aantal verschillende vormen gedeeld door alle voorkomens. In langere natuurlijke teksten wordt die verhouding gemiddeld lager, omdat woorden vaker herhaald worden. Bij een afzonderlijke uitbreiding met nieuwe woorden kan zij echter stijgen. Dat lengte-effect maakt een vergelijking van 100 met 10.000 tokens onbetrouwbaar als maat voor woordenschatvariatie. Maten zoals *MTLD* zijn ontworpen om minder gevoelig voor tekstlengte te zijn.',
+            rule: 'Type-tokenverhouding is gevoelig voor tekstlengte. Vergelijk materiaal van gelijke omvang of gebruik een passende gecorrigeerde maat.',
             quiz: {
               q: 'Tekst A (100 tokens) heeft 70 types, tekst B (5000 tokens) 1500. Mag je concluderen dat A rijker is?',
-              options: ['Nee, de verhouding daalt vanzelf met de lengte', 'Ja, 70 procent is meer dan 30 procent'],
-              answer: 'Nee, de verhouding daalt vanzelf met de lengte',
-              why: 'Elke lange tekst herhaalt meer woorden. De maat is alleen eerlijk bij gelijke lengte.',
+              options: ['Nee, de verhouding is gevoelig voor tekstlengte', 'Ja, 70 procent is meer dan 30 procent'],
+              answer: 'Nee, de verhouding is gevoelig voor tekstlengte',
+              why: 'Langere natuurlijke teksten hebben gemiddeld meer herhalingen. De ongelijke lengte verhindert hier een eerlijke vergelijking van woordenschatvariatie.',
             },
           },
           {
@@ -1186,10 +1186,10 @@ export const WOORD_MASTER_LESSONS: LessonInput[] = [
       {
         kind: 'order',
         id: 'rang',
-        prompt: 'Zet de woorden van frequent naar zeldzaam.',
+        prompt: 'Zet de woorden van frequent naar zeldzaam in dit oefencorpus: de = 1000, huis = 60, ondanks = 20, kwispelen = 2 voorkomens.',
         tiles: ['kwispelen', 'de', 'ondanks', 'huis'],
         answer: 'de huis ondanks kwispelen',
-        why: 'De is een functiewoord bovenaan de lijst, huis een vaak gebruikt inhoudswoord, ondanks een minder vaak gebruikt functiewoord, kwispelen staat ver in de staart.',
+        why: 'De opgegeven aantallen bepalen hier de volgorde: 1000, 60, 20, 2. In een ander genre of corpus kan de rang van huis en ondanks verschillen; de opdracht presenteert de volgorde niet als een universele frequentiewet.',
       },
       {
         kind: 'bet',
@@ -1216,7 +1216,7 @@ export const WOORD_MASTER_LESSONS: LessonInput[] = [
         cards: [
           { t: 'Zipf 3 betekent ongeveer één keer per miljoen woorden.', ok: true, why: 'Eén per miljoen = 1000 per miljard, log₁₀ = 3.' },
           { t: 'Tellingen uit ondertitels voorspellen woordherkenning slechter dan boeken.', ok: false, fix: 'Ze voorspellen het beter', why: 'Dat bleek bij SUBTLEX-NL.' },
-          { t: 'De type-tokenverhouding blijft gelijk als een tekst langer wordt.', ok: false, fix: 'Ze daalt met de lengte', why: 'De wet van Heaps: nieuwe woorden komen steeds trager.' },
+          { t: 'De type-tokenverhouding is ongevoelig voor tekstlengte.', ok: false, fix: 'Ze is lengtegevoelig en wordt in natuurlijke teksten gemiddeld lager bij grotere lengte', why: 'Een uitbreiding met alleen nieuwe woorden kan de verhouding juist verhogen. Daarom vergelijk je gelijke tekstomvang of gebruik je een maat die voor lengte corrigeert.' },
           { t: 'Willekeurige tekst kan een Zipf-achtige verdeling geven.', ok: true, why: 'Miller (1957).' },
           { t: 'Ongeveer de helft van de types in een groot corpus komt maar één keer voor.', ok: true, why: 'De hapaxen: de lange staart van Zipf.' },
           { t: 'Woordlengte hangt alleen af van frequentie.', ok: false, fix: 'Voorspelbaarheid in context speelt ook mee', why: 'Piantadosi, Tily en Gibson (2011).' },
@@ -1298,7 +1298,7 @@ export const WOORD_MASTER_LESSONS: LessonInput[] = [
         cards: [
           { t: 'Bij een scheidbaar werkwoord komt ge- vóór het partikel.', ok: false, fix: 'ge- komt tussen partikel en stam: opgebeld', why: 'Het partikel staat buiten het werkwoord.' },
           { t: 'Klitieken hebben geen eigen klemtoon.', ok: true, why: 'Ze leunen op hun buur: heeft ie.' },
-          { t: 'Vóórkomen en voorkómen verschillen alleen in klemtoon en buiging.', ok: true, why: 'En daardoor ook in betekenis: gebeuren tegenover tegenhouden.' },
+          { t: 'Vóórkomen en voorkómen verschillen in betekenis, klemtoon en scheidbaarheid.', ok: true, why: 'Vóórkomen betekent gebeuren: het komt voor. Voorkómen betekent tegenhouden: het voorkomt problemen. De betekenis helpt bepalen welke vorm je nodig hebt.' },
           { t: 'In een bijzin staat een partikelwerkwoord altijd in één stuk.', ok: false, fix: 'Ook: dat ik je op wil bellen', why: 'Het partikel kan vóór het hele werkwoordcluster staan.' },
           { t: 'In ‘de buurman z’n auto’ hoort z’n bij de hele groep de buurman.', ok: true, why: 'Een klitiek hecht zich aan een woordgroep, niet aan één woord.' },
           { t: 'Stofzuigen vervoeg je als een scheidbaar werkwoord: ik zuig stof.', ok: false, fix: 'ik stofzuig, gestofzuigd', why: 'Stofzuigen is één onscheidbaar werkwoord geworden.' },

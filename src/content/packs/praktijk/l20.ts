@@ -24,11 +24,11 @@ export const LES_L20: LessonInput = {
           },
           deep: {
             q: 'En in België?',
-            a: 'Daar heet de *j* meestal *jot*. De andere namen zijn hetzelfde. De *y* heet *i-grec* of *Griekse ij*.',
+            a: 'Daar heet de *j* meestal *jot*. Voor andere letters bestaan ook uitspraakvarianten. De *y* heet *i-grec* of *Griekse ij*.',
           },
         },
         {
-          text: 'Aan de telefoon klinken *bee*, *dee*, *pee* en *tee* bijna gelijk. Daarom gebruik je een spelalfabet: bij elke letter een vast woord. Het Nederlandse spelalfabet is: *Anton*, *Bernard*, *Cornelis*, *Dirk*, *Eduard*, *Ferdinand*, *Gerard*, *Hendrik*, *Izaak*, *Johan*, *Karel*, *Lodewijk*, *Marie*, *Nico*, *Otto*, *Pieter*, *Quotiënt*, *Rudolf*, *Simon*, *Teunis*, *Utrecht*, *Victor*, *Willem*, *Xantippe*, *Ypsilon*, *Zaandam*. Voor de *ij* zeg je *IJmuiden*. Je zegt dan: *B van Bernard*.',
+          text: 'Aan de telefoon klinken *bee*, *dee*, *pee* en *tee* bijna gelijk. Daarom gebruik je een spelalfabet: bij elke letter een vast woord. Een veelgebruikt traditioneel Nederlands namen-spelalfabet is: *Anton*, *Bernard*, *Cornelis*, *Dirk*, *Eduard*, *Ferdinand*, *Gerard*, *Hendrik*, *Izaak*, *Johan*, *Karel*, *Lodewijk*, *Marie*, *Nico*, *Otto*, *Pieter*, *Quotiënt*, *Rudolf*, *Simon*, *Teunis*, *Utrecht*, *Victor*, *Willem*, *Xantippe*, *Ypsilon*, *Zaandam*. In dit traditionele alfabet zeg je voor *ij* *IJmuiden*: bijvoorbeeld *B van Bernard*. Er bestaan ook andere spelalfabetten, zoals een alfabet met plaatsnamen. Spreek af welk alfabet je gebruikt en laat de ontvanger de letters teruglezen.',
           rule: 'Spellen aan de telefoon: *letter + van + woord*, bijvoorbeeld *D van Dirk*.',
           lab: {
             label: 'Tik een letter die vaak misgaat',
@@ -45,7 +45,7 @@ export const LES_L20: LessonInput = {
             q: 'Je spelt je achternaam Dekker aan de telefoon. Wat zeg je bij de eerste letter?',
             options: ['D van Dirk', 'dee', 'D van Teunis', 'Dee van Dekker'],
             answer: 'D van Dirk',
-            why: 'Zeg je alleen dee, dan kan de ander tee horen. D van Dirk is altijd duidelijk.',
+            why: 'Zeg je alleen dee, dan kan de ander tee horen. D van Dirk maakt de bedoelde letter duidelijker; een teruglezing controleert of de ontvanger hem juist heeft genoteerd.',
           },
         },
         {
@@ -106,7 +106,7 @@ export const LES_L20: LessonInput = {
     {
       kind: 'type',
       id: 'spelalfabet-x',
-      prompt: 'Welk woord uit het spelalfabet zeg je bij deze letter?',
+      prompt: 'Welk woord uit het hier geoefende traditionele namen-spelalfabet zeg je bij deze letter?',
       before: 'Je postcode eindigt op KX. Je zegt: K van Karel, X van',
       after: '.',
       hint: '',
@@ -387,7 +387,7 @@ export const LES_L20: LessonInput = {
           a: 'vermijden',
           why: 'vermeden is een vorm van vermijden. Een werkwoord zoek je op als hele werkwoord.',
         },
-        { q: 'Welk woord uit het spelalfabet zeg je bij de *l*?', a: 'Lodewijk', why: 'L van Lodewijk: met ij en een k aan het eind.' },
+        { q: 'Welk woord uit het hier geoefende traditionele namen-spelalfabet zeg je bij de *l*?', a: 'Lodewijk', why: 'L van Lodewijk: met ij en een k aan het eind.' },
         {
           q: 'Zo staat *Kees van den Broek* in een Nederlandse lijst. Typ: achternaam, komma, de rest.',
           a: 'Broek, Kees van den',
@@ -412,7 +412,7 @@ export const LES_L20: LessonInput = {
         },
         { q: 'Onder welke letter staat *Ilse van Doorn* in een Nederlandse lijst?', a: 'd', why: 'van telt niet mee: Doorn, Ilse van. Dus onder de D.' },
         { q: 'Iemand spelt een woord: *jee, uu, er, ie, es, tee*. Typ het woord.', a: 'jurist', why: 'jee = j. Let op: gee is de g. uu = u, ie = i: jurist.' },
-        { q: 'Welk woord uit het spelalfabet zeg je bij de *f*?', a: 'Ferdinand', why: 'F van Ferdinand, met een d aan het eind.' },
+        { q: 'Welk woord uit het hier geoefende traditionele namen-spelalfabet zeg je bij de *f*?', a: 'Ferdinand', why: 'F van Ferdinand, met een d aan het eind.' },
         {
           q: 'Hoe heet het teken *_* als je een mailadres spelt?',
           a: 'laag streepje',
@@ -431,7 +431,7 @@ export const LES_L20: LessonInput = {
           why: 'vee = v en wee = w: die lijken op elkaar. uu + ie is de ui: verhuiswagen.',
         },
         { q: 'Welke basisvorm zoek je op als je *leeuwen* wilt controleren?', a: 'leeuw', why: 'Enkelvoud: één leeuw, twee leeuwen.' },
-        { q: 'Welk woord uit het spelalfabet zeg je bij de *ij*?', a: 'IJmuiden', why: 'IJ van IJmuiden. Zo weet de ander dat het geen ei is.' },
+        { q: 'Welk woord uit het hier geoefende traditionele namen-spelalfabet zeg je bij de *ij*?', a: 'IJmuiden', why: 'IJ van IJmuiden. Zo weet de ander dat het geen ei is.' },
         { q: 'Hoe heet de *z* als je een woord hardop spelt?', a: 'zet', why: 'De z heet zet.' },
         {
           q: 'Welke basisvorm zoek je op als je *bleef* wilt controleren?',

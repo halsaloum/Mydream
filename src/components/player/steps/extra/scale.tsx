@@ -37,7 +37,7 @@ export function ScaleStep({ step, response, onChange, locked, seed }: StepProps<
       setBad(id);
       window.setTimeout(() => setBad((value) => (value === id ? null : value)), 450);
       onChange({ ...response, mistakes: response.mistakes + 1 });
-      setFeedback({ id: `full-${id}-${response.mistakes + 1}`, tone: 'wrong', text: 'Er passen maar twee argumenten op de schaal. Haal er eerst één af.' });
+      setFeedback({ id: `full-${id}-${response.mistakes + 1}`, tone: 'wrong', text: `Er passen ${step.max} argumenten op de schaal. Haal er eerst één af.` });
       return;
     }
     const weak = arg.w < 2;
@@ -49,6 +49,7 @@ export function ScaleStep({ step, response, onChange, locked, seed }: StepProps<
   return (
     <div>
       <StepIntro prompt={step.prompt} intro={step.intro} />
+      <p className="mt-3 text-small text-ink-soft">Kies op de inhoud; het oefengewicht verschijnt na je keuze. De gewichten laten de afweging in dit voorbeeld zien. Controleer steeds of een argument relevant en onderbouwd is.</p>
 
       <section className="mt-6 rounded-card border-2 border-orange-line bg-orange-soft/45 p-4 sm:p-6" aria-label="Weegschaal">
         <div className="grid gap-5 lg:grid-cols-[1fr_15rem] lg:items-center">
@@ -57,7 +58,7 @@ export function ScaleStep({ step, response, onChange, locked, seed }: StepProps<
           </div>
           <div className="rounded-card border-2 border-line bg-sunken p-4">
             <ScaleIcon aria-hidden className="size-8 text-orange-ink" />
-            <p role="status" className="mt-3 font-display text-title-sm font-extrabold text-ink">{sum > step.doubt ? 'De lezer is overtuigd.' : status}</p>
+            <p role="status" className="mt-3 font-display text-title-sm font-extrabold text-ink">{sum > step.doubt ? 'De gekozen argumenten wegen hier zwaarder.' : status}</p>
             <p className="mt-2 text-small font-semibold text-ink-muted">Jouw gewicht: {sum}. Twijfel: {step.doubt}.</p>
           </div>
         </div>
@@ -81,7 +82,7 @@ export function ScaleStep({ step, response, onChange, locked, seed }: StepProps<
               transition={transition.fast}
               className={cn('min-h-28 rounded-tile border-2 p-4 text-left outline-none transition-colors focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-focus', on ? 'border-orange bg-orange-soft shadow-[0_4px_0_var(--color-orange-deep)]' : 'border-line bg-surface shadow-slab-sm hover:border-orange-line')}
             >
-              <span className="font-display text-caption font-extrabold uppercase tracking-[0.08em] text-orange-ink">{arg.type} · weegt {arg.w}</span>
+              {on && <span className="font-display text-caption font-extrabold uppercase tracking-[0.08em] text-orange-ink">{arg.type} · oefengewicht {arg.w}</span>}
               <span className="mt-2 block font-serif text-[1.15rem] leading-snug text-ink">{arg.t}</span>
             </motion.button>
           );

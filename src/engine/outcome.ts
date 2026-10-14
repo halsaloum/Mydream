@@ -1,6 +1,6 @@
 /** De uitkomst van één stap, en hoe zelfcontrolerende oefeningen hun score bepalen. */
 export type Outcome = {
-  /** 0–1: deel in één keer goed; null bij vormen zonder score. */
+  /** 0–1: taakscore in de eerste ronde; null bij vormen zonder score. */
   score: number | null;
   correct: boolean;
   /** Later in dezelfde les nog eens aanbieden. */
@@ -9,7 +9,7 @@ export type Outcome = {
   review: 'miss' | 'clear' | null;
 };
 
-/** Deel van de beslissingen dat in één keer goed was. */
+/** Goede handelingen als deel van alle handelingen, inclusief verkeerde keuzes onderweg. */
 export const taskScore = (items: number, mistakes: number) => (items + mistakes > 0 ? items / (items + mistakes) : 1);
 
 export function taskOutcome(score: number | null): Outcome {

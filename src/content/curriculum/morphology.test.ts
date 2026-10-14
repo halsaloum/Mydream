@@ -38,10 +38,14 @@ describe('morphology learning path', () => {
     }
   });
 
-  it('checks the difference between phonological and morphological boundaries in the introductory contrast', () => {
+  it('transfers the distinction between phonological and morphological boundaries to a new plural ending', () => {
     const step = MORPHOLOGY_UPGRADES.d0!.steps.find((step) => step.id === 'transfer-zelf-ontleden');
     expect(step?.kind).toBe('type');
-    if (step?.kind === 'type') expect(step.answer).toBe('stoel-en');
+    if (step?.kind === 'type') {
+      expect(step.answer).toBe('vogel-s');
+      expect(step.prompt).toContain('vogels');
+      expect(step.prompt).not.toContain(step.answer);
+    }
     const klank = MORPHOLOGY_UPGRADES.d0!.steps.find((step) => step.id === 'toepassen-klankgrens');
     expect(klank?.kind).toBe('choice');
     if (klank?.kind === 'choice') expect(klank.answer).toBe('stoe-len');

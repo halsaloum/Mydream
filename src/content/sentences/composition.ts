@@ -1,4 +1,5 @@
 import { diagnosis, segmentation, tokens } from './helpers';
+import { reviewedDebugger } from './debugger-review';
 import type { DebugExercise, SentenceLesson, SupportLevel } from './types';
 
 const ruleId = (lesson: number, rule: number) => `zinnen-${lesson.toString().padStart(2, '0')}-wet-${rule}`;
@@ -13,11 +14,11 @@ function debug(
   lesson: number, index: number, rule: number, prompt: string, sentence: string,
   targets: number[], instruction: string, repairs: string[], explanation: string, hint: string,
 ): DebugExercise {
-  return {
+  return reviewedDebugger({
     id: `zinnen-${lesson.toString().padStart(2, '0')}-debug-${index}`, kind: 'debug', support: 'zelfstandig',
     ruleId: ruleId(lesson, rule), prompt, tokens: tokens(sentence), targets: targets.map((target) => `w${target}`),
     instruction, repairs, explanation, hint,
-  };
+  });
 }
 
 const embedding: SentenceLesson = {
@@ -88,8 +89,8 @@ const embedding: SentenceLesson = {
       ] },
     { ...exercise(9, 6, 3, 'Een evaluatie kondigt een conclusie aan. Knip de zin en markeer de bijzin; kies daarna de passende volledige constructie.',
       'Bij Het is duidelijk dat… fungeert het als voorlopig onderwerp. De dat-bijzin geeft wat duidelijk is. Dat maakt er niet tot een algemene vervanger van het.', 'Probeer Dat alle teams akkoord zijn, is duidelijk.'), kind: 'gate',
-      segmentation: segmentation(['Het', 'is', 'duidelijk', 'dat alle teams akkoord zijn.'], 'De dat-inhoud blijft één blok; is en duidelijk vormen samen het naamwoordelijk gezegde.'),
-      diagnosis: diagnosis('Het is duidelijk dat alle teams akkoord zijn.', [3, 4, 5, 6, 7], 'Markeer alle woorden van de inhoud die duidelijk is.', 'De conclusie is dat alle teams akkoord zijn.'),
+      segmentation: segmentation(['___', 'is', 'duidelijk', 'dat alle teams akkoord zijn.'], 'De dat-inhoud blijft één blok; is en duidelijk vormen samen het naamwoordelijk gezegde.'),
+      diagnosis: diagnosis('___ is duidelijk dat alle teams akkoord zijn.', [3, 4, 5, 6, 7], 'Markeer alle woorden van de inhoud die duidelijk is.', 'De conclusie is dat alle teams akkoord zijn.'),
       options: [{ id: 'het', text: 'Het is duidelijk dat alle teams akkoord zijn.', feedback: 'Dit is de passende constructie met voorlopig het.' }, { id: 'er', text: 'Er is duidelijk dat alle teams akkoord zijn.', feedback: 'Er is niet uitwisselbaar met het in deze constructie.' }, { id: 'ervan', text: 'Ervan is duidelijk dat alle teams akkoord zijn.', feedback: 'Duidelijk zijn vraagt hier niet om van als vast voorzetsel.' }], answer: 'het' },
   ],
   debugger: [
@@ -235,7 +236,7 @@ const reduction: SentenceLesson = {
       ] },
     { ...exercise(11, 3, 3, 'Controleer een beknopt reisverslag. Markeer het hulpwerkwoord dat je niet voor beide gebeurtenissen kunt hergebruiken.',
       'Gelezen heeft hebben als hulpwerkwoord; vertrokken heeft hier zijn. Laat daarom ben zichtbaar staan in de tweede helft.', 'Vergelijk ik heb gelezen met ik ben vertrokken.'), kind: 'gate',
-      diagnosis: diagnosis('Ik heb het verslag gelezen en ben daarna vertrokken.', [1], 'Klik op het hulpwerkwoord bij gelezen.', 'Heb past bij gelezen. Het kan niet zonder meer het hulpwerkwoord van vertrokken worden.'),
+      diagnosis: diagnosis('Ik heb het verslag gelezen en ___ daarna vertrokken.', [1], 'Klik op het hulpwerkwoord bij gelezen.', 'Heb past bij gelezen. Het kan niet zonder meer het hulpwerkwoord van vertrokken worden.'),
       options: [{ id: 'beide', text: 'Ik heb het verslag gelezen en ben daarna vertrokken.', feedback: 'Beide juiste hulpwerkwoorden blijven zichtbaar.' }, { id: 'heb', text: 'Ik heb het verslag gelezen en daarna vertrokken.', feedback: 'De tweede handeling vraagt ben; met weglaten houd je heb als verkeerd anker over.' }, { id: 'ben', text: 'Ik ben het verslag gelezen en daarna vertrokken.', feedback: 'Ben past niet als hulpwerkwoord van actief gelezen in deze zin.' }], answer: 'beide' },
     { ...exercise(11, 4, 1, 'Knip de instructie. Verbind de vroegkomers met de beknopte bijzin die hun opdracht bevat.',
       'De coach vraagt ons om vroeg te komen. Ons zijn de gevraagde vroegkomers: een beknopte bijzin hoeft niet altijd hetzelfde onderwerp als de hoofdzin te hebben.', 'Wie krijgt de opdracht vroeg te komen?'), kind: 'tether',

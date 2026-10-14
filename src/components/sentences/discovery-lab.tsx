@@ -29,6 +29,9 @@ export function DiscoveryLab({ lesson, visited, onVisit }: DiscoveryProps) {
   const variants = lesson.discovery.variants;
   const [index, setIndex] = useState(() => Math.max(0, variants.findIndex((variant) => variant.id === visited.at(-1))));
   const [playState, setPlayState] = useState({ active: false, calm });
+  const [predictions, setPredictions] = useState<Record<string, { text: string; compared: boolean }>>({});
+  const prediction = predictions[lesson.id] ?? { text: '', compared: false };
+  const setPrediction = (patch: Partial<typeof prediction>) => setPredictions((previous) => ({ ...previous, [lesson.id]: { ...prediction, ...patch } }));
   // A preference change cancels the user's previous play request; it never resumes by itself.
   if (playState.calm !== calm) setPlayState({ active: false, calm });
   const currentIndex = Math.min(index, Math.max(0, variants.length - 1));
@@ -62,9 +65,9 @@ export function DiscoveryLab({ lesson, visited, onVisit }: DiscoveryProps) {
 
   return <section aria-label="Ontdek-lab" className="space-y-6">
     <div>
-      <p className="mb-2 flex items-center gap-2 text-caption font-bold tracking-wide text-blue-ink uppercase"><Eye aria-hidden className="size-4" />Eerst kijken, dan verklaren</p>
+      <p className="mb-2 flex items-center gap-2 text-caption font-bold tracking-wide text-blue-ink uppercase"><Eye aria-hidden className="size-4" />Voorspel, onderzoek, vergelijk</p>
       <h2 className="font-display text-title-sm font-extrabold leading-tight text-ink">{lesson.discovery.question}</h2>
-      <p className="mt-3 text-small leading-relaxed text-ink-muted">Wissel de voorbeelden. Volg wat de woorden doen en lees welke betekenis of grammaticale functie verandert.</p>
+      <p className="mt-3 text-small leading-relaxed text-ink-muted">Bekijk de contrasterende voorbeelden en geef eerst zelf een verklaring. Vergelijk daarna met de uitwerking; je voorspelling krijgt geen cijfer.</p>
     </div>
 
     <div className="flex flex-wrap gap-2" role="group" aria-label="Contrasterende voorbeelden">
@@ -84,25 +87,38 @@ export function DiscoveryLab({ lesson, visited, onVisit }: DiscoveryProps) {
         <ol aria-label="Zinblokken in leesvolgorde" className="mt-5 flex min-w-0 flex-wrap items-stretch gap-3">
           <AnimatePresence initial={false} mode="popLayout">
             {blocks.map((block, position) => <motion.li key={block.identity} layout={calm ? false : 'position'} layoutId={calm ? undefined : `${layoutId}-${block.identity}`} initial={calm ? false : { opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={calm ? undefined : { opacity: 0, y: -6 }} transition={calm ? { duration: 0 } : spring.layout} className={cn('min-w-0 max-w-full flex-1 basis-[8rem] rounded-control border-2 px-3.5 py-3 shadow-slab-sm', tones[block.accent ?? 'blue'])}>
-              <span className="mb-2 block text-caption font-bold">Blok {position + 1} · {block.role}</span>
+              <span className="mb-2 block text-caption font-bold">Blok {position + 1}{prediction.compared && <> · {block.role}</>}</span>
               <span className="block break-words font-serif text-[1.3rem] leading-snug">{block.text}</span>
             </motion.li>)}
           </AnimatePresence>
         </ol>
       </LayoutGroup>
-      <p className="mt-4 text-caption leading-relaxed text-ink-muted">De labels horen bij hele zinblokken. Een blok kan uit meerdere woorden bestaan.</p>
+      <p className="mt-4 text-caption leading-relaxed text-ink-muted">{prediction.compared ? 'De labels horen bij hele zinblokken. Een blok kan uit meerdere woorden bestaan.' : 'Volg de hele blokken terwijl je de voorbeelden vergelijkt. De grammaticale labels verschijnen bij de uitwerking.'}</p>
       <p role="status" aria-live="polite" aria-atomic="true" className="mt-5 rounded-control border border-blue-line bg-surface p-4 font-serif text-[1.4rem] leading-snug text-ink" lang="nl">{current.sentence}</p>
     </div>
 
+    <section aria-label="Eerst zelf verklaren" className="space-y-3 rounded-card border-2 border-purple-line bg-purple-soft p-4 sm:p-5">
+      <label htmlFor={`${layoutId}-prediction`} className="font-display font-bold text-purple-ink">Wat denk je dat er verandert, en waarom?</label>
+      <textarea id={`${layoutId}-prediction`} value={prediction.text} maxLength={1000} rows={3}
+        onChange={(event) => setPrediction({ text: event.target.value })}
+        placeholder="Noem een woord of heel blok als bewijs voor je verklaring…"
+        className="w-full rounded-control border-2 border-line bg-surface p-3 text-body leading-relaxed focus:border-purple-ink" />
+      {!prediction.compared ? <div className="flex flex-wrap items-center gap-3">
+        <Button variant="secondary" disabled={!prediction.text.trim()} onClick={() => setPrediction({ compared: true })}>Vergelijk mijn verklaring</Button>
+        <Button variant="ghost" size="sm" onClick={() => setPrediction({ compared: true })}>Ik heb eerst een uitgewerkt voorbeeld nodig</Button>
+      </div> : <p className="text-small leading-relaxed text-purple-ink">Vergelijk je verklaring met de uitwerking hieronder. Welk woord of blok ondersteunt haar? Pas je tekst aan als je een verschil ontdekt.</p>}
+      <p className="text-caption text-ink-muted">Deze oefennotitie blijft op dit scherm. Bewaar je eigen toepassing later op je spiekkaart.</p>
+    </section>
+
     <div className="grid min-w-0 gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:items-start">
-      <SentenceScene scene={current.scene} variantId={current.id} caption={current.note} />
+      <SentenceScene scene={current.scene} variantId={current.id} caption={prediction.compared ? current.note : 'Observeer de situatie en onderzoek welke zinsbouw of betekenis verandert.'} />
       <div className="rounded-card border-2 border-line bg-surface p-5 sm:p-6">
-        <h3 className="font-display text-lead font-extrabold text-ink">Wat je hier ziet</h3>
-        <p className="mt-3 text-body leading-relaxed text-ink-soft">{current.note}</p>
-        <div className="mt-5 border-t border-line pt-5">
+        <h3 className="font-display text-lead font-extrabold text-ink">{prediction.compared ? 'Vergelijk met de uitwerking' : 'Onderzoek eerst zelf'}</h3>
+        <p className="mt-3 text-body leading-relaxed text-ink-soft">{prediction.compared ? current.note : 'Welke woorden veranderen? Welke blijven bij elkaar? Vertellen beide zinnen hetzelfde, of verandert ook de betekenis? Geef bovenaan je verklaring of kies daar eerst een uitgewerkt voorbeeld.'}</p>
+        {prediction.compared && <div className="mt-5 border-t border-line pt-5">
           <p className="text-caption font-bold text-green-ink">Neem dit mee</p>
           <p className="mt-2 text-small leading-relaxed text-ink-soft">{lesson.discovery.takeaway}</p>
-        </div>
+        </div>}
       </div>
     </div>
 

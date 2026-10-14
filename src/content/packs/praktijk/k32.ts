@@ -16,8 +16,8 @@ export const LES_K32: LessonInput = {
       title: 'Zelfde klank, twee spellingen',
       panels: [
         {
-          text: '*au* en *ou* klinken precies hetzelfde. Zeg *blauw* en *vrouw*: dezelfde klank. Net als bij *ei* en *ij* moet je het woord dus kennen. Maar hier heb je meer hulp: *ou* komt veel vaker voor dan *au*. De meeste *au*-woorden staan in twee korte rijtjes. Ken je die rijtjes, dan schrijf je de rest bijna altijd met *ou*.',
-          rule: '*ou* is de gewone spelling. *au* vooral in twee korte rijtjes die je uit je hoofd leert.',
+          text: '*au* en *ou* klinken precies hetzelfde. Zeg *blauw* en *vrouw*: dezelfde klank. Net als bij *ei* en *ij* moet je het woord dus kennen. Maar hier heb je meer hulp: *ou* komt veel vaker voor dan *au*. De meeste *au*-woorden staan in twee korte rijtjes. De rijtjes zijn geheugensteunen voor deze woorden, geen volledige lijst van alle woorden met *au*. Bij een onbekend woord controleer je de spelling; buiten de lijst staan bijvoorbeeld *aula* en *auteur*.',
+          rule: '*au* en *ou* leer je per woord; de korte rijtjes helpen bekende woorden onthouden. Een onbekend woord zoek je op.',
           quiz: {
             q: 'Welke spelling komt het vaakst voor?',
             options: ['ou', 'au', 'allebei even vaak'],
@@ -27,7 +27,7 @@ export const LES_K32: LessonInput = {
         },
         {
           text: 'De handigste regel: komt er direct een *d* of *t* na de klank, dan schrijf je bijna altijd *ou*. Denk aan *oud*, *koud*, *goud*, *hout*, *zout*, *fout*, *stout*. Dat blijft zo als het woord langer wordt: *oude*, *ouder*, *gouden*, *houten*, *zouten*. Alleen een paar leenwoorden, zoals *astronaut*, doen het anders. Draai aan het wiel en kijk welke woorden met *z* … *t* bestaan.',
-          rule: 'Direct een *d* of *t* na de klank? Dan *ou*: *oud*, *koud*, *hout*, *zout*, *fout*.',
+          rule: 'Bij bekende gewone woorden direct *d* of *t* na de klank: meestal *ou*: *oud*, *koud*, *hout*, *zout*, *fout*.',
           wheel: {
             start: 'z',
             end: 't',
@@ -68,8 +68,8 @@ export const LES_K32: LessonInput = {
           },
         },
         {
-          text: 'Het tweede rijtje: *au* zonder *w* erachter. Ook dat is kort: *auto*, *augustus*, *saus*, *pauze*, *paus*, *augurk*, *applaus*. Ezelsbruggetje: *In augustus houdt de paus in zijn auto pauze met een augurk in de saus.* Bijna alle andere woorden zonder *w*: *ou*. Bijvoorbeeld *kous*, *nou*, *jou*, *kou*, *schouder*, *ouders*, *kabouter*.',
-          rule: '*au* zonder *w*: *auto*, *augustus*, *saus*, *pauze*, *paus*, *augurk*, *applaus*. De rest: bijna altijd *ou*.',
+          text: 'Het tweede rijtje: *au* zonder *w* erachter. Ook dat is kort: *auto*, *augustus*, *saus*, *pauze*, *paus*, *augurk*, *applaus*. Ezelsbruggetje: *In augustus houdt de paus in zijn auto pauze met een augurk in de saus.* Een aantal gewone woorden heeft juist *ou*: Bijvoorbeeld *kous*, *nou*, *jou*, *kou*, *schouder*, *ouders*, *kabouter*.',
+          rule: '*au* zonder *w*: *auto*, *augustus*, *saus*, *pauze*, *paus*, *augurk*, *applaus*. Dit is geen complete lijst; bij onbekende woorden: opzoeken.',
           quiz: {
             q: 'Welk woord schrijf je met au?',
             options: ['saus', 'kous', 'schouder', 'ouders'],
@@ -200,8 +200,8 @@ export const LES_K32: LessonInput = {
           },
         },
         {
-          text: 'Twijfel je? Gebruik dit stappenplan. 1. Komt er direct een *d* of *t* na de klank? Dan *ou* (*oud*, *zout*). 2. Hoor je een *w* erachter? Staat het woord in het *auw*-rijtje (*blauw*, *flauw*, *lauw*, *rauw*, *gauw*, *nauw*, *grauw*, *pauw*, *klauw*, *dauw*, *kauwen*, *snauwen*, *wenkbrauw*)? Dan *auw*, anders *ouw*. 3. Geen *w*? Staat het in het *au*-rijtje (*auto*, *augustus*, *saus*, *pauze*, *paus*, *augurk*, *applaus*)? Dan *au*, anders *ou*. 4. Nog twijfel: zoek het op. Tik in de zin de woorden aan waarbij stap 1 je meteen het antwoord geeft.',
-          rule: 'Eerst *d* of *t*? Dan *ou*. Daarna de twee *au*-rijtjes. De rest: *ou*.',
+          text: 'Twijfel je? Gebruik dit stappenplan. 1. Herken je een bekend gewoon woord met *d* of *t* na de klank, zoals *oud* of *zout*? Dat heeft *ou*. Leenwoorden als *astronaut* vallen buiten deze geheugensteun. 2. Zoek een bekende vorm of het geheugenrijtje waarin jouw woord voorkomt: *blauw* en *pauw* met *au*, *vrouw* en *bouw* met *ou*. 3. Een woord dat niet in de rijtjes staat, kun je niet betrouwbaar raden. Controleer dat woord in de Woordenlijst en onthoud de spelling bij een voorbeeldzin. Tik in de zin de woorden aan waarbij stap 1 je meteen het antwoord geeft.',
+          rule: 'Gebruik een bekende vorm of een geheugenrijtje. Buiten de geoefende woorden: opzoeken, niet automatisch *ou* kiezen.',
           mark: {
             q: 'Tik de woorden waarbij stap 1 (d of t na de klank) het antwoord geeft',
             sentence: 'Mijn oude buurvrouw zet zout op tafel, want de soep is flauw.',

@@ -1,6 +1,6 @@
-import { screen } from '@testing-library/react';
+import { act, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { getDemo } from '@/content/demo';
 import type { StepKind, StepOf } from '@/content/schema';
 import { BetStep } from './bet';
@@ -8,6 +8,8 @@ import { DictationStep } from './dictation';
 import { ProofreadStep } from './proofread';
 import { StackStep } from './stack';
 import { renderStep } from '../test-utils';
+
+afterEach(() => vi.useRealTimers());
 
 function demo<K extends StepKind>(slug: string, kind: K): StepOf<K> {
   const step = getDemo(slug)?.step;
@@ -26,6 +28,14 @@ function shownOrder(role: 'button' | 'radio', texts: readonly string[]) {
 }
 
 describe('groep D extra oefenvormen', () => {
+  it('verraadt de rol van een aangeboden zin ook niet aan een schermlezer', () => {
+    const step = demo('alinea-stapel', 'stack');
+    renderStep(StackStep, step);
+    for (const layer of step.layers) {
+      expect(screen.getByRole('button', { name: layer.text })).toBeVisible();
+      expect(screen.queryByRole('button', { name: `${layer.text}. ${layer.role}` })).not.toBeInTheDocument();
+    }
+  });
   it('bouwt de alinea-stapel en telt een verkeerde laag', async () => {
     const user = userEvent.setup();
     const step = demo('alinea-stapel', 'stack');
@@ -74,17 +84,24 @@ describe('groep D extra oefenvormen', () => {
     expect(view.state.locked).toBe(true);
     expect(view.state.correct).toBe(true);
     expect(view.state.response).toMatchObject({ value: step.answer, bet: 3 });
-    expect(screen.getByText('Heel zeker en goed: dit beheers je. Deze vraag hoeft niet snel terug te komen.')).toBeInTheDocument();
+    expect(screen.getByText('Heel zeker en goed in deze ronde. Controleer later met een nieuw voorbeeld of je het ook zonder hulp kunt.')).toBeInTheDocument();
   });
 
   it('dictee toont de zin zonder speech en controleert met Enter via toetsenbord', async () => {
-    const user = userEvent.setup();
+    vi.useFakeTimers({ shouldAdvanceTime: true });
+    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
     const step = demo('dictee', 'dictation');
     const view = renderStep(DictationStep, step);
 
     await user.click(screen.getByRole('button', { name: 'Speel de zin af' }));
     expect(view.state.response.plays).toBe(1);
     expect(view.state.response.shown).toBe(true);
+    expect(screen.getByRole('textbox', { name: 'Jouw zin' })).toHaveAttribute('readonly');
+    await user.click(screen.getByRole('textbox', { name: 'Jouw zin' }));
+    await user.keyboard('Ik schrijf nu alvast.');
+    expect(view.state.response.value).toBe('');
+    act(() => vi.advanceTimersByTime(10_000));
+    expect(screen.getByRole('textbox', { name: 'Jouw zin' })).not.toHaveAttribute('readonly');
 
     await user.click(screen.getByLabelText('Jouw zin'));
     await user.keyboard('Mijn vrouw draagt een blauwe jas.{Enter}');

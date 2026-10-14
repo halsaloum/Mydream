@@ -54,7 +54,9 @@ describe('groep C extra oefenvormen', () => {
     const view = renderStep(ChatStep, step);
 
     await user.click(screen.getByRole('button', { name: /Ja, dat ken ik wel regelen/i }));
-    expect(screen.getByText(/verbeterd voor het versturen: ken → kan/i)).toBeInTheDocument();
+    expect(screen.getByText(/Voorbeeldverbetering: ken → kan/i)).toBeInTheDocument();
+    expect(screen.getByText('Ja, dat ken ik wel regelen.')).toBeInTheDocument();
+    expect(screen.getByText('Ja, dat kan ik wel regelen.')).toBeInTheDocument();
     expect(screen.getByText(/Anouk typt/i)).toBeInTheDocument();
     await act(async () => vi.advanceTimersByTime(1200));
 
@@ -105,14 +107,16 @@ describe('groep C extra oefenvormen', () => {
     const step = demoStep('weegschaal', 'scale');
     const view = renderStep(ScaleStep, step);
 
-    await user.click(screen.getByRole('button', { name: /mening · weegt 1/i }));
+    const argument = (id: string) => screen.getByRole('button', { name: (name) => name.includes(step.args.find((arg) => arg.id === id)!.t) });
+    expect(screen.queryByText(/oefengewicht \d/)).not.toBeInTheDocument();
+    await user.click(argument('mening'));
     expect(view.state.response.mistakes).toBe(1);
-    await user.click(screen.getByRole('button', { name: /feit · weegt 3/i }));
-    await user.click(screen.getByRole('button', { name: /voorbeeld · weegt 2/i }));
+    await user.click(argument('feit'));
+    await user.click(argument('voorbeeld'));
     expect(view.state.response.mistakes).toBe(2);
 
-    await user.click(screen.getByRole('button', { name: /mening · weegt 1/i }));
-    await user.click(screen.getByRole('button', { name: /voorbeeld · weegt 2/i }));
+    await user.click(argument('mening'));
+    await user.click(argument('voorbeeld'));
 
     expect(view.state.locked).toBe(true);
     expect(view.state.response.on).toEqual(['feit', 'voorbeeld']);
@@ -215,8 +219,8 @@ describe('groep C: keuzes staan niet op een vaste plek', () => {
       expect([...order].sort()).toEqual([...texts].sort());
       orders.add(order.join('|'));
 
-      await user.click(screen.getByRole('button', { name: /feit · weegt 3/i }));
-      await user.click(screen.getByRole('button', { name: /voorbeeld · weegt 2/i }));
+      await user.click(screen.getByRole('button', { name: (name) => name.includes(step.args.find((arg) => arg.id === 'feit')!.t) }));
+      await user.click(screen.getByRole('button', { name: (name) => name.includes(step.args.find((arg) => arg.id === 'voorbeeld')!.t) }));
       expect(view.state.response).toMatchObject({ on: ['feit', 'voorbeeld'], mistakes: 0 });
       view.unmount();
     }

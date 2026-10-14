@@ -63,8 +63,8 @@ export const LES_W25: LessonInput = {
           },
         },
         {
-          text: 'Het tweede *er* is een plaatsbepaling: *Ik woon er al jaren.* Dit is het zwakke broertje van *daar*. De toets: vervang het door *daar* en de zin blijft kloppen (*Ik woon daar al jaren*). Het verschil is klemtoon. *Daar* kun je beklemtonen en vooraan zetten (*Dáár woon ik*), *er* nooit: *Er woon ik* bestaat niet. Alleen het presentatieve *er* mag een zin openen. Begint een zin met *er*, dan weet je dus meteen welk *er* je leest.',
-          rule: 'Plaatsaanduidend er = onbeklemtoond daar. Het staat in het middenveld, nooit vooraan.',
+          text: 'Plaatsaanduidend *er* kan *daar* vervangen: *Ik woon er al jaren*. Als alleen die plaats bedoeld is, gebruik je vooraan de sterke vorm: *Dáár woon ik*. *Er woon ik* is daarvoor niet de gewone standaardvorm. Een eerste *er* kan echter meer dan één functie hebben: *Er wonen veel studenten* kan zowel iets presenteren als naar een plaats verwijzen. De positie vertelt dus niet het hele verhaal.',
+          rule: 'Alleen plaatsaanduidend er staat gewoonlijk in het middenveld. Voor nadruk of zelfstandig plaatsgebruik vooraan kies je daar; gecombineerd presentatief gebruik vraagt een aparte analyse.',
           mark: {
             q: 'Tik het er dat je door daar kunt vervangen',
             sentence: 'Er liggen mooie stranden aan die kust en we zijn er vorig jaar geweest.',
@@ -227,7 +227,7 @@ export const LES_W25: LessonInput = {
         },
         {
           text: 'Waar staat *er*? Vroeg in het middenveld, direct na de persoonsvorm of na een onderwerp dat een voornaamwoord is: *Ik heb er gisteren drie gekocht*, niet *Ik heb gisteren er drie gekocht*. Het gedraagt zich als een klitiek (zie Waar houdt het woord op?, w20): geen klemtoon, een vaste vroege plek, en nooit op de eerste plaats behalve als presentatief *er*. In een bijzin schuift het naar vlak na het onderwerp: *dat ik er gisteren drie kocht*. Alleen *daar* mag zwerven en nadruk dragen.',
-          rule: 'Er staat vroeg in het middenveld en draagt nooit klemtoon. Wil je nadruk of de eerste plek, dan neem je daar.',
+          rule: 'Zwak er staat vaak vroeg in het middenveld. Plaatsgebruik vooraan vraagt daar; presentatief er kan zelf de zin openen en tegelijk een andere functie hebben.',
           swap: {
             goal: 'Zet er op zijn plek',
             blocks: ['Ik heb', 'gisteren', 'er', 'drie gekocht'],
@@ -532,9 +532,9 @@ export const LES_W25: LessonInput = {
           why: 'Een bepaald onderwerp verdraagt geen presentatief er.',
         },
         {
-          t: 'Alleen het presentatieve er kan een zin openen.',
+          t: 'Een eerste er kan presentatief zijn en tegelijk naar een plaats verwijzen.',
           ok: true,
-          why: 'Plaatsaanduidend, kwantitatief en prepositioneel er staan in het middenveld; vooraan komt daar.',
+          why: 'Er wonen veel studenten kan zowel iets presenteren als daar betekenen. Bij uitsluitend plaatsgebruik, zoals Daar woon ik, is de sterke vorm nodig.',
         },
         {
           t: 'Ik heb er drie boeken is goed Nederlands.',

@@ -33,6 +33,7 @@ export function ConjunctionStep({ step, response, onChange, locked, stepKey, see
     if (locked) return;
     const onKey = (event: KeyboardEvent) => {
       if (event.metaKey || event.ctrlKey || event.altKey || isTypingTarget(event.target)) return;
+      if (document.querySelector('[role="dialog"], [role="alertdialog"]')) return;
       const n = Number(event.key);
       const index = Number.isInteger(n) && n >= 1 ? order[n - 1] : undefined;
       if (index !== undefined) {
