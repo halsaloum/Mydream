@@ -1,3 +1,5 @@
+import { fallacyVideos } from './fallacy-media';
+
 export type ArgumentMedia = {
   id: string;
   title: string;
@@ -18,6 +20,7 @@ export type ArgumentMedia = {
 // Illustrations are linked to their original pages, not copied into the app.
 // Optional diagram previews use the course's own examples.
 export const argumentMedia: ArgumentMedia[] = [
+  ...fallacyVideos,
   {
     id: 'wiphi-eerste-redenen',
     title: 'Begin hier: wat maakt een reden bruikbaar?',

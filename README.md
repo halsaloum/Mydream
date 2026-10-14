@@ -3,7 +3,7 @@
 Leerapp voor Nederlands schrijven met Pim het potlood, opnieuw gebouwd in Next.js. Voor volwassenen die
 Nederlands op moedertaalniveau lezen en verstaan, en de schrijftaal willen beheersen: van letter tot alinea.
 
-De schrijflesbibliotheek bevat **138 lessen**: alle 113 bestaande lessen zijn uitgebreid met lesgebonden begeleiding en toepassingsopdrachten, aangevuld met negen schrijfmodules en zestien lessen argumentatie en drogredenen. De route loopt van taalbasis via helder schrijven naar zelfstandig argumenteren; specialistische taalkunde staat daarnaast als keuzeverdieping. Daarnaast biedt `/argumentatie` een afzonderlijk leerpad met 21 uitgebreide lessen voor leiders. Afronden en automatisch goed antwoorden zijn geen bewijs van blijvende beheersing.
+De schrijflesbibliotheek bevat **138 lessen**: alle 113 bestaande lessen zijn uitgebreid met lesgebonden begeleiding en toepassingsopdrachten, aangevuld met negen schrijfmodules en zestien lessen argumentatie en drogredenen. De route loopt van taalbasis via helder schrijven naar zelfstandig argumenteren; specialistische taalkunde staat daarnaast als keuzeverdieping. Daarnaast biedt `/argumentatie` een afzonderlijk leerpad met 69 uitgebreide lessen voor leiders. Afronden en automatisch goed antwoorden zijn geen bewijs van blijvende beheersing.
 
 ```bash
 npm install
@@ -184,12 +184,22 @@ opdracht, dan vervalt alleen een lopende ronde met die stap.
 ## Argumentatie en drogredenen
 
 Een apart leergebied op `/argumentatie`, bereikbaar vanuit de hoofdnavigatie en startpagina. De inhoudsbron
-is `src/content/argumentation/index.ts`: 21 lessen van nul voorkennis naar complexe argumenten, gericht op
+is `src/content/argumentation/index.ts`: 69 lessen van nul voorkennis naar complexe argumenten, gericht op
 leidinggeven, sterke taal en verantwoord besluiten. Tien volwaardige fundamentpagina’s introduceren alle begrippen
 vóór toepassing; de eerste les begint met Argument, Conclusie, Premisse en Gevolgtrekking. De tijdsindicatie telt
 circa vier minuten per begrippenpagina bij de bestaande lesduur. De stof bouwt op eerdere voorkennis; elke volgende
 les wordt beschikbaar na afronden van de vorige. Elke fase eindigt met acht objectieve checkpointvragen en een
 grens van 80%. De eindtoets bevat daarnaast twee zelfstandige expertwerkstukken met zelfbeoordeling.
+
+De 48 afzonderlijke drogredenlessen behandelen gesprek en persoon, taal en aannames, gezag en gevoel,
+bewijs en oorzaken en logica en besluiten. Elk patroon krijgt eigen theorie (minstens 350 woorden), een kleine
+startvraag, een zelfstandige casus vóór de uitwerking, een nieuw grensgeval met directe feedback, twee
+vergelijkbare beeldkaarten en vijf opdrachten: drie oordeelsvragen, een kaartjespuzzel en een herstelanalyse
+van minimaal 80 woorden. Alle casussen verschillen binnen de les. De theorie bespreekt ook wanneer een
+verwante reden wél relevant kan zijn. Klassieke drogredenen en verwante statistische/beslisfouten vormen
+geen universele, uitputtende taxonomie. Moderne labels worden eerlijk als toepassingen van boekcriteria
+verantwoord. De lessen staan vóór het checkpoint van hun fase; bestaande kernles-id’s en oefeningen blijven
+behouden. Zoeken herkent ook Latijnse en Engelse namen en de familieknoppen filteren binnen hetzelfde leerpad.
 
 Waar een begrip nieuw is, begint de les met de volledige begrippenpagina. Daarna volgt een kleine, begeleide
 voorkennisvraag, een eigen voorspelling vóór
@@ -222,10 +232,12 @@ geïnstalleerde stemmen en de browser.
 - `content/argumentation/` — lessen, concrete startvragen, casussen, begrippen, gecontroleerde videobronnen en
   bronverantwoording naar de aangeleverde boeken. Boeken worden niet geüpload of publiek meegeleverd.
 
-Alle 21 lessen hebben een interactieve beeldkaart, samen met 54 vergelijktoestanden. De tien fundamenten hebben
+Alle 69 lessen hebben een interactieve beeldkaart. De 21 kernlessen hebben 54 vergelijktoestanden;
+de 48 gerichte drogredenlessen voegen elk een foutieve en een herstelde of redelijk begrensde route toe. De tien fundamenten hebben
 daarnaast hun eigen kaart. Je verandert bijvoorbeeld
 voorwaarden, kritiekdoelen, groepssamenstelling of kansen en leest wat daardoor wel en niet volgt. De mediatheek
-bevat 13 video’s en vijf pagina’s met visuele uitleg; elke les biedt een passende selectie met kijkvragen en toepassing.
+bevat 21 video’s en vijf pagina’s met visuele uitleg. Gerichte drogredenlessen krijgen alleen inhoudelijk
+passende aanvullende video’s; er is geen verplicht minimum dat tot herhaalde lange colleges leidt.
 In argumentgrafen kun je afzonderlijke onderdelen uitlichten en hun aangegeven verbindingen volgen. Video’s
 met een YouTube-versie hebben een echte miniatuur; de speler laadt pas na een klik.
 

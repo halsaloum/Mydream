@@ -52,4 +52,5 @@ export type ArgumentLesson = {
   lab?: ArgumentLab;
   checkpoint?: boolean;
   introductory?: boolean;
+  fallacy?: { slug: string; name: string; aliases: string[]; family: string; criticalQuestion: string };
 };

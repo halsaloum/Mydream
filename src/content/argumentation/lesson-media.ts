@@ -1,4 +1,6 @@
 import { argumentMedia } from './media';
+import { fallacyMedia } from './fallacies';
+import { targetedFallacyMedia } from './fallacy-media';
 
 const related: Record<string, string[]> = {
   'basis-standpunt-en-reden': ['wiphi-eerste-redenen', 'oxford-argument-herkennen'],
@@ -25,7 +27,10 @@ const related: Record<string, string[]> = {
 };
 
 export function mediaForLesson(lessonId: string) {
-  return (related[lessonId] ?? []).flatMap((id) => {
+  const ids = lessonId.startsWith('drogreden-')
+    ? [...new Set([...(targetedFallacyMedia[lessonId.slice('drogreden-'.length)] ?? []), ...(fallacyMedia[lessonId] ?? [])])]
+    : related[lessonId] ?? [];
+  return ids.flatMap((id) => {
     const item = argumentMedia.find((source) => source.id === id);
     return item ? [item] : [];
   });

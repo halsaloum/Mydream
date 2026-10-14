@@ -1,4 +1,5 @@
 import type { ArgumentModule, ArgumentLesson } from './types';
+import { fallacyLessons } from './fallacies';
 
 // Original Dutch cases for practical reasoning and leadership communication.
 export const argumentModules: ArgumentModule[] = [
@@ -25,7 +26,7 @@ export const argumentModules: ArgumentModule[] = [
   }
 ];
 
-export const argumentLessons: ArgumentLesson[] = [
+const coreArgumentLessons: ArgumentLesson[] = [
   {
     "id": "basis-standpunt-en-reden",
     "moduleId": "basis",
@@ -3994,3 +3995,11 @@ export const argumentLessons: ArgumentLesson[] = [
     ]
   }
 ];
+
+
+// Focused fallacy chapters stay within the guided route, before their phase checkpoint.
+export const argumentLessons: ArgumentLesson[] = coreArgumentLessons.flatMap((lesson) =>
+  lesson.checkpoint && lesson.moduleId !== 'basis'
+    ? [...fallacyLessons.filter((focused) => focused.moduleId === lesson.moduleId), lesson]
+    : [lesson],
+);

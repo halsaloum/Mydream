@@ -1,3 +1,5 @@
+import { fallacyCoreChecks } from './fallacies';
+
 export type CoreCheck = {
   sectionTitle: string;
   scenario: string;
@@ -8,6 +10,7 @@ export type CoreCheck = {
 
 /** New transfer cases for the second explanation; these are practice, not scored test items. */
 export const lessonCoreChecks: Record<string, CoreCheck> = {
+  ...fallacyCoreChecks,
   'basis-standpunt-en-reden': {
     sectionTitle: 'Een reden kan vóór of na het standpunt staan',
     scenario: '“De vloer bij de ingang is nat. Zet daar een waarschuwingsbord.” Er staat geen “want” of “dus” tussen de twee zinnen.',

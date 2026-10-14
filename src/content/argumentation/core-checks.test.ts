@@ -3,9 +3,9 @@ import { argumentLessons } from './index';
 import { lessonCoreChecks } from './core-checks';
 
 describe('new second-section transfer checks', () => {
-  it('provides one deliberately authored case for the actual second section of all 21 lessons', () => {
+  it('provides one deliberately authored case for the actual second section of every lesson', () => {
     expect(Object.keys(lessonCoreChecks).sort()).toEqual(argumentLessons.map((lesson) => lesson.id).sort());
-    expect(Object.keys(lessonCoreChecks)).toHaveLength(21);
+    expect(Object.keys(lessonCoreChecks)).toHaveLength(argumentLessons.length);
     for (const lesson of argumentLessons) {
       const check = lessonCoreChecks[lesson.id]!;
       expect(check.sectionTitle, lesson.id).toBe(lesson.sections[1]?.title);

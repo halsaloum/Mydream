@@ -7,6 +7,14 @@ import type { ArgumentSource } from './types';
 // book. It is not Commitment in Dialogue (Walton & Krabbe, 1995).
 export const argumentSources: ArgumentSource[] = [
   {
+    id: 'bowell',
+    title: 'Critical Thinking: A Concise Guide · 5e druk',
+    authors: 'Tracy Bowell, Robert Cowan en Gary Kemp',
+    year: '2020',
+    url: 'https://www.routledge.com/Critical-Thinking/Bowell-Cowan-Kemp/p/book/9780815371434',
+    note: 'De aangeleverde EPUB vormt de basis voor taal, deductieve geldigheid, kansredeneringen en pseudo-redeneringen; de bronverantwoording geeft controleerbare hoofdstuk- en sectietitels.',
+  },
+  {
     id: 'govier',
     title: 'A Practical Study of Argument (7e druk)',
     authors: 'Trudy Govier',

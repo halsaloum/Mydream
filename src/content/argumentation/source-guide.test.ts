@@ -26,6 +26,10 @@ describe('eigen literatuur en geselecteerde media', () => {
       expect(item.watchFor.length).toBeGreaterThan(30);
       expect(item.question.length).toBeGreaterThan(50);
     }
-    expect(argumentLessons.every((lesson) => mediaForLesson(lesson.id).length >= 2)).toBe(true);
+    expect(argumentLessons.filter((lesson) => !lesson.fallacy).every((lesson) => mediaForLesson(lesson.id).length >= 2)).toBe(true);
+    // Focused lessons can stand on their interactive cases; no unrelated video quota.
+    for (const lesson of argumentLessons.filter((item) => item.fallacy)) {
+      expect(mediaForLesson(lesson.id).every((item) => argumentMedia.includes(item)), lesson.id).toBe(true);
+    }
   });
 });

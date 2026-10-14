@@ -1,3 +1,5 @@
+import { fallacySourceGuide } from './fallacies';
+
 export type ArgumentSourceGuideEntry = {
   sourceId: string;
   title: string;
@@ -56,6 +58,7 @@ function book(sourceId: keyof typeof books, chapter: string, pages: string, conc
 }
 
 export const argumentSourceGuide: Record<string, ArgumentSourceGuideEntry[]> = {
+  ...fallacySourceGuide,
   'basis-standpunt-en-reden': [
     book('govier', 'Hoofdstuk 1 · What Is an Argument?; Argument and Opinion; Argument and Indicator Words', 'PDF-pagina 17–20 · boekpagina 2–5', [
       'Een standpunt is wat je wilt laten aanvaarden; een reden wordt aangevoerd ter ondersteuning.',

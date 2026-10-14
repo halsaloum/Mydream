@@ -1,3 +1,5 @@
+import { fallacyScaffolds } from './fallacies';
+
 export type LessonScaffold = {
   context: string;
   question: string;
@@ -22,6 +24,7 @@ const starter = (
 });
 
 export const lessonScaffolds: Record<string, LessonScaffold> = {
+  ...fallacyScaffolds,
   'basis-standpunt-en-reden': starter(
     'start-standpunt',
     'Een collega zegt: “Laten we foutmeldingen op één plek verzamelen, want nu raakt informatie verspreid.” Het team moet kiezen hoe het meldingen bijhoudt. Jij wilt eerst begrijpen wat de collega precies voorstelt.',

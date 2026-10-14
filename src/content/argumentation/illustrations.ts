@@ -1,3 +1,5 @@
+import { fallacyIllustrations } from './fallacies';
+
 export type IllustrationTone = 'blue' | 'green' | 'orange' | 'purple' | 'slate';
 export type IllustrationNode = { id: string; label: string; text: string; tone: IllustrationTone; connector?: boolean };
 export type IllustrationEdge = { from: string; to: string; label: string; kind: 'support' | 'challenge' | 'cause' | 'association' | 'authorize' | 'qualify' };
@@ -21,6 +23,7 @@ const checks = (claim: string, rows: ChecksIllustration['checks']): ChecksIllust
 
 /** Every case and relation is authored for one lesson; no title-to-diagram guessing. */
 export const lessonIllustrations: Record<string, LessonIllustrationEntry> = {
+  ...fallacyIllustrations,
   'basis-standpunt-en-reden': {
     title: 'Van reden naar standpunt', invitation: 'Vergelijk een voorstel mét en zonder genoemde reden.', sourceId: 'govier', variants: [
       v('argument', 'Met een reden', 'Het voorstel is het standpunt. Het lawaai wordt aangevoerd als reden om deze plek te kiezen; je hoeft die keuze nog niet te onderschrijven.', f([['r'], ['c']], [n('r', 'Reden', 'In kamer B is minder lawaai.'), n('c', 'Standpunt', 'Laten we in kamer B overleggen.', 'green')], [e('r', 'c', 'wordt aangevoerd als reden voor')], 'De pijl toont hoe de spreker het voorstel ondersteunt. Zij bewijst nog niet dat de keuze juist is.')),

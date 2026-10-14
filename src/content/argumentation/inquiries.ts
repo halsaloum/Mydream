@@ -1,3 +1,5 @@
+import { fallacyInquiries } from './fallacies';
+
 export type ArgumentInquiry = {
   scenario: string;
   prompt: string;
@@ -7,6 +9,7 @@ export type ArgumentInquiry = {
 
 // Construct an initial answer, compare a contrasting case, then revise.
 export const argumentInquiries: Record<string, ArgumentInquiry> = {
+  ...fallacyInquiries,
   "basis-argument-of-uitleg": {
     "scenario": "In gesprek A weet iedereen dat een levering te laat was. Een teamleider zegt: “De vertraging ontstond door een verkeerd adres.” In gesprek B betwijfelt iemand of er vertraging is. Een collega verwijst naar de foutieve adresregistratie om vertraging aannemelijk te maken. Beide gesprekken gebruiken vrijwel dezelfde informatie, maar proberen een andere vraag op te lossen.",
     "prompt": "Leg uit welk verschil in de gespreksvraag de informatie van functie doet veranderen. Wat zou een leider nog moeten verdedigen om van de oorzaak naar een nieuw adresprotocol te gaan?",
