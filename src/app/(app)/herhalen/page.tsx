@@ -1,8 +1,5 @@
 import type { Metadata } from 'next';
-import { ReviewView } from '@/components/review/review-view';
+import { OntleedReview } from '@/components/ontleed/review';
+export default function Page() { return <OntleedReview />; }
 
-export const metadata: Metadata = { title: 'Herhalen' };
-
-export default function ReviewPage() {
-  return <ReviewView />;
-}
+export const metadata: Metadata = { title: { absolute: 'Herhalen · Ontleed' } };

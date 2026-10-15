@@ -1,14 +1,6 @@
 import type { Metadata } from 'next';
+import { OntleedLibrary } from '@/components/ontleed/library';
 import { Suspense } from 'react';
-import { LibraryView } from '@/components/library/library-view';
-import { PageSkeleton } from '@/components/ui/empty-state';
+export default function Page() { return <Suspense fallback={<p>Lessen worden geladen…</p>}><OntleedLibrary /></Suspense>; }
 
-export const metadata: Metadata = { title: 'Lessen' };
-
-export default function LessonsPage() {
-  return (
-    <Suspense fallback={<PageSkeleton blocks={['h-14 w-1/2 max-w-sm', 'h-64', 'h-20', 'h-20']} />}>
-      <LibraryView />
-    </Suspense>
-  );
-}
+export const metadata: Metadata = { title: { absolute: 'Lessen · Ontleed' } };

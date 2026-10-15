@@ -2,7 +2,7 @@
   "name": "pennig",
   "version": "0.1.0",
   "private": true,
-  "description": "pennig \u2013 Nederlands schrijven, van letter tot alinea. Leerapp met Pim het potlood.",
+  "description": "Ontleed – Nederlandse leerapp met 58 lessen van woordbouw en zinsanalyse tot betekenis en de volle zin, met behoud van argumentatie en drogredenen.",
   "engines": {
     "node": ">=20.9.0"
   },

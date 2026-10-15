@@ -1,8 +1,5 @@
 import type { Metadata } from 'next';
-import { GalleryView } from '@/components/demo/gallery-view';
+import { OntleedTools } from '@/components/ontleed/tools';
+export default function Page() { return <OntleedTools />; }
 
-export const metadata: Metadata = { title: 'Oefenvormen' };
-
-export default function GalleryPage() {
-  return <GalleryView />;
-}
+export const metadata: Metadata = { title: { absolute: 'Gereedschap · Ontleed' } };

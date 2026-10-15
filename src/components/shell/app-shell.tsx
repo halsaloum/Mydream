@@ -7,6 +7,9 @@ import type { Route } from 'next';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import type { ReactNode } from 'react';
+import { isProtectedArgumentLesson } from '@/content/ontleed';
+import { lookupStep } from '@/lib/plans';
+import { OntleedShell } from '@/components/ontleed/shell';
 import { Wordmark } from '@/components/brand/wordmark';
 import { cn } from '@/lib/cn';
 import { spring, transition, useCalmMotion } from '@/lib/motion';
@@ -20,7 +23,7 @@ const NAV: { href: Route; label: string; mobileLabel?: string; icon: typeof Hous
   { href: '/lessen', label: 'Lessen', icon: BookOpenText },
   { href: '/woorden', label: 'Woorden', icon: Languages },
   { href: '/argumentatie', label: 'Argumentatie', mobileLabel: 'Argumenten', icon: Network },
-  { href: '/herhalen', label: 'Herhalen', icon: Repeat2 },
+  { href: '/herhalen/argumentatie', label: 'Herhalen', icon: Repeat2 },
   { href: '/voortgang', label: 'Voortgang', icon: ChartColumnIncreasing },
 ];
 
@@ -30,8 +33,8 @@ function isActive(pathname: string, href: string) {
 
 function useReviewCount() {
   const hydrated = useHydrated();
-  const count = useProgress((state) => Object.keys(state.review).length);
-  const scheduled = usePracticeDueCount();
+  const count = useProgress((state) => Object.values(state.review).filter(item=>isProtectedArgumentLesson(lookupStep(item.key)?.lessonId??'')).length);
+  const scheduled = usePracticeDueCount(true);
   return hydrated ? count + scheduled : 0;
 }
 
@@ -64,11 +67,11 @@ function PageTransition({ children }: { children: ReactNode }) {
 }
 
 /** De vaste schil: bovenbalk met navigatie (desktop) en tabbalk onderaan (mobiel), beide op Base UI NavigationMenu. */
-export function AppShell({ children }: { children: ReactNode }) {
+function LegacyAppShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const reviewCount = useReviewCount();
   const wordsDue = useWordsDue();
-  const counts: Partial<Record<Route, number>> = { '/herhalen': reviewCount, '/woorden': wordsDue };
+  const counts: Partial<Record<Route, number>> = { '/herhalen/argumentatie': reviewCount, '/woorden': wordsDue };
 
   return (
     <div className="flex min-h-dvh flex-col">
@@ -200,4 +203,10 @@ export function PageHeader({ title, description, action, className }: PageHeader
       {action && <div className="shrink-0">{action}</div>}
     </div>
   );
+}
+
+/** Keep the protected course in its original shell. */
+export function AppShell({ children }: { children: ReactNode }) {
+  const pathname = usePathname();
+  return pathname === '/argumentatie' || pathname.startsWith('/argumentatie/') || pathname === '/herhalen/argumentatie' ? <LegacyAppShell>{children}</LegacyAppShell> : <OntleedShell>{children}</OntleedShell>;
 }

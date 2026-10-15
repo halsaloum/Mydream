@@ -1,18 +1,5 @@
-import { HomeView } from '@/components/home/home-view';
+import type { Metadata } from 'next';
+import { OntleedHome } from '@/components/ontleed/home';
+export default function HomePage() { return <OntleedHome />; }
 
-const DIRECTION = `<!--
-THESIS: De interface is de constructie zelf: elk scherm toont waar je staat in negen niveaus, van letter tot alinea. Geen gamified dashboard met XP-tellers.
-OWN-WORLD: Licht canvas, witte platen met 2px randen en tastbare slagschaduwen; groen, blauw, paars en oranje als domeinaccenten met donkere teksttinten; Fraunces voor taalvoorbeelden, Bricolage Grotesque voor koppen, Figtree voor bediening; Pim het potlood als enige personage.
-STORY: De leerling ziet direct welke les volgt en waarom (niveau en vakgebied), oefent in een gerichte player waarin feedback de regel uitlegt en blijft staan, en ziet fouten gericht terugkomen.
-FIRST VIEWPORT: Links de cursustitel en het dagdoel, rechts "Verder met jouw les" met de hoofdknop; daaronder de niveaus: het groeiende voorbeeld groot in Fraunces boven een trap van negen treden.
-FORM: Niveaus als trap; vastgelegde wereld uit de brief, geen seed.
--->`;
-
-export default function HomePage() {
-  return (
-    <>
-      <div hidden dangerouslySetInnerHTML={{ __html: DIRECTION }} />
-      <HomeView />
-    </>
-  );
-}
+export const metadata: Metadata = { title: { absolute: 'Ontleed — van woord tot volle zin' } };

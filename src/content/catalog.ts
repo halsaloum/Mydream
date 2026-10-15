@@ -7,11 +7,9 @@ import { canonicalLayerId, withSentenceLayer } from './sentence-layer';
 import { CoursePackSchema, type CoursePack, type Domain, type Layer, type Lesson, type StepKind } from './schema';
 
 /**
- * De enige actieve inhoudsbron van de app.
- *
- * De bestaande bouwlagen via de adapter, extra lessen uit `packs/` en lesgebonden verbeteringen
- * uit `curriculum/`. Alles gaat door hetzelfde contract.
- * Later: vervang `adaptLegacyCourse()` door een gevalideerde JSON-cursus (zie README, "Lessen aansluiten").
+ * Archived engine catalog: preserves historical fingerprints, export validation and
+ * the exact a20–a35 argument lessons. New nonargument lessons live in ontleed/.
+ * Only protected argument IDs remain routed through this player catalog.
  */
 function loadCourse(): CoursePack {
   const result = CoursePackSchema.safeParse(withSentenceLayer(withCurriculum(withExtraLessons(adaptLegacyCourse()))));

@@ -1,6 +1,7 @@
 'use client';
 
 import { ArrowRight, CalendarClock } from 'lucide-react';
+import type { Route } from 'next';
 import { useCallback, useEffect } from 'react';
 import { LessonPlayer, type PlayerMeta } from '@/components/player/lesson-player';
 import type { PlayerController } from '@/components/player/use-session';
@@ -12,7 +13,7 @@ import { lookupPracticeStep } from '@/lib/practice/catalog';
 import { completedPracticeTopics, duePracticeTopics, PRACTICE_BATCH } from '@/lib/practice/schedule';
 import { useArgumentation } from '@/state/argumentation';
 import { useHydrated } from '@/state/hydration';
-import { usePractice, usePracticeDueCount } from '@/state/practice';
+import { isProtectedPracticeTopic, usePractice, usePracticeDueCount } from '@/state/practice';
 import { useProgress } from '@/state/progress';
 import { useSentences } from '@/state/sentences';
 import type { SessionAction } from '@/engine/session';
@@ -28,24 +29,25 @@ export function SpacedPracticeReminder() {
   </section>;
 }
 
-export function SpacedPracticeCard() {
+export function SpacedPracticeCard({ protectedOnly = false }: { protectedOnly?: boolean } = {}) {
   const hydrated = useHydrated();
   const lessons = useProgress((state) => state.lessons);
   const argumentsRecords = useArgumentation((state) => state.records);
   const sentenceRecords = useSentences((state) => state.records);
   const records = usePractice((state) => state.records);
-  const session = usePractice((state) => state.session);
+  const session = usePractice(state => protectedOnly ? state.argumentSession : state.session);
   if (!hydrated) return null;
-  const topics = completedPracticeTopics({ lessons }, { records: argumentsRecords }, { records: sentenceRecords }, records);
+  const allTopics = completedPracticeTopics({ lessons }, { records: argumentsRecords }, { records: sentenceRecords }, records);
+  const topics = protectedOnly ? allTopics.filter(isProtectedPracticeTopic) : allTopics;
   const due = duePracticeTopics(topics);
   const running = session && session.phase !== 'done';
   const upcoming = topics.filter((topic) => topic.schedule.due > dayKey()).sort((a, b) => a.schedule.due.localeCompare(b.schedule.due))[0];
   return <section aria-labelledby="gespreid-ophalen" className="mb-8 rounded-card border-2 border-blue-line bg-blue-soft p-5 sm:p-6">
     <h2 id="gespreid-ophalen" className="flex items-center gap-2 font-display text-title-sm font-extrabold text-blue-ink"><CalendarClock aria-hidden className="size-5" />Wat weet je nog zonder uitleg?</h2>
-    <p className="mt-3 max-w-3xl text-body leading-relaxed text-ink-soft">Haal eerder geleerde stof op vóór je de uitleg terugziet. Korte checks over schrijven, Zinnen en argumentatie komen op latere dagen terug. Na je antwoord krijg je uitleg; bij een fout volgt sneller een nieuwe check.</p>
+    <p className="mt-3 max-w-3xl text-body leading-relaxed text-ink-soft">Haal eerder geleerde stof op vóór je de uitleg terugziet. {protectedOnly ? 'Korte checks over argumentatie en drogredenen komen op latere dagen terug.' : 'Korte checks over schrijven, Zinnen en argumentatie komen op latere dagen terug.'} Na je antwoord krijg je uitleg; bij een fout volgt sneller een nieuwe check.</p>
     <p role="status" className="mt-3 text-small font-semibold text-blue-ink">{running ? 'Je kennischeck is nog bezig.' : due.length ? `${due.length} ${due.length === 1 ? 'leerpunt' : 'leerpunten'} klaar · deze ronde maximaal ${PRACTICE_BATCH}` : upcoming ? `Volgende kennischeck: ${new Intl.DateTimeFormat('nl-NL', { day: 'numeric', month: 'long' }).format(new Date(`${upcoming.schedule.due}T12:00:00`))}.` : 'Rond eerst een les af. Daarna verschijnt hier je eerste kennischeck.'}</p>
-    {(running || due.length > 0) && <ButtonLink href="/herhalen/kennis" onClick={() => { if (!running) usePractice.getState().discard(); }} className="mt-4">{running ? 'Verder met mijn kennischeck' : 'Start mijn kennischeck'}<ArrowRight aria-hidden className="size-4" /></ButtonLink>}
-    <p className="mt-4 text-caption leading-relaxed text-ink-muted">Een check oefent enkele leerpunten en toetst geen volledige lesbeheersing. Goed ophalen op verschillende dagen telt zwaarder dan direct opnieuw antwoorden. De woordenronde heeft daarnaast haar eigen herhaalschema.</p>
+    {(running || due.length > 0) && <ButtonLink href="/herhalen/kennis" onClick={() => { if (!running) usePractice.getState().discard(protectedOnly); }} className="mt-4">{running ? 'Verder met mijn kennischeck' : 'Start mijn kennischeck'}<ArrowRight aria-hidden className="size-4" /></ButtonLink>}
+    <p className="mt-4 text-caption leading-relaxed text-ink-muted">Een check oefent enkele leerpunten en toetst geen volledige lesbeheersing. Goed ophalen op verschillende dagen telt zwaarder dan direct opnieuw antwoorden. {!protectedOnly && 'De woordenronde heeft daarnaast haar eigen herhaalschema.'}</p>
     <Disclosure summary="Onderzoek achter deze aanpak" className="mt-4">
       <p className="text-small leading-relaxed text-ink-soft">Onderzoek ondersteunt actief ophalen en herhaling met tussenpozen. Daarom probeer je eerst zelf een antwoord te maken en vergelijk je daarna met de uitleg. De vragen wisselen, zodat je ook een andere toepassing moet herkennen. Het interval wordt langer na goede antwoorden op verschillende dagen en korter bij fouten.</p>
       <p className="mt-3 text-small leading-relaxed text-ink-soft">De precieze intervallen zijn een praktische keuze. Deze app is niet onderzocht in een leerexperiment; een rondescore bewijst geen blijvende beheersing of kwaliteit van je eigen tekst.</p>
@@ -58,20 +60,21 @@ export function SpacedPracticeCard() {
   </section>;
 }
 
-export function SpacedPracticeRoute() {
+export function SpacedPracticeRoute({ protectedOnly = true }: { protectedOnly?: boolean } = {}) {
   const hydrated = useHydrated();
-  const session = usePractice((state) => state.session);
-  useEffect(() => { if (hydrated) usePractice.getState().start(); }, [hydrated]);
-  const dispatch = useCallback((action: SessionAction) => usePractice.getState().dispatch(action), []);
-  const discard = useCallback(() => usePractice.getState().discard(), []);
-  const restart = useCallback(() => { usePractice.getState().discard(); usePractice.getState().start(); }, []);
+  const session = usePractice(state => protectedOnly ? state.argumentSession : state.session);
+  useEffect(() => { if (hydrated) usePractice.getState().start(Date.now(), protectedOnly); }, [hydrated, protectedOnly]);
+  const dispatch = useCallback((action: SessionAction) => usePractice.getState().dispatch(action, protectedOnly), [protectedOnly]);
+  const discard = useCallback(() => usePractice.getState().discard(protectedOnly), [protectedOnly]);
+  const restart = useCallback(() => { usePractice.getState().discard(protectedOnly); usePractice.getState().start(Date.now(), protectedOnly); }, [protectedOnly]);
+  const reviewHome = (protectedOnly ? '/herhalen/argumentatie' : '/herhalen') as Route;
   if (!hydrated) return <PageSkeleton blocks={['h-16', 'h-80']} />;
-  if (!session) return <main id="inhoud" className="mx-auto grid min-h-dvh max-w-xl place-items-center px-gutter"><EmptyState title="Je hoeft nu niets op te halen" mood="idle" action={<ButtonLink href="/herhalen">Naar herhalen</ButtonLink>}>Je volgende kennischeck komt op een latere dag. Je kunt ondertussen een les oefenen.</EmptyState></main>;
+  if (!session) return <main id="inhoud" className="mx-auto grid min-h-dvh max-w-xl place-items-center px-gutter"><EmptyState title="Je hoeft nu niets op te halen" mood="idle" action={<ButtonLink href={reviewHome}>Naar herhalen</ButtonLink>}>Je volgende kennischeck komt op een latere dag. Je kunt ondertussen een les oefenen.</EmptyState></main>;
   const controller: PlayerController = { session, dispatch, lookup: lookupPracticeStep, counts: false, discard, restart };
   const meta: PlayerMeta = {
     mode: 'review', title: 'Zelfstandig ophalen', context: 'Gespreide kennischeck', accent: 'blue', independent: true,
-    exit: { href: '/herhalen', label: 'Kennischeck sluiten (je voortgang is bewaard)' },
-    finish: { title: 'Kennischeck afgerond', context: 'De score gaat over deze opdrachten, niet over volledige lesbeheersing.', learned: [], primary: { href: '/herhalen', label: 'Bekijk mijn volgende herhaling' }, secondary: { href: '/', label: 'Naar Leren' }, again: false },
+    exit: { href: reviewHome, label: 'Kennischeck sluiten (je voortgang is bewaard)' },
+    finish: { title: 'Kennischeck afgerond', context: 'De score gaat over deze opdrachten, niet over volledige lesbeheersing.', learned: [], primary: { href: reviewHome, label: 'Bekijk mijn volgende herhaling' }, secondary: { href: '/', label: 'Naar Leren' }, again: false },
   };
   return <LessonPlayer controller={controller} meta={meta} />;
 }

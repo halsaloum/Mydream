@@ -1,0 +1,14 @@
+'use client';
+import type { LessonLab } from '@/content/ontleed/types';
+import type { LabDraft } from '@/state/ontleed';
+import { QuestionView } from './question';
+export function LabView({lab,state={},onChange,onDone}:{lab:LessonLab;state?:LabDraft;onChange:(state:LabDraft)=>void;onDone:()=>void}) {
+  const variant=state.variant??0, visited=state.visited??[0], placements=state.placements??{}, checked=state.checked??false;
+  function update(patch:LabDraft){onChange({...state,...patch});}
+  const saved=checked&&state.answer!==undefined?{answer:state.answer,correct:state.correct??false}:undefined;
+  if(lab.kind==='mark'||lab.kind==='order')return <><QuestionView question={lab} saved={saved} onAnswer={(answer,correct)=>{update({answer,correct,checked:true});onDone();}}/>{saved&&<p className="o-lab-takeaway">{lab.takeaway}</p>}</>;
+  if(lab.kind==='compare')return <div><h2>{lab.prompt}</h2><div className="o-tabs" aria-label="Vergelijk voorbeelden">{lab.variants.map((item,index)=><button type="button" key={index} aria-pressed={index===variant} onClick={()=>{const next=[...new Set([...visited,index])];update({variant:index,visited:next});if(next.length===lab.variants.length)onDone();}} className={index===variant?'is-selected':''}>{item.label}</button>)}</div><div className="o-experiment"><p className="o-sentence">{lab.variants[variant]?.text}</p><p>{lab.variants[variant]?.analysis}</p></div><p className="o-lab-takeaway">{lab.takeaway}</p>{visited.length<lab.variants.length&&<p className="o-muted">Bekijk ook de andere varianten. Wat blijft hetzelfde en wat verandert?</p>}{lab.variants.length===1&&<button type="button" className="o-button" onClick={onDone}>Experiment afronden</button>}</div>;
+  const complete=Object.keys(placements).length===lab.items.length;
+  const correct=complete&&lab.items.every((item,index)=>placements[index]===item.category);
+  return <div><h2>{lab.prompt}</h2><div className="o-classify">{lab.items.map((item,index)=><div className="o-classify-item" key={index}><p>{item.text}</p><div className="o-tabs">{lab.categories.map((category,ci)=><button type="button" key={ci} disabled={checked} aria-pressed={placements[index]===ci} className={placements[index]===ci?'is-selected':''} onClick={()=>update({placements:{...placements,[index]:ci}})}>{category}</button>)}</div>{checked&&<p className="o-classify-feedback">{placements[index]===item.category?'✓':'↳'} {lab.categories[item.category]}: {item.why}</p>}</div>)}</div>{!checked?<button type="button" className="o-button" disabled={!complete} onClick={()=>{update({checked:true});onDone();}}>Controleer de indeling</button>:<div className={`o-feedback ${correct?'is-positive':''}`} role="status"><strong>{correct?'Je indeling klopt.':'Vergelijk je indeling met het bewijs.'}</strong><p>{lab.takeaway}</p></div>}</div>;
+}

@@ -5,6 +5,8 @@ import { AnimatePresence, motion } from 'motion/react';
 import type { Route } from 'next';
 import Link from 'next/link';
 import { EXERCISE_LABELS, getLessonEntry } from '@/content/catalog';
+import { isProtectedArgumentLesson } from '@/content/ontleed';
+import { ARGUMENT_REVIEW_SESSION_ID } from '@/components/player/routes';
 import type { Step } from '@/content/schema';
 import { DomainGlyph } from '@/components/brand/glyphs';
 import { PageHeader } from '@/components/shell/app-shell';
@@ -29,18 +31,21 @@ function stepSummary(step: Step): { prompt: string; sample: string | null } {
   return { prompt, sample };
 }
 
-export function ReviewView() {
+export function ReviewView({ protectedOnly = false }: { protectedOnly?: boolean } = {}) {
   const hydrated = useHydrated();
   const calm = useCalmMotion();
   const progress = useProgressData();
   const running = useSessions((state) => {
-    const session = state.byId[REVIEW_SESSION_ID];
+    const session = state.byId[protectedOnly ? ARGUMENT_REVIEW_SESSION_ID : REVIEW_SESSION_ID];
     return session && session.phase !== 'done' ? session : null;
   });
 
   if (!hydrated) return <PageSkeleton blocks={['h-14 w-2/3 max-w-md', 'h-28', 'h-28', 'h-28']} />;
 
-  const items = reviewList(progress).filter((item) => lookupStep(item.key));
+  const items = reviewList(progress).filter(item => {
+    const step = lookupStep(item.key);
+    return step && (!protectedOnly || isProtectedArgumentLesson(step.lessonId));
+  });
   const batch = Math.min(items.length, REVIEW_BATCH);
 
   const remove = (item: ReviewItem) => {
@@ -54,7 +59,7 @@ export function ReviewView() {
   return (
     <div>
       <PageHeader
-        title="Herhalen"
+        title={protectedOnly ? 'Argumentatie herhalen' : 'Herhalen'}
         description="Bekijk je gespreide kennischecks en oefen opnieuw wat je eerder miste. Elke ronde heeft maximaal acht opdrachten."
         action={
           running ? (
@@ -71,7 +76,7 @@ export function ReviewView() {
         }
       />
 
-      <SpacedPracticeCard />
+      <SpacedPracticeCard protectedOnly={protectedOnly} />
 
       {running && (
         <p className="mb-6 rounded-tile border-2 border-orange-line bg-orange-soft px-4 py-3 text-small font-semibold text-orange-ink">
@@ -84,8 +89,8 @@ export function ReviewView() {
           title="Geen foutgerichte oefenpunten"
           mood="happy"
           action={
-            <ButtonLink href="/" size="lg">
-              Naar Leren
+            <ButtonLink href={protectedOnly ? '/argumentatie' : '/'} size="lg">
+              {protectedOnly ? 'Naar Argumentatie' : 'Naar Leren'}
             </ButtonLink>
           }
         >
@@ -145,4 +150,3 @@ export function ReviewView() {
     </div>
   );
 }
-

@@ -91,15 +91,25 @@ describe('het zinnenleerpad binnen niveau 6', () => {
     expect(container.textContent).not.toContain('Codex');
   });
 
-  it('toont zes hoofdonderdelen en behandelt de compatibele zinnenroute als Leren', () => {
-    navigation.pathname = '/zinnen';
+  it('behoudt de oorspronkelijke zesdelige navigatie voor de beschermde argumentatieafdeling', () => {
+    navigation.pathname = '/argumentatie';
     render(<AppShell><p>Lesoverzicht</p></AppShell>);
     for (const name of ['Hoofdnavigatie', 'Hoofdnavigatie (mobiel)']) {
       const nav = within(screen.getByRole('navigation', { name }));
       expect(nav.getAllByRole('link')).toHaveLength(6);
       expect(nav.queryByRole('link', { name: 'Zinnen' })).not.toBeInTheDocument();
-      expect(nav.getByRole('link', { name: 'Leren' })).toHaveAttribute('aria-current', 'page');
+      expect(nav.getByRole('link', { name: /Argumentatie|Argumenten/ })).toHaveAttribute('aria-current', 'page');
     }
+  });
+
+
+  it('gebruikt de nieuwe vierdelige navigatie buiten de beschermde afdeling', () => {
+    navigation.pathname = '/';
+    render(<AppShell><p>Nieuw leerpad</p></AppShell>);
+    const nav = within(screen.getByRole('navigation', { name: 'Hoofdnavigatie' }));
+    expect(nav.getAllByRole('link')).toHaveLength(4);
+    expect(nav.getByRole('link', { name: 'Leerpad' })).toHaveAttribute('aria-current', 'page');
+    expect(nav.queryByRole('link', { name: 'Woorden' })).not.toBeInTheDocument();
   });
 
   it('vindt een bewaarde eigen toepassing in de samenvattingen en houdt de teruglink binnen niveau 6', () => {

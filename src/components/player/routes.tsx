@@ -2,11 +2,13 @@
 
 import type { Route } from 'next';
 import { useCallback, useMemo } from 'react';
-import { getLessonEntry, lessonOverview, nextLessonEntry } from '@/content/catalog';
+import { getLessonEntry, learningPathEntries, lessonOverview, nextLessonEntry } from '@/content/catalog';
+import { isProtectedArgumentLesson } from '@/content/ontleed';
 import { lessonIcon } from '@/content/lesson-icons';
 import { sentenceLessonHref } from '@/lib/sentences/routes';
 import { sentenceLessonForPractice } from '@/lib/sentences/practice-reference';
 import { demoEntries, demoLessonId, getDemo } from '@/content/demo';
+import { ARGUMENT_DEMOS } from '@/content/demo/argumenten';
 import { buildPlan } from '@/engine/plan';
 import { lookupStep, planFor } from '@/lib/plans';
 import { EmptyState } from '@/components/ui/empty-state';
@@ -18,6 +20,19 @@ import { REVIEW_SESSION_ID } from '@/state/sessions';
 import { LessonPlayer, type PlayerMeta } from './lesson-player';
 import { useLocalSession, usePersistentSession } from './use-session';
 
+export const ARGUMENT_REVIEW_SESSION_ID = 'herhaling-argumentatie';
+export function nextLegacyArgumentLesson(id: string) {
+  const entries = learningPathEntries.filter(entry => isProtectedArgumentLesson(entry.lesson.id));
+  const index = entries.findIndex(entry => entry.lesson.id === id);
+  return index < 0 ? undefined : entries[index + 1];
+}
+const argumentDemoSlugs = new Set(ARGUMENT_DEMOS.map(demo => demo.slug));
+export function nextArgumentDemo(slug: string) {
+  const entries = demoEntries.filter(demo => argumentDemoSlugs.has(demo.slug));
+  const index = entries.findIndex(demo => demo.slug === slug);
+  return index < 0 ? undefined : entries[index + 1];
+}
+
 /** Een les uit de cursus. Wordt bewaard en is na verversen te hervatten. */
 export function LessonRoute({ lessonId }: { lessonId: string }) {
   const entry = getLessonEntry(lessonId);
@@ -25,7 +40,8 @@ export function LessonRoute({ lessonId }: { lessonId: string }) {
   const controller = usePersistentSession(lessonId, 'lesson', makePlan);
   if (!entry) return null;
 
-  const next = nextLessonEntry(lessonId);
+  const protectedLesson = isProtectedArgumentLesson(lessonId);
+  const next = protectedLesson ? nextLegacyArgumentLesson(lessonId) : nextLessonEntry(lessonId);
   const sentenceLesson = entry.layer.id === 'zinnen' ? sentenceLessonForPractice(lessonId) : undefined;
   const meta: PlayerMeta = {
     mode: 'lesson',
@@ -40,7 +56,7 @@ export function LessonRoute({ lessonId }: { lessonId: string }) {
       title: entry.lesson.title,
       context: `${entry.domain.name} · Niveau ${entry.layerIndex + 1}: ${entry.layer.name}`,
       learned: lessonOverview(entry.lesson).explainTitles,
-      primary: next ? { label: 'Volgende les', href: `/les/${next.lesson.id}` as Route } : { label: 'Naar Leren', href: '/' },
+      primary: next ? { label: 'Volgende les', href: `/les/${next.lesson.id}` as Route } : protectedLesson ? { label: 'Naar Argumentatie', href: '/argumentatie' } : { label: 'Naar Leren', href: '/' },
       secondary: next ? { label: 'Naar Leren', href: '/' } : { label: 'Alle lessen', href: '/lessen' },
     },
   };
@@ -48,8 +64,9 @@ export function LessonRoute({ lessonId }: { lessonId: string }) {
 }
 
 /** De opgeslagen oefenpunten, maximaal één ronde tegelijk. */
-export function reviewPlan(progress: ProgressData) {
+export function reviewPlan(progress: ProgressData, protectedOnly = false) {
   return reviewList(progress)
+    .filter(item => !protectedOnly || isProtectedArgumentLesson(lookupStep(item.key)?.lessonId ?? ''))
     .slice(0, REVIEW_BATCH)
     .flatMap((item) => {
       const step = lookupStep(item.key);
@@ -57,11 +74,12 @@ export function reviewPlan(progress: ProgressData) {
     });
 }
 
-export function ReviewRoute() {
+export function ReviewRoute({ protectedOnly = true }: { protectedOnly?: boolean } = {}) {
   const hydrated = useHydrated();
-  const count = useProgress((state) => Object.keys(state.review).length);
-  const makePlan = useCallback(() => reviewPlan(useProgress.getState()), []);
-  const controller = usePersistentSession(REVIEW_SESSION_ID, 'review', makePlan);
+  const count = useProgress(state => protectedOnly ? Object.values(state.review).filter(item => isProtectedArgumentLesson(lookupStep(item.key)?.lessonId ?? '')).length : Object.keys(state.review).length);
+  const makePlan = useCallback(() => reviewPlan(useProgress.getState(), protectedOnly), [protectedOnly]);
+  const controller = usePersistentSession(protectedOnly ? ARGUMENT_REVIEW_SESSION_ID : REVIEW_SESSION_ID, 'review', makePlan);
+  const reviewHome = (protectedOnly ? '/herhalen/argumentatie' : '/herhalen') as Route;
 
   if (hydrated && controller.session === null && count === 0) {
     return (
@@ -70,8 +88,8 @@ export function ReviewRoute() {
           title="Niets om te herhalen"
           mood="happy"
           action={
-            <ButtonLink href="/" size="lg">
-              Naar Leren
+            <ButtonLink href={protectedOnly ? '/argumentatie' : '/'} size="lg">
+              {protectedOnly ? 'Naar Argumentatie' : 'Naar Leren'}
             </ButtonLink>
           }
         >
@@ -86,11 +104,11 @@ export function ReviewRoute() {
     title: 'Herhaling',
     context: 'Oefenpunten',
     accent: 'orange',
-    exit: { href: '/herhalen', label: 'Herhaling sluiten (je voortgang is bewaard)' },
+    exit: { href: reviewHome, label: 'Herhaling sluiten (je voortgang is bewaard)' },
     finish: {
       title: 'Herhaling klaar',
       learned: [],
-      primary: { label: 'Naar herhalen', href: '/herhalen' },
+      primary: { label: 'Naar herhalen', href: reviewHome },
       secondary: { label: 'Naar Leren', href: '/' },
     },
   };
@@ -110,20 +128,22 @@ export function DemoRoute({ slug }: { slug: string }) {
   const controller = useLocalSession(demoLessonId(slug), plan);
   if (!demo) return null;
 
+  const protectedDemo = argumentDemoSlugs.has(slug);
   const index = demoEntries.indexOf(demo);
-  const next = demoEntries[index + 1];
+  const next = protectedDemo ? nextArgumentDemo(slug) : demoEntries[index + 1];
+  const gallery = protectedDemo ? '/argumentatie' : '/oefenvormen';
   const meta: PlayerMeta = {
     mode: 'demo',
     title: demo.title,
     context: demo.group,
     accent: demo.domain.accent,
-    exit: { href: '/oefenvormen', label: 'Voorbeeld sluiten en naar Oefenvormen' },
+    exit: { href: gallery, label: protectedDemo ? 'Voorbeeld sluiten en naar Argumentatie' : 'Voorbeeld sluiten en naar Oefenvormen' },
     finish: {
       title: demo.title,
       context: `Voorbeeld · ${demo.group}`,
       learned: [],
-      primary: next ? { label: 'Volgende oefenvorm', href: `/oefenvormen/${next.slug}` as Route } : { label: 'Alle oefenvormen', href: '/oefenvormen' },
-      secondary: next ? { label: 'Alle oefenvormen', href: '/oefenvormen' } : undefined,
+      primary: next ? { label: 'Volgende oefenvorm', href: `/oefenvormen/${next.slug}` as Route } : { label: protectedDemo ? 'Naar Argumentatie' : 'Alle oefenvormen', href: gallery },
+      secondary: next ? { label: protectedDemo ? 'Naar Argumentatie' : 'Alle oefenvormen', href: gallery } : undefined,
     },
   };
   return <LessonPlayer key={slug} controller={controller} meta={meta} />;

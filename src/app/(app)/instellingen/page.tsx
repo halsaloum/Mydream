@@ -1,8 +1,5 @@
 import type { Metadata } from 'next';
-import { SettingsView } from '@/components/settings/settings-view';
+import { OntleedSettings } from '@/components/ontleed/settings';
+export default function Page() { return <OntleedSettings />; }
 
-export const metadata: Metadata = { title: 'Instellingen' };
-
-export default function SettingsPage() {
-  return <SettingsView />;
-}
+export const metadata: Metadata = { title: { absolute: 'Instellingen · Ontleed' } };

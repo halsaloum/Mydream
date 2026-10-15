@@ -1,8 +1,2 @@
-import type { Metadata } from 'next';
-import { WordsView } from '@/components/words/words-view';
-
-export const metadata: Metadata = { title: 'Woorden' };
-
-export default function WordsPage() {
-  return <WordsView />;
-}
+import { redirect } from 'next/navigation';
+export default function RetiredPage() { redirect('/lessen?deel=woordbouw'); }
