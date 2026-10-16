@@ -1,0 +1,41 @@
+# Ontleed: bronlezing en reconstructie
+
+De zeven aangeleverde documenten zijn vóór implementatie als volledige beschikbare tekst gelezen. Daarna zijn 58 oorspronkelijke Nederlandse lessen gemaakt: 16 over woord en woordbouw, 24 over syntaxis, 14 over betekenis en vier integrerende lessen. Pedagogische opdrachten in de documenten zijn als bronmateriaal behandeld. Zij vervangen de opdracht van de gebruiker niet.
+
+## Leesdekking
+
+Paginanummers hieronder zijn fysieke PDF-pagina’s, tenzij anders aangegeven. De definitieve dekkingsparagrafen in de gekoppelde leesnotities zijn leidend; eerdere tussentijdse voortgang in die bestanden is historisch.
+
+| Document | Volledige tekstdekking | Visuele controle en beperkingen |
+| --- | --- | --- |
+| Rochelle Lieber, Introducing Morphology, derde editie (2022), EPUB | Alle 25 spine-items: alle 11 hoofdstukken, oefeningen, voetnoten, voorwerk, woordenlijst, referenties en index; 611.736 geëxtraheerde tekens. | Alle 294 ingebedde afbeeldingen bekeken op 25 contactbladen. Zeer kleine IPA-diakritische tekens zijn niet afzonderlijk getranscribeerd en worden niet getoetst. |
+| Martin Haspelmath en Andrea D. Sims, Understanding Morphology, tweede editie (2010) | Alle beschikbare tekst op PDF 2–383: alle 12 hoofdstukken, voorbeelden, tabellen, oefeningen, antwoorden, referenties, woordenlijst en beide indexen; 981.754 tekens. PDF 3 en 11 zijn leeg. Gedrukte Arabische pagina = PDF − 17. | 104 afzonderlijk gerenderde pagina’s bekeken, inclusief de omslag op PDF 1, met hoofdfiguren, bomen en paradigmatabellen. De overige tabellen zijn als geëxtraheerde tekst gelezen. Enkele zeldzame fonetische tekens zijn onvolmaakt geëxtraheerd; dit is geen claim dat elke pagina visueel is nagekeken. |
+| Michael Diercks, Beatrice Santorini en Anthony Kroch, The Syntax of Natural Language, tweede editie, versie 2.03 (december 2024) | Alle 613 PDF-pagina’s: voorwerk, alle 15 hoofdstukken en oefeningen, woordenlijst en referenties; 205.047 woorden. Gedrukte p.1 begint op PDF 20. Afgekapt geraakte uitvoer is opnieuw gelezen. | PDF 201 is visueel gecontroleerd voor de bomen. Arabische letters en boomgeometrie zijn niet overal betrouwbaar geëxtraheerd; alle diagrammen zijn niet afzonderlijk bekeken. |
+| Maggie Tallerman, Understanding Syntax, zesde editie (2025), scan | De PDF heeft op alle 382 pagina’s geen tekstlaag. Lokale Apple Vision-OCR leverde 146.626 woorden zonder lege OCR-pagina. PDF 1–190 en 191–382 zijn door twee lezers volledig gelezen: voorwerk, hoofdstukken 1–9 met oefeningen en achterwerk. Gedrukte pagina = PDF − 17. | Scans op PDF 190, 196 en 203 zijn visueel gecontroleerd; de beschadigde dominantieparagraaf op 190 is zo hersteld. OCR-fouten blijven mogelijk in vreemde symbolen, categorieën, subscripten, bomen en uitgelijnde glossen, onder meer op 12, 34, 45, 59, 138 en 143. Nieuwe Nederlandse regels rusten niet op onopgeloste beschadigde datasets. Geen volledige visuele controle van alle diagrammen. |
+| Paul R. Kroeger, Analyzing Meaning (2018) | Alle 502 PDF-pagina’s gelezen/geïnspecteerd: voorwerk 1–16; alle 22 hoofdstukken, voorbeelden, voetnoten, oefeningen en verder-lezenkaders op 17–468 (gedrukt 1–452); referenties 469–490, indexen 491–498 en afsluiting 499–502. 156.719 geëxtraheerde woorden. | Lege tussenpagina’s zijn meegenomen. Afgekapt geraakte tekst is opnieuw gelezen. De leesnotities claimen volledige inhoudelijke tekstdekking, geen afzonderlijke visuele controle van ieder diagram. |
+| Ontleed — van nul tot de volle zin | Alle 29 pagina’s, inclusief bronverantwoording en notices bij voorbeelddata; 38.483 tekens. | Volledige beschikbare tekst gelezen; geen afzonderlijke volledige beeldcontrole vastgelegd. |
+| Alles op zinsniveau — leerlijn Nederlands | Alle 35 pagina’s, inclusief bronverantwoording en notices bij voorbeelddata; 68.787 tekens. | Volledige beschikbare tekst gelezen; geen afzonderlijke volledige beeldcontrole vastgelegd. |
+
+De uitgebreide syntheses staan in [morfologie](morphology-reading.md), [syntaxis](syntax-reading.md), [Tallerman eerste helft](tallerman-first-half-reading.md), [betekenis](semantics-reading.md) en [Nederlandse leerlijn](dutch-curriculum-reading.md). De morfologienotities bevatten de exacte hoofdstukbereiken en lijst van 104 bekeken PDF-pagina’s. Volledige tekstdekking impliceert geen foutloze OCR of visuele inspectie van ieder bronbeeld.
+
+## Van bronnen naar lessen en ontwerp
+
+Uitleg en Nederlandse voorbeelden zijn opnieuw geschreven. Hoofdstukverwijzingen verbinden de lessen met de begrippen en beperkingen uit de boeken. Engelse of typologische analyses zijn niet automatisch als Nederlandse regels overgenomen. Nederlandse werkwoordclusters, er en interpunctie zijn aanvullend gecontroleerd met ANS en Taaladvies; concrete links staan in de leesnotities. Bron-id’s zijn door tests gecontroleerd; de taalkundige interpretatie en juiste hoofdstukankers zijn daarnaast handmatig met de bronlezers nagekeken.
+
+De [ontwerpnotities](design-research.md) beschrijven de daadwerkelijk bekeken Brilliant-flows op Mobbin. Het [Figma-bestand](https://www.figma.com/design/KqCG5Jvjc7mmjvbnfdHpRC) bevat bewerkbare overzichts- en lesframes, variabelen, tekststijlen en herbruikbare kaarten/knoppen. [figma-state.json](figma-state.json) bewaart de verwijzingen naar die objecten. Mobbin levert referenties voor compositie en interactie; de app gebruikt eigen illustraties en lesinhoud.
+
+## Verificatie en behoud
+
+De curriculumtests controleren 58 unieke les-id’s in zes delen, geldige en acyclische voorkennisverwijzingen, bestaande bron-id’s, drie theorieonderdelen, vijf oefeningen en twee verschillende ophaalscenario’s per les. Alle 407 beoordeelde vraag-id’s zijn uniek. De werkelijke beoordelaar verwerkt elk toegelaten antwoord; geaccepteerde volgordes moeten uit de echte sleepblokken bestaan. Opties, feedback, markeringen en classificatiedoelen worden eveneens gecontroleerd. De 176 curriculumtests en drie behoudtests slaagden. Deze controles bewijzen de inhoudelijke juistheid niet automatisch; interpretatie, voorbeelden en bronankers zijn ook redactioneel nagekeken.
+
+De [behoudgrens](preservation-boundaries.md) beschermt argumentatie en drogredenen. [preservation-manifest.json](preservation-manifest.json) legt 107 oorspronkelijke bestandshashes en groottes vast; de [cursusmomentopname](original-argument-course.json) bevat 69 volledige lessen en modules; de [catalogusmomentopname](original-argument-catalog.json) bevat de opgeloste oudere lessen a20–a35 en metadata. De behoudtest vergelijkt deze met de actuele bestanden en objecten. Gedeelde afhankelijkheden vragen daarnaast diff-, regressie- en schermcontrole; een hash van alleen eigen argumentatiebestanden dekt hun indirecte effecten niet.
+
+Voer vanuit de repository `npx vitest run src/content/ontleed src/state/ontleed.test.ts`, `npm run check`, `npm run build` en de toepasselijke Playwright-tests uit. De [hoofd-README](../../README.md) beschrijft installatie, routes, opslag en de gerichte eind-tot-eindcontrole.
+
+De concrete eindresultaten, browserdekking en beperkingen staan in [validation.md](validation.md).
+
+## OCR-methode en opruiming
+
+De behouden [Swift OCR-utility](ocr-syntax.swift) gebruikt op macOS PDFKit en Apple Vision: renderbreedte 1600, nauwkeurige Engelse tekstherkenning en één tekstbestand per PDF-pagina. De vier argumenten zijn bron-PDF, uitvoermap, eerste en laatste fysieke pagina. Bestaande uitvoer wordt overgeslagen. Bijvoorbeeld: `swift docs/rebuild/ocr-syntax.swift "/pad/naar/scan.pdf" "/tmp/ontleed-ocr" 1 382`. Uitlijning, boomstructuur en vreemde symbolen vragen daarna nog visuele controle.
+
+Na de leesfase zijn 391 ruwe bronafgeleiden uit tmp/rebuild en tmp/pdfs verwijderd, samen met 132 Swift-cachebestanden. De OCR-utility is naar deze documentatiemap verplaatst. Uit de tijdelijke morfologiemap buiten de repository zijn nog 445 bronextracten, bronbeelden en contactbladen verwijderd; daar bleven alleen twee inventarisbestanden en een momentopname van de oorspronkelijk geschreven lessen over. De bronboeken in Downloads zijn behouden. Leesnotities, lesinhoud, behoudsbewijzen en tests blijven beschikbaar; de repository bevat de ruwe extracts of OCR niet meer.

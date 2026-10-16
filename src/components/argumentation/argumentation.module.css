@@ -1,0 +1,190 @@
+.root {
+  --color-blue-ink: #3549ad;
+  --color-blue-soft: #edf0ff;
+  --color-blue-line: #c8d0fa;
+  --color-blue: #7689f5;
+  --color-blue-deep: #5366ce;
+  --color-blue-on: #15225e;
+  --color-green-ink: #32651a;
+  --color-green-soft: #edf8df;
+}
+
+.hero {
+  border: 1px solid #d7decf;
+  border-radius: 28px;
+  padding: clamp(24px, 4vw, 48px);
+  background: #eff4e8;
+  overflow: hidden;
+}
+
+.preview {
+  padding: 22px;
+  border: 1px solid #dadfd3;
+  border-radius: 24px;
+  background: #fafcf7;
+  box-shadow: 0 7px 0 #dce3d3, 0 18px 36px #2438180a;
+  color: var(--color-ink);
+}
+
+.claim {
+  padding: 22px;
+  text-align: center;
+  border: 2px solid #ccd4f8;
+  border-radius: 16px;
+  background: #e9edff;
+  box-shadow: 0 4px 0 #ccd4f8;
+}
+
+.answer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 62px;
+  padding: 12px;
+  border: 2px solid #dce1d6;
+  border-radius: 14px;
+  background: white;
+  box-shadow: 0 3px 0 #dce1d6;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.5;
+  cursor: pointer;
+  transition: background 160ms, border-color 160ms;
+}
+.answer:hover { border-color: #8e9bcb; }
+.answerKey {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  border: 1px solid #dce1d6;
+  border-radius: 8px;
+  font-weight: 800;
+  font-size: 12px;
+}
+.correct { background: #edf8df; border-color: #a3cc7b; box-shadow: 0 3px 0 #a3cc7b; }
+.retry { background: #fff3e0; border-color: #e8bb80; box-shadow: 0 3px 0 #e8bb80; }
+
+.stats > * { border-radius: 20px; border-width: 2px; }
+.stats > :first-child { background: #fff; }
+.stats > button { background: #fff7e8; border-color: #ecdcc0; }
+.stats > button:hover { border-color: #d7ae68; }
+.stats > :last-child { background: #edf0ff; border-color: #d2d9f7; }
+
+.module {
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px;
+  box-shadow: 0 4px 0 var(--color-line);
+}
+.module[aria-current='step'] { box-shadow: 0 4px 0 var(--accent-ink); }
+.moduleNumber {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border-radius: 12px;
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-line);
+  font-size: 14px;
+}
+
+.lessonList { position: relative; }
+.lesson {
+  position: relative;
+  border-radius: 20px;
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+.lesson:hover { transform: translateY(-3px); box-shadow: 0 7px 0 #d7dcf0; }
+.lesson:active { transform: translateY(1px); }
+.lesson[data-next='true'] { border-color: #a6b3ef; background: #f6f7ff; box-shadow: 0 4px 0 #c5cef4; }
+.lesson[data-locked='true'] { background: #fafaf7; }
+.lesson[data-locked='true']:hover { box-shadow: 0 5px 0 #e7e3da; }
+.lessonNumber {
+  width: 52px;
+  height: 56px;
+  border-radius: 17px;
+  border-width: 2px;
+  box-shadow: 0 4px 0 var(--color-blue-line);
+}
+.lesson[data-next='true'] .lessonNumber { background: #d9efad; border-color: #b6d484; color: #304e17; box-shadow: 0 4px 0 #a6c376; }
+.lesson[data-locked='true'] .lessonNumber { box-shadow: 0 4px 0 var(--color-line); }
+
+.player { background: #f4f6f0; --color-blue-ink: #3d50b5; --color-blue-soft: #edf0ff; }
+.learningLayout { display: flex; flex-direction: column; max-width: 780px; margin: 0 auto; padding: 32px 24px 180px; }
+.learningMain { width: 100%; }
+.player { --color-blue-ink: #39781b; --color-blue-soft: #eff8e7; }
+.player > header { border-bottom: none; }
+.player .learningCard { border: 1px solid #e0e5d9; box-shadow: 0 4px 0 #e8ecdf, 0 18px 48px #263c1706; background: #fff; padding: clamp(20px, 3vw, 36px); border-radius: 28px; }
+.player .learningMain h1 { text-wrap: balance; }
+.player .learningCard p { text-wrap: pretty; }
+.player .learningCard details { background: #fff; border-radius: 16px; transition: border-color 180ms, box-shadow 180ms; }
+.player .learningCard details[open] { border-color: #b7cba0; box-shadow: 0 4px 18px #263c1708; }
+.player .learningCard summary { list-style-position: inside; }
+/* The exercise supplies green or orange feedback; selection alone is not correctness. */
+.player .learningCard fieldset > div:has(input[type='radio']) { box-shadow: 0 3px 0 var(--color-line); }
+.player .learningCard label:has(input:focus-visible) { outline: 3px solid #497b29; outline-offset: 4px; }
+.player .learningCard fieldset > div:has(input[type='radio']):active { transform: translateY(2px); box-shadow: 0 1px 0 #d1dcc5; }
+.dockHint { display: flex; align-items: center; gap: 8px; font-size: 12px; line-height: 1.5; color: #68715f; }
+.dockHint[data-ready='true'] { color: #39781b; font-weight: 700; }
+.actionDock[data-ready='true'] { border-top-color: #bfd69d; background: #f8fcf4f5; }
+@media (max-width: 640px) { .dockHint { width: 100%; order: -1; justify-content: center; font-size: 11px; } }
+@media (prefers-reduced-motion: reduce) { .player .learningCard fieldset > div:has(input[type='radio']):hover, .player .learningCard fieldset > div:has(input[type='radio']):active { transform: none; } }
+:global([data-motion='calm']) .player .learningCard fieldset > div:has(input[type='radio']) { transform: none; }
+.player .learningCard :global([data-theory-page]) { background: #fff; }
+.player .learningCard :global([data-theory-page]) > div { background-color: #fff; }
+.player .actionDock > div { max-width: 900px; }
+.player .actionDock button:not(:disabled) { min-height: 50px; }
+.player .actionDock button:last-child:not(:disabled) { letter-spacing: .025em; }
+.player .learningMain > div:first-child { margin-bottom: 20px; }
+.learningMain { min-width: 0; }
+.journey { position: sticky; top: 102px; max-height: calc(100dvh - 220px); overflow-y: auto; scrollbar-width: thin; padding: 4px 10px 12px 0; }
+.journeyHeading { display: flex; align-items: center; gap: 12px; }
+.journeyHeading p { color: #68715f; font-size: 10px; font-weight: 800; letter-spacing: .13em; }
+.journeyHeading h2 { font-size: 20px; font-weight: 800; letter-spacing: -.04em; }
+.journeyIcon { display: grid; place-items: center; width: 46px; height: 46px; background: #dfedc8; color: #426422; border: 2px solid #c6daa7; border-radius: 15px; box-shadow: 0 3px 0 #c6daa7; }
+.journeyIntro { margin: 18px 0; color: #69715f; font-size: 12px; }
+.journeySteps { display: flex; flex-direction: column; gap: 8px; }
+.journeySteps button { display: flex; align-items: center; gap: 12px; width: 100%; padding: 10px; border: 2px solid transparent; border-radius: 13px; text-align: left; font-size: 12px; font-weight: 650; line-height: 1.45; cursor: pointer; transition: background 180ms, transform 180ms; }
+.journeySteps button:hover:not(:disabled) { background: #e8eddc; }
+.journeySteps button:disabled { color: #74796e; cursor: not-allowed; }
+.journeySteps button[aria-current='step'] { background: #edf0ff; color: #3d50b5; border-color: #c6cef3; box-shadow: 0 3px 0 #d5dbef; }
+.stepNumber { display: grid; place-items: center; flex-shrink: 0; width: 29px; height: 29px; border: 2px solid #dce1d4; background: #fff; border-radius: 10px; font-weight: 800; }
+.journeySteps button[aria-current='step'] .stepNumber { background: #5264c8; color: white; border-color: #5264c8; }
+.journeySteps button[data-done='true'] .stepNumber { background: #e0efca; border-color: #bfd894; color: #436624; }
+.journeyGoal { display: flex; align-items: center; gap: 10px; margin-top: 20px; padding: 16px 10px; border-top: 1px solid #dce1d4; font-size: 12px; font-weight: 650; color: #69715f; }
+.journeyGoal svg { flex-shrink: 0; }
+.coach { padding: 20px; margin-top: 16px; border: 1px solid #e5d7b6; border-radius: 18px; background: #fff7e3; color: #795b22; }
+.coach h3 { margin-top: 10px; font-size: 14px; font-weight: 800; }
+.coach p { margin-top: 8px; font-size: 12px; line-height: 1.8; }
+.coach > span { display: flex; align-items: center; gap: 7px; margin-top: 14px; font-size: 11px; font-weight: 700; }
+.learningCard { padding: clamp(20px, 3vw, 38px); border: 2px solid #dce2d3; border-top: 5px solid #b3cf89; border-radius: 24px; background: white; box-shadow: 0 6px 0 #e3e8da, 0 15px 35px #24381805; }
+.learningCard :global([data-theory-page]) > div:first-child > p { display: inline-flex; padding: 6px 12px; border-radius: 8px; background: #edf0ff; font-size: 10px; letter-spacing: .13em; }
+.learningCard :global([data-theory-page]) h2 { font-size: clamp(24px, 2.5vw, 32px); letter-spacing: -.035em; line-height: 1.22; }
+.learningCard fieldset > div:has(input[type='radio']) { border-radius: 16px; box-shadow: 0 4px 0 #e0e4da; transition: transform 160ms, box-shadow 160ms, border-color 160ms; }
+.learningCard fieldset > div:has(input[type='radio']):hover { transform: translateY(-2px); }
+.learningCard fieldset > div:has(input:checked) { box-shadow: 0 4px 0 var(--color-line); }
+.learningCard label:has(input[type='radio']) { border-radius: 14px; }
+.learningCard label:has(input[type='radio']) > span:first-of-type { border: 2px solid #dce1d6; background: #ffffffa6; }
+.learningCard :global([role='status']) { border-radius: 12px; }
+.actionDock { position: fixed; bottom: 0; left: 0; right: 0; z-index: 30; padding: 18px 24px max(18px, env(safe-area-inset-bottom)); border-top: 2px solid #dce2d3; background: #fffffff5; backdrop-filter: blur(16px); }
+.actionDock > div { max-width: 1060px; }
+.actionDock button { min-height: 48px; border-radius: 14px; font-weight: 800; }
+.player button:focus-visible, .player a:focus-visible { outline: 3px solid #5264c8; outline-offset: 4px; }
+@media (max-width: 1023px) { .learningLayout { grid-template-columns: minmax(0, 760px); justify-content: center; padding-top: 24px; } .journey { display: none; } }
+@media (max-width: 540px) { .learningLayout { padding: 24px 16px 200px; } .learningCard { padding: 20px 16px; border-radius: 20px; } .actionDock { padding-inline: 16px; } .actionDock > div { gap: 10px; } .actionDock button { font-size: 12px; padding-inline: 12px; } }
+.player > header { background: #fffffff2; border-bottom: 2px solid #e3e7dc; }
+.player :global([role='progressbar']) { min-height: 12px; }
+.player :global([role='radiogroup']) label { transition: transform 150ms, box-shadow 150ms, background 150ms; }
+.player :global([role='radiogroup']) label:has(input:checked) { box-shadow: 0 3px 0 var(--color-blue-line); }
+.player :global([role='status']) { animation: feedback-in 240ms ease-out; }
+@keyframes feedback-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) {
+  .root *, .root *::before, .root *::after { animation: none !important; transition: none !important; }
+  .lesson:hover, .lesson:active { transform: none; }
+}
+:global([data-motion='calm']) .root *, :global([data-motion='calm']) .root *::before, :global([data-motion='calm']) .root *::after { animation: none !important; transition: none !important; }
+:global([data-motion='calm']) .lesson:hover, :global([data-motion='calm']) .lesson:active { transform: none; }

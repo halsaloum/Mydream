@@ -1,0 +1,2300 @@
+{
+  "format": 1,
+  "description": "Twaalf lokale, stille lesvideo’s met Nederlandse uitleg in beeld en ondertitels.",
+  "generatedBy": "scripts/generate-sentence-videos.mjs",
+  "videos": [
+    {
+      "lessonId": "zinnen-01",
+      "title": "Een bericht over collega Ruben duidelijk ordenen",
+      "src": "/videos/zinnen/zinnen-01.mp4",
+      "poster": "/videos/zinnen/zinnen-01.jpg",
+      "captions": "/videos/zinnen/zinnen-01.vtt",
+      "durationSeconds": 58.916667,
+      "silent": true,
+      "width": 1280,
+      "height": 720,
+      "fps": 12,
+      "bytes": 610331,
+      "sourceHash": "e5d04cf4f66c0f000fff261c62e7a9fa6326bc70e2f8aa3c7117cdbca7831e02",
+      "fittedFonts": [
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 49,
+            "height": 120,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 32,
+            "height": 44,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 49,
+            "height": 120,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 32,
+            "height": 131,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 49,
+            "height": 120,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 31,
+            "height": 126,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 31,
+            "height": 126,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 51,
+            "height": 124,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 28,
+            "height": 114,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 51,
+            "height": 124,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 32,
+            "height": 44,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ]
+      ],
+      "steps": 4
+    },
+    {
+      "lessonId": "zinnen-02",
+      "title": "Van één krat naar meerdere kratten",
+      "src": "/videos/zinnen/zinnen-02.mp4",
+      "poster": "/videos/zinnen/zinnen-02.jpg",
+      "captions": "/videos/zinnen/zinnen-02.vtt",
+      "durationSeconds": 58.916667,
+      "silent": true,
+      "width": 1280,
+      "height": 720,
+      "fps": 12,
+      "bytes": 575848,
+      "sourceHash": "e5d04cf4f66c0f000fff261c62e7a9fa6326bc70e2f8aa3c7117cdbca7831e02",
+      "fittedFonts": [
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 32,
+            "height": 44,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 32,
+            "height": 131,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 32,
+            "height": 131,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 30,
+            "height": 122,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 31,
+            "height": 126,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 32,
+            "height": 44,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ]
+      ],
+      "steps": 4
+    },
+    {
+      "lessonId": "zinnen-03",
+      "title": "Een handeling en haar resultaat uit elkaar houden",
+      "src": "/videos/zinnen/zinnen-03.mp4",
+      "poster": "/videos/zinnen/zinnen-03.jpg",
+      "captions": "/videos/zinnen/zinnen-03.vtt",
+      "durationSeconds": 58.916667,
+      "silent": true,
+      "width": 1280,
+      "height": 720,
+      "fps": 12,
+      "bytes": 500262,
+      "sourceHash": "e5d04cf4f66c0f000fff261c62e7a9fa6326bc70e2f8aa3c7117cdbca7831e02",
+      "fittedFonts": [
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 32,
+            "height": 44,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 32,
+            "height": 131,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 31,
+            "height": 126,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 32,
+            "height": 131,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 74,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 32,
+            "height": 131,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 74,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 32,
+            "height": 44,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ]
+      ],
+      "steps": 4
+    },
+    {
+      "lessonId": "zinnen-04",
+      "title": "Een overdracht van boeken volledig uitleggen",
+      "src": "/videos/zinnen/zinnen-04.mp4",
+      "poster": "/videos/zinnen/zinnen-04.jpg",
+      "captions": "/videos/zinnen/zinnen-04.vtt",
+      "durationSeconds": 58.916667,
+      "silent": true,
+      "width": 1280,
+      "height": 720,
+      "fps": 12,
+      "bytes": 540353,
+      "sourceHash": "e5d04cf4f66c0f000fff261c62e7a9fa6326bc70e2f8aa3c7117cdbca7831e02",
+      "fittedFonts": [
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 32,
+            "height": 44,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 32,
+            "height": 131,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 45,
+            "height": 110,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 32,
+            "height": 131,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 59,
+            "height": 144,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 32,
+            "height": 131,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 56,
+            "height": 137,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 32,
+            "height": 131,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 56,
+            "height": 137,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 32,
+            "height": 44,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ]
+      ],
+      "steps": 4
+    },
+    {
+      "lessonId": "zinnen-05",
+      "title": "Een klant vertellen hoe het met de fietsen staat",
+      "src": "/videos/zinnen/zinnen-05.mp4",
+      "poster": "/videos/zinnen/zinnen-05.jpg",
+      "captions": "/videos/zinnen/zinnen-05.vtt",
+      "durationSeconds": 58.916667,
+      "silent": true,
+      "width": 1280,
+      "height": 720,
+      "fps": 12,
+      "bytes": 549487,
+      "sourceHash": "e5d04cf4f66c0f000fff261c62e7a9fa6326bc70e2f8aa3c7117cdbca7831e02",
+      "fittedFonts": [
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 74,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 32,
+            "height": 44,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 32,
+            "height": 131,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 74,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 31,
+            "height": 126,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 31,
+            "height": 126,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 32,
+            "height": 131,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 32,
+            "height": 44,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ]
+      ],
+      "steps": 4
+    },
+    {
+      "lessonId": "zinnen-06",
+      "title": "Dezelfde mededeling op drie manieren gebruiken",
+      "src": "/videos/zinnen/zinnen-06.mp4",
+      "poster": "/videos/zinnen/zinnen-06.jpg",
+      "captions": "/videos/zinnen/zinnen-06.vtt",
+      "durationSeconds": 58.916667,
+      "silent": true,
+      "width": 1280,
+      "height": 720,
+      "fps": 12,
+      "bytes": 574763,
+      "sourceHash": "e5d04cf4f66c0f000fff261c62e7a9fa6326bc70e2f8aa3c7117cdbca7831e02",
+      "fittedFonts": [
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 32,
+            "height": 44,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 31,
+            "height": 126,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 29,
+            "height": 118,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 30,
+            "height": 122,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 32,
+            "height": 131,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 32,
+            "height": 44,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ]
+      ],
+      "steps": 4
+    },
+    {
+      "lessonId": "zinnen-07",
+      "title": "Een telefoontje beschrijven en daarna rapporteren",
+      "src": "/videos/zinnen/zinnen-07.mp4",
+      "poster": "/videos/zinnen/zinnen-07.jpg",
+      "captions": "/videos/zinnen/zinnen-07.vtt",
+      "durationSeconds": 58.916667,
+      "silent": true,
+      "width": 1280,
+      "height": 720,
+      "fps": 12,
+      "bytes": 544945,
+      "sourceHash": "e5d04cf4f66c0f000fff261c62e7a9fa6326bc70e2f8aa3c7117cdbca7831e02",
+      "fittedFonts": [
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 74,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 32,
+            "height": 44,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 74,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 30,
+            "height": 122,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 74,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 30,
+            "height": 122,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 30,
+            "height": 122,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 27,
+            "height": 110,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 32,
+            "height": 87,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ]
+      ],
+      "steps": 4
+    },
+    {
+      "lessonId": "zinnen-08",
+      "title": "Een reisbesluit begrijpelijk onderbouwen",
+      "src": "/videos/zinnen/zinnen-08.mp4",
+      "poster": "/videos/zinnen/zinnen-08.jpg",
+      "captions": "/videos/zinnen/zinnen-08.vtt",
+      "durationSeconds": 58.916667,
+      "silent": true,
+      "width": 1280,
+      "height": 720,
+      "fps": 12,
+      "bytes": 519478,
+      "sourceHash": "e5d04cf4f66c0f000fff261c62e7a9fa6326bc70e2f8aa3c7117cdbca7831e02",
+      "fittedFonts": [
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 32,
+            "height": 44,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 30,
+            "height": 122,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 31,
+            "height": 126,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 29,
+            "height": 118,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 28,
+            "height": 114,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 32,
+            "height": 87,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ]
+      ],
+      "steps": 4
+    },
+    {
+      "lessonId": "zinnen-09",
+      "title": "Zet de bezorgvoorwaarde vooraan",
+      "src": "/videos/zinnen/zinnen-09.mp4",
+      "poster": "/videos/zinnen/zinnen-09.jpg",
+      "captions": "/videos/zinnen/zinnen-09.vtt",
+      "durationSeconds": 58.916667,
+      "silent": true,
+      "width": 1280,
+      "height": 720,
+      "fps": 12,
+      "bytes": 543929,
+      "sourceHash": "e5d04cf4f66c0f000fff261c62e7a9fa6326bc70e2f8aa3c7117cdbca7831e02",
+      "fittedFonts": [
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 32,
+            "height": 44,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 32,
+            "height": 131,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 32,
+            "height": 131,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 30,
+            "height": 122,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 32,
+            "height": 131,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 32,
+            "height": 44,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ]
+      ],
+      "steps": 4
+    },
+    {
+      "lessonId": "zinnen-10",
+      "title": "Maak van twee formulierzinnen één duidelijke mededeling",
+      "src": "/videos/zinnen/zinnen-10.mp4",
+      "poster": "/videos/zinnen/zinnen-10.jpg",
+      "captions": "/videos/zinnen/zinnen-10.vtt",
+      "durationSeconds": 58.916667,
+      "silent": true,
+      "width": 1280,
+      "height": 720,
+      "fps": 12,
+      "bytes": 516544,
+      "sourceHash": "e5d04cf4f66c0f000fff261c62e7a9fa6326bc70e2f8aa3c7117cdbca7831e02",
+      "fittedFonts": [
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 32,
+            "height": 44,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 31,
+            "height": 126,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1083,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 30,
+            "height": 122,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 32,
+            "height": 131,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 32,
+            "height": 131,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 32,
+            "height": 44,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ]
+      ],
+      "steps": 4
+    },
+    {
+      "lessonId": "zinnen-11",
+      "title": "Maak zichtbaar wie het verslag las",
+      "src": "/videos/zinnen/zinnen-11.mp4",
+      "poster": "/videos/zinnen/zinnen-11.jpg",
+      "captions": "/videos/zinnen/zinnen-11.vtt",
+      "durationSeconds": 58.916667,
+      "silent": true,
+      "width": 1280,
+      "height": 720,
+      "fps": 12,
+      "bytes": 579139,
+      "sourceHash": "e5d04cf4f66c0f000fff261c62e7a9fa6326bc70e2f8aa3c7117cdbca7831e02",
+      "fittedFonts": [
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 32,
+            "height": 44,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 32,
+            "height": 131,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 32,
+            "height": 131,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 32,
+            "height": 131,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 30,
+            "height": 122,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 32,
+            "height": 44,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ]
+      ],
+      "steps": 4
+    },
+    {
+      "lessonId": "zinnen-12",
+      "title": "Geef alleen de late leerlingen een bericht",
+      "src": "/videos/zinnen/zinnen-12.mp4",
+      "poster": "/videos/zinnen/zinnen-12.jpg",
+      "captions": "/videos/zinnen/zinnen-12.vtt",
+      "durationSeconds": 58.916667,
+      "silent": true,
+      "width": 1280,
+      "height": 720,
+      "fps": 12,
+      "bytes": 581118,
+      "sourceHash": "e5d04cf4f66c0f000fff261c62e7a9fa6326bc70e2f8aa3c7117cdbca7831e02",
+      "fittedFonts": [
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 32,
+            "height": 44,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 30,
+            "height": 122,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 32,
+            "height": 131,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 28,
+            "height": 114,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 32,
+            "height": 131,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ],
+        [
+          {
+            "tag": "H1",
+            "size": 49,
+            "height": 112,
+            "maximum": 112,
+            "width": 1130,
+            "available": 1130,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 61,
+            "height": 149,
+            "maximum": 153,
+            "width": 1082,
+            "available": 1082,
+            "valid": true
+          },
+          {
+            "tag": "P",
+            "size": 32,
+            "height": 44,
+            "maximum": 150,
+            "width": 1160,
+            "available": 1160,
+            "valid": true
+          }
+        ]
+      ],
+      "steps": 4
+    }
+  ],
+  "totalBytes": 6636197
+}

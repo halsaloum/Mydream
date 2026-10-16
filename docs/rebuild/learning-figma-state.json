@@ -1,0 +1,909 @@
+{
+  "fileKey": "KqCG5Jvjc7mmjvbnfdHpRC",
+  "pageId": "11:81",
+  "wrappers": [
+    {
+      "id": "11:112",
+      "name": "Leerpad · Desktop",
+      "width": 1280,
+      "height": 1100,
+      "x": 160,
+      "y": 160
+    },
+    {
+      "id": "11:113",
+      "name": "Naamwoordgroep · Desktop",
+      "width": 1280,
+      "height": 900,
+      "x": 1600,
+      "y": 160
+    },
+    {
+      "id": "11:114",
+      "name": "Naamwoordgroep · Mobiel",
+      "width": 390,
+      "height": 844,
+      "x": 3040,
+      "y": 160
+    },
+    {
+      "id": "11:115",
+      "name": "Componenten · Review",
+      "width": 900,
+      "height": 1000,
+      "x": 3590,
+      "y": 160
+    }
+  ],
+  "variables": [
+    {
+      "id": "VariableID:11:83",
+      "name": "primitive/ink",
+      "values": {
+        "11:0": {
+          "r": 0.08627451211214066,
+          "g": 0.08627451211214066,
+          "b": 0.08627451211214066,
+          "a": 1
+        }
+      },
+      "scopes": [],
+      "syntax": {
+        "WEB": "var(--o-ink)"
+      }
+    },
+    {
+      "id": "VariableID:11:84",
+      "name": "color/ink",
+      "values": {
+        "11:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:11:83"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "TEXT_FILL",
+        "STROKE_COLOR"
+      ],
+      "syntax": {
+        "WEB": "var(--o-ink)"
+      }
+    },
+    {
+      "id": "VariableID:11:85",
+      "name": "primitive/muted",
+      "values": {
+        "11:0": {
+          "r": 0.4000000059604645,
+          "g": 0.4000000059604645,
+          "b": 0.4000000059604645,
+          "a": 1
+        }
+      },
+      "scopes": [],
+      "syntax": {
+        "WEB": "var(--o-muted)"
+      }
+    },
+    {
+      "id": "VariableID:11:86",
+      "name": "color/muted",
+      "values": {
+        "11:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:11:85"
+        }
+      },
+      "scopes": [
+        "TEXT_FILL"
+      ],
+      "syntax": {
+        "WEB": "var(--o-muted)"
+      }
+    },
+    {
+      "id": "VariableID:11:87",
+      "name": "primitive/white",
+      "values": {
+        "11:0": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 1
+        }
+      },
+      "scopes": [],
+      "syntax": {
+        "WEB": "var(--o-white)"
+      }
+    },
+    {
+      "id": "VariableID:11:88",
+      "name": "color/white",
+      "values": {
+        "11:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:11:87"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "TEXT_FILL"
+      ],
+      "syntax": {
+        "WEB": "var(--o-white)"
+      }
+    },
+    {
+      "id": "VariableID:11:89",
+      "name": "primitive/soft",
+      "values": {
+        "11:0": {
+          "r": 0.9607843160629272,
+          "g": 0.9607843160629272,
+          "b": 0.95686274766922,
+          "a": 1
+        }
+      },
+      "scopes": [],
+      "syntax": {
+        "WEB": "var(--o-soft)"
+      }
+    },
+    {
+      "id": "VariableID:11:90",
+      "name": "color/soft",
+      "values": {
+        "11:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:11:89"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL"
+      ],
+      "syntax": {
+        "WEB": "var(--o-soft)"
+      }
+    },
+    {
+      "id": "VariableID:11:91",
+      "name": "primitive/line",
+      "values": {
+        "11:0": {
+          "r": 0.8980392217636108,
+          "g": 0.8980392217636108,
+          "b": 0.8901960849761963,
+          "a": 1
+        }
+      },
+      "scopes": [],
+      "syntax": {
+        "WEB": "var(--o-line)"
+      }
+    },
+    {
+      "id": "VariableID:11:92",
+      "name": "color/line",
+      "values": {
+        "11:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:11:91"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "STROKE_COLOR"
+      ],
+      "syntax": {
+        "WEB": "var(--o-line)"
+      }
+    },
+    {
+      "id": "VariableID:11:93",
+      "name": "primitive/green",
+      "values": {
+        "11:0": {
+          "r": 0.14509804546833038,
+          "g": 0.7098039388656616,
+          "b": 0.35686275362968445,
+          "a": 1
+        }
+      },
+      "scopes": [],
+      "syntax": {
+        "WEB": "var(--o-green)"
+      }
+    },
+    {
+      "id": "VariableID:11:94",
+      "name": "color/green",
+      "values": {
+        "11:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:11:93"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "STROKE_COLOR"
+      ],
+      "syntax": {
+        "WEB": "var(--o-green)"
+      }
+    },
+    {
+      "id": "VariableID:11:95",
+      "name": "primitive/green-soft",
+      "values": {
+        "11:0": {
+          "r": 0.9254902005195618,
+          "g": 0.9725490212440491,
+          "b": 0.9372549057006836,
+          "a": 1
+        }
+      },
+      "scopes": [],
+      "syntax": {
+        "WEB": "var(--o-green-soft)"
+      }
+    },
+    {
+      "id": "VariableID:11:96",
+      "name": "color/green-soft",
+      "values": {
+        "11:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:11:95"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL"
+      ],
+      "syntax": {
+        "WEB": "var(--o-green-soft)"
+      }
+    },
+    {
+      "id": "VariableID:11:97",
+      "name": "primitive/green-dark",
+      "values": {
+        "11:0": {
+          "r": 0.09019608050584793,
+          "g": 0.41960784792900085,
+          "b": 0.21176470816135406,
+          "a": 1
+        }
+      },
+      "scopes": [],
+      "syntax": {
+        "WEB": "var(--o-green-dark)"
+      }
+    },
+    {
+      "id": "VariableID:11:98",
+      "name": "color/green-dark",
+      "values": {
+        "11:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:11:97"
+        }
+      },
+      "scopes": [
+        "TEXT_FILL",
+        "STROKE_COLOR"
+      ],
+      "syntax": {
+        "WEB": "var(--o-green-dark)"
+      }
+    },
+    {
+      "id": "VariableID:11:99",
+      "name": "space/8",
+      "values": {
+        "11:0": 8
+      },
+      "scopes": [
+        "GAP"
+      ],
+      "syntax": {
+        "WEB": "var(--o-space-2)"
+      }
+    },
+    {
+      "id": "VariableID:11:100",
+      "name": "space/16",
+      "values": {
+        "11:0": 16
+      },
+      "scopes": [
+        "GAP"
+      ],
+      "syntax": {
+        "WEB": "var(--o-gap)"
+      }
+    },
+    {
+      "id": "VariableID:11:101",
+      "name": "space/24",
+      "values": {
+        "11:0": 24
+      },
+      "scopes": [
+        "GAP"
+      ],
+      "syntax": {
+        "WEB": "var(--o-padding)"
+      }
+    },
+    {
+      "id": "VariableID:11:102",
+      "name": "space/32",
+      "values": {
+        "11:0": 32
+      },
+      "scopes": [
+        "GAP"
+      ],
+      "syntax": {
+        "WEB": "var(--o-space-8)"
+      }
+    },
+    {
+      "id": "VariableID:11:103",
+      "name": "radius/12",
+      "values": {
+        "11:0": 12
+      },
+      "scopes": [
+        "CORNER_RADIUS"
+      ],
+      "syntax": {
+        "WEB": "var(--o-radius)"
+      }
+    },
+    {
+      "id": "VariableID:11:104",
+      "name": "radius/full",
+      "values": {
+        "11:0": 999
+      },
+      "scopes": [
+        "CORNER_RADIUS"
+      ],
+      "syntax": {
+        "WEB": "var(--o-radius-full)"
+      }
+    }
+  ],
+  "styles": [
+    {
+      "id": "S:08633a33cb9ca7f3581a5e21a37e31eafe102ef2,",
+      "name": "Ontleed/Learning/Caption"
+    },
+    {
+      "id": "S:5f7e4fd080917ff7cb81da1336b59289eb7c03d1,",
+      "name": "Ontleed/Learning/Label"
+    },
+    {
+      "id": "S:c224fd1a0c1589e35cef088b4456af93971f900f,",
+      "name": "Ontleed/Learning/Body"
+    },
+    {
+      "id": "S:8f13056baf965385407783c9da3ea1ad583ebe26,",
+      "name": "Ontleed/Learning/Subtitle"
+    },
+    {
+      "id": "S:22e9e3797e05b4bfdbcca03c426248e7d63f30d1,",
+      "name": "Ontleed/Learning/Question"
+    },
+    {
+      "id": "S:245a950f38347b43a3fc4d0b0da7bb70ee0841c6,",
+      "name": "Ontleed/Learning/Title"
+    },
+    {
+      "id": "S:5c8100e037ff6488eaff3a6e995283ba0642ec0c,",
+      "name": "Ontleed/Learning/Sentence"
+    }
+  ],
+  "scope": "Three editable learning screens plus focused component families",
+  "completedSteps": [
+    "reference-research",
+    "design-discovery",
+    "foundations",
+    "components",
+    "composition",
+    "visual-and-structural-verification"
+  ],
+  "components": {
+    "Ontleed/Learning/Button": {
+      "id": "12:87",
+      "variants": [
+        {
+          "id": "12:81",
+          "name": "State=Primary"
+        },
+        {
+          "id": "12:83",
+          "name": "State=Disabled"
+        },
+        {
+          "id": "12:85",
+          "name": "State=Quiet"
+        }
+      ],
+      "labelProperty": "Label#12:0"
+    },
+    "Ontleed/Learning/Choice": {
+      "id": "12:97",
+      "variants": [
+        {
+          "id": "12:88",
+          "name": "State=Default"
+        },
+        {
+          "id": "12:91",
+          "name": "State=Selected"
+        },
+        {
+          "id": "12:94",
+          "name": "State=Correct"
+        }
+      ],
+      "labelProperty": "Label#12:4"
+    },
+    "Ontleed/Learning/Path node": {
+      "id": "12:104",
+      "variants": [
+        {
+          "id": "12:98",
+          "name": "State=Current"
+        },
+        {
+          "id": "12:100",
+          "name": "State=Complete"
+        },
+        {
+          "id": "12:102",
+          "name": "State=Upcoming"
+        }
+      ],
+      "numberProperty": "Number#12:8"
+    },
+    "Ontleed/Learning/Progress segment": {
+      "id": "12:109",
+      "variants": [
+        {
+          "id": "12:105",
+          "name": "State=Complete"
+        },
+        {
+          "id": "12:106",
+          "name": "State=Current"
+        },
+        {
+          "id": "12:108",
+          "name": "State=Upcoming"
+        }
+      ]
+    }
+  },
+  "componentCreatedNodeIds": [
+    "12:81",
+    "12:82",
+    "12:83",
+    "12:84",
+    "12:85",
+    "12:86",
+    "12:87",
+    "12:88",
+    "12:89",
+    "12:90",
+    "12:91",
+    "12:92",
+    "12:93",
+    "12:94",
+    "12:95",
+    "12:96",
+    "12:97",
+    "12:98",
+    "12:99",
+    "12:100",
+    "12:101",
+    "12:102",
+    "12:103",
+    "12:104",
+    "12:105",
+    "12:106",
+    "12:107",
+    "12:108",
+    "12:109"
+  ],
+  "composition": {
+    "createdNodeIds": [
+      "13:81",
+      "13:82",
+      "13:83",
+      "13:84",
+      "13:85",
+      "13:86",
+      "13:87",
+      "13:88",
+      "13:89",
+      "13:90",
+      "13:91",
+      "13:92",
+      "13:93",
+      "13:94",
+      "13:95",
+      "13:96",
+      "13:97",
+      "13:98",
+      "13:99",
+      "13:100",
+      "13:101",
+      "13:102",
+      "13:103",
+      "I13:103;12:101",
+      "13:105",
+      "13:106",
+      "13:107",
+      "13:108",
+      "13:109",
+      "13:110",
+      "13:111",
+      "I13:111;12:101",
+      "13:113",
+      "13:114",
+      "13:115",
+      "13:116",
+      "13:117",
+      "13:118",
+      "13:119",
+      "I13:119;12:101",
+      "13:121",
+      "13:122",
+      "13:123",
+      "13:124",
+      "13:125",
+      "13:126",
+      "13:127",
+      "I13:127;12:99",
+      "13:129",
+      "13:130",
+      "13:131",
+      "13:132",
+      "13:133",
+      "13:134",
+      "I13:134;12:82",
+      "13:136",
+      "13:137",
+      "13:138",
+      "13:139",
+      "I13:139;12:103",
+      "13:141",
+      "13:142",
+      "13:143",
+      "13:144",
+      "13:145",
+      "13:146",
+      "13:147",
+      "I13:147;12:103",
+      "13:149",
+      "13:150",
+      "13:151",
+      "13:152",
+      "13:153",
+      "13:154",
+      "13:155",
+      "13:156",
+      "13:157",
+      "13:158",
+      "13:159",
+      "13:160",
+      "I13:160;12:107",
+      "13:162",
+      "13:163",
+      "13:164",
+      "13:165",
+      "13:166",
+      "13:167",
+      "13:168",
+      "13:169",
+      "13:170",
+      "13:171",
+      "13:172",
+      "13:173",
+      "13:174",
+      "13:175",
+      "I13:175;12:92",
+      "I13:175;12:93",
+      "13:178",
+      "I13:178;12:89",
+      "I13:178;12:90",
+      "13:181",
+      "13:182",
+      "13:183",
+      "13:184",
+      "13:185",
+      "13:186",
+      "I13:186;12:82",
+      "13:188",
+      "13:189",
+      "13:190",
+      "13:191",
+      "13:192",
+      "I13:192;12:107",
+      "13:194",
+      "13:195",
+      "13:196",
+      "13:197",
+      "13:198",
+      "13:199",
+      "13:200",
+      "13:201",
+      "13:202",
+      "13:203",
+      "13:204",
+      "13:205",
+      "13:206",
+      "13:207",
+      "I13:207;12:92",
+      "I13:207;12:93",
+      "13:210",
+      "I13:210;12:89",
+      "I13:210;12:90",
+      "13:213",
+      "13:214",
+      "13:215",
+      "13:216",
+      "13:217",
+      "I13:217;12:82",
+      "13:219",
+      "13:220",
+      "13:221",
+      "13:222",
+      "13:223",
+      "13:224",
+      "13:225",
+      "13:226",
+      "13:227",
+      "13:228",
+      "13:229",
+      "13:230",
+      "13:231",
+      "13:232",
+      "13:233",
+      "13:234",
+      "13:235",
+      "13:236",
+      "13:237",
+      "13:238",
+      "13:239",
+      "I13:239;12:82",
+      "13:241",
+      "I13:241;12:84",
+      "13:243",
+      "I13:243;12:86",
+      "13:245",
+      "13:246",
+      "13:247",
+      "I13:247;12:89",
+      "I13:247;12:90",
+      "13:250",
+      "I13:250;12:92",
+      "I13:250;12:93",
+      "13:253",
+      "I13:253;12:95",
+      "I13:253;12:96",
+      "13:256",
+      "13:257",
+      "13:258",
+      "I13:258;12:99",
+      "13:260",
+      "I13:260;12:101",
+      "13:262",
+      "I13:262;12:103",
+      "13:264",
+      "13:265",
+      "13:266",
+      "13:267",
+      "I13:267;12:107",
+      "13:269",
+      "13:270"
+    ],
+    "mutatedNodeIds": [
+      "11:112",
+      "11:113",
+      "11:114",
+      "11:115"
+    ],
+    "pathStart": "13:134",
+    "desktop": {
+      "screenId": "11:113",
+      "submitId": "13:186",
+      "closeId": "13:157",
+      "choices": [
+        "13:175",
+        "13:178"
+      ]
+    },
+    "mobile": {
+      "screenId": "11:114",
+      "submitId": "13:217",
+      "closeId": "13:189",
+      "choices": [
+        "13:207",
+        "13:210"
+      ]
+    },
+    "audit": [
+      {
+        "id": "11:112",
+        "width": 1280,
+        "height": 1100,
+        "counts": {
+          "FRAME": 28,
+          "TEXT": 33,
+          "RECTANGLE": 6,
+          "INSTANCE": 7,
+          "VECTOR": 1
+        },
+        "imageFilledNodes": [],
+        "fonts": [
+          "Figtree"
+        ]
+      },
+      {
+        "id": "11:113",
+        "width": 1280,
+        "height": 900,
+        "counts": {
+          "FRAME": 8,
+          "VECTOR": 1,
+          "INSTANCE": 9,
+          "RECTANGLE": 3,
+          "TEXT": 9,
+          "ELLIPSE": 2
+        },
+        "imageFilledNodes": [],
+        "fonts": [
+          "Figtree"
+        ]
+      },
+      {
+        "id": "11:114",
+        "width": 390,
+        "height": 844,
+        "counts": {
+          "FRAME": 8,
+          "VECTOR": 1,
+          "INSTANCE": 9,
+          "RECTANGLE": 3,
+          "TEXT": 8,
+          "ELLIPSE": 2
+        },
+        "imageFilledNodes": [],
+        "fonts": [
+          "Figtree"
+        ]
+      },
+      {
+        "id": "11:115",
+        "width": 900,
+        "height": 1018,
+        "counts": {
+          "TEXT": 21,
+          "FRAME": 10,
+          "RECTANGLE": 6,
+          "INSTANCE": 12,
+          "ELLIPSE": 3
+        },
+        "imageFilledNodes": [],
+        "fonts": [
+          "Figtree"
+        ]
+      }
+    ]
+  },
+  "verified": {
+    "editable": true,
+    "noRasterUI": true,
+    "fontFamily": "Figtree",
+    "multilineClippingRepaired": true,
+    "normalScaleScreenshotsReviewed": true,
+    "greenNodeUsesInk": true,
+    "prototype": "Course path current action navigates to desktop lesson; close returns to path. Answer grading remains in the app.",
+    "canvasPreserved": "Original Page 1 unchanged"
+  },
+  "visualFixes": {
+    "textHeight": {
+      "mutatedNodeIds": [
+        "13:171",
+        "13:173",
+        "13:181",
+        "13:203",
+        "13:205",
+        "13:213",
+        "12:106",
+        "12:107"
+      ],
+      "audit": [
+        {
+          "id": "11:112",
+          "width": 1280,
+          "height": 1100,
+          "text": []
+        },
+        {
+          "id": "11:113",
+          "width": 1280,
+          "height": 900,
+          "text": [
+            {
+              "id": "13:171",
+              "characters": "Welke werkwoordsvorm past bij het volledige onderwerp?",
+              "width": 680,
+              "height": 80
+            },
+            {
+              "id": "13:173",
+              "characters": "De doos met de nieuwe labels … klaar.",
+              "width": 616,
+              "height": 40
+            }
+          ]
+        },
+        {
+          "id": "11:114",
+          "width": 390,
+          "height": 844,
+          "text": [
+            {
+              "id": "13:203",
+              "characters": "Welke werkwoordsvorm past bij het volledige onderwerp?",
+              "width": 342,
+              "height": 102
+            },
+            {
+              "id": "13:205",
+              "characters": "De doos met de nieuwe labels … klaar.",
+              "width": 294,
+              "height": 72
+            }
+          ]
+        },
+        {
+          "id": "11:115",
+          "width": 900,
+          "height": 1018,
+          "text": []
+        }
+      ]
+    },
+    "contrast": {
+      "mutatedNodeIds": [
+        "12:99"
+      ],
+      "contrast": "Current node uses ink #161616 on green #25B55B; primary buttons remain white on ink."
+    }
+  },
+  "references": {
+    "base": "https://base.uber.com/6d2425e9f/p/294ab4-base-design-system",
+    "brilliant": "https://mobbin.com/flows/369d4cef-f048-4f5e-a0b2-7fd5f343f3fc",
+    "duolingo": "https://mobbin.com/flows/ac9818fd-73fc-4efb-8b9b-6c4e506613a4"
+  },
+  "previews": [
+    "output/rebuild/figma-learning-path.png",
+    "output/rebuild/figma-learning-lesson.png",
+    "output/rebuild/figma-learning-mobile.png",
+    "output/rebuild/figma-learning-components.png"
+  ]
+}

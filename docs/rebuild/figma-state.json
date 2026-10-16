@@ -1,0 +1,55 @@
+{
+  "fileKey": "KqCG5Jvjc7mmjvbnfdHpRC",
+  "url": "https://www.figma.com/design/KqCG5Jvjc7mmjvbnfdHpRC",
+  "pageId": "0:1",
+  "scope": "editable course overview and focused lesson with reusable course cards and buttons",
+  "collectionId": "VariableCollectionId:3:2",
+  "buttonId": "3:32",
+  "labelProperty": "Label#3:0",
+  "variables": {
+    "ink": "VariableID:3:4",
+    "muted": "VariableID:3:6",
+    "line": "VariableID:3:8",
+    "white": "VariableID:3:10",
+    "soft": "VariableID:3:12",
+    "green": "VariableID:3:14",
+    "green-dark": "VariableID:3:16",
+    "purple": "VariableID:3:18",
+    "blue": "VariableID:3:20",
+    "yellow": "VariableID:3:22",
+    "pink": "VariableID:3:24",
+    "gap": "VariableID:3:25",
+    "padding": "VariableID:3:26",
+    "radius": "VariableID:3:27"
+  },
+  "styles": {
+    "Body": "S:b246a9d943139ba01233db19b03987127c3a9eb3,",
+    "Label": "S:8567a121816bf973a672c2f227062d1cb98c6289,",
+    "Heading": "S:d7ad6bc03581ff7d3b810aaa36597ca271ea01b2,",
+    "Hero": "S:7ca75735bbd8bfae420113f46a326637109c2fe3,"
+  },
+  "cardId": "4:2",
+  "cardProperties": {
+    "title": "Title#4:0",
+    "description": "Description#4:1",
+    "count": "Count#4:2"
+  },
+  "overviewId": "4:6",
+  "lessonId": "4:7",
+  "verified": {
+    "editable": true,
+    "allTextFont": "Figtree",
+    "overview": {
+      "descendants": 111,
+      "text": 52,
+      "instances": 13,
+      "vectors": 25
+    },
+    "lesson": {
+      "descendants": 30,
+      "text": 19,
+      "instances": 2
+    },
+    "visualReview": "Overview and focused lesson inspected after fixing multiline text bounds and button labels."
+  }
+}
