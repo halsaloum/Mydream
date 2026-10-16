@@ -1,6 +1,6 @@
 /** Original Dutch curriculum, authored after the supplied source reading. */
-export type PartId = 'basis' | 'woordbouw' | 'zinsdelen' | 'zinsbouw' | 'betekenis' | 'volle-zin';
-export type BookId = 'lieber' | 'haspelmath' | 'natural-syntax' | 'tallerman' | 'kroeger' | 'ontleed' | 'leerlijn' | 'ans';
+export type PartId = 'basis' | 'woordbouw' | 'zinsdelen' | 'zinsbouw' | 'betekenis' | 'volle-zin' | 'alinea';
+export type BookId = 'lieber' | 'haspelmath' | 'natural-syntax' | 'tallerman' | 'kroeger' | 'ontleed' | 'leerlijn' | 'ans' | 'bouwbrief' | 'taaladvies-alinea' | 'taaladvies-verwijzing' | 'taaladvies-samentrekking' | 'onzetaal-alinea' | 'onzetaal-ritme' | 'taalwinkel-alinea' | 'rug-verbanden' | 'vlaanderen-cohesie' | 'vlaanderen-ellips' | 'downing' | 'oversteegen';
 export type QuestionBase = { id: string; prompt: string; concept: string; hint: string; explanation: string };
 export type ChoiceQuestion = QuestionBase & { kind: 'choice'; sentence?: string; options: string[]; answer: number; feedback: string[] };
 export type TypeQuestion = QuestionBase & { kind: 'type'; sentence?: string; accept: string[] };
@@ -8,7 +8,14 @@ export type OrderQuestion = QuestionBase & { kind: 'order'; tokens: string[]; ac
 export type MarkQuestion = QuestionBase & { kind: 'mark'; tokens: string[]; targets: number[] };
 export type Question = ChoiceQuestion | TypeQuestion | OrderQuestion | MarkQuestion;
 export type Discovery = { prompt: string; sentence?: string; options: string[]; answer: number; feedback: string[] };
-export type LessonSection = { title: string; paragraphs: string[]; examples: { sentence: string; analysis: string }[]; pitfall: string; takeaway: string };
+export type SectionTeaching = {
+  core: string;
+  steps: { title: string; text: string }[];
+  terms?: { term: string; meaning: string }[];
+  memory: string;
+  sources: { bookId: BookId; section: string; note?: string }[];
+};
+export type LessonSection = { teaching?: SectionTeaching; title: string; paragraphs: string[]; examples: { sentence: string; analysis: string }[]; pitfall: string; takeaway: string };
 export type CompareLab = { kind: 'compare'; prompt: string; variants: { label: string; text: string; analysis: string }[]; takeaway: string };
 export type ClassifyLab = { kind: 'classify'; prompt: string; categories: string[]; items: { text: string; category: number; why: string }[]; takeaway: string };
 export type LessonLab = CompareLab | ClassifyLab | (MarkQuestion & { takeaway: string }) | (OrderQuestion & { takeaway: string });

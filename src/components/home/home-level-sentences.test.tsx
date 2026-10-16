@@ -103,12 +103,12 @@ describe('het zinnenleerpad binnen niveau 6', () => {
   });
 
 
-  it('gebruikt de nieuwe vierdelige navigatie buiten de beschermde afdeling', () => {
+  it('gebruikt de gerichte leernavigatie buiten de beschermde afdeling', () => {
     navigation.pathname = '/';
     render(<AppShell><p>Nieuw leerpad</p></AppShell>);
     const nav = within(screen.getByRole('navigation', { name: 'Hoofdnavigatie' }));
-    expect(nav.getAllByRole('link')).toHaveLength(4);
-    expect(nav.getByRole('link', { name: 'Leerpad' })).toHaveAttribute('aria-current', 'page');
+    expect(nav.getAllByRole('link')).toHaveLength(3);
+    expect(nav.getByRole('link', { name: 'Leren' })).toHaveAttribute('aria-current', 'page');
     expect(nav.queryByRole('link', { name: 'Woorden' })).not.toBeInTheDocument();
   });
 

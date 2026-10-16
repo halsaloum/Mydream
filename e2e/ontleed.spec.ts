@@ -9,13 +9,15 @@ import { getLessonEntry } from '../src/content/catalog';
 import { planFor } from '../src/lib/plans';
 import { isScored } from '../src/engine/kinds';
 import { seedOnboarded } from './fixtures';
+import { completeTheory } from './theory-fixtures';
 
 const STORE = 'pennig:ontleed-v1';
 const firstLesson = ontleedLessons[0]!;
 type Persisted = {
   sessions: Record<string, { step: number; answers: Record<string, { answer: unknown; correct: boolean }>; draft: string; checks: number[] }>;
   completed: Record<string, { accuracy: number; firstAccuracy: number; count: number }>;
-  retrieval: Record<string, { due: number; interval: number; attempts: number; correct: number; last: number }>;
+  retrieval: Record<string, { due: number; interval: number; attempts: number; correct: number; last: number; successfulDays?: string[] }>;
+  mistakes: Record<string, { attempts: number; correct: number; resolved: boolean }>;
   reviewRound: { items: { lessonId: string; questionId: string }[]; position: number; responses: Record<string, { correct: boolean }> } | null;
 };
 
@@ -60,7 +62,7 @@ function correctOrder(question: Extract<Question, { kind: 'order' }>): number[] 
   return answer;
 }
 
-async function submitQuestion(page: Page, question: Question, wrong = false) {
+async function submitQuestion(page: Page, question: Question, wrong = false, retry = false) {
   await expect(page.getByRole('heading', { name: question.prompt, exact: true })).toBeVisible();
   const widget = page.locator('.o-question');
   switch (question.kind) {
@@ -86,8 +88,8 @@ async function submitQuestion(page: Page, question: Question, wrong = false) {
       break;
     }
   }
-  await widget.getByRole('button', { name: 'Controleer antwoord' }).click();
-  await expect(widget.getByRole('status')).toContainText(wrong ? 'Laten we dit onderzoeken.' : 'Je eerste antwoord klopt.');
+  await widget.getByRole('button', { name: retry ? 'Controleer nieuwe poging' : 'Controleer antwoord' }).click();
+  await expect(widget.getByRole('status')).toContainText(wrong ? 'Nog niet. Probeer de proef.' : retry ? 'Je nieuwe poging klopt.' : 'Je eerste antwoord klopt.');
 }
 
 async function completeLab(page: Page, lab: LessonLab) {
@@ -118,12 +120,12 @@ async function completeLab(page: Page, lab: LessonLab) {
   await expect(page.getByRole('contentinfo').getByRole('button', { name: 'Verder', exact: true })).toBeEnabled();
 }
 
-test('home starts at zero, exposes all 58 real lessons, and has usable search and part filters', async ({ page }, testInfo) => {
-  expect(ontleedLessons).toHaveLength(58);
+test('home starts at zero, exposes all 68 real lessons, and has usable search and part filters', async ({ page }, testInfo) => {
+  expect(ontleedLessons).toHaveLength(68);
   await page.goto('/');
-  await expect(page.getByRole('heading', { name: /Taal begrijpen/ })).toBeVisible();
-  await expect(page.getByText(`0 van ${ontleedLessons.length} lessen afgerond`, { exact: true })).toBeVisible();
-  await expect(page.getByText(`${ontleedLessons.length} uitgebreide lessen`, { exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Het woord begrijpen', exact: true })).toBeVisible();
+  await expect(page.locator('.o-journey-step.is-complete')).toHaveCount(0);
+  await expect(page.getByRole('link', { name: `Bekijk alle ${ontleedLessons.length} lessen`, exact: true })).toBeVisible();
   await expect(page.getByRole('link', { name: 'Begin de les', exact: false })).toHaveAttribute('href', `/les/${firstLesson.id}`);
   await noOverflow(page);
   await mkdir(path.resolve('output/rebuild'), { recursive: true });
@@ -150,7 +152,7 @@ test('home starts at zero, exposes all 58 real lessons, and has usable search an
   await expect(page.getByRole('status')).toHaveText('0 lessen gevonden');
   await expect(page.getByRole('heading', { name: 'Hier staat nog geen les.' })).toBeVisible();
   await page.getByRole('button', { name: 'Toon alle lessen' }).click();
-  await expect(page.locator('a.o-lesson-row')).toHaveCount(58);
+  await expect(page.locator('a.o-lesson-row')).toHaveCount(68);
   await noOverflow(page);
 });
 
@@ -186,8 +188,11 @@ test('a complete first lesson and review keep first attempts, rubric gates and s
 
   await submitQuestion(page, { ...lesson.discovery, kind: 'choice', id: 'discovery', concept: lesson.title, hint: '', explanation: '' });
   await next(page);
-  for (const section of lesson.sections) {
+  for (const [sectionIndex, section] of lesson.sections.entries()) {
     await expect(page.getByRole('heading', { name: section.title, exact: true })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'In gewone taal', exact: true })).toBeVisible();
+    await completeTheory(page, lesson, sectionIndex);
+    await page.locator('summary').filter({ hasText: 'Meer uitleg' }).click();
     for (const paragraph of section.paragraphs) await expect(page.getByText(paragraph, { exact: true })).toBeVisible();
     await expect(page.getByText(section.pitfall, { exact: true })).toBeVisible();
     await noOverflow(page);
@@ -203,13 +208,20 @@ test('a complete first lesson and review keep first attempts, rubric gates and s
       const saved = (await stored(page)).sessions[lesson.id]!.answers[question.id]!;
       expect(saved.correct).toBe(false);
       await page.reload();
-      await expect(page.getByRole('status')).toContainText('Laten we dit onderzoeken.');
+      await expect(page.getByRole('status')).toContainText('Nog niet. Probeer de proef.');
       expect((await stored(page)).sessions[lesson.id]!.answers[question.id]).toEqual(saved);
       await expect(page.getByRole('button', { name: 'Controleer antwoord' })).toHaveCount(0);
       if (question.kind === 'choice') for (const radio of await page.getByRole('radio').all()) await expect(radio).toBeDisabled();
+      await expect(page.getByRole('contentinfo').getByRole('button', { name: 'Verder', exact: true })).toBeDisabled();
+      await page.getByRole('button', { name: 'Probeer opnieuw', exact: true }).click();
+      await submitQuestion(page, question, false, true);
+      expect((await stored(page)).sessions[lesson.id]!.answers[question.id]).toEqual(saved);
     }
     await next(page);
   }
+  await expect(page.getByRole('heading', { name: 'Haal je eerdere twijfel terug.' })).toBeVisible();
+  await submitQuestion(page, wrongQuestion);
+  await page.getByRole('button', { name: 'Verder met toepassing', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'Maak het van jezelf.' })).toBeVisible();
   const forward = page.getByRole('contentinfo').getByRole('button', { name: 'Verder', exact: true });
   const draft = page.getByRole('textbox', { name: 'Jouw zin en uitleg' });
@@ -257,6 +269,11 @@ test('a complete first lesson and review keep first attempts, rubric gates and s
   await noOverflow(page);
 
   await page.goto('/herhalen');
+  await expect(page.getByRole('button', { name: 'Start een foutenronde', exact: true })).toBeVisible();
+  await page.getByRole('link', { name: 'Uitleg bekijken', exact: false }).click();
+  await expect(page).toHaveURL(new RegExp(`/les/${lesson.id}\\?lezen=1$`));
+  for (const section of lesson.sections) await expect(page.getByRole('heading', { name: section.title, exact: true })).toBeVisible();
+  await page.goto('/herhalen');
   await expect(page.getByRole('button', { name: 'Start de ronde', exact: false })).toBeDisabled();
   await page.getByRole('button', { name: 'Nu alvast oefenen' }).click();
   const roundBefore = (await stored(page)).reviewRound!;
@@ -281,6 +298,20 @@ test('a complete first lesson and review keep first attempts, rubric gates and s
   await expect(page.getByRole('heading', { name: 'Je hebt opnieuw opgehaald.' })).toBeVisible();
   expect((await stored(page)).retrieval[lesson.id]).toEqual(schedule);
   await noOverflow(page);
+
+  await page.getByRole('button', { name: 'Terug naar herhalen', exact: true }).click();
+  await page.getByRole('button', { name: 'Start een foutenronde', exact: true }).click();
+  await expect(page.getByRole('heading', { name: wrongQuestion.prompt, exact: true })).toBeVisible();
+  await page.reload();
+  await submitQuestion(page, wrongQuestion);
+  const mistake = (await stored(page)).mistakes[`${lesson.id}:${wrongQuestion.id}`]!;
+  expect(mistake).toMatchObject({ attempts: 1, correct: 1, resolved: false });
+  await page.reload();
+  await expect(page.getByRole('status')).toContainText('Je eerste antwoord klopt.');
+  expect((await stored(page)).mistakes[`${lesson.id}:${wrongQuestion.id}`]).toEqual(mistake);
+  expect((await stored(page)).sessions[lesson.id]!.answers[wrongQuestion.id]!.correct).toBe(false);
+  await page.getByRole('button', { name: 'Volgende', exact: false }).click();
+  await expect(page.getByRole('heading', { name: 'Je hebt opnieuw opgehaald.' })).toBeVisible();
 });
 
 test('sources identify the five books, acknowledge OCR limitations and expose the design references', async ({ page }) => {
@@ -288,8 +319,10 @@ test('sources identify the five books, acknowledge OCR limitations and expose th
   await expect(page.getByRole('heading', { name: 'De boeken achter de lessen.' })).toBeVisible();
   for (const book of Object.values(BOOKS)) await expect(page.getByRole('heading', { name: book.title, exact: true })).toBeVisible();
   await expect(page.getByText(/Niet elke figuur of klein OCR-teken is afzonderlijk geverifieerd/)).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Figma', exact: true })).toHaveAttribute('href', /figma\.com\/design\//);
-  await expect(page.getByRole('link', { name: 'Brilliant-cursusschermen in Mobbin', exact: true })).toHaveAttribute('href', /mobbin\.com\/flows\//);
+  await expect(page.getByRole('link', { name: 'bewerkbare ontwerp in Figma', exact: true })).toHaveAttribute('href', /figma\.com\/design\/.*node-id=11-81/);
+  await expect(page.getByRole('link', { name: 'Brilliant-lesschermen', exact: true })).toHaveAttribute('href', /mobbin\.com\/flows\//);
+  await expect(page.getByRole('link', { name: 'Duolingo’s leerpad in Mobbin', exact: true })).toHaveAttribute('href', /mobbin\.com\/flows\//);
+  await expect(page.getByRole('link', { name: 'Uber Base', exact: true })).toHaveAttribute('href', 'https://base.uber.com/');
   await noOverflow(page);
 });
 
@@ -300,8 +333,9 @@ test('a compare experiment preserves the selected variant and visited-variant ga
   await page.goto(`/les/${lesson.id}`);
   await submitQuestion(page, { ...lesson.discovery, kind: 'choice', id: 'discovery', concept: lesson.title, hint: '', explanation: '' });
   await next(page);
-  for (const section of lesson.sections) {
+  for (const [sectionIndex, section] of lesson.sections.entries()) {
     await expect(page.getByRole('heading', { name: section.title, exact: true })).toBeVisible();
+    await completeTheory(page, lesson, sectionIndex);
     await next(page);
   }
   await expect(page.getByRole('heading', { name: lab.prompt, exact: true })).toBeVisible();

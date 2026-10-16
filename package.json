@@ -2,7 +2,7 @@
   "name": "pennig",
   "version": "0.1.0",
   "private": true,
-  "description": "Ontleed – Nederlandse leerapp met 58 lessen van woordbouw en zinsanalyse tot betekenis en de volle zin, met behoud van argumentatie en drogredenen.",
+  "description": "Ontleed – Nederlandse leerapp met 68 lessen over woord, zin en alinea, actieve taalwerkplaatsen en foutgerichte herhaling, met behoud van argumentatie en drogredenen.",
   "engines": {
     "node": ">=20.9.0"
   },

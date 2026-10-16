@@ -1,6 +1,6 @@
-# Ontleed — van woord tot volle zin
+# Ontleed — woord, zin, alinea
 
-Een Nederlandse leerapp voor woordbouw, zinsanalyse en betekenis, gebouwd met Next.js en React. De nieuwe leerroute bevat **58 oorspronkelijke lessen**, geschreven nadat de zeven aangeleverde brondocumenten volledig als tekst waren gelezen. De afzonderlijke cursus argumentatie en drogredenen blijft behouden.
+Een Nederlandse leerapp voor woordbouw, zinsanalyse en betekenis, gebouwd met Next.js en React. De leerroute bevat **68 lessen in drie niveaus**: Woord, Zin en Alinea. De oorspronkelijke 58 lessen zijn uitgebreid met tien alinealessen; alle lessen gebruiken de vernieuwde oefenflow. De afzonderlijke cursus argumentatie en drogredenen blijft behouden.
 
 | Deel | Lessen | Onderwerp |
 | --- | ---: | --- |
@@ -10,10 +10,15 @@ Een Nederlandse leerapp voor woordbouw, zinsanalyse en betekenis, gebouwd met Ne
 | De zin in elkaar | 12 | Nederlandse woordvolgorde, bijzinnen, verwijzing en informatieverdeling |
 | Meer dan woorden | 14 | Betekenis, context, bereik, modaliteit, tijd en taalhandelingen |
 | De volle zin | 4 | Combineren, leesbaarheid, revisie en zelfstandige toepassing |
+| Van zin naar samenhang | 10 | Kernzin, cohesie, coherentie, thema-rhema, patronen, ritme en revisie |
 
-Elke les begint met een ontdekking en bevat drie uitgebreide theorieonderdelen met uitgewerkte voorbeelden, een onderzoekslab, vijf zelfstandige oefeningen, eigen schrijfwerk met beoordelingscriteria en bronverwijzingen. Twee andere opdrachten per les worden gebruikt voor later ophalen. De route telt 174 theorieonderdelen, 290 oefenvragen en 116 ophaalvragen.
+Elke les begint met een ontdekking en bevat drie uitgebreide theorieonderdelen met uitgewerkte voorbeelden, een onderzoekslab, vijf zelfstandige oefeningen, eigen schrijfwerk met beoordelingscriteria en bronverwijzingen. Minstens twee andere opdrachten per les worden gebruikt voor later ophalen. De route telt 204 theorieonderdelen, 340 oefenvragen en 169 herhaalvragen. Iedere les bevat zelfstandige herhaalvragen, waaronder ten minste één typ- of bouwopdracht. Voor 33 oudere lessen is zo’n productieopdracht toegevoegd.
 
-De lesplayer bewaart de leespositie, eerste antwoorden, schrijftekst en zelfbeoordeling. Feedback verschijnt na een poging. Keuzevragen, korte antwoorden, volgorde en markering hebben een expliciete beoordelaar; eigen schrijfwerk beoordeelt de lerende met criteria en een mogelijke uitwerking. Afronden vereist de oefeningen en een eigen toepassing met alle criteria, maar betekent geen bewezen blijvende beheersing. Herhalen gebruikt nieuwe scenario’s in bewaarde rondes van maximaal acht lessen. De intervallen van 1, 3, 7 en 21 dagen zijn productkeuzes.
+De lesplayer bewaart de leespositie, eerste antwoorden, schrijftekst en zelfbeoordeling. Alle 204 theorieonderdelen beginnen met een korte kern in gewone taal en drie inhoudelijke denkstappen, gevolgd door voorbeelden die je kunt wisselen en een mini-check met directe feedback. Een woordenhulp verklaart gebruikte vaktermen; een zichtbare onthoudregel vat het onderdeel samen. Ieder onderdeel toont gerichte bronverwijzingen achter een uitklapbare knop. De uitgebreide uitleg blijft uitklapbaar. Een eigen notitie is optioneel; bekeken voorbeelden en de mini-check worden apart bewaard en tellen niet mee als zelfstandige oefenscore. Eerder onthulde theorie blijft toegankelijk. Feedback verschijnt na een poging; fouten geven een aanwijzing en een nieuwe poging, terwijl het eerste antwoord behouden blijft. Keuzevragen, korte antwoorden, volgorde en markering hebben een expliciete beoordelaar; eigen schrijfwerk beoordeelt de lerende met criteria en een mogelijke uitwerking. Afronden vereist de oefeningen en een eigen toepassing met alle criteria, maar betekent geen bewezen blijvende beheersing. Gemiste vragen komen binnen de les terug en blijven in een foutenwachtrij staan. Herhalen gebruikt bewaarde rondes van maximaal acht vragen. Correcte productie zonder aanwijzing op verschillende dagen wordt apart bijgehouden; het is beperkt bewijs bij de gebruikte vragen. De intervallen van 1, 3, 7 en 21 dagen zijn productkeuzes.
+
+De [nieuwe boekencontrole en uitlegopbouw](docs/rebuild/book-review-2026-10-16.md) beschrijft de rechtstreekse lezing van de vijf aangeleverde boeken, concrete inhoudelijke correcties en de grenzen van de broncontrole.
+
+De [verantwoording van deze herwerking](docs/rebuild/woord-zin-alinea-revision.md) beschrijft de curriculumkaart, componenten, bronnen en resterende grenzen. Eigen tekst krijgt onderzoekshulp; de app geeft geen automatisch grammaticaoordeel over vrije tekst.
 
 ## Lokaal draaien en controleren
 
@@ -54,14 +59,14 @@ Playwright bouwt en start standaard op poort 3123. Gebruik een bestaande server 
 
 | Route | Gedrag |
 | --- | --- |
-| `/` | Persoonlijk vervolg en de zes delen van het leerpad |
-| `/lessen` | De 58 lessen; zoeken en filters via q, deel en status in de URL |
+| `/` | Persoonlijk vervolg en de drie niveaus van het leerpad |
+| `/lessen` | De 68 lessen; zoeken en filters via q, niveau, deel en status in de URL |
 | `/les/[lessonId]` | Nieuwe lesplayer; a20–a35 openen de bewaarde argumentatielessen |
-| `/herhalen` | Ophaalronde uit afgeronde nieuwe lessen, met hervatten |
+| `/herhalen` | Ophaalronde en blijvende foutenwachtrij, ook uit onvoltooide lessen, met hervatten |
 | `/herhalen/argumentatie` | Bestaande kennischecks en oefenpunten voor argumentatie en drogredenen |
 | `/voortgang` | Eigen eerste antwoorden, afgeronde lessen en begrippen om te herhalen |
 | `/bronnen` | Boeken en hun bijdrage aan de lessen |
-| `/oefenvormen` | Gereedschap en vergelijkbare notaties voor taalanalyse |
+| `/oefenvormen` | Interactieve taalwerkplaats: zinsschema, paradigma, kwantoren, verwijzingen en eigen schrijftekst |
 | `/instellingen` | Dagdoel, rustige beweging, export/import en het nieuwe leerpad wissen |
 | `/argumentatie` | De bestaande cursus met 69 lessen argumentatie en drogredenen |
 | `/argumentatie/les/[lessonId]` | De bestaande argumentatieplayer |
@@ -81,6 +86,8 @@ De behoudtest vergelijkt 107 beschermde bestanden byte voor byte via SHA-256 en 
 
 ## Ontwerp en bronverantwoording
 
-Het [bewerkbare Figma-bestand](https://www.figma.com/design/KqCG5Jvjc7mmjvbnfdHpRC) bevat het lesoverzicht en een geconcentreerd lesscherm, met variabelen en herbruikbare componenten. De vormgeving gebruikt een wit vlak, Figtree, ruime zinvoorbeelden en eigen SVG-illustraties. De [Brilliant-cursusflow op Mobbin](https://mobbin.com/flows/acfd786d-367b-43d6-9058-14dff69bc8b2) en [quizflow](https://mobbin.com/flows/471e25d8-9d8d-481a-9337-0e284f2f9d13) zijn als interactie- en stijlinspiratie onderzocht.
+Het [nieuwe bewerkbare Figma-ontwerp](https://www.figma.com/design/KqCG5Jvjc7mmjvbnfdHpRC?node-id=11-112) bevat een begeleid leerpad, de geconcentreerde les op desktop en mobiel, 22 variabelen en vier componentfamilies met twaalf toestanden. De vormgeving gebruikt een witte basis, zwarte hoofdacties en groen voor leerstatus. De vaste zijbalk en dashboardkaarten zijn vervangen door een leerpad met één volgende stap. [Uber Base](https://base.uber.com/), [Brilliant](https://mobbin.com/flows/369d4cef-f048-4f5e-a0b2-7fd5f343f3fc) en [Duolingo](https://mobbin.com/flows/ac9818fd-73fc-4efb-8b9b-6c4e506613a4) zijn daadwerkelijk als referenties onderzocht. De [ontwerpverantwoording](docs/rebuild/learning-design-reference.md) legt de bronlezing, ontwerpkeuzes en Figma-componenten vast.
 
-De [eindcontrole](docs/rebuild/validation.md) registreert de geslaagde build, 1.212 unit-/componenttests, browserflows en visuele controle. De [reconstructieverantwoording](docs/rebuild/README.md) bundelt de dekking van alle zeven documenten, OCR- en beeldbeperkingen, ontwerpkeuzes en verificatiemethoden. De [ontwerpnotities](docs/rebuild/design-research.md) en de leesnotities voor [morfologie](docs/rebuild/morphology-reading.md), [syntaxis](docs/rebuild/syntax-reading.md), [betekenis](docs/rebuild/semantics-reading.md) en de [Nederlandse leerlijn](docs/rebuild/dutch-curriculum-reading.md) leggen de inhoudelijke keuzes vast. Aangeleverde boekbestanden en ruwe tekst-/OCR-extracten worden niet als app-inhoud meegeleverd.
+Het leerpad en de bibliotheek gebruiken drie lokaal opgeslagen unDraw-illustraties voor Woord, Zin en Alinea. Negen Nederlandstalige YouTube-video’s zijn aan veertien passende lessen gekoppeld. De optionele module verschijnt na de eerste onthulde theorie of in de leesweergave; de speler laadt alleen na een klik en heeft altijd een gewone YouTube-link. Kijken beïnvloedt de lesvoortgang niet. De [mediabronnen](docs/rebuild/media-sources.md) en [illustratievermelding](public/illustrations/ontleed/ATTRIBUTION.md) beschrijven herkomst en controle. De bestaande Figma-pagina toont het ontwerp vóór deze media-uitbreiding.
+
+De [eindcontrole](docs/rebuild/validation.md) registreert de actuele verificatie en de afzonderlijk bewaarde resultaten van de eerdere reconstructie. De [reconstructieverantwoording](docs/rebuild/README.md) bundelt de eerdere documentdekking, OCR- en beeldbeperkingen en ontwerpkeuzes. De [ontwerpnotities](docs/rebuild/design-research.md) en de leesnotities voor [morfologie](docs/rebuild/morphology-reading.md), [syntaxis](docs/rebuild/syntax-reading.md), [betekenis](docs/rebuild/semantics-reading.md), de [Nederlandse leerlijn](docs/rebuild/dutch-curriculum-reading.md) en [alinea’s](docs/rebuild/alinea-reading.md) leggen de inhoudelijke keuzes vast. Aangeleverde boekbestanden en ruwe tekst-/OCR-extracten worden niet als app-inhoud meegeleverd.

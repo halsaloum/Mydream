@@ -1,0 +1,59 @@
+/* Optional lesson media: scoped separately from exercises and their action rail. */
+.ontleed .o-lesson-videos { scroll-margin-top: 90px; margin: 40px 0 32px; padding-top: 28px; border-top: 1px solid var(--o-line, #e5e5e3); }
+.ontleed .o-lesson-videos-heading { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 20px; }
+.ontleed .o-lesson-videos-symbol { display: grid; place-items: center; width: 38px; min-width: 38px; height: 38px; background: var(--o-green-soft, #ecf8ef); border-radius: 12px; color: var(--o-ink, #161616); }
+.ontleed .o-lesson-videos-heading > div { min-width: 0; flex: 1; }
+.ontleed .o-lesson-videos-heading h2 { font-size: 23px; letter-spacing: -.035em; line-height: 1.2; margin: 1px 0 7px; }
+.ontleed .o-lesson-videos-heading p { font-size: 13px; color: var(--o-muted, #666); line-height: 1.6; max-width: 460px; }
+.ontleed .o-video-optional { border: 1px solid var(--o-line, #e5e5e3); color: var(--o-muted, #666); font-size: 10px; padding: 4px 9px; border-radius: 999px; white-space: nowrap; margin-top: 2px; }
+.ontleed .o-lesson-video-list { display: grid; gap: 16px; }
+.ontleed .o-lesson-video { display: grid; grid-template-columns: minmax(0, 192px) minmax(0, 1fr); align-items: start; gap: 20px; padding: 18px; border: 1px solid var(--o-line, #e5e5e3); border-radius: 16px; background: var(--o-white, #fff); overflow: hidden; }
+.ontleed .o-video-preview { position: relative; display: block; width: 100%; aspect-ratio: 16 / 9; border: 0; border-radius: 10px; background: #1e2924; color: #fff; padding: 0; overflow: hidden; text-align: left; isolation: isolate; }
+.ontleed .o-video-preview:after { content: ''; position: absolute; inset: 0; z-index: 0; background: linear-gradient(180deg, transparent 25%, rgb(0 0 0 / .58)); pointer-events: none; }
+.ontleed .o-video-preview img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.ontleed .o-video-play { position: absolute; left: 50%; top: 45%; transform: translate(-50%, -50%); z-index: 1; width: 38px; height: 38px; display: grid; place-items: center; padding-left: 2px; border-radius: 50%; color: #161616; background: #fff; box-shadow: 0 3px 18px rgb(0 0 0 / .15); transition: transform .15s ease; }
+.ontleed .o-video-preview:hover .o-video-play { transform: translate(-50%, -50%) scale(1.08); }
+.ontleed .o-video-preview-caption { position: absolute; left: 12px; right: 12px; bottom: 9px; z-index: 1; color: #fff; font-size: 10px; font-weight: 650; text-shadow: 0 1px 4px rgb(0 0 0 / .35); }
+.ontleed .o-video-thumbnail-fallback { display: flex; align-items: flex-end; justify-content: center; height: 100%; padding: 14px; font-size: 12px; color: #fff; background: linear-gradient(135deg, #233e30, #18221c); }
+.ontleed .o-video-description { min-width: 0; }
+.ontleed .o-video-creator { font-size: 10px; line-height: 1.5; color: var(--o-muted, #666); margin-bottom: 6px; }
+.ontleed .o-video-description h3 { font-size: 19px; letter-spacing: -.025em; line-height: 1.3; margin: 0 0 8px; }
+.ontleed .o-video-summary { color: var(--o-muted, #666); font-size: 13px; line-height: 1.65; }
+.ontleed .o-video-focus-question { display: grid; gap: 4px; font-size: 12px; line-height: 1.6; padding: 12px 14px; margin: 14px 0 12px; background: var(--o-soft, #f5f5f4); border-radius: 10px; }
+.ontleed .o-video-focus-question strong { font-size: 10px; letter-spacing: .035em; }
+.ontleed .o-video-focus-question span { color: var(--o-muted, #666); }
+.ontleed .o-video-external { display: inline-flex; align-items: center; gap: 5px; color: var(--o-ink, #161616); font-size: 12px; font-weight: 600; line-height: 1.6; text-decoration: underline; text-underline-offset: 3px; padding: 5px 0; }
+.ontleed .o-lesson-video.is-active { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+.ontleed .o-video-open-player { min-width: 0; }
+.ontleed .o-video-player-top { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 12px; color: var(--o-muted, #666); font-size: 11px; }
+.ontleed .o-video-close { display: inline-flex; align-items: center; gap: 5px; border: 0; border-radius: 999px; padding: 7px 10px; color: var(--o-ink, #161616); background: var(--o-soft, #f5f5f4); font-size: 11px; }
+.ontleed .o-video-frame { position: relative; width: 100%; aspect-ratio: 16 / 9; background: #161616; border-radius: 10px; overflow: hidden; }
+.ontleed .o-video-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.ontleed .o-video-loading { position: absolute; inset: 0; z-index: 1; background: #161616; display: grid; place-items: center; font-size: 13px; color: #fff; pointer-events: none; }
+.ontleed .o-video-load-error { display: flex; height: 100%; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 20px; color: #fff; text-align: center; font-size: 13px; line-height: 1.5; }
+.ontleed .o-video-load-error strong { font-size: 15px; }
+.ontleed .o-video-load-error > span { color: #d5d5d3; }
+.ontleed .o-video-fallback-note { margin-top: 6px; color: var(--o-muted, #666); font-size: 11px; line-height: 1.6; }
+.ontleed .o-video-preview:focus-visible,
+.ontleed .o-video-close:focus-visible,
+.ontleed .o-video-external:focus-visible { outline: 3px solid var(--o-ink, #161616); outline-offset: 4px; }
+@media (max-width: 600px) {
+  .ontleed .o-lesson-videos { margin-top: 32px; padding-top: 24px; }
+  .ontleed .o-lesson-videos-heading { gap: 10px; margin-bottom: 18px; }
+  .ontleed .o-lesson-videos-heading h2 { font-size: 22px; }
+  .ontleed .o-lesson-videos-heading p { font-size: 12px; }
+  .ontleed .o-lesson-videos-symbol { width: 34px; min-width: 34px; height: 34px; border-radius: 10px; }
+  .ontleed .o-video-optional { font-size: 9px; padding: 4px 7px; }
+  .ontleed .o-lesson-video { grid-template-columns: minmax(0, 1fr); gap: 16px; padding: 16px; border-radius: 14px; }
+  .ontleed .o-video-preview { max-height: 190px; }
+  .ontleed .o-video-play { width: 44px; height: 44px; }
+  .ontleed .o-video-preview-caption { font-size: 11px; }
+  .ontleed .o-video-description h3 { font-size: 19px; }
+  .ontleed .o-video-focus-question { margin-top: 12px; }
+  .ontleed .o-video-player-top { font-size: 10px; }
+  .ontleed .o-video-load-error { gap: 7px; padding: 16px; font-size: 11px; }
+  .ontleed .o-video-load-error strong { font-size: 13px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ontleed .o-video-play { transition: none; }
+}

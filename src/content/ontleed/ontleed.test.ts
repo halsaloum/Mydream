@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { BOOKS } from './sources';
-import { ontleedLessons, PARTS, getOntleedLesson } from './index';
+import { ontleedLessons, PARTS, COURSE_LEVELS, getLessonLevel, getOntleedLesson } from './index';
 import type { ChoiceQuestion, Discovery, OntleedLesson, OrderQuestion, Question } from './types';
 import { correctAnswer, gradeQuestion, normalize } from '@/lib/ontleed/grade';
 
@@ -48,9 +48,12 @@ function checkChoice(question: Discovery | ChoiceQuestion) {
 }
 
 describe('the rebuilt curriculum contract', () => {
-  it('contains the complete 58-lesson, six-part route with unique stable IDs', () => {
-    expect(ontleedLessons).toHaveLength(58);
-    expect(PARTS).toHaveLength(6);
+  it('contains the complete 68-lesson, seven-part, three-level route with unique stable IDs', () => {
+    expect(ontleedLessons).toHaveLength(68);
+    expect(PARTS).toHaveLength(7);
+    expect(COURSE_LEVELS).toHaveLength(3);
+    expect(ontleedLessons.every(lesson => getLessonLevel(lesson.id))).toBe(true);
+    expect(COURSE_LEVELS.flatMap(level => level.parts).sort()).toEqual(PARTS.map(part => part.id).sort());
     expect(new Set(PARTS.map(part => part.id)).size).toBe(PARTS.length);
     expect(new Set(ontleedLessons.map(lesson => lesson.id)).size).toBe(ontleedLessons.length);
     expect(PARTS.every(part => ontleedLessons.some(lesson => lesson.part === part.id))).toBe(true);
@@ -101,6 +104,7 @@ describe('the rebuilt curriculum contract', () => {
       }
       expect(lesson.practice.length).toBeGreaterThanOrEqual(5);
       expect(lesson.retrieval.length).toBeGreaterThanOrEqual(2);
+      expect(lesson.retrieval.some(question => question.kind === 'type' || question.kind === 'order'), `${lesson.id}: no productive retrieval`).toBe(true);
       const practice = new Set(lesson.practice.map(scenario));
       expect(new Set(lesson.retrieval.map(scenario)).size).toBe(lesson.retrieval.length);
       expect(lesson.retrieval.every(question => !practice.has(scenario(question)))).toBe(true);

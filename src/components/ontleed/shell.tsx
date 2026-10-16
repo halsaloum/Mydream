@@ -1,11 +1,52 @@
 'use client';
+
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ArrowUpRight,BookOpen,ChartNoAxesCombined,Repeat2,Settings } from 'lucide-react';
-import type { ReactNode } from 'react';
-import { useOntleedReady } from './use-ready';
+import { ArrowUpRight, BookOpen, ChevronDown, Milestone, Repeat2, Settings, Wrench } from 'lucide-react';
+import { useEffect, useRef, type ReactNode } from 'react';
 import './ontleed.css';
-export function OntleedShell({children}:{children:ReactNode}) {
-  const pathname=usePathname();useOntleedReady();
-  return <div className="ontleed"><a className="o-skip" href="#o-main">Naar de inhoud</a><header className="o-header"><div><Link className="o-brand" href="/"><span aria-hidden>[o]</span> ontleed<span className="o-brand-dot">.</span></Link><nav aria-label="Hoofdnavigatie"><Link href="/" aria-current={pathname==='/'?'page':undefined}>Leerpad</Link><Link href="/lessen" aria-current={pathname==='/lessen'?'page':undefined}><BookOpen size={17}/> Lessen</Link><Link href="/herhalen" aria-current={pathname==='/herhalen'?'page':undefined}><Repeat2 size={17}/> Herhalen</Link><Link href="/voortgang" aria-current={pathname==='/voortgang'?'page':undefined}><ChartNoAxesCombined size={17}/> Voortgang</Link></nav><Link className="o-header-settings" href="/instellingen" aria-label="Instellingen"><Settings size={20}/></Link></div></header><main id="o-main" tabIndex={-1} className="o-main">{children}</main><footer className="o-footer"><span>Ontleed · van woord tot volle zin</span><div><Link href="/bronnen">Bronnen</Link><Link href="/oefenvormen">Gereedschap</Link><Link href="/argumentatie">Argumentatie & drogredenen <ArrowUpRight size={14}/></Link></div></footer></div>;
+import './learning-shell.css';
+
+const navigation = [
+  { href: '/', title: 'Leren', icon: Milestone },
+  { href: '/herhalen', title: 'Oefenen', icon: Repeat2 },
+  { href: '/lessen', title: 'Bibliotheek', icon: BookOpen },
+] as const;
+
+export function OntleedShell({ children }: { children: ReactNode }) {
+  const pathname = usePathname();
+  const menu = useRef<HTMLDetailsElement>(null);
+  useEffect(() => {
+    if (menu.current) menu.current.open = false;
+    const dismiss = (event: PointerEvent) => {
+      if (menu.current?.open && event.target instanceof Node && !menu.current.contains(event.target)) menu.current.open = false;
+    };
+    document.addEventListener('pointerdown', dismiss);
+    return () => document.removeEventListener('pointerdown', dismiss);
+  }, [pathname]);
+  return <div className="ontleed o-learning-app">
+    <a className="o-skip" href="#o-main">Naar de inhoud</a>
+    <header className="o-learning-header">
+      <div className="o-learning-header-inner">
+        <Link className="o-learning-brand" href="/" aria-label="Ontleed, naar het leerpad"><span aria-hidden>o.</span>ontleed</Link>
+        <nav className="o-learning-navigation" aria-label="Hoofdnavigatie">
+          {navigation.map(({ href, title, icon: Icon }) => <Link href={href} key={href} aria-current={pathname === href ? 'page' : undefined}><Icon size={18}/><span>{title}</span></Link>)}
+        </nav>
+        <details className="o-learning-menu" ref={menu} onKeyDown={event => { if (event.key === 'Escape' && menu.current) { menu.current.open = false; menu.current.querySelector('summary')?.focus(); } }}>
+          <summary>Meer <ChevronDown size={15}/></summary>
+          <nav aria-label="Meer ontdekken">
+            <Link href="/oefenvormen"><Wrench size={17}/>Taalwerkplaats</Link>
+            <Link href="/voortgang"><Milestone size={17}/>Mijn leerproces</Link>
+            <Link href="/bronnen"><BookOpen size={17}/>Bronnen</Link>
+            <Link href="/instellingen"><Settings size={17}/>Instellingen</Link>
+            <Link className="o-learning-argument" href="/argumentatie">Argumentatie & drogredenen <ArrowUpRight size={16}/></Link>
+          </nav>
+        </details>
+      </div>
+    </header>
+    <div className="o-learning-content">
+      <main id="o-main" tabIndex={-1} className="o-main">{children}</main>
+      <footer className="o-learning-footer"><span>Van woord naar eigen tekst.</span><div><Link href="/bronnen">Bronnen</Link><Link href="/argumentatie">Argumentatie <ArrowUpRight size={13}/></Link></div></footer>
+    </div>
+  </div>;
 }

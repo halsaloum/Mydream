@@ -48,3 +48,6 @@ next-env.d.ts
 
 # lokale cache van de ontwerpcontrole (impeccable)
 /.impeccable/
+
+# Temporary source extraction and local book research
+/tmp/

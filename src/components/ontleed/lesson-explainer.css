@@ -1,0 +1,138 @@
+/* Small, guided explanations shared by every section in the learning path. */
+.ontleed.o-focused-lesson .o-theory { --coach-purple: #ede9ff; --coach-purple-ink: #51428a; }
+.ontleed.o-focused-lesson .o-explainer h1 { font-size: 32px; margin-bottom: 10px; }
+.ontleed.o-focused-lesson .o-explainer-intro { color: #656562; font-size: 15px; line-height: 1.7; margin-bottom: 24px; }
+.ontleed.o-focused-lesson .o-explainer-eyebrow { display: block; color: #73688d; font-size: 10px; font-weight: 650; letter-spacing: .11em; text-transform: uppercase; margin-bottom: 7px; }
+.ontleed.o-focused-lesson .o-coach-summary { display: flex; gap: 15px; padding: 22px 24px; border-radius: 18px; background: #f2efff; margin-bottom: 32px; }
+.ontleed.o-focused-lesson .o-coach-icon { display: grid; place-items: center; flex: 0 0 36px; height: 36px; border-radius: 12px; background: #e5defe; color: var(--coach-purple-ink); }
+.ontleed.o-focused-lesson .o-coach-summary :is(h2, h3) { color: var(--coach-purple-ink); font-size: 14px; letter-spacing: -.01em; font-weight: 700; margin: 1px 0 7px; }
+.ontleed.o-focused-lesson .o-coach-summary p { font-size: 18px; line-height: 1.65; color: #322c45; }
+.ontleed.o-focused-lesson .o-coach-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 10px; }
+.ontleed.o-focused-lesson .o-coach-heading h2 { display: flex; align-items: center; gap: 10px; font-size: 18px; letter-spacing: -.02em; }
+.ontleed.o-focused-lesson .o-coach-heading h2 > span { display: grid; place-items: center; width: 25px; height: 25px; background: var(--o-ink); color: white; border-radius: 50%; font-size: 12px; }
+.ontleed.o-focused-lesson .o-coach-heading > span { color: #73736d; font-size: 12px; white-space: nowrap; }
+.ontleed.o-focused-lesson .o-coach-instruction { font-size: 14px; color: #656562; line-height: 1.7; margin-bottom: 16px; }
+.ontleed.o-focused-lesson .o-teaching-steps { margin: 0 0 30px; }
+.ontleed.o-focused-lesson .o-teaching-switcher { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); list-style: none; padding: 0; margin: 0; gap: 8px; }
+.ontleed.o-focused-lesson .o-teaching-switcher li { min-width: 0; }
+.ontleed.o-focused-lesson .o-teaching-switcher button { display: flex; align-items: center; gap: 9px; text-align: left; width: 100%; height: 100%; min-height: 48px; padding: 10px 12px; border: 1px solid #e0dedf; border-radius: 11px; color: #65615f; background: #fff; font-size: 12px; line-height: 1.5; font-weight: 600; }
+.ontleed.o-focused-lesson .o-teaching-switcher button > span { display: grid; place-items: center; flex: 0 0 22px; height: 22px; border-radius: 50%; background: #f2f0ee; color: #736f6b; font-size: 10px; }
+.ontleed.o-focused-lesson .o-teaching-switcher button[aria-pressed=true] { background: #f4f1ff; border-color: #9d8cc5; color: var(--coach-purple-ink); box-shadow: inset 0 0 0 1px #9d8cc5; }
+.ontleed.o-focused-lesson .o-teaching-switcher button[aria-pressed=true] > span { color: #fff; background: #70608f; }
+.ontleed.o-focused-lesson .o-teaching-switcher button:hover { border-color: #9d8cc5; }
+.ontleed.o-focused-lesson .o-teaching-step-panel { display: flex; align-items: flex-start; gap: 16px; padding: 20px 21px; margin-top: 10px; border: 1px solid #e8e3f0; background: #fcfbff; border-radius: 12px; }
+.ontleed.o-focused-lesson .o-teaching-step-number { font-size: 21px; font-variant-numeric: tabular-nums; color: #a39ab2; line-height: 1.4; }
+.ontleed.o-focused-lesson .o-teaching-step-panel h3 { color: #3c3349; font-size: 14px; font-weight: 650; line-height: 1.6; margin-bottom: 5px; }
+.ontleed.o-focused-lesson .o-teaching-step-panel p { color: #5f5964; font-size: 15px; line-height: 1.75; }
+.ontleed.o-focused-lesson .o-example-switcher { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+.ontleed.o-focused-lesson .o-example-switcher button { display: inline-flex; align-items: center; justify-content: center; gap: 7px; padding: 10px 16px; min-height: 44px; border: 1px solid #dededb; background: #fff; color: #656562; border-radius: 999px; font-size: 13px; font-weight: 600; }
+.ontleed.o-focused-lesson .o-example-switcher button[aria-pressed=true] { background: var(--o-ink); color: #fff; border-color: var(--o-ink); }
+.ontleed.o-focused-lesson .o-example-switcher button:hover { border-color: var(--o-ink); }
+.ontleed.o-focused-lesson .o-explorer-card { padding: 26px; border: 1px solid #e4e4df; border-radius: 18px; background: #fafaf8; }
+.ontleed.o-focused-lesson .o-explorer-sentence { font-size: 27px; line-height: 1.65; font-weight: 550; letter-spacing: -.025em; overflow-wrap: anywhere; }
+.ontleed.o-focused-lesson .o-coach-highlight { background: #e5defe; color: #322c45; border-radius: 6px; padding: 2px 3px; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.ontleed.o-focused-lesson .o-lens-instruction { display: flex; gap: 7px; align-items: flex-start; color: #656562; font-size: 12px; line-height: 1.6; margin: 20px 0 12px; }
+.ontleed.o-focused-lesson .o-lens-instruction svg { flex-shrink: 0; margin-top: 2px; }
+.ontleed.o-focused-lesson .o-lens-switcher { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-bottom: 22px; }
+.ontleed.o-focused-lesson .o-lens-switcher button { border: 1px solid #dcd8e7; background: white; border-radius: 10px; padding: 12px 8px; min-height: 46px; font-size: 14px; font-weight: 650; color: #55514f; }
+.ontleed.o-focused-lesson .o-lens-switcher button[aria-pressed=true] { background: var(--coach-purple); color: var(--coach-purple-ink); border: 2px solid #8270c2; padding: 11px 7px; }
+.ontleed.o-focused-lesson .o-example-insight { display: flex; align-items: flex-start; gap: 12px; border-top: 1px solid #e2e2dc; margin-top: 24px; padding-top: 18px; font-size: 15px; line-height: 1.75; color: #55554f; }
+.ontleed.o-focused-lesson .o-example-insight > span { color: #7d728e; font-size: 22px; line-height: 1.2; }
+.ontleed.o-focused-lesson .o-example-insight strong { display: block; color: #2a2926; font-size: 13px; margin-bottom: 4px; }
+.ontleed.o-focused-lesson .o-next-example { margin-top: 8px; font-size: 13px; }
+.ontleed.o-focused-lesson .o-quick-check { margin: 28px 0; }
+.ontleed.o-focused-lesson .o-check-prompt { margin: 16px 0 12px; font-size: 17px; font-weight: 600; line-height: 1.6; }
+.ontleed.o-focused-lesson .o-check-sentence { font-size: 17px; line-height: 1.7; padding: 12px 16px; background: #f5f5f2; border-radius: 10px; margin-bottom: 14px; overflow-wrap: anywhere; }
+.ontleed.o-focused-lesson .o-check-options { display: grid; gap: 9px; }
+.ontleed.o-focused-lesson .o-check-option { position: relative; display: flex; align-items: center; gap: 12px; border: 1.5px solid #deded8; border-radius: 12px; min-height: 62px; padding: 15px; font-size: 15px; line-height: 1.65; cursor: pointer; }
+.ontleed.o-focused-lesson .o-check-option input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.ontleed.o-focused-lesson .o-check-option:focus-within { outline: 3px solid var(--o-ink); outline-offset: 3px; }
+.ontleed.o-focused-lesson .o-check-option:hover:not(:has(input:disabled)) { border-color: #999; background: #fafaf8; }
+.ontleed.o-focused-lesson .o-check-letter { display: grid; place-items: center; flex: 0 0 26px; height: 26px; border: 1px solid #deded8; border-radius: 7px; font-size: 11px; font-weight: 700; color: #73736d; }
+.ontleed.o-focused-lesson .o-check-option > svg { flex-shrink: 0; margin-left: auto; }
+.ontleed.o-focused-lesson .o-check-option.is-right { background: #edf7ef; border-color: #27824b; color: #1d5c35; }
+.ontleed.o-focused-lesson .o-check-option.is-right .o-check-letter { background: #27824b; border-color: #27824b; color: white; }
+.ontleed.o-focused-lesson .o-check-option.is-try-again { background: #fff9ed; border-color: #ba9954; }
+.ontleed.o-focused-lesson .o-check-feedback { display: flex; gap: 11px; background: #fff9ed; border-radius: 12px; padding: 18px; margin-top: 14px; color: #63512e; font-size: 14px; line-height: 1.75; }
+.ontleed.o-focused-lesson .o-check-feedback > svg { flex-shrink: 0; margin-top: 2px; }
+.ontleed.o-focused-lesson .o-check-feedback.is-right { background: #edf7ef; color: #1d5c35; }
+.ontleed.o-focused-lesson .o-check-feedback strong { display: block; color: inherit; margin-bottom: 3px; }
+.ontleed.o-focused-lesson .o-check-retry { margin-top: 7px; }
+.ontleed.o-focused-lesson .o-coach-done { display: flex; align-items: center; gap: 8px; color: #1d6b39; font-size: 13px; line-height: 1.7; margin-top: 13px; }
+.ontleed.o-focused-lesson .o-explainer-memory { margin: 26px 0; align-items: flex-start; }
+.ontleed.o-focused-lesson .o-explainer-memory .o-takeaway-check { flex: 0 0 27px; }
+.ontleed.o-focused-lesson .o-explainer-memory strong { display: block; font-size: 12px; font-weight: 700; color: #1d5c35; }
+.ontleed.o-focused-lesson .o-explainer-memory p { font-size: 15px; line-height: 1.75; color: #31573c; }
+.ontleed.o-focused-lesson .o-explainer-details { border-top: 1px solid #e5e5df; }
+.ontleed.o-focused-lesson .o-explainer-details > summary { display: flex; align-items: center; gap: 10px; min-height: 57px; padding: 15px 0; font-size: 14px; font-weight: 600; cursor: pointer; list-style: none; }
+.ontleed.o-focused-lesson .o-explainer-details > summary::-webkit-details-marker { display: none; }
+.ontleed.o-focused-lesson .o-explainer-details > summary > svg:last-child { margin-left: auto; }
+.ontleed.o-focused-lesson .o-explainer-details[open] > summary > svg:last-child { transform: rotate(180deg); }
+.ontleed.o-focused-lesson .o-explainer-details > div { padding: 10px 0 24px; }
+.ontleed.o-focused-lesson .o-explainer-details .o-theory-explanation > p { font-size: 16px; line-height: 1.85; }
+.ontleed.o-focused-lesson .o-explainer-details .o-takeaway { margin-top: 16px; }
+.ontleed.o-focused-lesson .o-optional-note .o-input-label { margin-top: 0; }
+.ontleed.o-focused-lesson .o-optional-note > div > p { margin-top: 8px; font-size: 12px; color: #656562; line-height: 1.6; }
+.ontleed.o-focused-lesson .o-optional-note textarea { width: 100%; }
+.ontleed.o-focused-lesson .o-words-help > summary > span { font-weight: 400; font-size: 12px; color: #77716d; margin-left: auto; }
+.ontleed.o-focused-lesson .o-words-help > summary > svg:last-child { margin-left: 4px; }
+.ontleed.o-focused-lesson .o-words-help dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.ontleed.o-focused-lesson .o-words-help dl > div { padding: 15px 17px; border: 1px solid #e7e4df; border-radius: 10px; background: #faf9f6; }
+.ontleed.o-focused-lesson .o-words-help dt { font-size: 13px; font-weight: 700; color: #514b43; margin-bottom: 5px; }
+.ontleed.o-focused-lesson .o-words-help dd { color: #6b655f; font-size: 14px; line-height: 1.7; margin: 0; }
+.ontleed.o-focused-lesson .o-teaching-sources ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 16px; }
+.ontleed.o-focused-lesson .o-teaching-sources li { border-left: 2px solid #e1dbea; padding-left: 14px; }
+.ontleed.o-focused-lesson .o-teaching-sources li > a { display: inline-flex; align-items: center; gap: 7px; color: var(--coach-purple-ink); font-size: 13px; font-weight: 650; text-decoration: underline; text-underline-offset: 3px; }
+.ontleed.o-focused-lesson .o-teaching-sources li > a svg { flex-shrink: 0; }
+.ontleed.o-focused-lesson .o-teaching-sources li > span { display: block; color: #696560; font-size: 12px; line-height: 1.7; margin-top: 4px; }
+.ontleed.o-focused-lesson .o-teaching-sources li > p { color: #7c756f; font-size: 12px; line-height: 1.7; margin-top: 3px; }
+.ontleed.o-focused-lesson .o-theory-reading { margin-top: 40px; }
+.ontleed.o-focused-lesson .o-teaching-reading-steps h3 { font-size: 18px; margin-bottom: 14px; }
+.ontleed.o-focused-lesson .o-teaching-reading-steps ol { list-style: decimal; padding-left: 23px; }
+.ontleed.o-focused-lesson .o-teaching-reading-steps li { color: #625c64; font-size: 15px; line-height: 1.75; padding-left: 5px; }
+.ontleed.o-focused-lesson .o-teaching-reading-steps li + li { margin-top: 16px; }
+.ontleed.o-focused-lesson .o-teaching-reading-steps li::marker { color: #82718f; font-weight: 600; }
+.ontleed.o-focused-lesson .o-teaching-reading-steps strong { display: block; color: #443d48; font-size: 14px; margin-bottom: 4px; }
+@media (prefers-reduced-motion: no-preference) {
+  .ontleed.o-focused-lesson .o-example-switcher button,
+  .ontleed.o-focused-lesson .o-teaching-switcher button,
+  .ontleed.o-focused-lesson .o-check-option { transition: background .15s, border-color .15s; }
+}
+@media (max-width: 520px) {
+  .ontleed.o-focused-lesson .o-explainer h1 { font-size: 28px; }
+  .ontleed.o-focused-lesson .o-explainer-intro { font-size: 14px; margin-bottom: 18px; }
+  .ontleed.o-focused-lesson .o-coach-summary { padding: 18px; gap: 12px; margin-bottom: 26px; }
+  .ontleed.o-focused-lesson .o-coach-summary p { font-size: 16px; }
+  .ontleed.o-focused-lesson .o-teaching-switcher { grid-template-columns: 1fr; gap: 6px; }
+  .ontleed.o-focused-lesson .o-teaching-switcher button { min-height: 44px; padding: 9px 12px; font-size: 12px; }
+  .ontleed.o-focused-lesson .o-teaching-step-panel { padding: 17px; gap: 12px; }
+  .ontleed.o-focused-lesson .o-teaching-step-panel p { font-size: 14px; }
+  .ontleed.o-focused-lesson .o-words-help dl { grid-template-columns: 1fr; }
+  .ontleed.o-focused-lesson .o-coach-icon { flex-basis: 30px; height: 30px; border-radius: 9px; }
+  .ontleed.o-focused-lesson .o-coach-heading { gap: 10px; }
+  .ontleed.o-focused-lesson .o-coach-heading h2 { font-size: 16px; }
+  .ontleed.o-focused-lesson .o-coach-heading > span { font-size: 11px; }
+  .ontleed.o-focused-lesson .o-explorer-card { padding: 19px; }
+  .ontleed.o-focused-lesson .o-explorer-sentence { font-size: 23px; }
+  .ontleed.o-focused-lesson .o-example-insight { font-size: 14px; }
+  .ontleed.o-focused-lesson .o-lens-switcher { gap: 6px; }
+  .ontleed.o-focused-lesson .o-lens-switcher button { font-size: 12px; }
+  .ontleed.o-focused-lesson .o-check-prompt { font-size: 16px; }
+  .ontleed.o-focused-lesson .o-check-option { font-size: 14px; gap: 10px; padding: 13px; }
+}
+
+.ontleed.o-focused-lesson .o-coach-method { font-size: 15px; line-height: 1.8; margin-bottom: 24px; }
+.ontleed.o-focused-lesson .o-coach-method ol { padding-left: 22px; margin-top: 8px; }
+.ontleed.o-focused-lesson .o-coach-method li + li { margin-top: 6px; }
+@media (min-width: 761px) and (max-height: 800px) {
+  .ontleed.o-focused-lesson .o-explainer h1 { font-size: 30px; margin-bottom: 12px; }
+  .ontleed.o-focused-lesson .o-explainer-intro { display: none; }
+  .ontleed.o-focused-lesson .o-coach-summary { padding: 16px 20px; margin-bottom: 14px; }
+  .ontleed.o-focused-lesson .o-coach-summary p { font-size: 17px; line-height: 1.6; }
+  .ontleed.o-focused-lesson .o-coach-summary :is(h2, h3) { margin-bottom: 4px; }
+  .ontleed.o-focused-lesson .o-coach-instruction { margin-bottom: 10px; }
+  .ontleed.o-focused-lesson .o-explorer-card { padding: 20px; }
+  .ontleed.o-focused-lesson .o-lens-instruction { margin-top: 12px; }
+}
+
+.ontleed.o-focused-lesson .o-theory-reading > .o-coach-summary { margin-top: 20px; }

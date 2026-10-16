@@ -1,0 +1,133 @@
+/* Guided learning shell. These styles never reach the argumentation course. */
+.ontleed.o-learning-app { display: block; background: var(--o-white); color: var(--o-ink); }
+.ontleed .o-learning-header { position: sticky; top: 0; z-index: 40; border-bottom: 1px solid var(--o-line); background: #fffffff5; backdrop-filter: blur(12px); }
+.ontleed .o-learning-header-inner { max-width: 1120px; height: 80px; margin: auto; padding: 0 32px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 28px; }
+.ontleed .o-learning-brand { display: inline-flex; gap: 10px; align-items: center; justify-self: start; color: var(--o-ink); font-size: 27px; font-weight: 800; letter-spacing: -.06em; }
+.ontleed .o-learning-brand>span { width: 32px; height: 32px; display: grid; place-items: center; background: var(--o-ink); color: white; border-radius: 9px; font-size: 24px; padding-bottom: 4px; }
+.ontleed .o-learning-navigation { height: 100%; display: flex; align-items: center; gap: 8px; }
+.ontleed .o-learning-navigation>a { display: flex; align-items: center; gap: 8px; padding: 11px 18px; border-radius: 30px; font-size: 14px; font-weight: 650; color: var(--o-muted); transition: background .15s, color .15s; }
+.ontleed .o-learning-navigation>a:hover { background: var(--o-soft); color: var(--o-ink); }
+.ontleed .o-learning-navigation>a[aria-current=page] { background: #f0f0ee; color: var(--o-ink); }
+.ontleed .o-learning-menu { position: relative; justify-self: end; }
+.ontleed .o-learning-menu summary { display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; padding: 10px 14px; border-radius: 24px; font-size: 14px; font-weight: 600; list-style: none; }
+.ontleed .o-learning-menu summary::-webkit-details-marker { display: none; }
+.ontleed .o-learning-menu summary:hover, .ontleed .o-learning-menu[open] summary { background: var(--o-soft); }
+.ontleed .o-learning-menu[open] summary>svg { transform: rotate(180deg); }
+.ontleed .o-learning-menu>nav { position: absolute; right: 0; top: calc(100% + 12px); width: 265px; padding: 8px; border: 1px solid var(--o-line); border-radius: 16px; background: var(--o-white); box-shadow: 0 12px 36px #00000014; }
+.ontleed .o-learning-menu nav>a { display: flex; align-items: center; gap: 12px; padding: 13px 12px; border-radius: 9px; font-size: 14px; }
+.ontleed .o-learning-menu nav>a:hover { background: var(--o-soft); }
+.ontleed .o-learning-menu nav>.o-learning-argument { border-top: 1px solid var(--o-line); margin-top: 4px; padding-top: 16px; border-radius: 0 0 9px 9px; font-size: 13px; }
+.ontleed.o-learning-app .o-main { width: min(960px, calc(100% - 64px)); margin: auto; padding: 48px 0 64px; min-height: calc(100dvh - 170px); }
+.ontleed .o-learning-footer { width: min(960px, calc(100% - 64px)); margin: auto; padding: 24px 0 32px; display: flex; align-items: center; justify-content: space-between; gap: 24px; border-top: 1px solid var(--o-line); color: #737373; font-size: 12px; }
+.ontleed .o-learning-footer>div { display: flex; gap: 24px; }
+.ontleed .o-learning-footer a { display: inline-flex; align-items: center; gap: 4px; }
+.ontleed .o-learning-footer a:hover { color: var(--o-ink); }
+
+.ontleed .o-journey { width: min(100%, 720px); margin: auto; }
+.ontleed .o-journey-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; color: var(--o-muted); }
+.ontleed .o-journey-top>span { font-size: 11px; font-weight: 700; letter-spacing: .12em; }
+.ontleed .o-journey-top>a { display: inline-flex; align-items: center; gap: 7px; font-size: 12px; }
+.ontleed .o-journey-levels { padding: 5px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; border-radius: 14px; background: var(--o-soft); }
+.ontleed .o-journey-levels>button { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 11px 16px; min-height: 47px; color: var(--o-muted); font-weight: 650; font-size: 14px; border: 1px solid transparent; border-radius: 10px; background: transparent; }
+.ontleed .o-journey-levels>button>span { display: grid; place-items: center; width: 23px; height: 23px; border-radius: 50%; background: #e7e7e4; font-size: 11px; font-weight: 700; }
+.ontleed .o-journey-levels>button[aria-pressed=true] { background: var(--o-white); border-color: var(--o-line); color: var(--o-ink); box-shadow: 0 2px 4px #00000005; }
+.ontleed .o-journey-levels>button[aria-pressed=true]>span { background: var(--o-ink); color: var(--o-white); }
+.ontleed .o-journey-unit-picker { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-top: 36px; color: var(--o-muted); font-size: 12px; }
+.ontleed .o-journey-unit-picker>label { position: relative; display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 650; color: var(--o-ink); }
+.ontleed .o-journey-unit-picker select { position: absolute; inset: -8px -5px; width: calc(100% + 10px); height: calc(100% + 16px); opacity: 0; cursor: pointer; }
+.ontleed .o-journey-unit-picker label:focus-within { outline: 3px solid var(--o-green); outline-offset: 6px; border-radius: 3px; }
+.ontleed .o-journey-unit-picker>span { white-space: nowrap; }
+.ontleed .o-journey-heading { margin: 16px 0 32px; }
+.ontleed .o-journey-heading h1 { color: var(--o-ink); font-size: 36px; line-height: 1.15; letter-spacing: -.04em; }
+.ontleed .o-journey-heading>p { max-width: 590px; color: var(--o-muted); font-size: 16px; line-height: 1.65; margin-top: 12px; }
+.ontleed .o-journey-path { margin: 0; padding: 0; list-style: none; }
+.ontleed .o-journey-step { position: relative; display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 24px; padding: 0 0 16px; }
+.ontleed .o-journey-step:before { content: ''; position: absolute; width: 2px; background: var(--o-line); top: 48px; bottom: 0; left: 23px; }
+.ontleed .o-journey-marker { position: relative; z-index: 1; margin-top: 20px; width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; background: var(--o-soft); border: 1px solid var(--o-line); color: var(--o-muted); font-size: 13px; font-weight: 650; }
+.ontleed .o-journey-step.is-current .o-journey-marker { background: var(--o-green); color: var(--o-ink); border: 5px solid var(--o-green-soft); outline: 1px solid #b7dfc3; }
+.ontleed .o-journey-step.is-complete:not(.is-current) .o-journey-marker { background: var(--o-green-soft); border-color: #cfe9d6; color: #147c3a; }
+.ontleed .o-journey-lesson { border: 1px solid transparent; border-radius: 20px; min-width: 0; }
+.ontleed .o-journey-step.is-current .o-journey-lesson { padding: 28px; border-color: #d9e8dd; background: var(--o-white); box-shadow: 0 4px 20px #163b2105; }
+.ontleed .o-journey-current-label { display: flex; align-items: center; gap: 8px; font-size: 9px; letter-spacing: .1em; font-weight: 750; color: #147c3a; margin-bottom: 12px; }
+.ontleed .o-journey-pulse { width: 5px; height: 5px; background: var(--o-green); border-radius: 50%; }
+.ontleed .o-journey-lesson h2 { color: var(--o-ink); font-size: 24px; letter-spacing: -.025em; line-height: 1.25; }
+.ontleed .o-journey-lesson>p { margin-top: 8px; font-size: 14px; color: var(--o-muted); line-height: 1.6; }
+.ontleed .o-journey-preview { margin: 24px 0; background: var(--o-soft); padding: 24px; border-radius: 12px; }
+.ontleed .o-journey-preview>span { display: flex; align-items: center; gap: 16px; font-size: 23px; font-weight: 650; letter-spacing: -.025em; }
+.ontleed .o-journey-preview>span>span { color: var(--o-green); font-weight: 400; }
+.ontleed .o-journey-preview>p { color: var(--o-muted); font-size: 13px; line-height: 1.7; margin-top: 12px; }
+.ontleed .o-journey-start { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.ontleed .o-journey-start>span { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; color: var(--o-muted); }
+.ontleed .o-journey-start>.o-button { min-height: 48px; padding: 14px 22px; font-size: 13px; }
+.ontleed .o-journey-lesson-link { display: flex; justify-content: space-between; gap: 24px; align-items: center; padding: 22px 28px; border-radius: 16px; }
+.ontleed .o-journey-lesson-link:hover { background: var(--o-soft); }
+.ontleed .o-journey-lesson-link>div>span { color: #737373; font-size: 9px; font-weight: 650; letter-spacing: .08em; }
+.ontleed .o-journey-lesson-link h2 { font-size: 19px; margin: 5px 0; }
+.ontleed .o-journey-lesson-link p { font-size: 13px; line-height: 1.6; color: #737373; }
+.ontleed .o-journey-lesson-link>svg { min-width: 18px; color: #8c8c8c; }
+.ontleed .o-journey-unit-end { margin: 0 0 32px 72px; text-align: center; border: 1px dashed #dededb; border-radius: 16px; padding: 24px; color: var(--o-muted); }
+.ontleed .o-journey-end-symbol { display: inline-grid; place-items: center; width: 38px; height: 38px; background: var(--o-soft); border-radius: 50%; margin-bottom: 10px; color: #8c8c8c; }
+.ontleed .o-journey-unit-end>p { font-size: 14px; font-weight: 650; color: #444; }
+.ontleed .o-journey-unit-end>span:last-child { display: block; font-size: 12px; margin-top: 5px; }
+.ontleed .o-journey-paging { border-top: 1px solid var(--o-line); padding: 20px 0; display: flex; justify-content: space-between; gap: 20px; }
+.ontleed .o-journey-paging>button,.ontleed .o-journey-paging>a { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 4px 0; background: transparent; border: 0; font-size: 13px; font-weight: 600; color: var(--o-ink); }
+.ontleed .o-journey-browse { display: flex; gap: 8px; align-items: center; justify-content: center; margin-top: 24px; font-size: 12px; color: var(--o-muted); flex-wrap: wrap; }
+.ontleed .o-journey-browse>a { color: var(--o-ink); text-decoration: underline; text-underline-offset: 3px; }
+.ontleed .o-learning-illustration { object-fit: contain; width: 100%; height: auto; }
+.ontleed .o-journey-illustrated { display: grid; grid-template-columns: minmax(0, 1fr) 185px; gap: 20px; align-items: center; background: #f5f7f5; }
+.ontleed .o-journey-concept { display: flex; gap: 12px; align-items: center; font-size: 22px; font-weight: 650; letter-spacing: -.03em; }
+.ontleed .o-journey-concept>span { color: var(--o-green-dark); font-weight: 400; }
+.ontleed .o-journey-illustrated p { margin-top: 12px; color: var(--o-muted); font-size: 13px; line-height: 1.75; }
+.ontleed .o-journey-illustrated .o-learning-illustration { height: 165px; }
+@media(max-width: 700px) {
+  .ontleed .o-learning-header-inner { height: 112px; padding: 0 20px; grid-template-columns: 1fr auto; gap: 0 16px; }
+  .ontleed .o-learning-brand { font-size: 24px; }
+  .ontleed .o-learning-brand>span { width: 29px; height: 29px; font-size: 22px; }
+  .ontleed .o-learning-menu { grid-column: 2; grid-row: 1; }
+  .ontleed .o-learning-navigation { grid-column: 1/-1; grid-row: 2; justify-content: center; gap: 4px; margin-bottom: 9px; }
+  .ontleed .o-learning-navigation>a { padding: 10px 14px; font-size: 12px; flex: 1; justify-content: center; }
+  .ontleed .o-learning-navigation svg { width: 16px; height: 16px; }
+  .ontleed.o-learning-app .o-main { width: calc(100% - 40px); padding: 28px 0 40px; }
+  .ontleed .o-learning-footer { width: calc(100% - 40px); font-size: 10px; gap: 16px; align-items: flex-start; }
+  .ontleed .o-learning-footer>div { gap: 14px; }
+  .ontleed .o-journey-top { margin-bottom: 20px; }
+  .ontleed .o-journey-top>span { font-size: 10px; }
+  .ontleed .o-journey-top>a { font-size: 11px; }
+  .ontleed .o-journey-levels>button { padding: 8px; gap: 7px; font-size: 12px; min-height: 42px; }
+  .ontleed .o-journey-levels>button>span { width: 20px; height: 20px; font-size: 10px; }
+  .ontleed .o-journey-unit-picker { margin-top: 28px; }
+  .ontleed .o-journey-heading h1 { font-size: 30px; }
+  .ontleed .o-journey-heading>p { font-size: 14px; margin-top: 10px; }
+  .ontleed .o-journey-heading { margin-bottom: 24px; }
+  .ontleed .o-journey-step { grid-template-columns: 32px minmax(0,1fr); gap: 12px; padding-bottom: 12px; }
+  .ontleed .o-journey-marker { width: 32px; height: 32px; margin-top: 20px; font-size: 11px; }
+  .ontleed .o-journey-marker svg { width: 14px; height: 14px; }
+  .ontleed .o-journey-step.is-current .o-journey-marker { border-width: 3px; }
+  .ontleed .o-journey-step:before { top: 46px; left: 15px; }
+  .ontleed .o-journey-step.is-current .o-journey-lesson { padding: 20px; border-radius: 16px; }
+  .ontleed .o-journey-lesson h2 { font-size: 23px; }
+  .ontleed .o-journey-current-label { font-size: 8px; }
+  .ontleed .o-journey-lesson>p { font-size: 12px; }
+  .ontleed .o-journey-preview { margin: 20px 0; padding: 17px; }
+  .ontleed .o-journey-preview>span { font-size: 19px; gap: 10px; }
+  .ontleed .o-journey-preview>p { font-size: 12px; }
+  .ontleed .o-journey-illustrated { grid-template-columns: 1fr; gap: 12px; }
+  .ontleed .o-journey-illustrated .o-learning-illustration { grid-row: 1; height: 140px; max-width: 210px; margin: auto; }
+  .ontleed .o-journey-concept { font-size: 19px; gap: 10px; }
+  .ontleed .o-journey-illustrated p { font-size: 12px; margin-top: 8px; }
+  .ontleed .o-journey-start { align-items: stretch; flex-direction: column; gap: 14px; }
+  .ontleed .o-journey-start>span { font-size: 10px; }
+  .ontleed .o-journey-start>.o-button { width: 100%; }
+  .ontleed .o-journey-lesson-link { padding: 20px 8px 20px 16px; gap: 12px; }
+  .ontleed .o-journey-lesson-link h2 { font-size: 18px; }
+  .ontleed .o-journey-lesson-link p { font-size: 12px; }
+  .ontleed .o-journey-unit-end { margin-left: 44px; padding: 20px 16px; }
+  .ontleed .o-journey-unit-end>p { font-size: 12px; }
+  .ontleed .o-journey-unit-end>span:last-child { font-size: 11px; }
+  .ontleed .o-journey-paging { gap: 12px; }
+  .ontleed .o-journey-paging>button,.ontleed .o-journey-paging>a { font-size: 11px; }
+  .ontleed .o-journey-browse { font-size: 11px; }
+}
+@media(prefers-reduced-motion: reduce) {
+  .ontleed .o-learning-navigation>a { transition: none; }
+}
